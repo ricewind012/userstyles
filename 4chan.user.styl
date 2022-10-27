@@ -1,0 +1,2204 @@
+/* ==UserStyle==
+@name           4chan
+@namespace      github.com/openstyles/stylus
+@version        1.0.0
+@description    A new userstyle
+@author         Me
+
+@preprocessor stylus
+
+@var checkbox board-title-image     "Board title image"            1
+@var text     board-title-font-size "Board title font size"        18pt
+@var text     board-title-pad       "Board title padding multiply" 4
+
+@var checkbox post-full-width       "Full width posts"             1
+@var text     thread-margin         "Thread margin"                0
+
+@var checkbox image-right-side      "Images on right side"         1
+@var checkbox image-popup-filename  "Image filename on hover"      0
+
+@var checkbox boards-hover          "Header boards on hover"       0
+@var checkbox color-unread          "Colored thread status"        1
+
+@var checkbox sidebar               "Header -> sidebar"            1
+@var checkbox sidebar-overlay       "Sidebar overlay"              1
+@var checkbox sidebar-fixed         "Fixed elements"               1
+@var checkbox sidebar-hover         "Show content on hover"        1
+@var text     sidebar-width         "Sidebar width"                228px
+@var number   sidebar-items         "Sidebar items"                4
+@var select   sidebar-pos           "Sidebar position" {
+	'Left':  'left',
+	'Right': 'right'
+}
+==/UserStyle== */
+
+@keyframes dropfade {
+	0% {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+$small-screen = 768px
+$select-size = 16px
+$i = !important
+
+// Stylus
+svar(var) {
+	s('var(--%s)', var);
+}
+
+cond(n, yes, no) {
+	(n == 0 ? no : yes) $i;
+}
+
+sel-cond(sel, pos) {
+	pos ? s('%s-%s', sel, pos) : sel
+}
+
+color-a(n, bright = true) {
+	s = bright ? -2 : null;
+	n = n > 6 ? n - 8 : n;
+
+	s('hsla(var(--color%s-h),	var(--colorscheme-s%s),	var(--colorscheme-l%s), var(--bg-opacity))', n, s, s);
+}
+
+// Appearance
+bg(n =) {
+	background-color: s('var(--bg%s)', n) $i;
+
+	if (n == -tr || n == -tr2 || n == -tr3) {
+		backdrop-filter: var(--popup-filter) $i;
+	}
+}
+
+fg(n =) {
+	color: s('var(--fg%s)', n) $i;
+}
+
+bgc(n1 =, n2 =) {
+	bg(n1);
+	fg(n2);
+}
+
+hl(n = ) {
+	background-color: n ? s('var(--hl-%s)', n) : var(--hl) $i;
+	color: var(--hl-fg) $i;
+}
+
+accent() {
+	background-color: var(--accent) $i;
+	color: var(--accent-fg) $i;
+}
+
+clr(n) {
+	color: s('var(--color%s)', n) $i;
+}
+
+lnh() {
+	line-height: var(--line-height) $i;
+}
+
+pad(pos =, n = 1) {
+	{sel-cond(padding, pos)}: \
+		(n == 0 ? 0 : pos == 0 ? 0 : var(--pad)) $i;
+}
+
+mar(pos =, n = 1) {
+	{sel-cond(margin, pos)}: \
+		(n == 0 ? 0 : pos == 0 ? 0 : var(--pad)) $i;
+}
+
+shd(n) {
+	box-shadow: cond(n, s('var(--shadow-%s)', n), none);
+}
+
+rad(n = 1) {
+	border-radius: cond(n, var(--border-radius), 0);
+}
+
+brd(pos =, color = border) {
+	//color = (typeof(color) == 'ident' || typeof(color) == 'string') ? svar(color) : color;
+	if (color) {
+		color = svar(color);
+	}
+
+	{sel-cond(border, pos)}: \
+		(color == 0 ? none : pos == 0 ? none : var(--border-width) solid color) $i;
+	if (!pos) {
+		rad(pos);
+	}
+}
+
+// Position
+box(w, h = w) {
+	width: w $i;
+	height: h $i;
+}
+
+pos(offset = 0) {
+	left: offset $i;
+	top: offset $i;
+	right: offset $i;
+	bottom: offset $i;
+}
+
+center(justification =) {
+	display: flex $i;
+	align-items: center $i;
+	if (justification) {
+		justify-content: justification $i;
+	}
+}
+
+// etc.
+anim(name =, func = ) {
+	@media (prefers-reduced-motion: no-preference) {
+		{name ? animation : transition}: name var(--trans-dur) func $i;
+	}
+}
+
+dropfade() {
+	anim(dropfade, cubic-bezier(.2, .9, .6, 1));
+}
+
+focus(p = focus) {
+	anim();
+
+	&:{p} {
+		border-color: var(--hl) $i;
+		box-shadow: var(--shadow-ins) var(--hl) $i;
+		outline: none $i;
+	}
+}
+
+header-focus(class = page-focus) {
+	.{class} & {
+		--bg2: var(--accent);
+		--fg: var(--accent-fg);
+		--fg2: var(--accent-fg);
+		--border: var(--accent-border);
+	}
+
+	// Chromuim is unable to recognise the selector
+	@supports not (-moz-appearance: none) { :root:not(:-moz-window-inactive) {
+		--bg2: var(--accent);
+		--fg: var(--accent-fg);
+		--fg2: var(--accent-fg);
+		--border: var(--accent-border);
+	}}
+}
+
+replace-text(content =, text-color = fg, pos = after) {
+	font-size: 0 $i;
+	color: transparent $i;
+
+	if (content) { // Replace
+		&::{pos} {
+			content: content $i;
+			font-size: var(--font-size) $i;
+			color: svar(text-color) $i;
+		}
+	} else { // Hide
+		* {
+			font-size: var(--font-size) $i;
+			color: svar(text-color) $i;
+		}
+	}
+}
+
+hide-chars(amount, pos, bg =) {
+	margin-{pos}: s('-%sch', amount) $i;
+	position: relative $i;
+
+	element = pos == left ? before : after;
+	&::{element} {
+		content: '' $i;
+		position: absolute $i;
+		pos();
+		box(s('%sch', amount), 100%);
+		bg(bg);
+	}
+}
+
+// Input normalisation
+normalise-select() {
+	appearance: none $i;
+	bgc(2);
+	lnh();
+	background-image:
+		linear-gradient(55deg, var(--bg2) 43%, transparent 45%),
+		linear-gradient(125deg, transparent 53%, var(--bg2) 55%),
+		linear-gradient(180deg, var(--bg2) 30%, var(--fg) 30%) $i;
+	background-size: 20px 20px $i;
+	background-repeat: no-repeat $i;
+	background-position: right 50% $i;
+	padding: var(--pad) 20px var(--pad) var(--pad) $i;
+	brd();
+	focus();
+}
+
+normalise-input() {
+	bgc(2);
+	lnh();
+	pad();
+	brd();
+	focus();
+
+	&::placeholder {
+		fg(2);
+	}
+}
+
+normalise-button() {
+	bgc(2);
+	lnh();
+	background-image: none $i;
+	padding: var(--pad) calc(var(--pad) * 2) $i;
+	brd();
+	cursor: pointer $i;
+	focus();
+
+	&:disabled {
+		opacity: .5 $i;
+		pointer-events: none $i;
+	}
+}
+
+normalise-color() {
+	bg(2);
+	pad(0);
+	brd();
+	box($select-size);
+	focus();
+
+	&::-webkit-color-swatch {
+		border: none $i;
+		border-radius: calc(var(--border-radius) * .33) $i;
+
+		&-wrapper {
+			pad(0);
+		}
+	}
+}
+
+normalise-checkbox(label = true) {
+	if (label) {
+		/label {
+			lnh();
+			center();
+			gap: 1ch $i;
+		}
+	}
+
+	appearance: none $i;
+	bg(2);
+	brd();
+	border-radius: calc(var(--border-radius) * .33) $i;
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1) $i;
+	mar(0);
+	position: relative $i;
+	box($select-size);
+	min-width: $select-size $i;
+	focus();
+
+	&::before, &::after {
+		content: '';
+		position: absolute $i;
+		pos();
+		background-color: var(--hl) $i;
+		transform-origin: 0 0 $i;
+	}
+
+	&::before {
+		transform: rotate(-45deg) translateY(45%) translateX(-30%) scaleX(0.25) scaleY(0) $i;
+	}
+	&::after {
+		transform: rotate(225deg) translateY(-30%) translateX(-95%) scaleX(0.25) scaleY(0) $i;
+	}
+	&:indeterminate::before {
+		transform: rotate(0) translateY(37.5%) translateX(10%) scaleX(0.8) scaleY(0.25) $i;
+		transition-duration: 33.33333333ms $i;
+	}
+
+	&:checked {
+		&::before {
+			transform: rotate(-45deg) translateY(45%) translateX(-30%) scaleX(0.25) scaleY(0.4) $i;
+			transition-duration: 33.33333333ms $i;
+		}
+		&::after {
+			transform: rotate(225deg) translateY(-30%) translateX(-95%) scaleX(0.25) scaleY(1.2) $i;
+			transition-delay: 33.33333333ms $i;
+			anim();
+		}
+	}
+}
+
+normalise-radio() {
+	appearance: none $i;
+	bg(2);
+	brd();
+	border-radius: 50% $i;
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1) $i;
+	mar(0);
+	position: relative $i;
+	box($select-size);
+	focus();
+
+	&::before {
+		content: '';
+		position: absolute $i;
+		pos(3px);
+		background-color: var(--hl) $i;
+		border-radius: 50% $i;
+		transition: transform var(--trans-dur) linear $i;
+		transform: scale(0) $i;
+	}
+	&:disabled::before {
+		background-color: var(--fg3) $i;
+	}
+	&:checked::before {
+		transition-timing-function: cubic-bezier(0, 0, 0.3, 1.5) $i;
+		transform: scale(1) $i;
+		anim();
+	}
+}
+
+normalise-header(first = true) {
+	fg();
+	lnh();
+	text-transform: uppercase $i;
+	letter-spacing: 1px $i;
+	pad(0);
+	pad(bottom);
+	brd(bottom);
+	mar(0);
+	mar(bottom);
+	if (!first) {
+		margin-top: calc(var(--pad) * 2) $i;
+	}
+}
+
+// Userstyle-specific functions
+fa(char) {
+	font-size: 0 $i;
+
+	&::before {
+		content: char;
+		font: var(--font-size) FontAwesome $i;
+	}
+}
+
+@-moz-document domain("4chan.org"), domain("4channel.org") {
+	/**
+	 * Global
+	**/
+	body {
+		settings = \
+			'board-title-font-size',
+			'board-title-pad',
+			'thread-margin',
+			'sidebar-width',
+			'sidebar-items'
+
+		for i in settings {
+			\-\-{i}: convert(i);
+		}
+	}
+	body {
+		--header-size: calc(var(--font-size) * var(--line-height) + var(--pad) * 2 + var(--border-width));
+		--header-top-pos: calc(var(--header-h) + var(--body-pad) + var(--board-title-height) + var(--pad));
+		--board-title-height: board-title-image ? \
+			calc(var(--board-title-font-size) * var(--line-height) + var(--pad) * var(--board-title-pad) * 2 + var(--pad)) : \
+			var(--header-size);
+
+		--thread-border: 1px;
+		--gradient-size: 2ch;
+	}
+
+	* {
+		box-sizing: border-box $i;
+	}
+
+	body {
+		background: none var(--bg);
+		fg();
+		lnh();
+		pad(0);
+		margin: var(--body-pad);
+	}
+
+	a {
+		&, &:hover {
+			color: var(--fg-link) $i;
+		}
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+
+	input {
+		&:not([type]),
+		&[type="text"],
+		&[type="number"],
+		&[type="search"],
+		/textarea {
+			normalise-input();
+		}
+		&[type="checkbox"] {
+			normalise-checkbox();
+		}
+		&[type="submit"],
+		&[type="button"],
+		/button {
+			normalise-button();
+		}
+		&[type="file"]::file-selector-button {
+			normalise-button();
+			font: var(--font-size) var(--font-normal);
+			mar(right);
+		}
+	}
+	input, button {
+		height: unset $i;
+	}
+	select {
+		normalise-select();
+	}
+
+	.warning {
+		clr(9);
+	}
+	.new {
+		clr(10);
+	}
+	.current {
+		hl();
+		font-weight: unset;
+		pointer-events: none;
+	}
+
+	.fa, .menu-button, .close {
+		fg(2);
+
+		&::before {
+			font-size: var(--font-size) $i;
+		}
+
+		&:hover {
+			text-decoration: none $i;
+
+			&::before {
+				fg();
+			}
+		}
+	}
+	.menu-button {
+		fa('\f078');
+
+		.postInfo & {
+			box(unset);
+		}
+
+		.fa,
+		#header-bar & > i {
+			display: none;
+		}
+	}
+
+	/**
+	 * Hide elements
+	**/
+	// I. Buttons
+	#t-help,
+	//.open-qr-wrap,
+	//[accesskey="a"],
+	#settings > .btn-wrap,
+
+	// II. Top
+	#toggleMsgBtn, #globalMessage, .middlead + hr, form + hr,
+	.abovePostForm, .aboveMidAd,
+	#togglePostFormLink,
+	#bannerCnt,
+	.middlead,
+	#blotter,
+
+	// III. Bottom
+	#styleSwitcher, .stylechanger,
+	#boardNavDesktopFoot,
+	//#bottomReportBtn,
+	#absbot,
+
+	// IV. Post
+	//.sideArrows,
+	//.postMenuBtn,
+	.archivedIcon,
+	.postInfo > input,
+
+	// V. Unsorted
+	#js-snowfield,
+	#tooltip,
+	hr,
+
+	// VI. 4chan X
+	#op, .navLinks, .navLinks + hr, .thread + hr, // Navigation links
+	#fourchanx-settings .reset,
+	.replacedSideArrows,
+	//#shortcut-native,
+	//.dateTime:empty,
+	.bottomCtrl,
+
+	// VII. Quick reply
+	/*.is_thread*/ .qr-link-container,
+	#qr-spoiler-label,
+	#qr-oekaki-button,
+	#shortcut-qr,
+	#qr select,
+	#qr label
+	{
+		display: none $i;
+	}
+
+	/**
+	 * Header
+	**/
+	body {
+		margin-top: calc(var(--header-h) + var(--body-pad)) $i;
+	}
+	#header-bar {
+		bgc(2);
+		header-focus();
+		pad();
+		brd(0);
+		brd(bottom);
+		shd(0);
+		center(space-between);
+
+		&:not(:hover) #yous {
+			display: none $i;
+		}
+	}
+	#board-list a,
+	#shortcuts a:not(.entry) {
+		pad(0);
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+	#custom-board-list,
+	#full-board-list {
+		vertical-align: unset;
+
+		a:not(:last-of-type)::after {
+			content: ',';
+			bgc(2);
+		}
+	}
+	if (boards-hover) {
+		#custom-board-list {
+			--hover-pos: var(--pad);
+			position: absolute;
+			left: -100%;
+			top: 0;
+			bottom: 0;
+			bg(2);
+			center();
+			anim();
+
+			@media (max-width: $small-screen) {
+				--hover-pos: 0;
+				top: var(--header-h);
+				flex-direction: column;
+				height: min-content;
+				pad();
+				brd(bottom);
+				brd(right);
+				shd(big);
+
+				a::after {
+					display: none;
+				}
+			}
+			#header-bar:hover & {
+				left: var(--hover-pos);
+			}
+
+			@media (min-width: $small-screen) {
+				&::after {
+					content: '';
+					box(var(--gradient-size), 100%);
+					margin-right: calc(var(--gradient-size) * -1);
+					background-image: linear-gradient(90deg, var(--bg2), transparent);
+				}
+			}
+		}
+	}
+	.brackets-wrap {
+		&::before, &::after {
+			display: none;
+		}
+	}
+	.shortcut {
+		mar(left, 0);
+		vertical-align: unset;
+
+		a {
+			fg(2);
+		}
+	}
+	#shortcut {
+		&-updater::after,
+		&-gallery::after,
+		&-stats::after {
+			content: var(--delim);
+			display: unset;
+		}
+		.shortcut-icons &-gallery::after {
+			display: none;
+		}
+
+		&s {
+			center(right);
+			gap: 1ch;
+		}
+		:root.shortcut-icons &s .fa {
+			font-size: 0 $i;
+
+			&::before {
+				top: 0 $i;
+				font-size: var(--font-size) $i;
+				mar(top, 0);
+			}
+		}
+	}
+	#updater {
+		min-width: 2ch $i;
+	}
+	if (!sidebar) {
+		@media (min-width: $small-screen) {
+			#update-timer:not(.empty)::after {
+				content: ' seconds';
+			}
+			#post-count::after {
+				content: ' posts';
+			}
+			#file-count::after {
+				content: ' files';
+			}
+			#ip-count::after {
+				content: ' IPs';
+			}
+			#page-count::before {
+				content: 'Page ';
+			}
+		}
+	}
+
+	// Notifications
+	colors = {
+		error: 1,
+		success: 2,
+		warning: 3,
+		info: 4
+	}
+	for k, v in colors {
+		.notification.{k} {
+			background-color: color-a(v);
+			border-color: color-a(v) $i;
+		}
+	}
+	#notifications {
+		top: calc(100% + var(--border-width)) $i;
+	}
+	.notification {
+		backdrop-filter: var(--popup-filter);
+		fg();
+		text-shadow: none;
+		brd();
+		brd(top, 0);
+		border-radius: 0 0 var(--border-radius) var(--border-radius) $i;
+		margin: 0 auto;
+		shd(mid);
+		anim();
+
+		.close {
+			display: none;
+		}
+	}
+	.message {
+		pad();
+	}
+
+	/**
+	 * Content
+	**/
+	.board {
+		margin-top: calc(var(--header-size) + var(--pad) * 2) !important;
+		margin-left: var(--thread-margin) $i;
+		margin-right: var(--thread-margin) $i;
+
+		if (board-title-image) {
+			images = {
+				a:   'https://i.imgur.com/5zmzyc4.jpg',
+				c:   'https://i.imgur.com/4c5m2KO.jpg',
+				ck:  'https://i.imgur.com/hJ7lLp2.jpg',
+				e:   'https://i.imgur.com/5pjIJyp.jpg',
+				g:   'https://i.imgur.com/tpkZt1F.jpg',
+				gif: 'https://i.imgur.com/8f3meO8.jpg',
+				h:   'https://i.imgur.com/eHfO884.jpg',
+				ic:  'https://i.imgur.com/Kx1Yf6j.jpg',
+				jp:  'https://i.imgur.com/6S4B00D.jpg',
+				toy: 'https://i.imgur.com/hJvjWm7.jpg',
+				v:   'https://i.imgur.com/6FTuSYF.png',
+				vg:  'https://i.imgur.com/W9t9RYg.jpg',
+				vp:  'https://i.imgur.com/0vXqiaD.jpg',
+				w:   'https://i.imgur.com/GNmXbof.jpg',
+				wg:  'https://i.imgur.com/avTTwET.jpg',
+				wsg: 'https://i.imgur.com/RNeZ7PR.jpg'
+			}
+			for k, v in images {
+				&_{k} &Banner {
+					background-image: url(v);
+				}
+			}
+			&Banner {
+				background-image: url('https://i.imgur.com/BZIzz1k.jpg');
+				background-position: center 50%;
+				background-repeat: no-repeat;
+				background-size: cover;
+			}
+			&Title {
+				font-size: var(--board-title-font-size) $i;
+				font-family: cursive $i;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				color: #fff $i;
+				text-shadow: 2px 2px #000;
+				letter-spacing: 0 $i;
+				padding: calc(var(--pad) * var(--board-title-pad)) 0;
+			}
+		} else {
+			&Banner {
+				center(space-between);
+				normalise-header();
+			}
+			&Title {
+				letter-spacing: inherit $i;
+			}
+			&Subtitle {
+				fg(2);
+			}
+		}
+	}
+	// normal catalog
+	#ctrl {
+		margin-top: calc(var(--pad) * 2);
+		margin-bottom: calc(var(--pad) + var(--border-width));
+		justify-content: space-between;
+		position: relative;
+
+		// hack, so the height doesn't get smaller
+		@media (max-width: $small-screen) {
+			#settings {
+				visibility: hidden;
+				letter-spacing: -9999px;
+			}
+		}
+
+		&::before {
+			content: 'Catalog';
+			normalise-header();
+			position: absolute;
+			width: 100%;
+			z-index: -1;
+		}
+		&::after {
+			content: '';
+			position: absolute;
+			right: calc(var(--body-pad) * -1);
+			bottom: calc(var(--pad) * 1);
+			box(var(--body-pad), var(--border-width));
+		}
+
+		& > .clear {
+			display: none;
+		}
+	}
+	#settings {
+		position: relative;
+		top: calc(var(--pad) * -1.5);
+	}
+	.op {
+		& > .postInfo {
+			position: unset;
+		}
+
+		&Container .subject {
+			normalise-header(true);
+			position: absolute;
+			left: var(--body-pad);
+			right: var(--body-pad);
+			top: var(--header-top-pos);
+
+			&:empty::before {
+				content: 'No subject';
+			}
+		}
+	}
+	.closed {
+		fa('\f02d');
+		clr(9);
+		pad(0);
+		position: absolute;
+		right: calc(var(--body-pad) + var(--font-size) * 1.5);
+		top: var(--header-top-pos);
+	}
+	#threads {
+		pad(0);
+	}
+	.is_catalog .thread {
+		bg(3);
+		pad(0);
+		brd();
+		mar(top, 0);
+		mar(right);
+		mar(bottom);
+		display: inline-flex;
+		flex-direction: column;
+
+		a {
+			brd(bottom);
+		}
+		.thumb {
+			box-shadow: none;
+			display: block;
+		}
+	}
+	.meta {
+		bg(4);
+		line-height: unset;
+		padding: calc(var(--pad) / 2) 0;
+		brd(bottom);
+		mar(0);
+		order: -1;
+
+		& > i {
+			clr(1);
+			font-style: normal;
+		}
+	}
+	.teaser {
+		bg(2);
+		pad();
+
+		b {
+			fg(2);
+		}
+	}
+
+	// Catalog (JSON index)
+	.catalog {
+		&-thread {
+			brd(0);
+			margin: 0 var(--pad) $i;
+		}
+		&-post {
+			mar(0);
+		}
+		&-thumb {
+			shd(0);
+			border-radius: var(--border-radius);
+		}
+		&-stats {
+			pad(top, 0);
+			brd(top);
+		}
+	}
+	.json-index {
+		--header-size: 0px;
+
+		&::before {
+			content: 'Catalog';
+			normalise-header();
+			display: block;
+			text-align: left;
+		}
+	}
+
+	// Thread
+	.post {
+		bg(3);
+		pad(0);
+		brd();
+		mar(top);
+		mar(bottom, 0);
+
+		.board .deleted-post & {
+			anim();
+
+			&:not(:hover) {
+				opacity: .5;
+				anim();
+			}
+			.warning {
+				display: none;
+			}
+		}
+
+		.inline & {
+			pad(0);
+			mar(0);
+			brd(0);
+
+			.threadContainer & {
+				mar(left, 0);
+			}
+		}
+
+		.threadContainer & {
+			mar(left);
+
+			@media (max-width: $small-screen) {
+				width: calc(100% - var(--pad));
+			}
+		}
+
+		if (post-full-width) {
+			width: 100% $i;
+
+			.threadContainer & {
+				width: calc(100% - var(--pad)) $i;
+			}
+
+			.menu-button {
+				position: absolute;
+				right: var(--pad);
+			}
+			&.op .menu-button {
+				right: calc(var(--body-pad) + var(--border-width) + var(--pad));
+			}
+		}
+
+		&.op {
+			overflow: hidden $i;
+			mar(bottom);
+
+			if (!image-right-side) {
+				.nameBlock {
+					// TODO 250px
+					margin-left: calc(-250px - var(--pad));
+				}
+			}
+
+			// Make OP look the same as normal post
+			.file {
+				&Thumb {
+					margin-top: calc(var(--font-size) * var(--line-height) * 2 + var(--pad) * 4 + var(--border-width)) !important;
+				}
+
+				&Text {
+					position: absolute;
+					top: calc(var(--font-size) * var(--line-height) + var(--pad) * 2 + var(--border-width));
+					{image-right-side ? right : left}: 0;
+				}
+			}
+			.postMessage {
+				margin-top: calc(var(--font-size) * var(--line-height) + var(--pad) * 2) !important;
+			}
+		}
+		&Info {
+			bg(2);
+			pad();
+			padding-right: calc(2ch + var(--pad) * 2) $i;
+			brd(bottom);
+			position: relative;
+		}
+		[title="Link to this post"] {
+			replace-text('#', fg2);
+		}
+		div& div&Info span&Num a {
+			fg(2);
+
+			&:hover {
+				fg();
+			}
+		}
+		&Message {
+			mar(0);
+			pad();
+
+			.reply {
+				&:first-child {
+					mar(top, 0);
+				}
+				a + ^[1..-1] {
+					mar(bottom, 0);
+				}
+			}
+		}
+
+		&:target {
+			bg(3);
+			brd(,hl);
+			box-shadow: var(--shadow-ins) var(--hl);
+		}
+	}
+	.container {
+		.bottom-backlinks & {
+			text-align: right;
+			mar(left, 0);
+			mar(right);
+			mar(bottom);
+		}
+
+		&:not(:empty) {
+			margin-left: 1ch;
+		}
+	}
+	.quote {
+		clr(2);
+	}
+	.deadlink,
+	.quotelink {
+		clr(3);
+
+		&:hover {
+			clr(11);
+		}
+	}
+	.filtered {
+		opacity: .5;
+	}
+	.backlink {
+		clr(11);
+		fa('\f075');
+
+		&:hover {
+			clr(3);
+		}
+	}
+	.forwardlink {
+		&, &::before {
+			hl();
+		}
+	}
+	.backlink,
+	.quotelink {
+		&, &.deadlink:not(.forwardlink) {
+			text-decoration: none $i;
+
+			:root.yotsuba-b &.deadlink {
+				clr(11);
+
+				&:hover {
+					clr(3);
+				}
+			}
+		}
+	}
+	.name {
+		clr(5);
+	}
+	.postertrip {
+		clr(1);
+	}
+	.subject {
+		fg();
+	}
+	.watch-thread-link {
+		fa('\f006');
+		opacity: 1;
+		background: none $i;
+		fg(2);
+		pad(0);
+		box(var(--font-size));
+		position: absolute;
+		top: var(--header-top-pos);
+		right: var(--body-pad);
+		z-index: 1;
+
+		&:hover {
+			fg();
+			text-decoration: none;
+		}
+
+		&.watched {
+			fa('\f005');
+		}
+	}
+	.file {
+		position: relative;
+
+		&Text {
+			mar();
+			mar(bottom, 0);
+			max-width: unset $i;
+		}
+		&Thumb {
+			mar();
+
+			img {
+				border-radius: var(--border-radius);
+			}
+		}
+
+		if (image-right-side) {
+			&Text {
+				text-align: right;
+			}
+			&Thumb {
+				float: right $i;
+			}
+		}
+		if (image-popup-filename) {
+			&Text {
+				.post:not(.op) & {
+					bg(-tr2);
+					brd(bottom);
+					max-width: unset;
+					display: none;
+					position: absolute;
+					left: 0;
+					right: 0;
+					pad();
+					mar(0);
+					dropfade();
+				}
+
+				.postInfo:hover + .file > &,
+				&:hover {
+					display: unset;
+				}
+			}
+		}
+
+		a:not(:hover) {
+			text-decoration: none;
+		}
+	}
+	:root.fourchan-x.highlight-you {
+		.yourPost {
+			& > .reply,
+			&.opContainer {
+				brd(left, color5);
+			}
+		}
+		.quotesYou > .reply {
+			brd(left, color3);
+		}
+	}
+	#qp {
+		brd(0);
+
+		.post {
+			mar(0);
+		}
+	}
+	.inline {
+		brd();
+		mar(0);
+		mar(top);
+	}
+	.qphl {
+		outline: none;
+		border-color: var(--hl) $i;
+	}
+	#unread-line {
+		text-align: center;
+		brd(0);
+		margin-bottom: calc(var(--pad) * -1);
+		position: relative;
+		height: auto;
+		display: block;
+
+		&::before {
+			content: '';
+			position: absolute;
+			left: 0;
+			top: 50%;
+			box(100%, var(--thread-border));
+			background-color: var(--color1);
+		}
+		&::after {
+			content: 'NEW POSTS';
+			position: relative;
+			display: inline-block;
+			bg();
+			clr(9);
+			pad();
+		}
+	}
+
+	.opContainer {
+		shd(0);
+	}
+	.threadContainer {
+		border-left: var(--thread-border) solid var(--border);
+		mar(left);
+	}
+
+	// Syntax highlighting
+	.prettyprint {
+		bg();
+		font-family: var(--font-code) $i;
+		pad();
+		brd();
+		margin: var(--pad) 0;
+		display: block;
+		resize: horizontal;
+
+		&:last-child {
+			mar(bottom, 0);
+		}
+
+		& + br {
+			display: none;
+		}
+
+		// Codeblock userscript
+		input[type="button"] {
+			margin-left: 1ch;
+		}
+	}
+
+	.pun,
+	.com {
+		fg(2);
+	}
+	.fun,
+	.kwd {
+		clr(9);
+	}
+	.str,
+	.atv {
+		clr(10);
+	}
+	.opn,
+	.clo {
+		clr(11);
+	}
+	.typ,
+	.atn,
+	.dec,
+	.var {
+		clr(12);
+	}
+	.tag,
+	.lit {
+		clr(13);
+	}
+	.pln {
+		clr(14);
+	}
+
+	/**
+	 * Popup
+	**/
+	#overlay {
+		background-color: transparent;
+	}
+	.dialog {
+		bgc(-tr);
+		brd();
+		shd(big);
+		dropfade();
+	}
+
+	#qr, #thread-watcher {
+		/#fourchanx-settings, & {
+			pad(0);
+			brd(,accent-border);
+
+			.close {
+				position: absolute;
+				top: 0;
+				right: 0;
+				fa('\f00d');
+				pad();
+			}
+		}
+
+		& > .move {
+			accent();
+			pad();
+			padding-right: calc(var(--pad) * 2 + var(--font-size) + 1ch) $i;
+			brd(bottom, accent-border);
+			border-radius: var(--border-radius) var(--border-radius) 0 0 $i;
+			center(space-between);
+			replace-text(var(--window-name), accent-fg, before);
+		}
+	}
+
+	// Quick reply
+	#qr {
+		--window-name: 'Post';
+
+		.is_index & {
+			--window-name: 'New thread';
+		}
+
+		& > form {
+			mar();
+		}
+		.persona,
+		.textarea {
+			mar(bottom);
+		}
+		textarea {
+			min-width: 322px;
+		}
+		input[name] {
+			mar(right);
+		}
+		&.reply-to-thread input[data-name="email"],
+		input[data-name="sub"] {
+			mar(right, 0);
+		}
+
+		&-filename {
+			&:focus {
+				shd(0);
+			}
+
+			&-container {
+				background-color: transparent;
+				padding: 0 var(--pad);
+				brd(0);
+
+				& > a {
+					opacity: 1;
+				}
+			}
+		}
+		&-filename-container > a,
+		&-filename,
+		&-no-file {
+			pad(0);
+			margin-right: 1ch;
+		}
+		&-no-file {
+			replace-text('None', fg2);
+		}
+	}
+	.qr-link {
+		normalise-button();
+		center();
+		background-image: none $i;
+		position: absolute;
+		top: calc(var(--pad) * -1.5);
+		right: 0;
+		box-sizing: border-box;
+
+		.is_catalog & {
+			left: calc(8ch + 7px);
+			right: unset;
+		}
+
+		&:hover {
+			fg();
+			text-decoration: none;
+		}
+
+		&-container {
+			mar(0);
+			position: relative;
+		}
+	}
+	#t {
+		&-load {
+			mar(right);
+			width: unset $i;
+		}
+		&-resp {
+			text-transform: unset $i;
+			box(9ch, var(--header-h)) $i;
+
+			&::placeholder {
+				color: transparent $i;
+			}
+		}
+		&-cnt {
+			mar(0);
+			mar(top);
+		}
+	}
+	#qr-filename-container {
+		margin-right: calc(var(--pad) * -1 - 1ch);
+	}
+	input[type="submit"] {
+		position: absolute;
+		right: var(--pad);
+		margin-top: calc(var(--header-h) * -1.25);
+	}
+	#t {
+		&-auto-solve, &-resp, &-cnt, &-slider {
+			display: none $i;
+		}
+		&-auto-options {
+			mar(top);
+		}
+	}
+	#file-n-submit {
+		height: unset;
+		mar(top, 0);
+
+		& > input {
+			width: unset $i;
+		}
+	}
+	#char-count {
+		bgc();
+		brd(left);
+		brd(top);
+		border-radius: var(--border-radius) 0 var(--border-radius) 0;
+	}
+
+	// Thread watcher
+	#thread-watcher {
+		--window-name: 'Threads';
+
+		.menu-button, .refresh {
+			box(var(--font-size));
+			center(center);
+			position: absolute;
+
+			&::before {
+				pad();
+			}
+		}
+		.refresh {
+			right: calc(var(--pad) + var(--font-size) + 1ch);
+		}
+		.menu-button {
+			right: calc(var(--pad) + var(--font-size) * 3);
+		}
+	}
+	.watcher {
+		&-link {
+			fg(2);
+			pad();
+			padding-right: 1ch $i;
+			overflow: auto;
+
+			&:hover {
+				fg();
+			}
+		}
+		&-page, &-unread {
+			margin-right: 1ch $i;
+		}
+		&-title {
+			mar(0);
+		}
+
+		if (color-unread) {
+			&-page, &-unread {
+				display: none;
+			}
+			.replies-unread:not(.current) &-title {
+				clr(3);
+
+				&:hover {
+					clr(11);
+				}
+			}
+			[data-page="9"]:not(.current) &-title,
+			[data-page="10"]:not(.current) &-title {
+				clr(1);
+
+				&:hover {
+					clr(9);
+				}
+			}
+		}
+	}
+	#watched-threads {
+		& > div {
+			pad(0);
+			pad(right);
+			center(space-between);
+			flex-direction: row-reverse;
+		}
+
+		.current a {
+			color: var(--hl-fg) $i;
+		}
+	}
+	#watcher-status:not(:empty) {
+		margin-right: 7ch;
+
+		&::before { content: '('; }
+		&::after { content: ')'; }
+	}
+
+	// Menu
+	#menu, .submenu {
+		bg(2);
+		pad(0);
+
+		&, a {
+			fg();
+			text-decoration: none;
+		}
+		input, select {
+			bg();
+		}
+
+		.entry {
+			pad();
+
+			&:not(.disabled).focused {
+				hl();
+			}
+			&.disabled {
+				opacity: 1;
+				background-color: transparent $i;
+				text-decoration: line-through;
+				pointer-events: none;
+			}
+
+			input[type="checkbox"] {
+				top: 0;
+			}
+		}
+	}
+
+	// Settings
+	#fourchanx-settings {
+		padding-top: var(--header-h) $i;
+		box(100vh, 75vh);
+
+		&::before {
+			content: 'Options';
+			position: absolute;
+			pos();
+			height: var(--header-h);
+			center(center);
+			accent();
+			brd(bottom, accent-border);
+			border-radius: var(--border-radius) var(--border-radius) 0 0;
+		}
+
+		& > nav {
+			bg(2);
+			brd(bottom);
+			pad(0);
+		}
+		.section-container {
+			bg();
+			pad();
+			border-radius: 0 0 var(--border-radius) var(--border-radius) $i;
+		}
+		.sections-list, .credits {
+			display: flex;
+			replace-text();
+
+			a {
+				text-decoration: none;
+				fg(2);
+				pad();
+
+				&:not(.tab-selected):hover {
+					fg();
+				}
+			}
+			.tab-selected {
+				hl();
+			}
+		}
+
+		fieldset {
+			pad();
+			brd();
+			mar(0);
+
+			& + & {
+				mar(top);
+			}
+			& > div:first-of-type label {
+				mar(top, 0);
+			}
+		}
+		label {
+			text-decoration: none;
+			margin-top: calc(var(--pad) / 2);
+		}
+		input[type="checkbox"] {
+			z-index: 1;
+		}
+		.description {
+			fg(2);
+			hide-chars(1, left);
+			margin-left: s('calc(%s - 1ch)', $select-size) $i;
+		}
+		fieldset,
+		.section-main div::before {
+			border-color: var(--border);
+		}
+		.suboption-list {
+			&::before {
+				left: ($select-size / 2);
+				top: calc(var(--font-size) * -2);
+			}
+
+			& > div {
+				padding-left: $select-size + 1px;
+
+				&::before {
+					left: ($select-size / 2);
+					width: ($select-size / 2);
+					border-bottom-left-radius: var(--border-radius);
+				}
+
+				&:last-of-type {
+					bg();
+				}
+			}
+		}
+
+		code {
+			bgc(2);
+			brd();
+		}
+	}
+	li {
+		pad(0);
+
+		&::before {
+			content: ' -\00a0';
+		}
+	}
+	.note {
+		font-style: normal;
+		mar(left, 0);
+
+		&::before {
+			content: 'NOTE:\00a0'
+		}
+	}
+
+	// Gallery
+	.gal {
+		&-buttons,
+		&-sauce:empty {
+			display: none;
+		}
+
+		&-prev, &-next {
+			opacity: 1;
+			bg(2);
+			flex: 0 0 calc(12px + var(--pad) * 2);
+
+			&:hover::after {
+				background-color: var(--hl);
+				border-color: var(--hl-fg);
+			}
+		}
+		for k, v in prev right next left {
+			&-{k} {
+				brd(v);
+
+				&::after {
+					{v}: 25%;
+					border-{v}-color: var(--fg);
+				}
+			}
+		}
+
+		&-thumbnails {
+			bg();
+			brd(left);
+			flex: unset;
+		}
+		&-thumb {
+			pad();
+		}
+		&-highlight {
+			hl();
+		}
+
+		&-labels:not(&-hide-thumbnails) {
+			--gallery-width: 157px;
+		}
+		:root&-fit-height:not(&-pdf) &-viewport &-labels {
+			right: calc(var(--scrollbar-width) + var(--body-pad) + var(--gallery-width, 0px)) $i;
+			bottom: var(--body-pad) $i;
+		}
+		&-name, &-count, &-sauce {
+			bgc();
+			pad();
+			brd();
+			mar(top);
+		}
+	}
+
+	/**
+	 * Sidebar
+	**/
+	if (!boards-hover && sidebar) {
+		// Global
+		body {
+			--reserve-bg2: var(--bg2);
+			--reserve-fg: var(--fg);
+			--reserve-fg2: var(--fg2);
+			--reserve-border: var(--border);
+			mar(top, 0);
+		}
+		.board {
+			padding-{sidebar-pos}: var(--sidebar-width) $i;
+
+			&::before {
+				content: '';
+				position: fixed;
+				{sidebar-pos}: 0;
+				top: 0;
+				box(calc(var(--sidebar-width) - var(--border-width)), 100vh);
+				bg(2);
+				brd(sidebar-pos == left ? right : left);
+				//z-index: -1;
+			}
+		}
+		#header-bar {
+			// Don't get me affected by header-focus()
+			--bg2: var(--reserve-bg2) $i;
+			--fg: var(--reserve-fg) $i;
+			--fg2: var(--reserve-fg2) $i;
+			--border: var(--reserve-border) $i;
+			margin-top: calc(var(--header-h) * -1);
+			z-index: 46 $i;
+		}
+		.gallery-open {
+			& > body {
+				--sidebar-width: 0px;
+			}
+			.boardBanner, #qr, #thread-watcher {
+				display: none $i;
+			}
+		}
+		#notifications {
+			left: var(--sidebar-width);
+			top: calc(100% + var(--pad) * 2.5 + var(--border-width)) $i;
+		}
+		#yous {
+			position: absolute;
+			{sidebar-pos}: var(--pad);
+			top: calc(var(--header-h) + var(--pad) + 100vh - var(--font-size) * var(--line-height) * 2 - var(--pad) * 3);
+			//z-index: 45;
+			width: calc(var(--sidebar-width) - var(--pad) * 2) $i;
+			center(sidebar-pos == left ? right : left);
+			gap: 1ch;
+		}
+		#board-list, #thread-watcher {
+			--scrollbar-track: var(--bg);
+		}
+		.boardList > span,
+		#thread-watcher .close, #qr .close,
+		#shortcut-watcher {
+			display: none $i;
+		}
+
+		// Boards
+		#board-list {
+			position: absolute;
+			{sidebar-pos}: 0;
+			top: 0;
+			margin-top: calc(var(--threads-pos) + var(--pad) + var(--section-height) + var(--header-h));
+			box(var(--sidebar-width), var(--section-height));
+			overflow: auto;
+			box-sizing: content-box $i; // ..so the width stays with a border
+			z-index: 10; // 45
+
+			&::before {
+				content: 'Boards';
+				normalise-header();
+				text-align: left;
+				mar();
+				mar(bottom, 0);
+			}
+
+			[title] {
+				replace-text(attr(title), fg2, before);
+				pad();
+
+				&:hover::before {
+					fg();
+				}
+			}
+			.current {
+				color: transparent $i;
+
+				&::before {
+					hl();
+				}
+			}
+		}
+		#custom-board-list,
+		#full-board-list {
+			brd(sidebar-pos == left ? right : left);
+			position: unset $i;
+
+			&,
+			/#board-list,
+			/.boardList {
+				display: flex;
+				flex-direction: column;
+			}
+		}
+		.show-board-list-button,
+		.hide-board-list-button {
+			position: absolute;
+			top: var(--pad);
+			right: var(--pad);
+			height: calc(var(--font-size) * var(--line-height));
+			center();
+			fg(2);
+
+			&:hover {
+				fg();
+				text-decoration: none $i;
+			}
+		}
+		.show-board-list-button {
+			fa('\f055');
+		}
+		.hide-board-list-button {
+			fa('\f056');
+		}
+
+		// Banner
+		.boardBanner {
+			position: fixed;
+			top: 0;
+			{sidebar-pos}: 0;
+			z-index: 1;
+			width: var(--sidebar-width);
+			bg(2);
+			brd(sidebar-pos == left ? right : left);
+		}
+		if (!board-title-image) {
+			body {
+				--board-title-height: calc(var(--header-size) + var(--pad));
+			}
+			.board {
+				&Banner {
+					brd(sidebar-pos == left ? right : left, 0);
+					mar();
+					width: calc(var(--sidebar-width) - var(--pad) * 2);
+				}
+				&Title {
+					mar(0);
+				}
+			}
+		}
+
+		// Shortcuts
+		#shortcut {
+			&s {
+				position: fixed;
+				{sidebar-pos}: var(--pad);
+				top: calc(var(--header-h) + var(--pad) + 100vh - var(--font-size) * var(--line-height) - var(--pad) * 2);
+				//z-index: 45;
+				width: calc(var(--sidebar-width) - var(--pad) * 2) $i;
+			}
+			&-updater,
+			&-stats {
+				position: absolute;
+			}
+			&-updater {
+				left: 0;
+			}
+			&-stats {
+				left: 5ch;
+
+				&::after {
+					content: '';
+				}
+			}
+			&-menu {
+				.menu-button {
+					fa('\f077');
+				}
+				#menu {
+					{sidebar-pos}: var(--sidebar-width) $i;
+					bottom: -100vh $i;
+				}
+			}
+
+			&s::before {
+				content: '';
+				position: absolute;
+				right: 8ch;
+				box(var(--gradient-size), 100%);
+				background-image: linear-gradient(90deg, transparent, var(--bg2));
+			}
+			&s::after {
+				content: '';
+				position: absolute;
+				right: 0;
+				box(8ch, 100%);
+				bg(2);
+			}
+			&s::after,
+			&-stats {
+				z-index: -1;
+			}
+		}
+		#update {
+			&-status {
+				position: absolute;
+				left: 0;
+				bottom: calc(var(--pad) + var(--font-size) * var(--line-height));
+				width: max-content;
+			}
+			&-timer {
+				mar(0);
+				width: 4ch;
+
+				&.loading {
+					replace-text('..');
+				}
+			}
+		}
+		#id_css {
+			&::before, &::after {
+				content: '';
+				position: fixed;
+				{sidebar-pos}: 0;
+				z-index: 11;
+			}
+			&::before {
+				bottom: 0;
+				box(calc(var(--sidebar-width) - var(--border-width)), calc(var(--font-size) * var(--line-height) + var(--pad) * 2));
+				bg(2);
+			}
+			&::after {
+				bottom: calc(var(--font-size) * var(--line-height) + var(--pad) * 2);
+				box(calc(var(--sidebar-width) - var(--border-width)), var(--gradient-size));
+				background-image: linear-gradient(180deg, transparent, var(--bg2));
+			}
+		}
+
+		// Popups
+		#qr, #thread-watcher {
+			bg(2);
+			brd(0);
+			shd(0);
+			width: var(--sidebar-width);
+			min-width: unset;
+			display: block $i;
+			position: fixed;
+			{sidebar-pos}: 0 $i;
+			{sidebar-pos == left ? right : left}: unset $i;
+			z-index: 10; // 45
+
+			&::after {
+				content: '';
+				position: absolute;
+				top: 0;
+				{sidebar-pos == left ? right : left}: 0;
+				box(var(--border-width), 100%);
+				background-color: var(--border);
+			}
+
+			/#header-bar, & {
+				animation: none $i;
+			}
+
+			& > .move {
+				normalise-header();
+				bg(2);
+				border-radius: 0 $i;
+				mar(top);
+				mar(bottom, 0);
+				mar(left);
+				mar(right);
+				cursor: unset;
+
+				&::before {
+					fg();
+				}
+			}
+		}
+		#qr {
+			input, button, textarea {
+				--bg2: var(--bg);
+			}
+			textarea {
+				min-width: unset;
+				width: 100%;
+			}
+		}
+		#thread-watcher {
+			.menu-button {
+				right: var(--pad);
+			}
+			#menu {
+				{sidebar-pos}: var(--sidebar-width) $i;
+				top: 0 $i;
+				bottom: unset $i;
+				letter-spacing: 0;
+				text-transform: initial;
+			}
+		}
+		.centered-links .watcher-link {
+			width: 100%;
+			justify-content: center;
+		}
+
+		// Content
+		.board {
+			margin-top: calc(var(--header-size) + var(--body-pad)) $i;
+		}
+		.opContainer .subject {
+			{sidebar-pos}: calc(var(--sidebar-width) + var(--body-pad));
+
+			&,
+			/.closed,
+			/.watch-thread-link {
+				--header-top-pos: var(--body-pad);
+			}
+		}
+		.watch-thread-link {
+			--sidebar-width: sidebar-pos == left ? 0px : sidebar-width;
+			right: calc(var(--sidebar-width) + var(--body-pad));
+		}
+		if (sidebar-pos == right) {
+			.post.op .menu-button {
+				right: calc(var(--sidebar-width) + var(--body-pad) + var(--border-width) + var(--pad));
+			}
+		}
+
+		if (sidebar-fixed) {
+			body {
+				--section-content-height: calc((var(--font-size) * var(--line-height) + var(--pad) * 2) * var(--sidebar-items));
+				--section-height: calc(var(--header-size) + var(--section-content-height));
+				--threads-pos: board-title-image ? \
+					calc(var(--board-title-height) - var(--pad)) :
+					var(--board-title-height)
+			}
+			#custom-board-list,
+			#full-board-list {
+				overflow: auto;
+
+				/#watched-threads, & {
+					height: var(--section-content-height);
+				}
+			}
+			#thread-watcher {
+				top: var(--threads-pos) $i;
+			}
+			#qr {
+				top: calc(var(--threads-pos) + var(--section-height) * 2 + var(--pad) * 2) $i;
+			}
+
+			if (sidebar-hover) {
+				body {
+					--section-content-height: 0px;
+				}
+				#watched-threads, #board-list, #board-list > span, #qr {
+					anim();
+				}
+
+				#thread-watcher:hover {
+					--section-content-height: calc((var(--font-size) * var(--line-height) + var(--pad) * 2) * var(--sidebar-items));
+
+					& ~ #header-bar,
+					& ~ #qr {
+						--section-content-height: calc((var(--font-size) * var(--line-height) + var(--pad) * 2) * var(--sidebar-items));
+						--section-height: calc(var(--header-size) + var(--section-content-height));
+					}
+					& ~ #header-bar #board-list {
+						height: var(--header-size) $i;
+					}
+					& ~ #qr {
+						top: calc(var(--threads-pos) + var(--section-height) + var(--pad) * 8) $i;
+					}
+				}
+				#header-bar:hover {
+					--section-content-height: calc((var(--font-size) * var(--line-height) + var(--pad) * 2) * var(--sidebar-items));
+					--section-height: calc(var(--header-size) + var(--section-content-height));
+
+					#board-list {
+						margin-top: calc(var(--board-title-height) + var(--header-size) + var(--header-h));
+					}
+
+					& ~ #qr {
+						--section-content-height: calc((var(--font-size) * var(--line-height) + var(--pad) * 2) * var(--sidebar-items));
+						--section-height: calc(var(--header-size) + var(--section-content-height));
+						top: calc(var(--threads-pos) + var(--section-height) + var(--header-size) + var(--pad) * 2) $i;
+					}
+				}
+				#qr {
+					overflow: hidden;
+					//height: calc(var(--pad) * 13 + var(--border-width) * 8);
+					height: 100%;
+
+					&:not(:hover) {
+						height: var(--header-size);
+					}
+				}
+			}
+		}
+
+		if (!sidebar-fixed || !sidebar-hover-move) {
+			#qr, #board-list > span {
+				&::before {
+					content: '';
+					position: absolute;
+					pos();
+					right: var(--border-width) $i;
+					background-image: linear-gradient(0deg, var(--bg2), transparent);
+					height: var(--gradient-size);
+					margin-top: calc(var(--gradient-size) * -1);
+				}
+			}
+		}
+
+		if (sidebar-overlay) {
+			.board {
+				--sidebar-width: 0px;
+			}
+			#thread-watcher {
+				&::before {
+					content: '';
+					position: fixed;
+					top: calc(var(--threads-pos) * -1);
+					box(var(--body-pad), 100vh);
+				}
+				&:hover::before {
+					bg();
+					width: calc(var(--sidebar-width) - var(--border-width)) $i;
+					z-index: -200;
+				}
+
+				&, &::before,
+				/#qr,
+				/#thread-watcher {
+					--bg: var(--bg-tr);
+					--bg2: var(--bg-tr);
+					backdrop-filter: var(--popup-filter);
+				}
+				&:not(:hover) {
+					&, & ~ * {
+						--sidebar-width: 0px;
+						anim();
+					}
+
+					& ~ .boardBanner,
+					& ~ #header-bar,
+					& ~ #qr {
+						display: none $i;
+					}
+				}
+			}
+		}
+	}
+}

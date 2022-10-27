@@ -1,0 +1,521 @@
+/* ==UserStyle==
+@name           stackexchange.com - 10/31/2021, 3:59:50 PM
+@namespace      github.com/openstyles/stylus
+@version        1.0.0
+@description    A new userstyle
+@author         Me
+
+@preprocessor stylus
+==/UserStyle== */
+
+@keyframes dropfade {
+	0% {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+$small-screen = 768px
+$select-size = 16px
+$i = !important
+
+// Stylus
+svar(var) {
+	s('var(--%s)', var);
+}
+
+cond(n, yes, no) {
+	(n == 0 ? no : yes) $i;
+}
+
+sel-cond(sel, pos) {
+	pos ? s('%s-%s', sel, pos) : sel
+}
+
+color-a(n, bright = true) {
+	s = bright ? -2 : null;
+	n = n > 6 ? n - 8 : n;
+
+	s('hsla(var(--color%s-h),	var(--colorscheme-s%s),	var(--colorscheme-l%s), var(--bg-opacity))', n, s, s);
+}
+
+// Appearance
+bg(n =) {
+	background-color: s('var(--bg%s)', n) $i;
+
+	if (n == -tr || n == -tr2 || n == -tr3) {
+		backdrop-filter: var(--popup-filter) $i;
+	}
+}
+
+fg(n =) {
+	color: s('var(--fg%s)', n) $i;
+}
+
+bgc(n1 =, n2 =) {
+	bg(n1);
+	fg(n2);
+}
+
+hl(n = ) {
+	background-color: n ? s('var(--hl-%s)', n) : var(--hl) $i;
+	color: var(--hl-fg) $i;
+}
+
+accent() {
+	background-color: var(--accent) $i;
+	color: var(--accent-fg) $i;
+}
+
+clr(n) {
+	color: s('var(--color%s)', n) $i;
+}
+
+lnh() {
+	line-height: var(--line-height) $i;
+}
+
+pad(pos =, n = 1) {
+	{sel-cond(padding, pos)}: \
+		(n == 0 ? 0 : pos == 0 ? 0 : var(--pad)) $i;
+}
+
+mar(pos =, n = 1) {
+	{sel-cond(margin, pos)}: \
+		(n == 0 ? 0 : pos == 0 ? 0 : var(--pad)) $i;
+}
+
+shd(n) {
+	box-shadow: cond(n, s('var(--shadow-%s)', n), none);
+}
+
+rad(n = 1) {
+	border-radius: cond(n, var(--border-radius), 0);
+}
+
+brd(pos =, color = border) {
+	//color = (typeof(color) == 'ident' || typeof(color) == 'string') ? svar(color) : color;
+	if (color) {
+		color = svar(color);
+	}
+
+	{sel-cond(border, pos)}: \
+		(color == 0 ? none : pos == 0 ? none : var(--border-width) solid color) $i;
+	if (!pos) {
+		rad(pos);
+	}
+}
+
+// Position
+box(w, h = w) {
+	width: w $i;
+	height: h $i;
+}
+
+pos(offset = 0) {
+	left: offset $i;
+	top: offset $i;
+	right: offset $i;
+	bottom: offset $i;
+}
+
+center() {
+	display: flex $i;
+	align-items: center $i;
+}
+
+// etc.
+anim(name =, func = ) {
+	@media (prefers-reduced-motion: no-preference) {
+		{name ? animation : transition}: name var(--trans-dur) func $i;
+	}
+}
+
+dropfade() {
+	anim(dropfade, cubic-bezier(.2, .9, .6, 1));
+}
+
+focus(p = focus) {
+	anim();
+
+	&:{p} {
+		border-color: var(--hl) $i;
+		box-shadow: var(--shadow-ins) var(--hl) $i;
+		outline: none $i;
+	}
+}
+
+header-focus(class = page-focus) {
+	.{class} & {
+		--bg2: var(--accent);
+		--fg: var(--accent-fg);
+		--fg2: var(--accent-fg);
+		--border: var(--accent-border);
+	}
+
+	// Chromuim is unable to recognise the selector
+	@supports not (-moz-appearance: none) { :root:not(:-moz-window-inactive) {
+		--bg2: var(--accent);
+		--fg: var(--accent-fg);
+		--fg2: var(--accent-fg);
+		--border: var(--accent-border);
+	}}
+}
+
+replace-text(content =, text-color = fg, pos = after) {
+	letter-spacing: -9999px $i;
+	color: transparent $i;
+
+	if (content) { // Replace
+		&::{pos} {
+			content: content $i;
+			letter-spacing: 0 $i;
+			color: svar(text-color) $i;
+		}
+	} else { // Hide
+		* {
+			letter-spacing: 0 $i;
+			color: svar(text-color) $i;
+		}
+	}
+}
+
+// Input normalisation
+normalise-select() {
+	appearance: none $i;
+	bgc(2);
+	lnh();
+	background-image:
+		linear-gradient(55deg, var(--bg2) 43%, transparent 45%),
+		linear-gradient(125deg, transparent 53%, var(--bg2) 55%),
+		linear-gradient(180deg, var(--bg2) 30%, var(--fg) 30%) $i;
+	background-size: 20px 20px $i;
+	background-repeat: no-repeat $i;
+	background-position: right 4px $i;
+	padding: var(--pad) 20px var(--pad) var(--pad) $i;
+	brd();
+	focus();
+}
+
+normalise-input() {
+	bgc(2);
+	lnh();
+	pad();
+	brd();
+	focus();
+
+	&::placeholder {
+		fg(2);
+	}
+}
+
+normalise-button() {
+	bgc(2);
+	lnh();
+	background-image: none $i;
+	padding: var(--pad) calc(var(--pad) * 2) $i;
+	brd();
+	cursor: pointer $i;
+	focus();
+
+	&:disabled {
+		opacity: .5 $i;
+		pointer-events: none $i;
+	}
+}
+
+normalise-color() {
+	bg(2);
+	pad(0);
+	brd();
+	box($select-size);
+	focus();
+
+	&::-webkit-color-swatch {
+		border: none $i;
+		border-radius: calc(var(--border-radius) * .33) $i;
+
+		&-wrapper {
+			pad(0);
+		}
+	}
+}
+
+normalise-checkbox(label = true) {
+	if (label) {
+		/label {
+			line-height: var(--line-height) $i;
+			center();
+			gap: 1ch $i;
+		}
+	}
+
+	appearance: none $i;
+	bg(2);
+	brd();
+	border-radius: calc(var(--border-radius) * .33) $i;
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1) $i;
+	mar(0);
+	position: relative $i;
+	box($select-size);
+	min-width: $select-size $i;
+	focus();
+
+	&::before, &::after {
+		content: '';
+		position: absolute $i;
+		pos();
+		background-color: var(--hl) $i;
+		transform-origin: 0 0 $i;
+	}
+
+	&::before {
+		transform: rotate(-45deg) translateY(45%) translateX(-30%) scaleX(0.25) scaleY(0) $i;
+	}
+	&::after {
+		transform: rotate(225deg) translateY(-30%) translateX(-95%) scaleX(0.25) scaleY(0) $i;
+	}
+	&:indeterminate::before {
+		transform: rotate(0) translateY(37.5%) translateX(10%) scaleX(0.8) scaleY(0.25) $i;
+		transition-duration: 33.33333333ms $i;
+	}
+
+	&:checked {
+		&::before {
+			transform: rotate(-45deg) translateY(45%) translateX(-30%) scaleX(0.25) scaleY(0.4) $i;
+			transition-duration: 33.33333333ms $i;
+		}
+		&::after {
+			transform: rotate(225deg) translateY(-30%) translateX(-95%) scaleX(0.25) scaleY(1.2) $i;
+			transition-delay: 33.33333333ms $i;
+			anim();
+		}
+	}
+}
+
+normalise-radio() {
+	appearance: none $i;
+	bg(2);
+	brd();
+	border-radius: 50% $i;
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1) $i;
+	mar(0);
+	position: relative $i;
+	box($select-size);
+	focus();
+
+	&::before {
+		content: '';
+		position: absolute $i;
+		pos(3px);
+		background-color: var(--hl) $i;
+		border-radius: 50% $i;
+		transition: transform var(--trans-dur) linear $i;
+		transform: scale(0) $i;
+	}
+	&:disabled::before {
+		background-color: var(--fg3) $i;
+	}
+	&:checked::before {
+		transition-timing-function: cubic-bezier(0, 0, 0.3, 1.5) $i;
+		transform: scale(1) $i;
+		anim();
+	}
+}
+
+normalise-header(first = true) {
+	fg();
+	lnh();
+	text-transform: uppercase $i;
+	letter-spacing: 1px $i;
+	pad(0);
+	pad(bottom);
+	brd(bottom);
+	mar(0);
+	mar(bottom);
+	if (!first) {
+		margin-top: calc(var(--pad) * 2) $i;
+	}
+}
+
+@-moz-document domain("stackexchange.com"), domain("stackoverflow.com"), domain("superuser.com"), domain("askubuntu.com") {
+	/**
+	 * Global
+	**/
+	body {
+		--theme-background-color: var(--bg) $i;
+		--theme-content-background-color: var(--bg)  $i;
+		--theme-content-border-color: transparent  $i;
+		--theme-body-font-color: var(--fg)  $i;
+		--theme-link-color: var(--fg-link) $i;
+		--theme-topbar-background-color: var(--accent) $i;
+
+		// Shadows
+		--bs-sm: var(--shadow-low) $i;
+		--bs-md: var(--shadow-big) $i;
+		--bs-lg: var(--shadow-big) $i;
+
+		// Syntax highlighting
+		--highlight-bg: var(--bg2) $i;
+		--highlight-color: var(--fg) $i;
+		--highlight-punctuation: var(--fg2) $i;
+		--highlight-comment: var(--fg2) $i;
+		--highlight-attribute: var(--color9) $i;
+		--highlight-literal: var(--color10) $i;
+		--highlight-symbol: var(--color11) $i;
+		--highlight-keyword: var(--color12) $i;
+		--highlight-variable: var(--color13) $i;
+		--highlight-addition: var(--color2) $i;
+		--highlight-deletion: var(--color1) $i;
+
+		// etc.
+		--default-transition-duration: var(--trans-dur) $i;
+
+		--br-sm: var(--border-radius) $i;
+		--br-md: var(--border-radius) $i;
+		--br-lg: var(--border-radius) $i;
+
+		--lh-xs: var(--line-height) $i;
+		--lh-sm: var(--line-height) $i;
+		--lh-md: var(--line-height) $i;
+		--lh-lg: var(--line-height) $i;
+		--lh-xl: var(--line-height) $i;
+		--lh-xxl: var(--line-height) $i;
+		--lh-base: var(--line-height) $i;
+		--lh-6: var(--line-height) $i;
+
+		background-image: none;
+	}
+
+	/**
+	 * Hide elements
+	**/
+	// I. Header
+	.site-header,
+	.s-navigation,
+	.s-topbar--content,
+	#announcement-banner,
+
+	// II. Content
+	#post-form,
+	#left-sidebar,
+	#sidebar,
+	#footer,
+	[href="/questions/ask"],
+	.s-notice,
+	.js-bookmark-btn,
+	.js-search-hints > .bt,
+	.js-post-comments-component,
+	.js-post-menu
+	{
+		display: none $i;
+	}
+
+	/**
+	 * Content
+	**/
+	#content {
+		padding: var(--body-pad);
+		brd(0);
+	}
+	#mainbar {
+		width: 100%;
+	}
+	.s {
+		&-topbar {
+			bg(2);
+			header-focus();
+			brd(bottom);
+			shd(0);
+		}
+
+		&-input {
+			normalise-input();
+			bg();
+
+			&-icon {
+				display: none;
+			}
+		}
+		&-select {
+			&::before, &::after {
+				display: none $i;
+			}
+
+			& > select {
+				normalise-select();
+			}
+		}
+
+		&-popover {
+			bg(-tr);
+			brd();
+
+			.fc-dark {
+				fg();
+			}
+		}
+	}
+
+	.fs {
+		&-headline1, &-caption, &-category{
+			font-size: var(--font-size) $i;
+		}
+	}
+	#question-header {
+		& + div {
+			display: none $i;
+		}
+		& > h1 {
+			normalise-header();
+
+			& > a {
+				fg();
+				lnh();
+			}
+		}
+	}
+	#answers-header {
+		mar(0);
+	}
+	.answers-subheader {
+		normalise-header();
+
+		& > :last-child > div {
+			gap: 1ch;
+		}
+	}
+	.bc-black-2, .bc-black-075 {
+		border-color: var(--border) $i;
+	}
+	ul.comments-list .comment > *,
+	.answer {
+		brd(bottom);
+	}
+	.comment-date, .comment-date>a, .comment-date>a:hover {
+		fg(2);
+	}
+	.relativetime-clean {
+		&::before { content: '('; }
+		&::after { content: ')'; }
+	}
+
+	.s-prose {
+		--s-prose-line-height: var(--line-height);
+		--s-prose-spacing: var(--pad);
+
+		pre:not(.s-code-block) {
+			pad();
+			brd();
+
+			& > code {
+				fg();
+			}
+		}
+	}
+}
