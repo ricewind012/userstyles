@@ -1,6 +1,7 @@
 # userstyles
 For now, it doesn't work by default, as you'll have to declare the variables **in an another userstyle** (so you don't lose them if the styles ever update):
-```:root {
+```
+:root {
   --bg: #141414;
   --bg2: #1c1c1c;
   --bg3: #242424;
@@ -31,4 +32,5 @@ For now, it doesn't work by default, as you'll have to declare the variables **i
   --hl: #0078d7;
   --hl-fg: #fff;
   --shadow-clr: #00000040;
-}```
+}
+```
