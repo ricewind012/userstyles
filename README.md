@@ -33,4 +33,9 @@ For now, it doesn't work by default, as you'll have to declare the variables **i
   --hl-fg: #fff;
   --shadow-clr: #00000040;
 }
+
+* {
+  font: var(--font-size) var(--font-family) !important;
+  font-weight: normal !important;
+}
 ```
