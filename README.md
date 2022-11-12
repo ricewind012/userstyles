@@ -39,3 +39,7 @@ For now, it doesn't work by default, as you'll have to declare the variables **i
   font-weight: normal !important;
 }
 ```
+
+## Requirements
+[4chan](./4chan.user.styl): [4chan X](https://www.4chan-x.net)
+[Discord](./discord.user.styl): class normalisation userscript
