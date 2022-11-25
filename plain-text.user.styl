@@ -1,0 +1,149 @@
+/* ==UserStyle==
+@name           Plain text
+@namespace      github.com/openstyles/stylus
+@version        1.0.0
+@description    A new userstyle
+@author         Me
+
+@preprocessor stylus
+==/UserStyle== */
+
+@-moz-document domain("zsh.org"), domain("zsh.sourceforge.io"), domain("www.etalabs.net"), domain("opengroup.org"), domain("invisible-island.net") {
+	// Common
+	body {
+		background-color: var(--bg);
+		color: var(--fg);
+		line-height: var(--line-height);
+		margin: var(--body-pad);
+	}
+
+	hr {
+		border: var(--border-width) solid var(--border);
+	}
+
+	h1, h2, h3, h4, h5, h6, .nav [href^="#h2"], center {
+		background-color: unset
+		color: var(--fg);
+		text-align: left;
+		font-style: normal;
+		text-transform: uppercase;
+		letter-spacing: 1px;
+		padding-bottom: var(--pad);
+		border-bottom: var(--border-width) solid var(--border);
+		margin-top: calc(var(--pad) * 2);
+		margin-bottom: var(--pad);
+		text-align: left;
+		width: 100%;
+		display: block;
+
+		a {
+			color: var(--fg) !important;
+		}
+	}
+	a {
+		color: var(--fg-link) !important;
+
+		&:not(:hover) {
+			text-decoration: none;
+		}
+	}
+	ul {
+		padding-left: 3ch;
+	}
+	li::marker {
+		content: var(--delim);
+		color: var(--fg2);
+	}
+
+	pre, table {
+		background-color: var(--bg2);
+		border: var(--border-width) solid var(--border);
+		border-collapse: collapse;
+		border-radius: var(--border-radius);
+	}
+	pre {
+		padding: var(--pad);
+		white-space: pre-wrap;
+
+		&, * {
+			font-family: var(--font-code) !important;
+		}
+	}
+}
+
+@-moz-document domain("opengroup.org") {
+	.navheader, center + hr, a[href="#top"] {
+		display: none;
+	}
+
+	center {
+		/.box, & {
+			color: var(--fg2);
+			text-align: right;
+		}
+		body > & {
+			padding: 0;
+			border-bottom: none;
+			margin-bottom: var(--body-pad);
+		}
+		dl & {
+			margin: 0 auto var(--pad) 0;
+			width: 85%;
+		}
+	}
+	.box {
+		background-color: unset !important;
+
+		& > em {
+			font-style: normal;
+		}
+	}
+	ul, li, table {
+		color: var(--fg);
+	}
+	blockquote {
+		margin: 0;
+	}
+}
+
+@-moz-document domain("invisible-island.net") {
+	// man2html
+	:root {
+		--sidebar-width: 228px;
+	}
+
+	.nav {
+		--scrollbar-track: var(--bg);
+		--scrollbar-track-button: var(--bg);
+		background-color: var(--bg2);
+		border-right: var(--border-width) solid var(--border);
+		margin-left: calc(var(--sidebar-width) * -1 - var(--body-pad));
+		width: var(--sidebar-width);
+		display: var(--nav-display, flex);
+
+		&-top, &-top + br {
+			display: none;
+		}
+
+		ul {
+			padding: 0;
+		}
+		& > ul {
+			margin: var(--pad);
+			margin-top: calc(var(--pad) * -1);
+		}
+	}
+	body {
+		margin-left: var(--nav-margin, calc(var(--sidebar-width) + var(--body-pad)));
+	}
+	@media (max-width: 768px) { :root {
+		--nav-display: none;
+		--nav-margin: var(--body-pad);
+	}}
+
+	pre {
+		background-color: unset;
+		padding: unset;
+		border: unset;
+	}
+}
