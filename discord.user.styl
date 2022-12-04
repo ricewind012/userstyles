@@ -12,6 +12,7 @@
 @var text     sidebar-width        "Sidebar width"           228px
 @var checkbox header-blur          "Header blur"             0
 
+@var checkbox messages-alt         "Cozy chat alt. look"     1
 @var text     message-separator    "Message separator"       '" ->"'
 @var text     avatar-size          "Avatar size"             var(--font-size)
 @var text     avatar-spacing       "Avatar spacing"          1ch
@@ -1379,32 +1380,48 @@ $chat-title = 'section.container.themed'
 
 		// Avatar in same line as name
 		&.cozy {
-			& > .container {
-				pad(0);
-				margin: var(--avatar-spacing) 0 var(--avatar-spacing) var(--idk);
-			}
-
-			& > .contents > .header {
-				margin-left: calc(var(--idk) + var(--avatar-spacing) + var(--avatar-size) * var(--line-height));
-				min-height: unset;
-				height: calc(var(--avatar-size) * var(--line-height));
-				center();
-
-				& + .messageContent {
-					margin-top: var(--avatar-spacing) $i;
+			if (messages-alt) {
+				& > .container {
+					pad(0);
+					margin: var(--avatar-spacing) 0 var(--avatar-spacing) var(--idk);
 				}
-			}
-			& > .contents > .messageContent {
-				pad(left, 0);
-				margin-left: var(--idk) $i;
-			}
-			&.mentioned > .contents > .messageContent {
-				padding-left: calc(6px + 0.2rem) $i;
-			}
 
-			.avatar {
-				mar(top, 0);
-				box(calc(var(--avatar-size) * var(--line-height)));
+				& > .contents > .header {
+					margin-left: calc(var(--idk) + var(--avatar-spacing) + var(--avatar-size) * var(--line-height));
+					min-height: unset;
+					height: calc(var(--avatar-size) * var(--line-height));
+					center();
+
+					& + .messageContent {
+						margin-top: var(--avatar-spacing) $i;
+					}
+				}
+				& > .contents > .messageContent {
+					pad(left, 0);
+					margin-left: var(--idk) $i;
+				}
+				&.mentioned > .contents > .messageContent {
+					padding-left: calc(6px + 0.2rem) $i;
+				}
+
+				.avatar {
+					mar(top, 0);
+					box(calc(var(--avatar-size) * var(--line-height)));
+				}
+
+				.repliedMessage {
+					--reply-spacing: 1ch;
+
+					&::before {
+						--spine-width: var(--border-width);
+						--avatar-size: var(--font-size) $i;
+						--gutter: calc(4ch + var(--border-width) + var(--font-size) / 2) $i;
+						border-top-left-radius: var(--border-radius);
+						mar(bottom, 0);
+					}
+				}
+			} else {
+				//padding-left: calc(var(--idk) * -1 - var(--chat-spacing) + 48px) $i;
 			}
 		}
 
@@ -1459,16 +1476,6 @@ $chat-title = 'section.container.themed'
 		}
 	}
 	.repliedMessage {
-		--reply-spacing: 1ch;
-
-		&::before {
-			--spine-width: var(--border-width);
-			--avatar-size: var(--font-size) $i;
-			--gutter: calc(4ch + var(--border-width) + var(--font-size) / 2) $i;
-			border-top-left-radius: var(--border-radius);
-			mar(bottom, 0);
-		}
-
 		.username {
 			opacity: 1;
 			hide-chars(1, left);
