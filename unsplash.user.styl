@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Unsplash
 @namespace      github.com/openstyles/stylus
-@version        1.0.0
+@version        1.0.1
 @description    A new userstyle
 @author         Me
 
@@ -344,12 +344,15 @@ normalise-header(first = true) {
 }
 
 @-moz-document domain("unsplash.com") {
-	/* Remove elements */
+	/**
+	 * Remove elements
+	**/
 	[data-test="client-side-hydration-complete"] > header + div:not([data-test]), // Sticky header
 	header > nav > :not(:first-child):not(.hzGh7), // Everything but the logo/search
 
 	a[rel="sponsored"],
 	span._1jzuO.Gehj1, // Featured
+	figure:has(a[href^="/plus"]), // Unsplash+
 	div[style^="--row-gutter"] > div, // Related collections
 
 	[data-test="search-photos-route"] h2, // "Results for..."
@@ -368,7 +371,9 @@ normalise-header(first = true) {
 		display: none !important;
 	}
 
-	/* Global */
+	/**
+	 * Global
+	**/
 	body {
 		bgc();
 		lnh();
@@ -377,25 +382,27 @@ normalise-header(first = true) {
 		padding: var(--body-pad);
 	}
 
-	/* Header */
+	/**
+	 * Header
+	**/
 	#app > div > header {
 		position: relative;
 		header-focus();
 		brd(bottom);
 
-		/[data-test="search-route"] > div:first-child,
 		& > nav {
-			bg(2);
-			pad(left);
-			pad(right);
-		}
-
-		& > nav > :first-child {
-			margin-right: 20px;
-		}
-
-		& > nav > a > svg {
-			fill: var(--fg);
+			/[data-test="search-route"] > div:first-child,
+			& {
+				bg(2);
+				pad(left);
+				pad(right);
+			}
+			& > :first-child {
+				margin-right: 20px;
+			}
+			& > a > svg {
+				fill: var(--fg);
+			}
 		}
 
 		form {
@@ -429,7 +436,9 @@ normalise-header(first = true) {
 		}
 	}
 
-	// Menu
+	/**
+	 * Menu
+	**/
 	button + [role="menu"] > div > div > div {
 		bg(-tr);
 		brd();
