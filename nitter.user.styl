@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Nitter
 @namespace      github.com/openstyles/stylus
-@version        1.0.0
+@version        1.1.0
 @description    A new userstyle
 @author         Me
 
@@ -393,12 +393,16 @@ normalise-header(first = true) {
 
 		--grey: var(--fg2);
 		--dark_grey: var(--bg);
+		--border_grey: var(--border);
 		--play_button: var(--fg2);
 		--play_button_hover: var(--fg);
 
 		lnh();
 	}
 
+	a {
+		color: var(--fg-link);
+	}
 	button {
 		normalise-button();
 	}
@@ -417,6 +421,7 @@ normalise-header(first = true) {
 	**/
 	nav {
 		bg(2);
+		brd(bottom);
 		header-focus();
 		shd(0);
 
@@ -445,11 +450,14 @@ normalise-header(first = true) {
 		&-tab {
 			pad(0);
 			mar(right);
-			brd();
 			max-width: calc(32% - var(--pad));
 
 			&.sticky {
 				position: sticky;
+			}
+
+			& > div {
+				brd();
 			}
 		}
 		&-card {
@@ -465,6 +473,28 @@ normalise-header(first = true) {
 		}
 		&-joindate {
 			mar(0);
+		}
+	}
+	.photo-rail {
+		&-card {
+			pad();
+			brd(top);
+			width: calc(100% - var(--pad) * 2 - var(--border-width) * 2);
+		}
+		&-header {
+			normalise-header();
+
+			& > a {
+				fg();
+			}
+		}
+		&-grid {
+			grid-gap: calc(var(--pad) / 2);
+			pad(0);
+
+			& > a, img {
+				border-radius: var(--border-radius);
+			}
 		}
 	}
 	.tab {
@@ -513,12 +543,28 @@ normalise-header(first = true) {
 	}
 	.timeline-item {
 		pad();
+
+		&:not(:first-child) {
+			brd(top);
+		}
 	}
 	.username {
 		margin-left: 1ch;
 	}
 	.card {
 		margin: var(--pad) 0;
+
+		&-container {
+			bg();
+			brd();
+		}
+		&-title {
+			normalise-header();
+		}
+		&-description {
+			mar(0);
+			mar(bottom);
+		}
 	}
 	.attachments {
 		border-radius: var(--border-radius);
