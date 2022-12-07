@@ -549,7 +549,6 @@ fa(char) {
 	// VI. 4chan X
 	#op, .navLinks, .navLinks + hr, .thread + hr, // Navigation links
 	#fourchanx-settings .reset,
-	.replacedSideArrows,
 	//#shortcut-native,
 	//.dateTime:empty,
 	.bottomCtrl,
@@ -925,12 +924,31 @@ fa(char) {
 	.json-index {
 		--header-size: 0px;
 
-		&::before {
+		&.board::before {
 			content: 'Catalog';
 			normalise-header();
 			display: block;
 			text-align: left;
 		}
+	}
+	.navLinks {
+		position: absolute;
+		top: var(--pad);
+		right: var(--body-pad);
+
+		/#index-options, & {
+			center();
+			gap: 1ch;
+		}
+		/#index-mode,
+		/#hidden-label,
+		/#index-search-clear,
+		.brackets-wrap {
+			display: none;
+		}
+	}
+	#index-search {
+		width: 150px $i;
 	}
 
 	// Thread
@@ -1051,6 +1069,10 @@ fa(char) {
 			box-shadow: var(--shadow-ins) var(--hl);
 		}
 	}
+	// For "hide reply" button
+	.replyContainer:not(.opContainer) {
+		position: relative;
+	}
 	.container {
 		.bottom-backlinks & {
 			text-align: right;
@@ -1112,6 +1134,20 @@ fa(char) {
 	}
 	.subject {
 		fg();
+	}
+	.replacedSideArrows {
+		position: absolute;
+		top: var(--pad);
+		right: calc(var(--pad) + 3ch);
+		z-index: 1;
+
+		& > a {
+			opacity: 1 $i;
+			pad(0);
+			mar(0);
+			float: unset;
+			left: 0 $i;
+		}
 	}
 	.watch-thread-link {
 		fa('\f006');
@@ -1747,7 +1783,7 @@ fa(char) {
 		.board {
 			padding-{sidebar-pos}: var(--sidebar-width) $i;
 
-			&::before {
+			&::after {
 				content: '';
 				position: fixed;
 				{sidebar-pos}: 0;
