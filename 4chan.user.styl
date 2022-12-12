@@ -1620,10 +1620,20 @@ fa(char) {
 			brd(bottom);
 			pad(0);
 		}
-		.section-container {
-			bg();
-			pad();
-			border-radius: 0 0 var(--border-radius) var(--border-radius) $i;
+		.section {
+			&-container {
+				bg();
+				pad();
+				border-radius: 0 0 var(--border-radius) var(--border-radius) $i;
+			}
+			&-advanced {
+				a:not(:hover) {
+					text-decoration: none;
+				}
+				label {
+					display: inline-flex $i;
+				}
+			}
 		}
 		.sections-list, .credits {
 			display: flex;
@@ -1643,18 +1653,6 @@ fa(char) {
 			}
 		}
 
-		fieldset {
-			pad();
-			brd();
-			mar(0);
-
-			& + & {
-				mar(top);
-			}
-			& > div:first-of-type label {
-				mar(top, 0);
-			}
-		}
 		label {
 			text-decoration: none;
 			margin-top: calc(var(--pad) / 2);
@@ -1666,10 +1664,10 @@ fa(char) {
 			fg(2);
 			hide-chars(1, left);
 			margin-left: s('calc(%s - 1ch)', $select-size) $i;
-		}
-		fieldset,
-		.section-main div::before {
-			border-color: var(--border);
+
+			&::before {
+				box(1em); // ?
+			}
 		}
 		.suboption-list {
 			&::before {
@@ -1697,6 +1695,21 @@ fa(char) {
 			brd();
 		}
 	}
+	fieldset {
+		pad();
+		brd();
+		mar(0);
+
+		& + & {
+			mar(top);
+		}
+		& > div:first-of-type label {
+			mar(top, 0);
+		}
+		/.section-main div::before, & {
+			border-color: var(--border) $i;
+		}
+	}
 	li {
 		pad(0);
 
@@ -1705,7 +1718,7 @@ fa(char) {
 		}
 	}
 	.note {
-		font-style: normal;
+		font-style: normal $i;
 		mar(left, 0);
 
 		&::before {
@@ -2230,3 +2243,4 @@ fa(char) {
 		}
 	}
 }
+
