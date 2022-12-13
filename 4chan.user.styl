@@ -517,6 +517,11 @@ fa(char) {
 	**/
 	// I. Buttons
 	#t-help,
+	.updatelink,
+	[href="#top"],
+	[href="#bottom"],
+	[href$="#catalog"],
+	[href$="#index"],
 	//.open-qr-wrap,
 	//[accesskey="a"],
 	#settings > .btn-wrap,
@@ -554,7 +559,7 @@ fa(char) {
 	.bottomCtrl,
 
 	// VII. Quick reply
-	/*.is_thread*/ .qr-link-container,
+	.qr-link-container,
 	#qr-spoiler-label,
 	#qr-oekaki-button,
 	#shortcut-qr,
@@ -931,11 +936,14 @@ fa(char) {
 			text-align: left;
 		}
 	}
+
+	// Top icons
 	.navLinks {
 		position: absolute;
 		top: var(--pad);
 		right: var(--body-pad);
 
+		// Catalog
 		/#index-options, & {
 			center();
 			gap: 1ch;
@@ -943,8 +951,38 @@ fa(char) {
 		/#index-mode,
 		/#hidden-label,
 		/#index-search-clear,
-		.brackets-wrap {
+ 		&.json-index .brackets-wrap {
 			display: none;
+		}
+
+		// Thread
+		&Bot, &.desktop {
+			replace-text();
+			top: var(--body-pad);
+		}
+		a {
+			text-decoration: none;
+			position: absolute;
+			top: 0;
+
+			&:not(:hover) {
+				fg(2);
+			}
+		}
+		.qr-link {
+			&-container-bottom {
+				margin-left: unset;
+				width: unset;
+				left: unset;
+			}
+			&-bottom {
+				fa('\f064');
+				right: calc(var(--font-size) * 1.5);
+			}
+		}
+		.threadnewlink > a {
+			fa('\f021');
+			right: calc(var(--font-size) * 3);
 		}
 	}
 	#index-search {
@@ -1422,30 +1460,6 @@ fa(char) {
 		}
 		&-no-file {
 			replace-text('None', fg2);
-		}
-	}
-	.qr-link {
-		normalise-button();
-		center();
-		background-image: none $i;
-		position: absolute;
-		top: calc(var(--pad) * -1.5);
-		right: 0;
-		box-sizing: border-box;
-
-		.is_catalog & {
-			left: calc(8ch + 7px);
-			right: unset;
-		}
-
-		&:hover {
-			fg();
-			text-decoration: none;
-		}
-
-		&-container {
-			mar(0);
-			position: relative;
 		}
 	}
 	#t {
