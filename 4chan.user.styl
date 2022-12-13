@@ -802,7 +802,8 @@ fa(char) {
 			}
 		}
 	}
-	// normal catalog
+
+	// Normal catalog
 	#ctrl {
 		margin-top: calc(var(--pad) * 2);
 		margin-bottom: calc(var(--pad) + var(--border-width));
@@ -908,21 +909,28 @@ fa(char) {
 		}
 	}
 
-	// Catalog (JSON index)
+	// JSON index
 	.catalog {
 		&-thread {
 			brd(0);
-			margin: 0 var(--pad) $i;
+			mar(0);
+			mar(right);
+			mar(bottom);
 		}
 		&-post {
 			mar(0);
 		}
+		&-link {
+			bg(2);
+			height: 120px;
+			center(center);
+		}
 		&-thumb {
+			brd(0);
 			shd(0);
-			border-radius: var(--border-radius);
 		}
 		&-stats {
-			pad(top, 0);
+			pad();
 			brd(top);
 		}
 	}
@@ -934,6 +942,34 @@ fa(char) {
 			normalise-header();
 			display: block;
 			text-align: left;
+		}
+
+		.post {
+			mar(0);
+
+			&Info {
+				pad(0);
+				brd(0);
+			}
+			&Message {
+				brd(top);
+
+				&:empty {
+					display: none;
+				}
+			}
+		}
+		.subject {
+			pad();
+			brd(top);
+
+			&:empty::before {
+				content: 'No subject';
+			}
+
+			.watched ^[1..-1] {
+				hl();
+			}
 		}
 	}
 
