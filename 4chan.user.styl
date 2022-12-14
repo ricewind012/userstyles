@@ -562,6 +562,7 @@ fa(char) {
 	.qr-link-container,
 	#qr-spoiler-label,
 	#qr-oekaki-button,
+	.closed ~ #qr,
 	#shortcut-qr,
 	#qr select,
 	#qr label
@@ -859,12 +860,15 @@ fa(char) {
 		}
 	}
 	.closed {
+		bg();
 		fa('\f02d');
 		clr(9);
 		pad(0);
+		width: var(--font-size);
 		position: absolute;
 		right: calc(var(--body-pad) + var(--font-size) * 1.5);
 		top: var(--header-top-pos);
+		z-index: 1;
 	}
 	#threads {
 		pad(0);
