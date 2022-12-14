@@ -411,7 +411,8 @@ normalise-header(first = true) {
 	 * Hide elements
 	**/
 	[href="https://liberapay.com/zedeus"],
-	.inner-nav > a
+	.inner-nav > a,
+	.top-ref
 	{
 		display: none;
 	}
@@ -433,8 +434,24 @@ normalise-header(first = true) {
 	/**
 	 * Content
 	**/
+
+	// Global
 	.container {
 		padding-top: var(--header-h);
+	}
+	.timeline-item {
+		pad();
+
+		&:not(:first-child) {
+			brd(top);
+		}
+	}
+	.username {
+		margin-left: 1ch;
+	}
+	.attachments {
+		border-radius: var(--border-radius);
+		mar(top);
 	}
 
 	// Timeline
@@ -516,6 +533,8 @@ normalise-header(first = true) {
 		}
 	}
 	.tweet {
+		/.more-replies-text,
+		/.unavailable-box,
 		&-body {
 			margin-left: calc(48px + var(--pad));
 		}
@@ -541,16 +560,6 @@ normalise-header(first = true) {
 			}
 		}
 	}
-	.timeline-item {
-		pad();
-
-		&:not(:first-child) {
-			brd(top);
-		}
-	}
-	.username {
-		margin-left: 1ch;
-	}
 	.card {
 		margin: var(--pad) 0;
 
@@ -566,8 +575,41 @@ normalise-header(first = true) {
 			mar(bottom);
 		}
 	}
-	.attachments {
-		border-radius: var(--border-radius);
+
+	// Tweet
+	.conversation {
+		brd(left);
+		brd(right);
+		mar(top);
+		mar(bottom);
+	}
+	.thread-line {
+		.timeline-item,
+		.more-replies {
+			&::before {
+				mar(left, 0);
+				width: 3px;
+				left: 24px;
+			}
+		}
+	}
+	.main-thread {
+		brd(top);
+
+		/.reply, & {
+			brd(bottom);
+			mar(0);
+		}
+	}
+	.unavailable-box {
+		bg(2);
+		pad(0);
+		brd(0);
+
+		/.more-replies-text, & {
+			pad(top);
+			pad(bottom);
+		}
 	}
 
 	// Settings
