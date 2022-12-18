@@ -425,8 +425,10 @@ fa(char) {
 		box-sizing: border-box $i;
 	}
 
-	body {
+	html, body {
 		background: none var(--bg);
+	}
+	body {
 		fg();
 		lnh();
 		pad(0);
@@ -546,19 +548,23 @@ fa(char) {
 	.archivedIcon,
 	.postInfo > input,
 
-	// V. Unsorted
+	// V. 404 page
+	#hd,
+	.boxbar,
+
+	// VI. Unsorted
 	#js-snowfield,
 	#tooltip,
 	hr,
 
-	// VI. 4chan X
+	// VII. 4chan X
 	#op, .navLinks, .navLinks + hr, .thread + hr, // Navigation links
 	#fourchanx-settings .reset,
 	//#shortcut-native,
 	//.dateTime:empty,
 	.bottomCtrl,
 
-	// VII. Quick reply
+	// VIII. Quick reply
 	.qr-link-container,
 	#qr-spoiler-label,
 	#qr-oekaki-button,
@@ -1411,6 +1417,21 @@ fa(char) {
 	}
 	.pln {
 		clr(14);
+	}
+
+	// 404
+	.top-box {
+		bg();
+		pad(0);
+		brd(0);
+		mar(0);
+	}
+	.boxcontent {
+		pad(0);
+		margin-top: var(--body-pad);
+	}
+	#ft {
+		brd(top);
 	}
 
 	/**
