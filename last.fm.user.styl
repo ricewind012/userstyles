@@ -611,6 +611,12 @@ normalise-header(first = true) {
 			}
 		}
 	}
+	[class^="col-"] {
+		pad(0);
+	}
+	.col-sm-2 {
+		width: 152px $i;
+	}
 	.buffer-standard {
 		mar(0);
 	}
@@ -680,9 +686,10 @@ normalise-header(first = true) {
 		&:first-of-type > h3,
 		&:first-of-type > .section-controls,
 		/.col-main > section:first-of-type > .section-controls,
+		/.col-main > h2:first-of-type,
 		/.col-sidebar > section:first-of-type > h3,
 		.artist-similar-sidebar > h3 {
-			pad(top, 0);
+			mar(top, 0);
 		}
 	}
 	.inline-section-control {
@@ -1028,8 +1035,93 @@ normalise-header(first = true) {
 		form {
 			mar(top, 0);
 		}
+		legend {
+			fg(2);
+		}
 		.control-label {
 			lnh();
+		}
+	}
+	.form {
+		&-section:first-of-type > &-header {
+			mar(top, 0);
+		}
+		&-group {
+			mar(top);
+		}
+		&-row-help-text {
+			fg(2);
+			lnh();
+			mar(top);
+		}
+	}
+	.mimic-link {
+		normalise-button();
+
+		&.image-upload-remove {
+			mar(top);
+		}
+	}
+	colors = {
+		success: 10,
+		warning: 11,
+		error:   12
+	}
+	.alert {
+		lnh();
+		pad();
+
+		&::before {
+			display: none;
+		}
+
+		for k, v in colors {
+			&-{k} {
+				background-color: color-a(v);
+				fg();
+				brd(,s('color%s', v));
+			}
+		}
+	}
+	.api-session {
+		pad(0);
+		brd(bottom);
+
+		&::after {
+			display: none;
+		}
+
+		&-body {
+			padding-left: calc(40px + var(--pad));
+
+			&-wrap {
+				pad();
+				pad(right, 0);
+			}
+		}
+		&-details {
+			mar(right);
+		}
+		&-connect, &-disconnect {
+			normalise-button();
+			text-transform: unset;
+			mar(top, 0);
+		}
+		&-app {
+			&-image {
+				top: 3px; // ?
+			}
+			&-name {
+				lnh();
+			}
+			&-last-used {
+				fg(2);
+				lnh();
+				mar(top, 0);
+			}
+		}
+		&s {
+			mar(0);
 		}
 	}
 }
