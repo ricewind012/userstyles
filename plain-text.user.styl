@@ -18,7 +18,9 @@
 	}
 
 	hr {
-		border: var(--border-width) solid var(--border);
+		border: none;
+		border-bottom: var(--border-width) solid var(--border);
+		margin: var(--pad) 0;
 	}
 
 	h1, h2, h3, h4, h5, h6, .nav [href^="#h2"], center {
@@ -141,6 +143,9 @@
 		--nav-margin: var(--body-pad);
 	}}
 
+	h3, h4 {
+		width: calc(100% - 30px);
+	}
 	pre {
 		background-color: unset;
 		padding: unset;
