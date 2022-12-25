@@ -21,7 +21,6 @@
 @var checkbox color-unread          "Colored thread status"        1
 
 @var checkbox sidebar               "Header -> sidebar"            1
-@var checkbox sidebar-overlay       "Sidebar overlay"              1
 @var checkbox sidebar-fixed         "Fixed elements"               1
 @var checkbox sidebar-hover         "Show content on hover"        1
 @var text     sidebar-width         "Sidebar width"                228px
@@ -2274,45 +2273,6 @@ fa(char) {
 					background-image: linear-gradient(0deg, var(--bg2), transparent);
 					height: var(--gradient-size);
 					margin-top: calc(var(--gradient-size) * -1);
-				}
-			}
-		}
-
-		if (sidebar-overlay) {
-			.board {
-				--sidebar-width: 0px;
-			}
-			#thread-watcher {
-				&::before {
-					content: '';
-					position: fixed;
-					top: calc(var(--threads-pos) * -1);
-					box(var(--body-pad), 100vh);
-				}
-				&:hover::before {
-					bg();
-					width: calc(var(--sidebar-width) - var(--border-width)) $i;
-					z-index: -200;
-				}
-
-				&, &::before,
-				/#qr,
-				/#thread-watcher {
-					--bg: var(--bg-tr);
-					--bg2: var(--bg-tr);
-					backdrop-filter: var(--popup-filter);
-				}
-				&:not(:hover) {
-					&, & ~ * {
-						--sidebar-width: 0px;
-						anim();
-					}
-
-					& ~ .boardBanner,
-					& ~ #header-bar,
-					& ~ #qr {
-						display: none $i;
-					}
 				}
 			}
 		}
