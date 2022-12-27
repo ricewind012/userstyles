@@ -657,6 +657,75 @@ normalise-header(first = true) {
 		}
 	}
 
+	.colorpicker {
+		&-popup {
+			--main-background-color: var(--bg);
+			--label-color: var(--fg2);
+			--label-color-hover: var(--fg);
+			--invalid-border-color: var(--color1);
+			--invalid-background-color: color-a(9);
+			--invalid-color: var(--color9);
+			--fit-height: 300px $i;
+			brd();
+			shd(big);
+
+			&-mover {
+				opacity: 1;
+				pad(0);
+				mar(top);
+				box(calc(var(--switcher-width) / 1.5), 38px);
+				right: var(--pad);
+			}
+		}
+
+		&-sliders {
+			pad();
+			padding-right: calc(var(--switcher-width) / 1.5 + var(--pad) * 2) $i;
+			brd(top);
+		}
+		&-swatch, &-empty {
+			left: var(--pad);
+			top: var(--pad);
+		}
+		&-hue, &-opacity {
+			margin-left: calc(38px + var(--pad));
+		}
+
+		&-input {
+			&-container {
+				brd(top);
+			}
+			&-group {
+				pad(0);
+			}
+			&-field {
+				pad();
+			}
+		}
+		&-title {
+			mar(top);
+		}
+		&-dropper {
+			right: var(--pad);
+			bottom: var(--pad);
+
+			@media (prefers-color-scheme: dark) {
+				filter: invert();
+			}
+		}
+
+		&-palette {
+			--swatch-size: $select-size;
+			bg(2);
+			pad();
+			brd(top);
+			mar(0);
+		}
+	}
+	.colorview-swatch::before {
+		brd();
+	}
+
 	// Manage
 	.newUI {
 		#installed {
@@ -991,6 +1060,15 @@ normalise-header(first = true) {
 			}
 			.match[data-frame-id="0"] {
 				min-width: unset;
+			}
+		}
+		/.unreachable .blocked-info {
+			lnh();
+			pad(top);
+			brd(bottom);
+
+			& > label {
+				normalise-header();
 			}
 		}
 
