@@ -455,6 +455,7 @@ capitalise(e = \&) {
 	.footer-parent, .debuginfo,
 	.linkflairlabel, .flair,
 	.read-next-container,
+	.comment.collapsed,
 	.comment .buttons,
 	#sr-header-area, // Header top
 	.awardings-bar,
@@ -759,10 +760,6 @@ capitalise(e = \&) {
 			&:empty {
 				display: none;
 			}
-		}
-		&.collapsed {
-			pad(bottom);
-			lnh();
 		}
 		&.deleted em {
 			clr(9);
