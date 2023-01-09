@@ -384,6 +384,10 @@ capitalise(e = \&) {
 		for i in settings {
 			\-\-{i}: convert(i);
 		}
+
+		@media (max-width: $small-screen) {
+			--sidebar-width: 0px;
+		}
 	}
 
 	body {
@@ -423,6 +427,7 @@ capitalise(e = \&) {
 		normalise-checkbox();
 	}
 
+	// Sticky header & sidebar
 	#header,
 	.side {
 		position: fixed;
@@ -556,7 +561,6 @@ capitalise(e = \&) {
 			brd();
 		}
 
-		// to move
 		.thing .expando & {
 			bg();
 			mar(bottom, 0);
@@ -1046,7 +1050,7 @@ capitalise(e = \&) {
 		display: inline-flex;
 		align-items: center;
 
-		&, /.dropdown.lightdrop .selected {
+		/.dropdown.lightdrop .selected, & {
 			normalise-select();
 			text-decoration: none $i;
 			cursor: pointer;
