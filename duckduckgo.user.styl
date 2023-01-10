@@ -6,6 +6,15 @@
 @author         Me
 
 @preprocessor stylus
+
+@var text     content-width "Content width"           480px
+
+@var number   grid-items    "Grid items"              1
+@var checkbox grid-fixed    "Fixed width for results" 0
+@var text     grid-width    "Grid width"              300px
+
+@var checkbox result-icon   "Links -> favicons"       1
+@var checkbox result-hl     "Highlight word matches"  1
 ==/UserStyle== */
 
 @keyframes dropfade {
@@ -124,9 +133,12 @@ pos(offset = 0) {
 	bottom: offset $i;
 }
 
-center() {
+center(justification =) {
 	display: flex $i;
 	align-items: center $i;
+	if (justification) {
+		justify-content: justification $i;
+	}
 }
 
 // etc.
@@ -185,6 +197,20 @@ replace-text(content =, text-color = fg, pos = after) {
 	}
 }
 
+hide-chars(amount, pos, bg =) {
+	margin-{pos}: s('-%sch', amount) $i;
+	position: relative $i;
+
+	element = pos == left ? before : after;
+	&::{element} {
+		content: '' $i;
+		position: absolute $i;
+		pos();
+		box(s('%sch', amount), 100%);
+		bg(bg);
+	}
+}
+
 // Input normalisation
 normalise-select() {
 	appearance: none $i;
@@ -196,7 +222,7 @@ normalise-select() {
 		linear-gradient(180deg, var(--bg2) 30%, var(--fg) 30%) $i;
 	background-size: 20px 20px $i;
 	background-repeat: no-repeat $i;
-	background-position: right 4px $i;
+	background-position: right 50% $i;
 	padding: var(--pad) 20px var(--pad) var(--pad) $i;
 	brd();
 	focus();
@@ -249,7 +275,7 @@ normalise-color() {
 normalise-checkbox(label = true) {
 	if (label) {
 		/label {
-			line-height: var(--line-height) $i;
+			lnh();
 			center();
 			gap: 1ch $i;
 		}
@@ -344,25 +370,27 @@ normalise-header(first = true) {
 }
 
 @-moz-document domain("html.duckduckgo.com") {
+	/**
+	 * Variables
+	**/
 	:root {
 		--reserve-bg: var(--bg);
 		--reserve-fg: var(--fg);
 		--reserve-fg2: var(--fg2);
 		--reserve-border: var(--border);
-
-		--max-content-width: 480px;
-		--default-border-radius: var(--border-radius);
+		--pad-save: var(--pad);
 	}
 
-	// Hide elements
-	.header__logo-wrap,
-	.search__button,
-	.feedback-btn,
-	.result--ad {
-		display: none $i;
+	// Settings
+	body {
+		--max-content-width: content-width;
+		--grid-items: 100% / grid-items;
+		--grid-width: grid-width;
 	}
 
-	// Global
+	/**
+	 * Global
+	**/
 	.body--html {
 		bgc();
 		lnh();
@@ -378,13 +406,29 @@ normalise-header(first = true) {
 		fg();
 	}
 
-	// Header
+	/**
+	 * Hide elements
+	**/
+	.header__logo-wrap,
+	.search__button,
+	.feedback-btn,
+	.result--ad {
+		display: none $i;
+	}
+
+	/**
+	 * Header
+	**/
 	#header {
+		--pad: calc(var(--pad-save) / 2);
 		bg(2);
 		header-focus();
 		pad();
 		brd(bottom);
+		height: var(--header-h);
 		display: flex;
+		position: fixed;
+		z-index: 1;
 	}
 	.header__form {
 		// Don't get me affected by header-focus()
@@ -394,8 +438,10 @@ normalise-header(first = true) {
 		--border: var(--reserve-border);
 		text-align: center;
 		pad(left, 0);
-		margin: auto;
-		width: var(--max-content-width);
+		margin: unset;
+		width: 100%;
+		display: flex;
+		gap: var(--pad);
 	}
 	.search {
 		pad(0);
@@ -409,13 +455,16 @@ normalise-header(first = true) {
 		&--header {
 			mar(bottom);
 			box(unset);
+			flex-grow: 1;
 		}
-
 		&__input {
 			normalise-input();
 			--bg2: var(--bg);
 			top: 0;
-			box(calc(100% - var(--pad) * 2 - var(--border-width) * 2), unset);
+			box(
+				calc(100% - var(--pad) * 2 - var(--border-width) * 2),
+				calc(var(--font-size) * var(--line-height) - var(--border-width) * 2)
+			);
 		}
 	}
 	.frm__select {
@@ -437,18 +486,22 @@ normalise-header(first = true) {
 		}
 	}
 
-	// Content
+	/**
+	 * Content
+	**/
 	.serp__results {
 		padding: var(--body-pad) $i;
+		padding-top: calc(var(--header-h) + var(--body-pad)) $i;
 		margin: auto;
 		max-width: var(--max-content-width);
 	}
-	.msg--spelling {
+	.msg {
 		fg();
 		text-align: center;
 		pad(0);
 		mar(0);
-		mar(bottom);
+		margin-bottom: calc(var(--body-pad) - var(--pad)) $i;
+		width: 100%;
 
 		b::before, b::after {
 			content: '"';
@@ -480,16 +533,20 @@ normalise-header(first = true) {
 			pad(bottom);
 		}
 	}
-	.results {
-		pad(0);
-		mar(0);
-	}
 	.result {
 		brd();
-		mar(bottom);
+		mar(bottom, 0);
 
 		&, &:hover {
 			bg(2);
+		}
+
+		&s {
+			pad(0);
+			mar(0);
+			display: flex;
+			flex-direction: grid-items > 1 ? row : column;
+			gap: var(--pad);
 		}
 
 		&__body {
@@ -500,9 +557,10 @@ normalise-header(first = true) {
 		}
 
 		&__title {
-			mar(bottom);
+			normalise-header();
 		}
 		&__a {
+			fg();
 			lnh();
 
 			&::before {
@@ -512,35 +570,100 @@ normalise-header(first = true) {
 				z-index: 1;
 			}
 		}
+		&__icon {
+			vertical-align: unset;
+
+			&, &__img {
+				box(var(--font-size));
+				max-width: unset $i;
+			}
+		}
 		&__type {
-			bgc();
+			bgc(2, 2);
 			lnh();
-			brd();
-			padding: 0 calc(var(--pad) / 2);
-			mar(top, 0);
-			top: 0;
+			pad(0);
+			mar(0);
+			position: absolute;
+			top: var(--pad);
+			right: var(--pad);
+			vertical-align: unset;
 		}
 
 		&__snippet {
 			lnh();
 			display: block;
 
-			&, &:hover, b, strong {
+			&, &:hover, & > b, & > strong {
 				fg();
+			}
+
+			if (result-hl) {
+				b, strong {
+					hl();
+				}
 			}
 		}
 		&__extras + .clear::before {
 			content: 'No description';
 		}
+
+		// Breaks if line height > 1.25
+		if (result-icon) {
+			&__a {
+				width: calc(100% - var(--font-size) - 1ch);
+
+				&[href*=".pdf"] {
+					width: calc(100% - var(--font-size) - 5ch - 3px);
+				}
+			}
+			&__type {
+				right: calc(var(--pad) + var(--font-size) + 1ch);
+			}
+			&__icon {
+				position: absolute;
+				top: calc(var(--pad) * -2 - var(--font-size) * var(--line-height) + var(--border-width));
+				right: 0;
+			}
+			&__url {
+				display: none;
+			}
+		} else {
+			&__snippet {
+				mar(top);
+			}
+			&__a:has(> &__type) {
+				width: calc(100% - 4ch - 3px);
+			}
+		}
 	}
 	.nav-link {
 		pad(left, 0);
+		width: 100%;
 	}
 	.btn {
 		normalise-button();
 
 		&:hover, &:focus {
 			bgc(2);
+		}
+	}
+
+	if (grid-items > 1) {
+		.serp__results {
+			margin: unset;
+			max-width: unset;
+		}
+		.nav-link {
+			text-align: center;
+		}
+
+		.result {
+			width: grid-fixed ? var(--grid-width) : calc(var(--grid-items) - var(--pad));
+
+			&s {
+				justify-content: center;
+				flex-wrap: wrap;
+			}
 		}
 	}
 }
