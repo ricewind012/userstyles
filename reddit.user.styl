@@ -7,7 +7,8 @@
 
 @preprocessor stylus
 
-@var text     sidebar-width "Sidebar width" 228px
+@var checkbox sidebar-show  "Show the sidebar" 0
+@var text     sidebar-width "Sidebar width"    228px
 @var select   sidebar-pos   "Sidebar position" {
 	'Left':  'left',
 	'Right': 'right'
@@ -377,7 +378,7 @@ capitalise(e = \&) {
 	/**
 	 * Global
 	**/
-	:root {
+	body {
 		settings = \
 			'sidebar-width'
 
@@ -831,6 +832,7 @@ capitalise(e = \&) {
 				height: calc(var(--font-size) * var(--line-height)) $i;
 				background-image: linear-gradient(to bottom, transparent, var(--bg2)) $i;
 			}
+
 			&-button {
 				text-decoration: none $i;
 
@@ -1086,8 +1088,10 @@ capitalise(e = \&) {
 		width: var(--sidebar-width);
 		box-sizing: border-box;
 
-		@media (max-width: $small-screen) {
-			display: none;
+		if (sidebar-show) {
+			@media (max-width: $small-screen) {
+				display: none;
+			}
 		}
 		&::-webkit-scrollbar {
 			display: none;
@@ -1120,6 +1124,7 @@ capitalise(e = \&) {
 			pad();
 			brd();
 			mar(top);
+			height: unset $i;
 
 			input, p {
 				mar(bottom, 0);
@@ -1141,6 +1146,51 @@ capitalise(e = \&) {
 		.bottom {
 			pad(top, 0);
 			brd(top);
+		}
+	}
+
+	if (!sidebar-show) {
+		body {
+			--sidebar-width: 0px;
+		}
+		.side {
+			pad(0);
+			brd(0);
+
+			& > :not(:first-child) {
+				display: none;
+			}
+		}
+		#search {
+			--pad-05: calc(var(--pad) / 2);
+			position: fixed;
+			top: calc(var(--pad-05) - var(--border-width));
+			right: var(--pad-05);
+			width: 25%;
+
+			&::before {
+				content: '';
+				position: absolute;
+				left: -2ch;
+				box(2ch, calc(var(--font-size) * var(--line-height) + var(--pad) + var(--border-width) * 2));
+				background-image: linear-gradient(90deg, transparent, var(--bg2));
+
+				.page-focus & {
+					--bg2: var(--accent);
+				}
+			}
+
+			&expando {
+				shd(big);
+			}
+
+			& > input {
+				position: sticky; // for focus border
+
+				&[type="text"] {
+					padding: var(--pad-05) $i;
+				}
+			}
 		}
 	}
 
