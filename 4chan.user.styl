@@ -451,6 +451,10 @@ fa(char) {
 		&[type="search"],
 		/textarea {
 			normalise-input();
+
+			@media (prefers-reduced-motion: no-preference) {
+				transition-property: border-color $i;
+			}
 		}
 		&[type="checkbox"] {
 			normalise-checkbox();
@@ -521,8 +525,8 @@ fa(char) {
 	.updatelink,
 	[href="#top"],
 	[href="#bottom"],
-	[href$="#catalog"],
 	[href$="#index"],
+	.navLinks [href$="#catalog"],
 	//.open-qr-wrap,
 	//[accesskey="a"],
 	#settings > .btn-wrap,
@@ -2148,7 +2152,7 @@ fa(char) {
 			}
 			textarea {
 				min-width: unset;
-				width: 100%;
+				width: 100% $i;
 			}
 		}
 		#thread-watcher {
@@ -2193,6 +2197,7 @@ fa(char) {
 
 		if (sidebar-fixed) {
 			body {
+				--additional-pad: board-title-image ? 0px : var(--pad);
 				--section-content-height: calc((var(--font-size) * var(--line-height) + var(--pad) * 2) * var(--sidebar-items));
 				--section-height: calc(var(--header-size) + var(--section-content-height));
 				--threads-pos: board-title-image ? \
@@ -2230,19 +2235,19 @@ fa(char) {
 						--section-content-height: calc((var(--font-size) * var(--line-height) + var(--pad) * 2) * var(--sidebar-items));
 						--section-height: calc(var(--header-size) + var(--section-content-height));
 					}
-					& ~ #header-bar #board-list {
+					& ~ #header-bar > #board-list {
 						height: var(--header-size) $i;
 					}
 					& ~ #qr {
-						top: calc(var(--threads-pos) + var(--section-height) + var(--pad) * 8) $i;
+						top: calc(var(--threads-pos) + var(--section-height) + var(--pad) * 7) $i;
 					}
 				}
 				#header-bar:hover {
 					--section-content-height: calc((var(--font-size) * var(--line-height) + var(--pad) * 2) * var(--sidebar-items));
 					--section-height: calc(var(--header-size) + var(--section-content-height));
 
-					#board-list {
-						margin-top: calc(var(--board-title-height) + var(--header-size) + var(--header-h));
+					& > #board-list {
+						margin-top: calc(var(--board-title-height) + var(--header-size) + var(--additional-pad) + var(--header-h));
 					}
 
 					& ~ #qr {
