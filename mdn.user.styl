@@ -8,18 +8,6 @@
 @preprocessor stylus
 ==/UserStyle== */
 
-@keyframes dropfade {
-	0% {
-		opacity: 0;
-		transform: translateY(-10px);
-	}
-
-	100% {
-		opacity: 1;
-		transform: translateY(0);
-	}
-}
-
 $small-screen = 768px
 $select-size = 16px
 $i = !important
@@ -396,13 +384,13 @@ normalise-header(first = true) {
 		--text-primary-blue: var(--color12) $i;
 		--text-primary-yellow: var(--color11) $i;
 
-		--code-token-tag: var(--color12) $i;
-		--code-token-punctuation: var(--fg2) $i;
-		--code-token-attribute-name: var(--color13) $i;
-		--code-token-attribute-value: var(--color10) $i;
-		--code-token-comment: var(--fg2) $i;
+		--code-token-punctuation: var(--fg) $i;
 		--code-token-default: var(--fg) $i;
-		--code-token-selector: var(--color12) $i;
+		--code-token-comment: var(--fg2) $i;
+		--code-token-attribute-value: var(--color10) $i;
+		--code-token-selector: var(--color11) $i;
+		--code-token-tag: var(--color12) $i;
+		--code-token-attribute-name: var(--color13) $i;
 
 		// Icons
 		--icon-primary: var(--fg) $i;
@@ -518,5 +506,31 @@ normalise-header(first = true) {
 		strong {
 			text-transform: uppercase;
 		}
+	}
+	examples = {
+		bad:  9,
+		good: 10
+	}
+	.example {
+		for k, v in examples {
+			&-{k} {
+				border-color: s('var(--color%s)', v) $i;
+			}
+		}
+
+		&-bad, &-good {
+			.token.comment {
+				fg(); // improve readability
+			}
+
+			&::after {
+				top: var(--pad);
+				right: var(--pad);
+			}
+		}
+	}
+	.code-example .copy-icon {
+		top: var(--pad);
+		right: var(--pad);
 	}
 }
