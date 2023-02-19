@@ -1,6 +1,6 @@
 # userstyles
-None work by default, as you'll have to declare the variables **in an another userstyle** for the same domain as the userstyle you are installing, so you don't lose them if the styles ever update:
-```
+None work by default, as you'll have to declare the variables **in an another userstyle** for the same domain as the userstyle(s) you are installing, so you don't lose them if the styles ever update:
+```css
 :root {
   --bg:            #141414;
   --bg2:           #1c1c1c;
@@ -60,15 +60,24 @@ None work by default, as you'll have to declare the variables **in an another us
   font-weight: normal !important;
 }
 code, pre, code *, pre * {
-	font-family: var(--font-code) !important;
+  font-family: var(--font-code) !important;
 }
 ```
 
 ## Requirements
 [4chan](./4chan.user.styl): [4chan X](https://www.4chan-x.net)
 
-[Discord](./discord.user.styl): class normalisation (appMount-2yBXZl -> appMount) userscript & [Revert Discord](../../../revert-discord)
+[Discord](./discord.user.styl): [class normalisation userscript](https://gist.github.com/2641a40fd44383320adde4b027a1d0b03bd550/202cfe26d010351d37b48849aab263b5) & [Revert Discord](../../../revert-discord)
+
+[Reddit](./reddit.user.styl): put the following in uBlock Origin's "My filters":
+```adb
+! reddit
+!! no subreddit css
+||thumbs.redditmedia.com$stylesheet,domain=old.reddit.com
+!! no sticky header
+old.reddit.com##+js(set-constant.js, isPinned, true)
+```
 
 ## Preview
-They all share the same style, so just this one:
-![Preview](https://user-images.githubusercontent.com/58827198/211355929-94b5113f-bc8e-47b1-a1da-64dcd034c9ea.png)
+They all share the same style, and it depends on how you edited the variables above.
+![GitHub preview](https://user-images.githubusercontent.com/58827198/211355929-94b5113f-bc8e-47b1-a1da-64dcd034c9ea.png)
