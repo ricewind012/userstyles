@@ -7,29 +7,23 @@
 
 @preprocessor stylus
 
-@var checkbox sidebar-show  "Show the sidebar" 0
-@var text     sidebar-width "Sidebar width"    228px
-@var select   sidebar-pos   "Sidebar position" {
+@var checkbox sticky         "Sticky header & sidebar" 1
+@var text     content-margin "Content margin"          0
+
+@var checkbox sidebar-show   "Show the sidebar"        0
+@var text     sidebar-width  "Sidebar width"           228px
+@var select   sidebar-pos    "Sidebar position" {
 	'Left':  'left',
 	'Right': 'right'
 }
 ==/UserStyle== */
 
-@keyframes dropfade {
-	0% {
-		opacity: 0;
-		transform: translateY(-10px);
-	}
-
-	100% {
-		opacity: 1;
-		transform: translateY(0);
-	}
-}
-
-$small-screen = 768px
-$select-size = 16px
-$i = !important
+// Variables
+vendors = official;
+$small-screen = 768px;
+$select-shadow = inset 0 1px 2px rgba(0, 0, 0, 0.1);
+$select-size = 16px;
+$i = !important;
 
 // Stylus
 svar(var) {
@@ -41,7 +35,7 @@ cond(n, yes, no) {
 }
 
 sel-cond(sel, pos) {
-	pos ? s('%s-%s', sel, pos) : sel
+	pos ? s('%s-%s', sel, pos) : sel;
 }
 
 color-a(n, bright = true) {
@@ -70,7 +64,7 @@ bgc(n1 =, n2 =) {
 }
 
 hl(n = ) {
-	background-color: n ? s('var(--hl-%s)', n) : var(--hl) $i;
+	background-color: var(--hl) $i;
 	color: var(--hl-fg) $i;
 }
 
@@ -131,25 +125,24 @@ pos(offset = 0) {
 	bottom: offset $i;
 }
 
-center(justification =) {
-	display: flex $i;
-	align-items: center $i;
-	if (justification) {
-		justify-content: justification $i;
-	}
+flex(display = flex, alignment = center, justification =) {
+	display: display $i;
+	align-items: alignment $i;
+	justify-content: justification $i;
 }
 
-// etc.
+// Animation
 anim(name =, func = ) {
 	@media (prefers-reduced-motion: no-preference) {
 		{name ? animation : transition}: name var(--trans-dur) func $i;
 	}
 }
 
-dropfade() {
-	anim(dropfade, cubic-bezier(.2, .9, .6, 1));
+fade(pos = drop) {
+	anim(s('%sfade', pos), cubic-bezier(0.2, 0.9, 0.6, 1));
 }
 
+// Focus
 focus(p = focus) {
 	anim();
 
@@ -164,19 +157,18 @@ header-focus(class = page-focus) {
 	.{class} & {
 		--bg2: var(--accent);
 		--fg: var(--accent-fg);
-		--fg2: var(--accent-fg);
 		--border: var(--accent-border);
 	}
 
-	// Chromuim is unable to recognise the selector
-	@supports not (-moz-appearance: none) { :root:not(:-moz-window-inactive) {
+	// Stylus is unable to recognise :where()
+	:root:not(:-moz-window-inactive) & {
 		--bg2: var(--accent);
 		--fg: var(--accent-fg);
-		--fg2: var(--accent-fg);
 		--border: var(--accent-border);
-	}}
+	}
 }
 
+// Text
 replace-text(content =, text-color = fg, pos = after) {
 	letter-spacing: -9999px $i;
 	color: transparent $i;
@@ -204,12 +196,28 @@ hide-chars(amount, pos, bg =) {
 		content: '' $i;
 		position: absolute $i;
 		pos();
-		box(s('%sch', amount), 100%);
+		box(s('%sch', amount), calc(1em * var(--line-height)));
 		bg(bg);
 	}
 }
 
-// Input normalisation
+fa(char) {
+	font-size: 0 $i;
+
+	&::before {
+		content: s('"\f%s"', char) $i;
+		font: var(--font-size) 'Font Awesome 6 Free' $i;
+	}
+}
+
+// Normalisation
+disabled() {
+	&:disabled {
+		opacity: 0.5 $i;
+		pointer-events: none $i;
+	}
+}
+
 normalise-select() {
 	appearance: none $i;
 	bgc(2);
@@ -221,9 +229,11 @@ normalise-select() {
 	background-size: 20px 20px $i;
 	background-repeat: no-repeat $i;
 	background-position: right 50% $i;
-	padding: var(--pad) 20px var(--pad) var(--pad) $i;
+	pad();
+	padding-right: calc(var(--pad) + 20px) $i;
 	brd();
 	focus();
+	disabled();
 }
 
 normalise-input() {
@@ -232,6 +242,7 @@ normalise-input() {
 	pad();
 	brd();
 	focus();
+	disabled();
 
 	&::placeholder {
 		fg(2);
@@ -246,11 +257,7 @@ normalise-button() {
 	brd();
 	cursor: pointer $i;
 	focus();
-
-	&:disabled {
-		opacity: .5 $i;
-		pointer-events: none $i;
-	}
+	disabled();
 }
 
 normalise-color() {
@@ -259,10 +266,11 @@ normalise-color() {
 	brd();
 	box($select-size);
 	focus();
+	disabled();
 
 	&::-webkit-color-swatch {
-		border: none $i;
-		border-radius: calc(var(--border-radius) * .33) $i;
+		brd(0);
+		border-radius: calc(var(--border-radius) * 0.33) $i;
 
 		&-wrapper {
 			pad(0);
@@ -274,7 +282,7 @@ normalise-checkbox(label = true) {
 	if (label) {
 		/label {
 			lnh();
-			center();
+			flex();
 			gap: 1ch $i;
 		}
 	}
@@ -282,8 +290,8 @@ normalise-checkbox(label = true) {
 	appearance: none $i;
 	bg(2);
 	brd();
-	border-radius: calc(var(--border-radius) * .33) $i;
-	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1) $i;
+	border-radius: calc(var(--border-radius) * 0.33) $i;
+	box-shadow: $select-shadow $i;
 	mar(0);
 	position: relative $i;
 	box($select-size);
@@ -297,16 +305,19 @@ normalise-checkbox(label = true) {
 		background-color: var(--hl) $i;
 		transform-origin: 0 0 $i;
 	}
+	&:disabled::before, &:disabled::after {
+		background-color: var(--fg2) $i;
+	}
 
 	&::before {
 		transform: rotate(-45deg) translateY(45%) translateX(-30%) scaleX(0.25) scaleY(0) $i;
 	}
-	&::after {
-		transform: rotate(225deg) translateY(-30%) translateX(-95%) scaleX(0.25) scaleY(0) $i;
-	}
 	&:indeterminate::before {
 		transform: rotate(0) translateY(37.5%) translateX(10%) scaleX(0.8) scaleY(0.25) $i;
 		transition-duration: 33.33333333ms $i;
+	}
+	&::after {
+		transform: rotate(225deg) translateY(-30%) translateX(-95%) scaleX(0.25) scaleY(0) $i;
 	}
 
 	&:checked {
@@ -327,7 +338,7 @@ normalise-radio() {
 	bg(2);
 	brd();
 	border-radius: 50% $i;
-	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1) $i;
+	box-shadow: $select-shadow $i;
 	mar(0);
 	position: relative $i;
 	box($select-size);
@@ -336,14 +347,14 @@ normalise-radio() {
 	&::before {
 		content: '';
 		position: absolute $i;
-		pos(3px);
+		pos($select-size / 5);
 		background-color: var(--hl) $i;
 		border-radius: 50% $i;
 		transition: transform var(--trans-dur) linear $i;
 		transform: scale(0) $i;
 	}
 	&:disabled::before {
-		background-color: var(--fg3) $i;
+		background-color: var(--fg2) $i;
 	}
 	&:checked::before {
 		transition-timing-function: cubic-bezier(0, 0, 0.3, 1.5) $i;
@@ -368,35 +379,37 @@ normalise-header(first = true) {
 }
 
 // Website-specific functions
-capitalise(e = \&) {
-	{e}::first-letter {
+capitalise() {
+	&::first-letter {
 		text-transform: capitalize;
 	}
 }
 
 @-moz-document domain("old.reddit.com") {
 	/**
-	 * Global
+	 * Variables
 	**/
 	body {
-		settings = \
-			'sidebar-width'
-
-		for i in settings {
-			\-\-{i}: convert(i);
-		}
+		--content-margin: match('^^\d+$', s('%s', content-margin)) ? s('%spx', content-margin) : content-margin;
+		--sidebar-width: sidebar-width;
 
 		@media (max-width: $small-screen) {
 			--sidebar-width: 0px;
 		}
 	}
 
+	/**
+	 * Global
+	**/
 	body {
 		bgc();
 		lnh();
 	}
 	.content {
-		margin: var(--body-pad);
+		--margin: calc(var(--body-pad) + var(--content-margin));
+		margin: var(--margin);
+		margin-{sidebar-pos}: calc(var(--margin) + var(--sidebar-width));
+		margin-top: var(--body-pad);
 		position: relative;
 		display: flex;
 		flex-direction: column;
@@ -410,6 +423,10 @@ capitalise(e = \&) {
 			.comments-page & {
 				content: 'Post';
 			}
+		}
+
+		& > .commentarea > .sitetable {
+			margin-bottom: var(--body-pad);
 		}
 	}
 
@@ -428,53 +445,39 @@ capitalise(e = \&) {
 		normalise-checkbox();
 	}
 
-	// Sticky header & sidebar
-	#header,
-	.side {
-		position: fixed;
-		{sidebar-pos}: 0;
-		float: unset;
-		z-index: 2;
-	}
-	#header {
-		position: fixed;
-		top: 0;
-		width: 100%;
-		padding-{sidebar-pos}: var(--sidebar-width);
-	}
-	.side {
-		position: fixed;
-		top: var(--header-h);
-		bottom: 0;
-		overflow: auto;
-		brd(sidebar-pos == left ? right : left);
-	}
-	.content {
-		margin-top: calc(var(--body-pad) + var(--header-h));
-		margin-{sidebar-pos}: calc(var(--body-pad) + var(--sidebar-width));
-	}
-
 	/**
 	 * Hide elements
 	**/
-	.comment .tagline .score, .comment .tagline .score-hidden, .search-result-icon-score, .search-score // Upvotes
-	.footer-parent, .debuginfo,
-	.linkflairlabel, .flair,
+	// I. Unsorted
+	.crosspost-preview-tagline > :first-child, .crosspost-preview-tagline > :nth-child(2), // Upvotes
+	.score, .tagline > .score-hidden, .search-result-icon-score, .search-score, // ^
+	.comment.collapsed:not(.collapsed-for-reason):not(.deleted),
+	#search_hidemore, #search_showmore,
+	[data-event-action="permalink"],
+	.comments-page .expando-button,
+	.buttons > :nth-last-child(2), // Hide post
+	.search-result-group .info,
+	.footer-parent, .debuginfo, // Footer
+	.linkflairlabel, .flair, // Flairs
+	.comments-page .buttons,
+	.cakeday + .userattrs, // Cake day
+	.profile-page .author,
+	.profile-page .expand,
 	.read-next-container,
-	.comment.collapsed,
-	.comment .buttons,
+	.crosspost-badge,
 	#sr-header-area, // Header top
 	.awardings-bar,
 	.report-button,
 	#header-img,
 	.linkinfo, // Sidebar post info
 
-	// Not logged in
-	#header-bottom-right, #login_login-main, .commentsignupbar,
-	.subscribe-button, .submit,
-	.give-gold-button, .share,
+	// II. Not logged in
+	.midcol,
 	.login-required,
-	.midcol {
+	.give-gold-button, .share,
+	.subscribe-button, .submit,
+	#header-bottom-right, #login_login-main, .commentsignupbar
+	{
 		display: none $i;
 	}
 
@@ -484,25 +487,35 @@ capitalise(e = \&) {
 	#header {
 		bg(2);
 		header-focus();
+		padding-{sidebar-pos}: var(--sidebar-width);
 		brd(bottom);
 		min-height: var(--header-h);
 		box-sizing: border-box;
 
+		if (sticky) {
+			position: s('sticky');
+			top: 0;
+			z-index: 2;
+			//width: 100%;
+		}
+
 		&, &-bottom-left {
-			center();
+			flex();
 		}
 	}
 	.pagename {
-		fg();
 		font-variant: unset;
 		margin-right: 1ch;
 
-		a {
-			fg();
+		&::before {
+			content: '/r/';
+		}
+		.profile-page &::before {
+			content: '/u/';
+		}
 
-			&::before {
-				content: '/r/';
-			}
+		&, a {
+			fg();
 		}
 	}
 	.tabmenu {
@@ -521,558 +534,13 @@ capitalise(e = \&) {
 			a {
 				background-color: transparent;
 				fg(2);
-				text-transform: capitalize;
+				capitalise();
 				pad();
 
 				&:hover {
-					color: var(--accent-fg) $i;
+					fg();
 					text-decoration: none;
 				}
-			}
-		}
-	}
-
-	/**
-	 * Content
-	**/
-	.link .flat-list {
-		pad(0);
-	}
-	.crosspost-preview {
-		bg();
-		brd();
-		mar(top);
-
-		&-header {
-			pad();
-		}
-		&-tagline {
-			margin-top: calc(var(--pad) / 2);
-		}
-
-		.link &-content .self-divider {
-			brd(top);
-			mar(0);
-		}
-	}
-	.md {
-		.link .usertext-body & {
-			bg(2);
-			pad();
-			brd();
-		}
-
-		.thing .expando & {
-			bg();
-			mar(bottom, 0);
-		}
-
-		blockquote {
-			pad(0);
-			brd(0);
-			mar(left, 0);
-
-			&, p {
-				clr(2);
-			}
-
-			p {
-				display: table-footer-group;
-
-				&::before {
-					content: '>';
-				}
-			}
-		}
-
-		code, pre {
-			bg();
-			pad(0);
-			brd();
-			mar(0);
-
-			.expando & {
-				bg(2);
-				brd(0);
-			}
-		}
-		pre {
-			pad();
-		}
-
-		.linklisting &,
-		.commentarea & {
-			mar(top);
-			mar(bottom, 0);
-		}
-
-		&, * {
-			fg();
-			lnh();
-		}
-		hr {
-			background-color: var(--border);
-			height: var(--border-width);
-			margin: var(--pad) 0;
-
-			.side &:first-child {
-				mar(top);
-			}
-		}
-		.-lists, ul, ol {
-			padding-left: 3ch;
-		}
-		p, h3, h4, ul, ol {
-			mar(0);
-		}
-		a {
-			color: var(--fg-link) $i;
-		}
-	}
-	.title {
-		.thing &, .thing &:visited {
-			color: var(--hl);
-		}
-
-		&-button {
-			normalise-button();
-			text-transform: capitalize $i;
-			letter-spacing: 0 $i;
-			mar(left);
-			center();
-			position: absolute;
-			top: 0;
-			right: calc(16ch + 20px + var(--pad) + var(--border-width) * 2);
-
-			&:hover {
-				text-decoration: none;
-			}
-		}
-	}
-	.morecomments a {
-		color: var(--fg-link);
-		mar(0);
-		capitalise();
-	}
-	.tagline .stickied-tagline,
-	.search-result-meta .stickied-tagline {
-		clr(2);
-
-		&::before { content: '(' $i; }
-		&::after { content: ')'; }
-	}
-
-	.nav-buttons {
-		margin-bottom: var(--body-pad) $i;
-		capitalise();
-	}
-	.nextprev, .nextsuggestions {
-		fg();
-
-		a {
-			normalise-button();
-			display: inline-flex;
-			align-items: center;
-
-			&:hover {
-				bg(2);
-				text-decoration: none;
-				border-color: var(--border);
-			}
-
-			&[rel$="prev"] {
-				replace-text('Previous');
-				mar(right);
-			}
-			&[rel$="next"] {
-				replace-text('Next');
-			}
-		}
-
-		.separator {
-			display: none;
-		}
-	}
-
-	// Comments
-	.menuarea,
-	.comment {
-		mar(0);
-		pad(0);
-	}
-	.commentarea {
-		position: relative;
-	}
-	.panestack-title {
-		normalise-header(false);
-
-		.title {
-			hide-chars(4, left);
-			margin-left: calc(-4ch - 4px) $i;
-		}
-	}
-	.menuarea {
-		fg();
-		brd(0);
-		position: absolute;
-		right: 0;
-		top: 0;
-
-		.content > & {
-			letter-spacing: 1px;
-			text-transform: uppercase;
-			top: calc(var(--font-size) * -1 - var(--border-width));
-		}
-
-		.spacer {
-			mar(0);
-		}
-	}
-	.menuarea * {
-		capitalise();
-	}
-	.reddit-infobar,
-	.infobar {
-		background-color: color-a(3);
-		pad();
-		brd(,color11);
-		mar(0);
-		mar(bottom);
-
-		&.with-icon {
-			min-height: unset;
-
-			&::before {
-				display: none;
-			}
-		}
-
-		p {
-			mar(0);
-		}
-	}
-	.comment {
-		.expand {
-			fg(2);
-			pad(0);
-			margin-right: 1ch;
-		}
-		.child, .showreplies {
-			brd(left, 0);
-			mar(left, 0);
-			mar(top);
-
-			&:empty {
-				display: none;
-			}
-		}
-		&.deleted em {
-			clr(9);
-		}
-	}
-	.usertext {
-		&.grayed &-body,
-		&.border &-body {
-			background-color: transparent;
-			fg();
-			pad(0);
-		}
-	}
-
-	// Search
-	.search {
-		&pane {
-			pad(0);
-			mar(0);
-
-			h4 {
-				normalise-header();
-			}
-			p {
-				mar(0);
-			}
-		}
-		&-submit-button {
-			display: none;
-		}
-		&-menu {
-			lnh();
-			margin-left: 1ch;
-		}
-		&-result {
-			mar(top, 0);
-
-			&-group {
-				pad(0);
-				max-width: unset;
-				min-width: unset;
-
-				&-header {
-					normalise-header(false);
-					center(space-between);
-				}
-			}
-			&-meta, &-meta > *,
-			&-header {
-				lnh();
-			}
-			&-meta {
-				fg(2);
-			}
-
-			& > div {
-				width: calc(100% - 70px - var(--pad));
-			}
-			a {
-				fg(-link);
-			}
-		}
-		&-expando {
-			&::before {
-				height: calc(var(--font-size) * var(--line-height)) $i;
-				background-image: linear-gradient(to bottom, transparent, var(--bg2)) $i;
-			}
-
-			&-button {
-				text-decoration: none $i;
-
-				&.expanded &-label-expanded,
-				&.collapsed &-label-collapsed {
-					display: block;
-					mar(top);
-				}
-
-				& > span {
-					normalise-button();
-					capitalise();
-					--bg2: var(--bg);
-					width: max-content;
-				}
-			}
-		}
-	}
-
-	// Posts
-	.thing, .search-result {
-		bg(2);
-		pad();
-		brd();
-		mar(bottom);
-
-		& &,
-		& & & &,
-		& & & & & &,
-		& & & & & & & &,
-		& & & & & & & & & & {
-			bg();
-		}
-		& & & & & & & & &,
-		& & & & & & &,
-		& & & & &,
-		& & & {
-			bg(2);
-		}
-
-		&.last-clicked {
-			brd(, hl, false);
-			box-shadow: var(--shadow-ins) var(--hl);
-		}
-
-		.title {
-			margin: 0;
-			a^[1..-1] { display: inline-block; }
-		}
-
-		.child & + .clearleft:last-child {
-			margin-top: calc(var(--pad) * -1);
-		}
-	}
-	.deepthread {
-		&::after {
-			display: none;
-		}
-
-		a {
-			color: var(--fg-link);
-		}
-	}
-	.rank {
-		fg(2);
-		mar(top, 0);
-		float: right $i;
-	}
-	.thumbnail {
-		mar(right);
-		mar(bottom, 0);
-	}
-	.author {
-		fg();
-		mar(right, 0);
-	}
-	.entry {
-		mar(left, 0);
-
-		.buttons {
-			li {
-				padding-right: 1ch;
-				margin-top: 2px;
-				lnh();
-			}
-
-			a {
-				fg(2);
-				pad(0);
-			}
-		}
-	}
-	.stamp {
-		bg();
-		lnh();
-		padding: 0 var(--pad);
-		brd();
-	}
-	.expando {
-		mar(0);
-
-		&-button {
-			mar(0);
-			margin-right: 1ch $i;
-		}
-	}
-	// https://gist.github.com/natyusha/3139942
-	.expando-button {
-		background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAGAAgMAAAA7UBF8AAAACVBMVEUAAABpaWnd3d03Mam/AAAAAXRSTlMAQObYZgAAAOpJREFUaN7FlTEOwyAMRQEVqWJi6AEYe4wOPUAiJffp2GNETBGnbMAeTMTQCMv8IU+WPX198pX6Q0v56nWdMhZbMM8N4A4usyYKu1LUOw7t5WtS2jJ2VxBjA7iDy6yNwiWKesehDj8rnfxkV4eflU5+Km4jNQLN8r5MNWw7ZjL5RCMNAs0KoUw1XDtmMvns91Mmn/1+iuTzeLfZUf2Y32Sy9kbQOpHO5/Fus6PmGb9kcu5O0DqRzieDnyL5ZPBT5v957iMPnfOCBvIAOuEOLsf1e4DO+UADBQCdcAeX4/r9up9j+v26n1z5/AH9RJFdB8vWrAAAAABJRU5ErkJggg==') $i;
-
-		&.image {
-			&.collapsed {
-				background-position: 0px 0px $i;
-
-				&:hover {
-					background-position: 0px -24px $i;
-				}
-			}
-			&.image.expanded {
-				background-position: 0px -48px $i;
-
-				&:hover {
-					background-position: 0px -72px $i;
-				}
-			}
-		}
-
-		&.selftext {
-			&.collapsed {
-				background-position: 0px -96px $i;
-
-				&:hover { 
-					background-position: 0px -120px $i;
-				}
-			}
-			&.expanded {
-				background-position: 0px -144px $i;
-
-				&:hover {
-					background-position: 0px -168px $i;
-				}
-			}
-		}
-
-		&.video {
-			&.collapsed {
-				background-position: 0px -192px $i;
-
-				&:hover {
-					background-position: 0px -216px $i;
-				}
-			}
-			&.expanded {
-				background-position: 0px -240px $i;
-
-				&:hover {
-					background-position: 0px -264px $i;
-				}
-			}
-		}
-
-		&.gallery {
-			&.collapsedExpando {
-				background-position: 0px -288px $i;
-
-				&:hover {
-					background-position: 0px -312px $i;
-				}
-			}
-			&.expanded {
-				background-position: 0px -336px $i;
-
-				&:hover {
-					background-position: 0px -360px $i;
-				}
-			}
-		}
-	}
-
-	.tagline {
-		&,
-		.comment.collapsed &,
-		.comment.collapsed & a {
-			fg(2);
-		}
-	}
-
-	// Domains
-	domains = {
-		"i.redd.it":   Image,
-		"imgur.com":   Image,
-		"i.imgur.com": Image,
-		"v.redd.it":   Video,
-		"github.com":  GitHub
-	}
-	.domain {
-		vertical-align: top;
-		fg(2);
-
-		.thing[data-domain^="self"]:not([data-crosspost-root-subreddit]) & {
-			display: none;
-		}
-		for k, v in domains {
-			.thing[data-domain=\"{k}\"] & a {
-				replace-text(s('"%s"', v), fg2);
-			}
-		}
-		.thing[data-domain="reddit.com"] & a,
-		.thing[data-url^="https://www.reddit.com/gallery"] & a {
-			replace-text('Album', fg2);
-		}
-	}
-
-	// Dropdown
-	.menuarea .dropdown span {
-		box-sizing: border-box;
-		display: inline-flex;
-		align-items: center;
-
-		/.dropdown.lightdrop .selected, & {
-			normalise-select();
-			text-decoration: none $i;
-			cursor: pointer;
-		}
-	}
-	.drop-choices {
-		bg();
-		lnh();
-		brd();
-		shd(big);
-		margin-top: 6px $i;
-		position: unset;
-
-		a {
-			fg();
-			pad();
-
-			&:hover {
-				hl();
-				text-decoration: none;
 			}
 		}
 	}
@@ -1084,26 +552,40 @@ capitalise(e = \&) {
 		bg(2);
 		pad();
 		mar(0);
-		brd(bottom);
+		brd(sidebar-pos == left ? right : left);
 		width: var(--sidebar-width);
 		box-sizing: border-box;
+		float: sidebar-pos;
+		position: sidebar-show ? absolute : fixed;
+		{sidebar-pos}: 0;
+		top: var(--header-h);
+		bottom: 0;
+		z-index: 100;
 
 		if (sidebar-show) {
 			@media (max-width: $small-screen) {
 				display: none;
 			}
 		}
+
+		if (sticky) {
+			// This has to be like that in order to be able to scroll it
+			position: fixed;
+			overflow: auto;
+		}
+
 		&::-webkit-scrollbar {
 			display: none;
 		}
 
-		.spacer:first-child {
-			mar(top, 0);
+		.spacer {
+			mar(0);
 		}
 	}
 
 	#search {
 		pad(0);
+		mar(bottom);
 
 		input[type="text"] {
 			normalise-input();
@@ -1111,12 +593,16 @@ capitalise(e = \&) {
 			max-width: unset $i;
 			width: 100%;
 
+			.side & {
+				--bg2: var(--bg);
+			}
+
 			&::placeholder {
 				text-transform: capitalize;
 			}
 		}
-		.side & input[type="text"] {
-			--bg2: var(--bg);
+		& > label {
+			flex();
 		}
 
 		&expando {
@@ -1126,12 +612,12 @@ capitalise(e = \&) {
 			mar(top);
 			height: unset $i;
 
-			input, p {
-				mar(bottom, 0);
+			& > label {
+				margin-bottom: calc(var(--pad) / 2);
 			}
 
-			label {
-				margin-bottom: calc(var(--pad) / 2);
+			input, p {
+				mar(bottom, 0);
 			}
 		}
 	}
@@ -1161,9 +647,9 @@ capitalise(e = \&) {
 				display: none;
 			}
 		}
-		#search {
+		body:not(.search-page) #search {
 			--pad-05: calc(var(--pad) / 2);
-			position: fixed;
+			position: sticky ? fixed : absolute;
 			top: calc(var(--pad-05) - var(--border-width));
 			right: var(--pad-05);
 			width: 25%;
@@ -1172,25 +658,28 @@ capitalise(e = \&) {
 				content: '';
 				position: absolute;
 				left: -2ch;
-				box(2ch, calc(var(--font-size) * var(--line-height) + var(--pad) + var(--border-width) * 2));
+				box(
+					2ch,
+					calc(var(--font-size) * var(--line-height) + var(--pad) + var(--border-width) * 2)
+				);
 				background-image: linear-gradient(90deg, transparent, var(--bg2));
-
-				.page-focus & {
-					--bg2: var(--accent);
-				}
 			}
 
 			&expando {
 				shd(big);
+				fade();
 			}
 
 			& > input {
-				position: sticky; // for focus border
+				position: s('sticky'); // for focus box-shadow's z-index (maybe)
 
 				&[type="text"] {
 					padding: var(--pad-05) $i;
 				}
 			}
+		}
+		.page-focus #search::before {
+			--bg2: var(--accent);
 		}
 	}
 
@@ -1209,5 +698,800 @@ capitalise(e = \&) {
 	.users-online .word,
 	.users-online::before {
 		display: none;
+	}
+
+	/**
+	 * Content
+	**/
+	.reddit-infobar,
+	.infobar {
+		background-color: color-a(3);
+		pad();
+		brd(,color11);
+		mar(0);
+		mar(bottom);
+
+		&.with-icon {
+			min-height: unset;
+
+			&::before {
+				display: none;
+			}
+		}
+
+		p {
+			mar(0);
+		}
+	}
+	.md {
+		max-width: unset;
+
+		.link .usertext-body & {
+			background-color: unset;
+			pad(0);
+			brd(0);
+			mar(0);
+
+			.listing-page & {
+				margin-right: 4ch $i;
+			}
+		}
+		.crosspost-preview-content .usertext-body & {
+			pad();
+		}
+		.linklisting &,
+		.commentarea & {
+			mar(top);
+			mar(bottom, 0);
+		}
+		&, * {
+			fg();
+			lnh();
+		}
+		&-spoiler-text {
+			background-color: unset $i;
+			pointer-events: none;
+		}
+
+		blockquote {
+			border-left: 2px solid var(--fg2);
+			mar(left, 0);
+
+			&:not(:last-of-type) {
+				mar(bottom);
+			}
+		}
+		hr {
+			background-color: var(--border);
+			height: var(--border-width);
+			margin: var(--pad) 0;
+
+			.side &:first-child {
+				mar(top);
+			}
+		}
+		table {
+			mar(top);
+		}
+		th, td {
+			brd();
+			padding: calc(var(--pad) / 2) var(--pad);
+		}
+		.-lists, ul, ol {
+			padding-left: 3ch;
+		}
+		p, h3, h4, ul, ol {
+			mar(0);
+		}
+		a {
+			fg(-link);
+		}
+	}
+	code, pre {
+		bg();
+		pad(0);
+		brd();
+		mar(0);
+
+		.expando & {
+			bg(2);
+			brd(0);
+		}
+	}
+	pre {
+		pad();
+
+		p + & {
+			mar(top);
+
+			&:not(:last-child) {
+				mar(bottom);
+			}
+		}
+
+		& > code {
+			brd(0);
+		}
+	}
+	.title {
+		fg();
+		lnh();
+		mar(0);
+		flex-grow: 1;
+
+		.top-matter > &,
+		.text-content > & {
+			normalise-header();
+			flex(,end, space-between);
+		}
+		.profile-page & {
+			pad(0);
+			brd(0);
+		}
+
+		&-button {
+			normalise-button();
+			text-transform: capitalize $i;
+			text-decoration: none $i;
+			letter-spacing: 0 $i;
+			mar(left);
+			flex();
+			position: absolute;
+			top: 0;
+			left: calc(17ch + 16px);
+		}
+	}
+	.crosspost-preview {
+		brd();
+		mar(top);
+
+		&,
+		&-content {
+			bg();
+		}
+		&-header {
+			pad();
+			brd(bottom);
+		}
+		&-tagline {
+			mar(0);
+
+			& > .dot {
+				display: none;
+			}
+			& > .comments {
+				fg(2);
+			}
+		}
+
+		.link &-content .self-divider {
+			brd(top);
+			mar(0);
+			display: none;
+			// TODO
+		}
+	}
+	.admin_takedown {
+		background-color: transparent;
+		pad(0);
+	}
+	.morecomments a {
+		color: var(--fg-link);
+		mar(0);
+	}
+	.link .flat-list {
+		pad(0);
+		position: relative;
+	}
+
+	.nav-buttons {
+		lnh();
+		margin-bottom: var(--body-pad) $i;
+		capitalise();
+	}
+	.nextprev, .nextsuggestions {
+		fg();
+
+		a {
+			normalise-button();
+			display: inline-block;
+
+			&[rel$="prev"] {
+				replace-text('Previous');
+				mar(right);
+			}
+			&[rel$="next"] {
+				replace-text('Next');
+			}
+		}
+
+		.separator {
+			display: none;
+		}
+	}
+
+	// Comments
+	.subreddit,
+	.menuarea,
+	.comment {
+		mar(0);
+		pad(0);
+	}
+	.panestack-title {
+		normalise-header(false);
+	}
+	.comment {
+		lnh();
+		pad(0);
+
+		body:not(.profile-page) &:not(.collapsed) > .entry > .tagline {
+			pad(bottom);
+			brd(bottom);
+			position: relative;
+		}
+		&.collapsed {
+			&.deleted .numchildren {
+				margin-left: -1ch;
+			}
+
+			.tagline * {
+				font-style: normal $i;
+			}
+			.expand {
+				fa(0fe);
+			}
+		}
+		&area {
+			position: relative;
+		}
+
+		.expand {
+			fa(146);
+			fg(2);
+			pad(0);
+			margin-left: 1ch;
+			mar(right, 0);
+			float: right;
+
+			&:hover {
+				fg();
+				text-decoration: none;
+			}
+		}
+		.author {
+			fg();
+		}
+		.child, .showreplies {
+			brd(left, 0);
+			mar(left, 0);
+			mar(top);
+
+			&:empty {
+				display: none;
+			}
+		}
+		&.deleted em {
+			clr(9);
+		}
+	}
+	.edited-timestamp {
+		replace-text(' ('attr(title)')', fg2);
+	}
+	.usertext {
+		&.grayed &-body,
+		&.border &-body {
+			background-color: transparent;
+			fg();
+			pad(0);
+		}
+	}
+	.gallery {
+		&-tiles {
+			flex();
+			gap: var(--pad);
+		}
+		&-navigation {
+			pad(0);
+		}
+	}
+
+	// Search
+	.search {
+		&pane {
+			pad(0);
+			mar(0);
+
+			h4 {
+				normalise-header();
+			}
+			p {
+				mar(0);
+			}
+		}
+		&-submit-button {
+			display: none;
+		}
+		&-header {
+			&-label {
+				lnh();
+			}
+			&-menus {
+				fg(2);
+			}
+		}
+		&-title[href] {
+			fg();
+			width: 100%;
+
+			& > mark {
+				hl();
+			}
+		}
+		&-result {
+			mar(top, 0);
+
+			&-group {
+				pad(0);
+				max-width: unset;
+				min-width: unset;
+
+				&-header {
+					normalise-header(false);
+					flex(,flex-end, space-between);
+				}
+			}
+			&-header,
+			&-meta, &-meta > *,
+			&-footer, &-footer > * {
+				lnh();
+			}
+			&-header {
+				normalise-header();
+			}
+			&-meta {
+				fg(2);
+				margin-left: 3ch;
+				position: relative;
+			}
+			&-icon-external {
+				display: none;
+			}
+			&-footer > .search-link {
+				mar(0);
+			}
+
+			& > div {
+				width: calc(100% - 70px - var(--pad));
+			}
+			a {
+				fg(-link);
+			}
+		}
+		&-expando {
+			&::before {
+				height: calc(var(--font-size) * var(--line-height)) $i;
+				background-image: linear-gradient(180deg, transparent, var(--bg2)) $i;
+			}
+
+			&.collapsed {
+				max-height: 0;
+			}
+
+			&-button {
+				text-decoration: none $i;
+
+				&.expanded &-label-expanded,
+				&.collapsed &-label-collapsed {
+					display: block;
+				}
+				&.expanded &-label-expanded {
+					mar(top);
+				}
+
+				& > span {
+					normalise-button();
+					capitalise();
+					--bg2: var(--bg);
+					width: max-content;
+				}
+			}
+		}
+		&-result-footer,
+		&-result &-expando {
+			pad(top);
+			brd(top);
+			mar(top);
+		}
+	}
+	#moresearchinfo {
+		background-color: color-a(11);
+		pad();
+		brd(,color11);
+		mar(0);
+		max-width: unset;
+		height: unset $i;
+
+		#previoussearch & {
+			display: block $i;
+		}
+
+		& > p {
+			display: none;
+		}
+	}
+	dl, dt, dd {
+		mar(0);
+	}
+	dl {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+	}
+	dd {
+		capitalise();
+	}
+
+	// Posts
+	.thing {
+		& &,
+		& & & &,
+		& & & & & &,
+		& & & & & & & &,
+		& & & & & & & & & & {
+			background-color: var(--bg);
+		}
+		& & & & & & & & & & &,
+		& & & & & & & & &,
+		& & & & & & &,
+		& & & & &,
+		& & & {
+			background-color: var(--bg2);
+		}
+
+		colors = {
+			stickied: 2,
+			locked:   3
+		}
+		for k, v in colors {
+			&.{k} {
+				background-color: color-a(v) $i;
+				brd(,s('color%s', v));
+			}
+			/.{k}-tagline {
+				display: none $i;
+			}
+		}
+		&[data-nsfw="true"] {
+			background-color: color-a(1) $i;
+			brd(,color1);
+		}
+
+		&.morerecursion {
+			background-color: transparent $i;
+			pad(0);
+			pad(top);
+			brd(0);
+			brd(top);
+		}
+	}
+	.thing, .search-result {
+		background-color: var(--bg2);
+		pad();
+		brd();
+		mar(bottom);
+		position: relative;
+
+		.child & + .clearleft:last-child {
+			margin-top: calc(var(--pad) * -1);
+		}
+
+		&.last-clicked {
+			brd(, hl, false);
+			box-shadow: var(--shadow-ins) var(--hl);
+		}
+	}
+	.deepthread {
+		&::after {
+			display: none;
+		}
+
+		a {
+			fg(-link);
+		}
+	}
+	.rank {
+		fg(2);
+		position: absolute;
+		right: var(--pad);
+		bottom: var(--pad);
+		width: unset $i;
+
+		.thing.stickied > &,
+		.thing:not(:hover) > & {
+			display: none;
+		}
+
+		&::before {
+			content: '#';
+		}
+	}
+	.thumbnail {
+		mar(right);
+		mar(bottom, 0);
+
+		&.nsfw,
+		&.spoiler,
+		&.self,
+		&.image,
+		&.default,
+		&.account {
+			visibility: hidden; // preserve the left spacing
+
+			.profile-page & {
+				display: none;
+			}
+		}
+	}
+	.entry {
+		mar(left, 0);
+
+		.buttons {
+			.profile-page & {
+				pad(top);
+				brd(top);
+				mar(top);
+			}
+			.profile-page .thing:not(.comment) & {
+				margin-top: calc(var(--font-size) * -1);
+			}
+
+			& > li {
+				pad(0);
+				padding-right: 1ch $i;
+				lnh();
+
+				&:first-child:not([class]) { // stamp
+					display: none;
+				}
+			}
+			a {
+				fg(2);
+				pad(0);
+			}
+		}
+		.profile-page .comment > & {
+			brd(top);
+			mar(top);
+
+			& > .buttons {
+				margin-left: -1ch;
+			}
+		}
+	}
+	.tagline {
+		position: static $i;
+
+		.author, .subreddit {
+			fg();
+			mar(right, 0);
+		}
+		.profile-page & {
+			position: absolute $i;
+			top: var(--pad);
+			right: var(--pad);
+			bg(2);
+
+			&::before {
+				content: '';
+				position: absolute;
+				left: -2ch;
+				box(2ch, 100%);
+				background-image: linear-gradient(90deg, transparent, var(--bg2));
+			}
+		}
+		.listing-page:not(.profile-page) & {
+			margin-left: 7ch;
+		}
+		.comments-page .thing:not(.comment) &:not(.crosspost-preview-tagline) {
+			replace-text();
+
+			../, ../ a, & > time {
+				fg(2);
+			}
+			& > time::after {
+				content: ' by ';
+				fg(2);
+				white-space: pre-wrap;
+				display: inline-block;
+			}
+			/.userattrs:not(:empty),
+			& > .stickied-tagline {
+				margin-left: 1ch;
+			}
+		}
+	}
+	.profile-page .parent {
+		replace-text();
+
+		& > .subreddit {
+			fg(-link);
+
+			&::before {
+				content: ' in ';
+				display: inline-block;
+				fg();
+				white-space: pre;
+			}
+		}
+	}
+	.oc-tag {
+		bgc(2, 2);
+		lnh();
+		pad(0);
+		mar(0);
+	}
+	.expando {
+		pad(top);
+		brd(top);
+		mar(0);
+		mar(top);
+
+		&-button {
+			background: none $i;
+			fa(146);
+			mar(0);
+			margin-right: 1ch $i;
+			box(unset);
+
+			.profile-page & {
+				position: absolute;
+				left: var(--pad);
+				bottom: var(--pad);
+			}
+
+			&.collapsed {
+				fa(0fe);
+			}
+
+			&:not(:hover) {
+				fg(2);
+			}
+		}
+		&-gate__show-once {
+			normalise-button();
+			text-transform: unset $i;
+		}
+	}
+	body:not(.profile-page) .first,
+	body:not(.profile-page) .comments,
+	.search-comments {
+		position: absolute;
+	}
+	.comments,
+	.search-comments,
+	[data-event-action="context"],
+	[data-event-action="full_comments"] {
+		fa(unquote('086'));
+		left: calc(var(--font-size) * 1.5);
+		top: calc(var(--font-size) * -1 - 4px);
+
+		&:hover {
+			text-decoration: none $i;
+
+			&::before {
+				fg();
+			}
+		}
+
+		&.empty {
+			&::before {
+				clr(1);
+			}
+			&:hover::before {
+				clr(9);
+			}
+		}
+	}
+	.profile-page .thing.link .first {
+		margin-left: 3ch;
+	}
+	[data-event-action="context"] {
+		fa(unquote('075'));
+	}
+	.search {
+		&-result-meta > &-comments {
+			fg(2);
+			left: calc(var(--font-size) * -1.5);
+			top: 2px;
+		}
+	}
+
+	// Domains
+	domains = {
+		"i.redd.it":   Image,
+		"i.imgur.com": Image,
+		"v.redd.it":   Video,
+		"github.com":  GitHub
+	}
+	.domain {
+		replace-text(,fg2);
+
+		.thing[data-domain^="self"]:not([data-crosspost-root-subreddit]) & {
+			display: none;
+		}
+		for k, v in domains {
+			.thing[data-domain=\"{k}\"] & > a {
+				replace-text(s('"%s"', v), fg2);
+			}
+		}
+		.thing[data-domain="reddit.com"] & a,
+		.thing[data-url^="https://www.reddit.com/gallery"] & > a {
+			replace-text('Album', fg2);
+		}
+	}
+
+	// Menu
+	.search-menu,
+	.menuarea > .spacer {
+		.selected,
+		& > .drop-choices {
+			capitalise();
+			text-transform: none;
+			letter-spacing: 0;
+		}
+	}
+	.search-menu {
+		lnh();
+		margin-left: 1ch;
+
+		& > .dropdown {
+			display: inline-flex;
+		}
+	}
+	.menuarea {
+		fg(2);
+		letter-spacing: 1px;
+		text-transform: uppercase;
+		brd(0);
+		position: absolute;
+		right: 0;
+		top: 0;
+
+		//.dropdown span {
+		.selected {
+			box-sizing: border-box;
+			flex(inline-flex);
+
+			/.dropdown.lightdrop .selected, & {
+				normalise-select();
+				text-decoration: none $i;
+				cursor: pointer;
+			}
+		}
+
+		.content > & {
+			top: calc(var(--font-size) * -1 - var(--border-width));
+		}
+
+		& > .spacer {
+			mar(0);
+		}
+	}
+	.drop-choices {
+		bg();
+		lnh();
+		brd();
+		margin-top: 6px $i;
+		position: @css { sticky };
+
+		& > .choice {
+			fg();
+			capitalise();
+			pad();
+
+			&:hover {
+				hl();
+				text-decoration: none;
+			}
+		}
 	}
 }
