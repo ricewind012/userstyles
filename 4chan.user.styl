@@ -220,7 +220,7 @@ hide-chars(amount, pos, bg =) {
 		content: '' $i;
 		position: absolute $i;
 		pos();
-		box(s('%sch', amount), 100%);
+		box(s('%sch', amount), 1em);
 		bg(bg);
 	}
 }
@@ -368,6 +368,24 @@ normalise-radio() {
 	}
 }
 
+normalise-range() {
+	appearance: none $i;
+	bg(2);
+	brd();
+	height: calc(4px + var(--border-width) * 2) $i;
+	vertical-align: 4px;
+
+	&::-webkit-slider-thumb {
+		appearance: none $i;
+		bg();
+		brd();
+		border-radius: 50% $i;
+		box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1) $i;
+		box($select-size);
+		focus(active);
+	}
+}
+
 normalise-header(first = true) {
 	fg();
 	lnh();
@@ -456,9 +474,6 @@ fa(char) {
 				transition-property: border-color $i;
 			}
 		}
-		&[type="checkbox"] {
-			normalise-checkbox();
-		}
 		&[type="submit"],
 		&[type="button"],
 		/button {
@@ -468,6 +483,13 @@ fa(char) {
 			normalise-button();
 			font: var(--font-size) var(--font-normal);
 			mar(right);
+		}
+		&[type="checkbox"] {
+			normalise-checkbox();
+		}
+		&[type="range"] {
+			normalise-range();
+			shd(0);
 		}
 	}
 	input, button {
@@ -486,7 +508,6 @@ fa(char) {
 	.current {
 		hl();
 		font-weight: unset;
-		pointer-events: none;
 	}
 
 	.fa, .menu-button, .close {
@@ -1528,21 +1549,26 @@ fa(char) {
 	}
 	#t {
 		&-load {
+			replace-text('Get');
 			mar(right);
 			width: unset $i;
 		}
 		&-resp {
+			font-family: var(--font-code) $i;
 			text-transform: unset $i;
-			box(9ch, var(--header-h)) $i;
+			width: calc(6ch + var(--pad) * 2 + var(--border-width) * 2) $i;
 
 			&::placeholder {
 				color: transparent $i;
 			}
 		}
 		&-cnt {
-			mar(0);
 			mar(top);
+			mar(bottom);
 		}
+	}
+	:root.ua-blink #qr .captcha-container > div > div:first-of-type {
+		overflow: auto;
 	}
 	#qr-filename-container {
 		margin-right: calc(var(--pad) * -1 - 1ch);
@@ -1550,7 +1576,7 @@ fa(char) {
 	input[type="submit"] {
 		position: absolute;
 		right: var(--pad);
-		margin-top: calc(var(--header-h) * -1.25);
+		margin-top: s('calc(-80px - var(--header-h) - var(--pad) * 3 - %s + var(--border-width) * 3)', $select-size);
 	}
 	#file-n-submit {
 		height: unset;
@@ -1587,11 +1613,41 @@ fa(char) {
 			right: calc(var(--pad) + var(--font-size) * 3);
 		}
 	}
+	#watched-threads {
+		max-width: 300px;
+
+		& > div {
+			pad(0);
+			center(space-between);
+			flex-direction: row-reverse;
+			gap: 1ch;
+		}
+
+		a {
+			pad();
+		}
+		.current a {
+			&, &:hover::before {
+				color: var(--hl-fg) $i;
+			}
+		}
+		.watcher-link {
+			pad(right, 0);
+		}
+		.fa-times {
+			pad(left, 0);
+		}
+	}
+	#watcher-status:not(:empty) {
+		margin-right: 7ch;
+
+		&::before { content: '('; }
+		&::after { content: ')'; }
+	}
 	.watcher {
 		&-link {
 			fg(2);
-			pad();
-			padding-right: 1ch $i;
+			width: 100%;
 			overflow: auto;
 
 			&:hover {
@@ -1625,24 +1681,6 @@ fa(char) {
 				}
 			}
 		}
-	}
-	#watched-threads {
-		& > div {
-			pad(0);
-			pad(right);
-			center(space-between);
-			flex-direction: row-reverse;
-		}
-
-		.current a {
-			color: var(--hl-fg) $i;
-		}
-	}
-	#watcher-status:not(:empty) {
-		margin-right: 7ch;
-
-		&::before { content: '('; }
-		&::after { content: ')'; }
 	}
 
 	// Menu
@@ -1742,10 +1780,6 @@ fa(char) {
 			fg(2);
 			hide-chars(1, left);
 			margin-left: s('calc(%s - 1ch)', $select-size) $i;
-
-			&::before {
-				box(1em); // ?
-			}
 		}
 		.suboption-list {
 			&::before {
@@ -1932,7 +1966,7 @@ fa(char) {
 			margin-top: calc(var(--threads-pos) + var(--pad) + var(--section-height) + var(--header-h));
 			box(var(--sidebar-width), var(--section-height));
 			overflow: auto;
-			box-sizing: content-box $i; // ..so the width stays with a border
+			box-sizing: content-box $i; // ..so the width stays with the border
 			z-index: 10; // 45
 
 			&::before {
@@ -1947,7 +1981,7 @@ fa(char) {
 				replace-text(attr(title), fg2, before);
 				pad();
 
-				&:hover::before {
+				&:not(.current):hover::before {
 					fg();
 				}
 			}
@@ -2000,6 +2034,7 @@ fa(char) {
 			z-index: 1;
 			width: var(--sidebar-width);
 			bg(2);
+			padding: 0 var(--pad);
 			brd(sidebar-pos == left ? right : left);
 		}
 		if (!board-title-image) {
@@ -2242,7 +2277,7 @@ fa(char) {
 						top: calc(var(--threads-pos) + var(--section-height) + var(--pad) * 7) $i;
 					}
 				}
-				#header-bar:hover {
+				#header-bar:has(> #board-list:hover) {
 					--section-content-height: calc((var(--font-size) * var(--line-height) + var(--pad) * 2) * var(--sidebar-items));
 					--section-height: calc(var(--header-size) + var(--section-content-height));
 
@@ -2258,11 +2293,10 @@ fa(char) {
 				}
 				#qr {
 					overflow: hidden;
-					//height: calc(var(--pad) * 13 + var(--border-width) * 8);
-					height: 100%;
+					height: var(--header-size);
 
-					&:not(:hover) {
-						height: var(--header-size);
+					&:hover, &:has(:focus) {
+						height: 100%;
 					}
 				}
 			}
