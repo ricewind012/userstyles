@@ -467,6 +467,7 @@ fa(char) {
 		&[type="text"],
 		&[type="number"],
 		&[type="search"],
+		/.field,
 		/textarea {
 			normalise-input();
 
@@ -508,6 +509,9 @@ fa(char) {
 	.current {
 		hl();
 		font-weight: unset;
+	}
+	.dead-thread, .disabled:not(.replies-quoting-you) {
+		opacity: 1;
 	}
 
 	.fa, .menu-button, .close {
@@ -614,10 +618,6 @@ fa(char) {
 		brd(bottom);
 		shd(0);
 		center(space-between);
-
-		&:not(:hover) #yous {
-			display: none $i;
-		}
 	}
 	#board-list a,
 	#shortcuts a:not(.entry) {
@@ -630,10 +630,25 @@ fa(char) {
 	#custom-board-list,
 	#full-board-list {
 		vertical-align: unset;
+		display: flex;
 
-		a:not(:last-of-type)::after {
-			content: ',';
-			bgc(2);
+		a {
+			text-decoration: none $i;
+
+			&:not(.current) {
+				fg(2);
+			}
+			&:hover {
+				fg();
+			}
+		}
+
+		if (!sidebar) {
+			margin: calc(var(--pad) * -1);
+
+			a {
+				pad();
+			}
 		}
 	}
 	if (boards-hover) {
@@ -643,6 +658,7 @@ fa(char) {
 			left: -100%;
 			top: 0;
 			bottom: 0;
+			height: 100%;
 			bg(2);
 			center();
 			anim();
@@ -656,10 +672,6 @@ fa(char) {
 				brd(bottom);
 				brd(right);
 				shd(big);
-
-				a::after {
-					display: none;
-				}
 			}
 			#header-bar:hover & {
 				left: var(--hover-pos);
@@ -1001,8 +1013,15 @@ fa(char) {
 				content: 'No subject';
 			}
 
-			.watched ^[1..-1] {
+			.thread.filter-highlight ^[1..-1] {
+				--fg2: var(--hl-fg);
 				hl();
+			}
+			.watched ^[1..-1]::after {
+				content: '\f006';
+				font: var(--font-size) FontAwesome $i;
+				fg(2);
+				margin-left: 1ch;
 			}
 		}
 	}
@@ -1196,6 +1215,7 @@ fa(char) {
 	.quote {
 		clr(2);
 	}
+	.backlink,
 	.deadlink,
 	.quotelink {
 		clr(3);
@@ -1208,12 +1228,7 @@ fa(char) {
 		opacity: .5;
 	}
 	.backlink {
-		clr(11);
 		fa('\f075');
-
-		&:hover {
-			clr(3);
-		}
 	}
 	.forwardlink {
 		&, &::before {
@@ -1224,21 +1239,13 @@ fa(char) {
 	.quotelink {
 		&, &.deadlink:not(.forwardlink) {
 			text-decoration: none $i;
-
-			:root.yotsuba-b &.deadlink {
-				clr(11);
-
-				&:hover {
-					clr(3);
-				}
-			}
 		}
 	}
 	.name {
-		clr(5);
+		clr(4);
 	}
 	.postertrip {
-		clr(1);
+		clr(5);
 	}
 	.subject {
 		fg();
@@ -1465,7 +1472,7 @@ fa(char) {
 		background-color: transparent;
 	}
 	.dialog {
-		bgc(-tr);
+		bg();
 		brd();
 		shd(big);
 		dropfade();
@@ -1488,10 +1495,10 @@ fa(char) {
 		& > .move {
 			accent();
 			pad();
-			padding-right: calc(var(--pad) * 2 + var(--font-size) + 1ch) $i;
+			padding-right: calc(var(--pad) * 2 + var(--font-size)) $i;
 			brd(bottom, accent-border);
 			border-radius: var(--border-radius) var(--border-radius) 0 0 $i;
-			center(space-between);
+			center(center, space-between);
 			replace-text(var(--window-name), accent-fg, before);
 		}
 	}
@@ -1505,7 +1512,7 @@ fa(char) {
 		}
 
 		& > form {
-			mar();
+			pad();
 		}
 		.persona,
 		.textarea {
@@ -1528,9 +1535,8 @@ fa(char) {
 			}
 
 			&-container {
-				background-color: transparent;
-				padding: 0 var(--pad);
-				brd(0);
+				gap: 1ch;
+				focus(focus-within);
 
 				& > a {
 					opacity: 1;
@@ -1541,7 +1547,7 @@ fa(char) {
 		&-filename,
 		&-no-file {
 			pad(0);
-			margin-right: 1ch;
+			mar(0);
 		}
 		&-no-file {
 			replace-text('None', fg2);
@@ -1570,9 +1576,6 @@ fa(char) {
 	:root.ua-blink #qr .captcha-container > div > div:first-of-type {
 		overflow: auto;
 	}
-	#qr-filename-container {
-		margin-right: calc(var(--pad) * -1 - 1ch);
-	}
 	input[type="submit"] {
 		position: absolute;
 		right: var(--pad);
@@ -1581,6 +1584,7 @@ fa(char) {
 	#file-n-submit {
 		height: unset;
 		mar(top, 0);
+		gap: var(--pad);
 
 		& > input {
 			width: unset $i;
@@ -1597,6 +1601,9 @@ fa(char) {
 	#thread-watcher {
 		--window-name: 'Threads';
 
+		& > .move {
+			padding-right: calc(var(--pad) * 2 + var(--font-size) * 4) $i;
+		}
 		.menu-button, .refresh {
 			box(var(--font-size));
 			center(center);
@@ -1685,31 +1692,31 @@ fa(char) {
 
 	// Menu
 	#menu, .submenu {
-		bg(2);
+		bgc();
 		pad(0);
 
-		&, a {
-			fg();
-			text-decoration: none;
-		}
-		input, select {
-			bg();
+		a {
+			color: unset $i;
+			text-decoration: none $i;
 		}
 
 		.entry {
 			pad();
+			padding-left: s('calc(var(--pad) + 1ch + %s)', $select-size) $i;
+			padding-right: calc(var(--pad) + 1em) $i;
 
 			&:not(.disabled).focused {
 				hl();
 			}
 			&.disabled {
-				opacity: 1;
 				background-color: transparent $i;
+				fg(2);
 				text-decoration: line-through;
 				pointer-events: none;
 			}
 
 			input[type="checkbox"] {
+				margin-left: s('calc(%s - 1ch)', $select-size * -1) $i;
 				top: 0;
 			}
 		}
@@ -1718,15 +1725,18 @@ fa(char) {
 	// Settings
 	#fourchanx-settings {
 		padding-top: var(--header-h) $i;
+		position: relative;
 		box(100vh, 75vh);
 
 		&::before {
 			content: 'Options';
 			position: absolute;
 			pos();
-			height: var(--header-h);
-			center(center);
+			height: calc(var(--font-size) * var(--line-height));
 			accent();
+			text-align: center;
+			pad();
+			padding-right: calc(var(--pad) * 2 + 2ch) $i;
 			brd(bottom, accent-border);
 			border-radius: var(--border-radius) var(--border-radius) 0 0;
 		}
@@ -1741,6 +1751,9 @@ fa(char) {
 				bg();
 				pad();
 				border-radius: 0 0 var(--border-radius) var(--border-radius) $i;
+			}
+			&-main {
+				margin-top: calc(var(--pad) * -2);
 			}
 			&-advanced {
 				a:not(:hover) {
@@ -1808,12 +1821,12 @@ fa(char) {
 		}
 	}
 	fieldset {
-		pad();
-		brd();
+		pad(0);
+		brd(0);
 		mar(0);
 
 		& + & {
-			mar(top);
+			margin-top: calc(var(--pad) * 2) $i;
 		}
 		& > div:first-of-type label {
 			mar(top, 0);
@@ -1821,6 +1834,10 @@ fa(char) {
 		/.section-main div::before, & {
 			border-color: var(--border) $i;
 		}
+	}
+	legend {
+		normalise-header();
+		width: 100%;
 	}
 	li {
 		pad(0);
@@ -1831,10 +1848,13 @@ fa(char) {
 	}
 	.note {
 		font-style: normal $i;
-		mar(left, 0);
+		margin-left: 6ch $i;
+		position: relative;
 
 		&::before {
-			content: 'NOTE:\00a0'
+			content: 'NOTE:\00a0';
+			position: absolute;
+			left: -6ch;
 		}
 	}
 
@@ -1943,14 +1963,22 @@ fa(char) {
 		#yous {
 			position: absolute;
 			{sidebar-pos}: var(--pad);
-			top: calc(var(--header-h) + var(--pad) + 100vh - var(--font-size) * var(--line-height) * 2 - var(--pad) * 3);
+			top: calc(var(--header-h) + var(--pad) + 100vh - var(--font-size) * var(--line-height) * 2 - var(--pad) * 4);
 			//z-index: 45;
 			width: calc(var(--sidebar-width) - var(--pad) * 2) $i;
 			center(sidebar-pos == left ? right : left);
 			gap: 1ch;
+
+			#header-bar:not(:has(> #shortcuts:hover)) & {
+				display: none $i;
+			}
 		}
-		#board-list, #thread-watcher {
-			--scrollbar-track: var(--bg);
+		#board-list > span, #watched-threads {
+			&::-webkit-scrollbar {
+				&-button, &-track {
+					--bg2: var(--bg);
+				}
+			}
 		}
 		.boardList > span,
 		#thread-watcher .close, #qr .close,
@@ -2058,7 +2086,7 @@ fa(char) {
 			&s {
 				position: fixed;
 				{sidebar-pos}: var(--pad);
-				top: calc(var(--header-h) + var(--pad) + 100vh - var(--font-size) * var(--line-height) - var(--pad) * 2);
+				top: calc(var(--pad) + 100vh - var(--font-size) * var(--line-height) - var(--pad) * 2);
 				//z-index: 45;
 				width: calc(var(--sidebar-width) - var(--pad) * 2) $i;
 			}
@@ -2082,7 +2110,7 @@ fa(char) {
 				}
 				#menu {
 					{sidebar-pos}: var(--sidebar-width) $i;
-					bottom: -100vh $i;
+					bottom: 0 $i;
 				}
 			}
 
@@ -2091,14 +2119,14 @@ fa(char) {
 				position: absolute;
 				right: 8ch;
 				box(var(--gradient-size), 100%);
-				background-image: linear-gradient(90deg, transparent, var(--bg2));
+				background-image: linear-gradient(90deg, transparent, var(--bg3));
 			}
 			&s::after {
 				content: '';
 				position: absolute;
 				right: 0;
 				box(8ch, 100%);
-				bg(2);
+				bg(3);
 			}
 			&s::after,
 			&-stats {
@@ -2109,7 +2137,7 @@ fa(char) {
 			&-status {
 				position: absolute;
 				left: 0;
-				bottom: calc(var(--pad) + var(--font-size) * var(--line-height));
+				bottom: calc(var(--pad) * 2 + var(--font-size) * var(--line-height));
 				width: max-content;
 			}
 			&-timer {
@@ -2121,23 +2149,18 @@ fa(char) {
 				}
 			}
 		}
-		#id_css {
-			&::before, &::after {
-				content: '';
-				position: fixed;
-				{sidebar-pos}: 0;
-				z-index: 11;
-			}
-			&::before {
-				bottom: 0;
-				box(calc(var(--sidebar-width) - var(--border-width)), calc(var(--font-size) * var(--line-height) + var(--pad) * 2));
-				bg(2);
-			}
-			&::after {
-				bottom: calc(var(--font-size) * var(--line-height) + var(--pad) * 2);
-				box(calc(var(--sidebar-width) - var(--border-width)), var(--gradient-size));
-				background-image: linear-gradient(180deg, transparent, var(--bg2));
-			}
+		#id_css::before {
+			content: '';
+			position: fixed;
+			{sidebar-pos}: 0;
+			z-index: 11;
+			bottom: 0;
+			box(
+				calc(var(--sidebar-width) - var(--border-width)),
+				calc(var(--font-size) * var(--line-height) + var(--pad) * 2)
+			);
+			bg(3);
+			brd(top);
 		}
 
 		// Popups
@@ -2182,8 +2205,9 @@ fa(char) {
 			}
 		}
 		#qr {
+			&-filename-container,
 			input, button, textarea {
-				--bg2: var(--bg);
+				bg();
 			}
 			textarea {
 				min-width: unset;
