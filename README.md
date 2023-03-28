@@ -62,6 +62,18 @@ None work by default, as you'll have to declare the variables **in an another us
 code, pre, code *, pre * {
   font-family: var(--font-code) !important;
 }
+
+@keyframes dropfade {
+	0% {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
 ```
 
 ## Requirements
