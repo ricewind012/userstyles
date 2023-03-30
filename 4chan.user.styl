@@ -775,7 +775,7 @@ fa(char) {
 	 * Content
 	**/
 	.board {
-		margin-top: calc(var(--header-size) + var(--pad) * 2) !important;
+		margin-top: calc(var(--header-size) + var(--pad) * 4) !important;
 		margin-left: var(--thread-margin) $i;
 		margin-right: var(--thread-margin) $i;
 
@@ -877,7 +877,7 @@ fa(char) {
 			position: unset;
 		}
 
-		&Container .subject {
+		.thread &Container .subject {
 			normalise-header(true);
 			position: absolute;
 			left: var(--body-pad);
@@ -957,6 +957,7 @@ fa(char) {
 		&-link {
 			bg(2);
 			height: 120px;
+			overflow: hidden;
 			center(center);
 		}
 		&-thumb {
@@ -966,6 +967,10 @@ fa(char) {
 		&-stats {
 			pad();
 			brd(top);
+
+			& > .menu-button {
+				padding-left: var(--pad);
+			}
 		}
 	}
 	.json-index {
@@ -1017,7 +1022,7 @@ fa(char) {
 	// Top icons
 	.navLinks {
 		position: absolute;
-		top: var(--pad);
+		top: sidebar ? var(--pad) : var(--header-top-pos);
 		right: var(--body-pad);
 
 		// Catalog
@@ -1035,12 +1040,11 @@ fa(char) {
 		// Thread
 		&Bot, &.desktop {
 			replace-text();
-			top: var(--body-pad);
 		}
 		a {
 			text-decoration: none;
 			position: absolute;
-			top: 0;
+			top: sidebar ? calc(var(--body-pad) - var(--pad)) : 0;
 
 			&:not(:hover) {
 				fg(2);
@@ -1111,11 +1115,11 @@ fa(char) {
 				width: calc(100% - var(--pad)) $i;
 			}
 
-			.menu-button {
+			&:not(.catalog-post) .menu-button {
 				position: absolute;
 				right: var(--pad);
 			}
-			&.op .menu-button {
+			&.op > &Info > .menu-button {
 				right: calc(var(--body-pad) + var(--border-width) + var(--pad));
 			}
 		}
@@ -1143,8 +1147,11 @@ fa(char) {
 					{image-right-side ? right : left}: 0;
 				}
 			}
-			.postMessage {
+			& > .postMessage {
 				margin-top: calc(var(--font-size) * var(--line-height) + var(--pad) * 2) !important;
+			}
+			& > .postInfo > .inline {
+				margin-top: calc(var(--pad) * 3 + var(--font-size) * var(--line-height)) $i;
 			}
 		}
 		&Info {
@@ -1342,6 +1349,7 @@ fa(char) {
 		}
 	}
 	.inline {
+		background-color: transparent $i;
 		brd();
 		mar(0);
 		mar(top);
@@ -1742,6 +1750,21 @@ fa(char) {
 			}
 			&-main {
 				margin-top: calc(var(--pad) * -2);
+			}
+			/#sauce-doc, &-filter > select {
+				mar(bottom);
+			}
+			&-filter {
+				height: calc(100% - var(--pad) * 3) $i;
+
+				& > div {
+					height: calc(100% - var(--pad) * 2) $i;
+				}
+
+				textarea {
+					height: 100%;
+					resize: none;
+				}
 			}
 			&-advanced {
 				a:not(:hover) {
@@ -2185,6 +2208,7 @@ fa(char) {
 				mar(bottom, 0);
 				mar(left);
 				mar(right);
+				justify-content: left $i;
 				cursor: unset;
 
 				&::before {
@@ -2223,7 +2247,7 @@ fa(char) {
 		.board {
 			margin-top: calc(var(--header-size) + var(--body-pad)) $i;
 		}
-		.opContainer .subject {
+		.thread .opContainer .subject {
 			{sidebar-pos}: calc(var(--sidebar-width) + var(--body-pad));
 
 			&,
