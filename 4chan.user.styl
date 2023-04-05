@@ -401,9 +401,10 @@ fa(char) {
 
 @-moz-document domain("4chan.org"), domain("4channel.org") {
 	/**
-	 * Global
+	 * Variables
 	**/
 	body {
+		// Settings
 		settings = \
 			'board-title-font-size',
 			'board-title-pad',
@@ -414,8 +415,8 @@ fa(char) {
 		for i in settings {
 			\-\-{i}: convert(i);
 		}
-	}
-	body {
+
+		// Other
 		--header-size: calc(var(--font-size) * var(--line-height) + var(--pad) * 2 + var(--border-width));
 		--header-top-pos: calc(var(--header-h) + var(--body-pad) + var(--board-title-height) + var(--pad));
 		--board-title-height: board-title-image ? \
@@ -426,6 +427,9 @@ fa(char) {
 		--gradient-size: 2ch;
 	}
 
+	/**
+	 * Global
+	**/
 	* {
 		box-sizing: border-box $i;
 	}
@@ -438,13 +442,13 @@ fa(char) {
 		lnh();
 		pad(0);
 		margin: var(--body-pad);
+		margin-top: calc(var(--header-h) + var(--body-pad));
 	}
 
 	a {
 		&, &:hover {
 			color: var(--fg-link) $i;
 		}
-
 		&:hover {
 			text-decoration: underline;
 		}
@@ -468,11 +472,6 @@ fa(char) {
 		/button {
 			normalise-button();
 		}
-		&[type="file"]::file-selector-button {
-			normalise-button();
-			font: var(--font-size) var(--font-normal);
-			mar(right);
-		}
 		&[type="checkbox"] {
 			normalise-checkbox();
 		}
@@ -494,16 +493,24 @@ fa(char) {
 	.new {
 		clr(10);
 	}
+	.subject {
+		fg();
+	}
 	.current {
 		hl();
-		font-weight: unset;
 	}
 	.dead-thread, .disabled:not(.replies-quoting-you) {
 		opacity: 1;
 	}
+	.brackets-wrap {
+		&::before, &::after {
+			display: none;
+		}
+	}
 
 	.fa, .menu-button, .close {
 		fg(2);
+		box(unset);
 
 		&::before {
 			font-size: var(--font-size) $i;
@@ -519,10 +526,7 @@ fa(char) {
 	}
 	.menu-button {
 		fa('\f078');
-
-		.postInfo & {
-			box(unset);
-		}
+		pad(0);
 
 		.fa,
 		#header-bar & > i {
@@ -533,34 +537,26 @@ fa(char) {
 	/**
 	 * Hide elements
 	**/
-	// I. Buttons
-	#t-help,
+	// I. Top buttons
 	.updatelink,
 	[href="#top"],
 	[href="#bottom"],
 	[href$="#index"],
 	.navLinks [href$="#catalog"],
-	//.open-qr-wrap,
-	//[accesskey="a"],
-	#settings > .btn-wrap,
 
 	// II. Top
-	#toggleMsgBtn, #globalMessage, .middlead + hr, form + hr,
-	.abovePostForm, .aboveMidAd,
+	#toggleMsgBtn, #globalMessage,
 	#togglePostFormLink,
 	#bannerCnt,
 	.middlead,
 	#blotter,
 
 	// III. Bottom
-	#styleSwitcher, .stylechanger,
 	#boardNavDesktopFoot,
-	//#bottomReportBtn,
+	.bottomCtrl,
 	#absbot,
 
 	// IV. Post
-	//.sideArrows,
-	//.postMenuBtn,
 	.archivedIcon,
 	.postInfo > input,
 
@@ -574,20 +570,16 @@ fa(char) {
 	hr,
 
 	// VII. 4chan X
-	#op, .navLinks, .navLinks + hr, .thread + hr, // Navigation links
 	#fourchanx-settings .reset,
-	//#shortcut-native,
-	//.dateTime:empty,
-	.bottomCtrl,
+	.qr-link-container,
 
 	// VIII. Quick reply
-	.qr-link-container,
-	#qr-spoiler-label,
+	#qr > .move > label,
 	#qr-oekaki-button,
 	.closed ~ #qr,
 	#shortcut-qr,
 	#qr select,
-	#qr label
+	#t-help
 	{
 		display: none $i;
 	}
@@ -595,9 +587,6 @@ fa(char) {
 	/**
 	 * Header
 	**/
-	body {
-		margin-top: calc(var(--header-h) + var(--body-pad)) $i;
-	}
 	#header-bar {
 		bgc(2);
 		header-focus();
@@ -607,20 +596,20 @@ fa(char) {
 		shd(0);
 		center(space-between);
 	}
-	#board-list a,
-	#shortcuts a:not(.entry) {
-		pad(0);
-
-		&:hover {
-			text-decoration: underline;
-		}
-	}
 	#custom-board-list,
 	#full-board-list {
 		vertical-align: unset;
 		display: flex;
 
-		a {
+		if (!sidebar) {
+			margin: calc(var(--pad) * -1);
+
+			& > a {
+				pad();
+			}
+		}
+
+		& > a {
 			text-decoration: none $i;
 
 			&:not(.current) {
@@ -628,14 +617,6 @@ fa(char) {
 			}
 			&:hover {
 				fg();
-			}
-		}
-
-		if (!sidebar) {
-			margin: calc(var(--pad) * -1);
-
-			a {
-				pad();
 			}
 		}
 	}
@@ -675,41 +656,35 @@ fa(char) {
 			}
 		}
 	}
-	.brackets-wrap {
-		&::before, &::after {
-			display: none;
-		}
-	}
 	.shortcut {
 		mar(left, 0);
 		vertical-align: unset;
 
-		a {
+		& > a {
 			fg(2);
+			pad(0);
 		}
 	}
 	#shortcut {
-		&-updater::after,
-		&-gallery::after,
-		&-stats::after {
-			content: var(--delim);
-			display: unset;
+		&-updater,
+		&-stats {
+			&::after {
+				content: var(--delim);
+				display: unset;
+			}
 		}
-		.shortcut-icons &-gallery::after {
-			display: none;
-		}
-
 		&s {
 			center(right);
 			gap: 1ch;
-		}
-		:root.shortcut-icons &s .fa {
-			font-size: 0 $i;
 
-			&::before {
-				top: 0 $i;
-				font-size: var(--font-size) $i;
-				mar(top, 0);
+			:root.shortcut-icons & .fa {
+				font-size: 0 $i;
+
+				&::before {
+					top: 0 $i;
+					font-size: var(--font-size) $i;
+					mar(top, 0);
+				}
 			}
 		}
 	}
@@ -737,20 +712,12 @@ fa(char) {
 	}
 
 	// Notifications
-	colors = {
-		error: 1,
-		success: 2,
-		warning: 3,
-		info: 4
-	}
-	for k, v in colors {
-		.notification.{k} {
-			background-color: color-a(v);
-			border-color: color-a(v) $i;
-		}
-	}
 	#notifications {
 		top: calc(100% + var(--border-width)) $i;
+
+		.message, .close {
+			pad();
+		}
 	}
 	.notification {
 		backdrop-filter: var(--popup-filter);
@@ -758,56 +725,68 @@ fa(char) {
 		text-shadow: none;
 		brd();
 		brd(top, 0);
-		border-radius: 0 0 var(--border-radius) var(--border-radius) $i;
-		margin: 0 auto;
+		border-radius: 0 $i;
+		margin: auto;
 		shd(mid);
-		anim();
+		center();
+		flex-direction: row-reverse;
+		transition: none;
 
-		.close {
-			display: none;
+		&:last-child {
+			border-radius: 0 0 var(--border-radius) var(--border-radius) $i;
 		}
-	}
-	.message {
-		pad();
+
+		colors = {
+			error:   1,
+			success: 2,
+			warning: 3,
+			info:    4
+		}
+		for k, v in colors {
+			&.{k} {
+				background-color: color-a(v);
+				border-color: s('var(--color%s)', v + 8) $i;
+			}
+		}
 	}
 
 	/**
 	 * Content
 	**/
 	.board {
-		margin-top: calc(var(--header-size) + var(--pad) * 4) !important;
-		margin-left: var(--thread-margin) $i;
-		margin-right: var(--thread-margin) $i;
+		margin: 0 var(--thread-margin) $i;
+		margin-top: calc(var(--header-size) + var(--pad) * 2) !important;
 
 		if (board-title-image) {
-			images = {
-				a:   'https://i.imgur.com/5zmzyc4.jpg',
-				c:   'https://i.imgur.com/4c5m2KO.jpg',
-				ck:  'https://i.imgur.com/hJ7lLp2.jpg',
-				e:   'https://i.imgur.com/5pjIJyp.jpg',
-				g:   'https://i.imgur.com/tpkZt1F.jpg',
-				gif: 'https://i.imgur.com/8f3meO8.jpg',
-				h:   'https://i.imgur.com/eHfO884.jpg',
-				ic:  'https://i.imgur.com/Kx1Yf6j.jpg',
-				jp:  'https://i.imgur.com/6S4B00D.jpg',
-				toy: 'https://i.imgur.com/hJvjWm7.jpg',
-				v:   'https://i.imgur.com/6FTuSYF.png',
-				vg:  'https://i.imgur.com/W9t9RYg.jpg',
-				vp:  'https://i.imgur.com/0vXqiaD.jpg',
-				w:   'https://i.imgur.com/GNmXbof.jpg',
-				wg:  'https://i.imgur.com/avTTwET.jpg',
-				wsg: 'https://i.imgur.com/RNeZ7PR.jpg'
-			}
-			for k, v in images {
-				&_{k} &Banner {
-					background-image: url(v);
-				}
-			}
 			&Banner {
 				background-image: url('https://i.imgur.com/BZIzz1k.jpg');
 				background-position: center 50%;
 				background-repeat: no-repeat;
 				background-size: cover;
+
+				images = {
+					a:   'https://i.imgur.com/5zmzyc4.jpg',
+					c:   'https://i.imgur.com/4c5m2KO.jpg',
+					ck:  'https://i.imgur.com/hJ7lLp2.jpg',
+					e:   'https://i.imgur.com/5pjIJyp.jpg',
+					g:   'https://i.imgur.com/tpkZt1F.jpg',
+					gif: 'https://i.imgur.com/8f3meO8.jpg',
+					h:   'https://i.imgur.com/eHfO884.jpg',
+					ic:  'https://i.imgur.com/Kx1Yf6j.jpg',
+					jp:  'https://i.imgur.com/6S4B00D.jpg',
+					toy: 'https://i.imgur.com/hJvjWm7.jpg',
+					v:   'https://i.imgur.com/6FTuSYF.png',
+					vg:  'https://i.imgur.com/W9t9RYg.jpg',
+					vp:  'https://i.imgur.com/0vXqiaD.jpg',
+					w:   'https://i.imgur.com/GNmXbof.jpg',
+					wg:  'https://i.imgur.com/avTTwET.jpg',
+					wsg: 'https://i.imgur.com/RNeZ7PR.jpg'
+				}
+				for k, v in images {
+					~/_{k} & {
+						background-image: url(v);
+					}
+				}
 			}
 			&Title {
 				font-size: var(--board-title-font-size) $i;
@@ -818,7 +797,10 @@ fa(char) {
 				color: #fff $i;
 				text-shadow: 2px 2px #000;
 				letter-spacing: 0 $i;
-				padding: calc(var(--pad) * var(--board-title-pad)) 0;
+				padding: calc(var(--pad) * var(--board-title-pad)) var(--pad);
+			}
+			&Subtitle {
+				display: none;
 			}
 		} else {
 			&Banner {
@@ -834,125 +816,13 @@ fa(char) {
 		}
 	}
 
-	// Normal catalog
-	#ctrl {
-		margin-top: calc(var(--pad) * 2);
-		margin-bottom: calc(var(--pad) + var(--border-width));
-		justify-content: space-between;
-		position: relative;
-
-		// hack, so the height doesn't get smaller
-		@media (max-width: $small-screen) {
-			#settings {
-				visibility: hidden;
-				letter-spacing: -9999px;
-			}
-		}
-
-		&::before {
-			content: 'Catalog';
-			normalise-header();
-			position: absolute;
-			width: 100%;
-			z-index: -1;
-		}
-		&::after {
-			content: '';
-			position: absolute;
-			right: calc(var(--body-pad) * -1);
-			bottom: calc(var(--pad) * 1);
-			box(var(--body-pad), var(--border-width));
-		}
-
-		& > .clear {
-			display: none;
-		}
-	}
-	#settings {
-		position: relative;
-		top: calc(var(--pad) * -1.5);
-	}
-	.op {
-		& > .postInfo {
-			position: unset;
-		}
-
-		.thread &Container .subject {
-			normalise-header(true);
-			position: absolute;
-			left: var(--body-pad);
-			right: var(--body-pad);
-			top: var(--header-top-pos);
-
-			&:empty::before {
-				content: 'No subject';
-			}
-		}
-	}
-	.closed {
-		bg();
-		fa('\f02d');
-		clr(9);
-		pad(0);
-		width: var(--font-size);
-		position: absolute;
-		right: calc(var(--body-pad) + var(--font-size) * 1.5);
-		top: var(--header-top-pos);
-		z-index: 1;
-	}
-	#threads {
-		pad(0);
-	}
-	.is_catalog .thread {
-		bg(3);
-		pad(0);
-		brd();
-		mar(top, 0);
-		mar(right);
-		mar(bottom);
-		display: inline-flex;
-		flex-direction: column;
-
-		a {
-			brd(bottom);
-		}
-		.thumb {
-			box-shadow: none;
-			display: block;
-		}
-	}
-	.meta {
-		bg(4);
-		line-height: unset;
-		padding: calc(var(--pad) / 2) 0;
-		brd(bottom);
-		mar(0);
-		order: -1;
-
-		& > i {
-			clr(1);
-			font-style: normal;
-		}
-	}
-	.teaser {
-		bg(2);
-		pad();
-
-		b {
-			fg(2);
-		}
-	}
-
-	// JSON index
+	// Catalog
 	.catalog {
 		&-thread {
 			brd(0);
 			mar(0);
 			mar(right);
 			mar(bottom);
-		}
-		&-post {
-			mar(0);
 		}
 		&-link {
 			bg(2);
@@ -967,10 +837,11 @@ fa(char) {
 		&-stats {
 			pad();
 			brd(top);
-
-			& > .menu-button {
-				padding-left: var(--pad);
-			}
+			center(center);
+			gap: 1ch;
+		}
+		&-icons:empty {
+			display: none;
 		}
 	}
 	.json-index {
@@ -1069,14 +940,55 @@ fa(char) {
 	#index-search {
 		width: 150px $i;
 	}
+	.closed {
+		bg();
+		fa('\f02d');
+		clr(9);
+		pad(0);
+		width: var(--font-size);
+		position: absolute;
+		right: calc(var(--body-pad) + var(--font-size) * 1.5);
+		top: var(--header-top-pos);
+		z-index: 1;
+	}
+	.watch-thread-link {
+		fa('\f006');
+		opacity: 1;
+		background: none $i;
+		fg(2);
+		pad(0);
+		box(var(--font-size));
+		position: absolute;
+		top: var(--header-top-pos);
+		right: var(--body-pad);
+		z-index: 1;
+
+		&:hover {
+			fg();
+			text-decoration: none;
+		}
+
+		&.watched {
+			fa('\f005');
+		}
+	}
 
 	// Thread
+	.thread {
+		&, &Container {
+			display: inline-flex;
+			flex-direction: column;
+			gap: var(--pad);
+		}
+	}
 	.post {
 		bg(3);
 		pad(0);
 		brd();
-		mar(top);
-		mar(bottom, 0);
+
+		/div.thread > div:nth-of-type(2) > div.reply, & { // wtf
+			mar(0);
+		}
 
 		.board .deleted-post & {
 			anim();
@@ -1111,7 +1023,7 @@ fa(char) {
 		if (post-full-width) {
 			width: 100% $i;
 
-			.threadContainer & {
+			.threadContainer > &Container > & {
 				width: calc(100% - var(--pad)) $i;
 			}
 
@@ -1124,9 +1036,13 @@ fa(char) {
 			}
 		}
 
+		&:target {
+			bg(3);
+			focus(target);
+		}
+
 		&.op {
 			overflow: hidden $i;
-			mar(bottom);
 
 			if (!image-right-side) {
 				.nameBlock {
@@ -1140,7 +1056,6 @@ fa(char) {
 				&Thumb {
 					margin-top: calc(var(--font-size) * var(--line-height) * 2 + var(--pad) * 4 + var(--border-width)) !important;
 				}
-
 				&Text {
 					position: absolute;
 					top: calc(var(--font-size) * var(--line-height) + var(--pad) * 2 + var(--border-width));
@@ -1157,7 +1072,7 @@ fa(char) {
 		&Info {
 			bg(2);
 			pad();
-			padding-right: calc(2ch + var(--pad) * 2) $i;
+			padding-right: calc(5ch + var(--pad) * 2) $i;
 			brd(bottom);
 			position: relative;
 		}
@@ -1174,21 +1089,6 @@ fa(char) {
 		&Message {
 			mar(0);
 			pad();
-
-			.reply {
-				&:first-child {
-					mar(top, 0);
-				}
-				a + ^[1..-1] {
-					mar(bottom, 0);
-				}
-			}
-		}
-
-		&:target {
-			bg(3);
-			brd(,hl);
-			box-shadow: var(--shadow-ins) var(--hl);
 		}
 	}
 	// For "hide reply" button
@@ -1196,27 +1096,28 @@ fa(char) {
 		position: relative;
 	}
 	.container {
+		margin-left: 1ch;
+
 		.bottom-backlinks & {
 			text-align: right;
 			mar(left, 0);
 			mar(right);
 			mar(bottom);
 		}
-
-		&:not(:empty) {
-			margin-left: 1ch;
-		}
 	}
 	.quote {
 		clr(2);
 	}
 	.backlink,
-	.deadlink,
 	.quotelink {
 		clr(3);
 
 		&:hover {
 			clr(11);
+		}
+
+		&, &.deadlink:not(.forwardlink) {
+			text-decoration: none $i;
 		}
 	}
 	.filtered {
@@ -1230,20 +1131,11 @@ fa(char) {
 			hl();
 		}
 	}
-	.backlink,
-	.quotelink {
-		&, &.deadlink:not(.forwardlink) {
-			text-decoration: none $i;
-		}
-	}
 	.name {
 		clr(4);
 	}
 	.postertrip {
 		clr(5);
-	}
-	.subject {
-		fg();
 	}
 	.replacedSideArrows {
 		position: absolute;
@@ -1257,27 +1149,6 @@ fa(char) {
 			mar(0);
 			float: unset;
 			left: 0 $i;
-		}
-	}
-	.watch-thread-link {
-		fa('\f006');
-		opacity: 1;
-		background: none $i;
-		fg(2);
-		pad(0);
-		box(var(--font-size));
-		position: absolute;
-		top: var(--header-top-pos);
-		right: var(--body-pad);
-		z-index: 1;
-
-		&:hover {
-			fg();
-			text-decoration: none;
-		}
-
-		&.watched {
-			fa('\f005');
 		}
 	}
 	.file {
@@ -1304,6 +1175,7 @@ fa(char) {
 				float: right $i;
 			}
 		}
+
 		if (image-popup-filename) {
 			&Text {
 				.post:not(.op) & {
@@ -1318,7 +1190,6 @@ fa(char) {
 					mar(0);
 					dropfade();
 				}
-
 				.postInfo:hover + .file > &,
 				&:hover {
 					display: unset;
@@ -1341,6 +1212,12 @@ fa(char) {
 			brd(left, color3);
 		}
 	}
+	.inline {
+		background-color: transparent $i;
+		brd();
+		mar(0);
+		mar(top);
+	}
 	#qp {
 		brd(0);
 
@@ -1348,23 +1225,16 @@ fa(char) {
 			mar(0);
 		}
 	}
-	.inline {
-		background-color: transparent $i;
-		brd();
-		mar(0);
-		mar(top);
-	}
 	.qphl {
 		outline: none;
 		border-color: var(--hl) $i;
 	}
-	#unread-line {
+	#unread-line:not([hidden]) {
 		text-align: center;
 		brd(0);
-		margin-bottom: calc(var(--pad) * -1);
+		display: block $i;
 		position: relative;
 		height: auto;
-		display: block;
 
 		&::before {
 			content: '';
@@ -1380,12 +1250,28 @@ fa(char) {
 			display: inline-block;
 			bg();
 			clr(9);
-			pad();
+			padding: 0 var(--pad);
 		}
 	}
+	.op {
+		.thread &Container {
+			shd(0);
 
-	.opContainer {
-		shd(0);
+			.subject {
+				normalise-header(true);
+				position: absolute;
+				left: var(--body-pad);
+				right: var(--body-pad);
+				top: var(--header-top-pos);
+
+				&:empty::before {
+					content: 'No subject';
+				}
+			}
+		}
+		& > .postInfo {
+			position: unset;
+		}
 	}
 	.threadContainer {
 		border-left: var(--thread-border) solid var(--border);
@@ -1408,11 +1294,6 @@ fa(char) {
 
 		& + br {
 			display: none;
-		}
-
-		// Codeblock userscript
-		input[type="button"] {
-			margin-left: 1ch;
 		}
 	}
 
@@ -1468,34 +1349,33 @@ fa(char) {
 		background-color: transparent;
 	}
 	.dialog {
-		bg();
-		brd();
+		bgc();
+		pad(0);
+		brd(,accent-border);
 		shd(big);
 		dropfade();
+
+		.close {
+			fa('\f00d');
+			pad(0);
+			position: unset $i;
+		}
 	}
 
 	#qr, #thread-watcher {
-		/#fourchanx-settings, & {
-			pad(0);
-			brd(,accent-border);
-
-			.close {
-				position: absolute;
-				top: 0;
-				right: 0;
-				fa('\f00d');
-				pad();
-			}
-		}
-
 		& > .move {
 			accent();
 			pad();
-			padding-right: calc(var(--pad) * 2 + var(--font-size)) $i;
 			brd(bottom, accent-border);
 			border-radius: var(--border-radius) var(--border-radius) 0 0 $i;
-			center(center, space-between);
+			center(center);
 			replace-text(var(--window-name), accent-fg, before);
+
+			&::before {
+				text-align: center;
+				mar(right);
+				flex-grow: 1;
+			}
 		}
 	}
 
@@ -1504,25 +1384,32 @@ fa(char) {
 		--window-name: 'Post';
 
 		.is_index & {
-			--window-name: 'New thread';
+			--window-name: 'New Thread';
 		}
 
 		& > form {
 			pad();
+			display: flex;
+			flex-direction: column;
+			gap: var(--pad);
 		}
-		.persona,
-		.textarea {
-			mar(bottom);
+		.persona, .textarea {
+			gap: var(--pad);
 		}
 		textarea {
 			min-width: 322px;
 		}
-		input[name] {
-			mar(right);
+		/#sjis-toggle,
+		&.sjis-preview textarea {
+			font: 16px 'IPAMonaPGothic', 'Mona', 'MS PGothic', monospace $i;
 		}
-		&.reply-to-thread input[data-name="email"],
-		input[data-name="sub"] {
-			mar(right, 0);
+		input[type="checkbox"] {
+			opacity: 1 $i;
+			bg(2);
+			top: 0 $i;
+		}
+		.checkbox-letter {
+			display: none;
 		}
 
 		&-filename {
@@ -1534,6 +1421,9 @@ fa(char) {
 				gap: 1ch;
 				focus(focus-within);
 
+				& > label, & > a {
+					mar(0);
+				}
 				& > a {
 					opacity: 1;
 				}
@@ -1575,15 +1465,18 @@ fa(char) {
 	input[type="submit"] {
 		position: absolute;
 		right: var(--pad);
-		margin-top: s('calc(-80px - var(--header-h) - var(--pad) * 3 - %s + var(--border-width) * 3)', $select-size);
+		margin-top: s('calc(-80px - var(--header-h) - var(--pad) * 4 - %s + var(--border-width) * 3)', $select-size);
 	}
 	#file-n-submit {
 		height: unset;
-		mar(top, 0);
+		mar(0);
 		gap: var(--pad);
 
 		& > input {
 			width: unset $i;
+		}
+		&:not(.has-file) #qr-spoiler-label {
+			display: none $i;
 		}
 	}
 	#char-count {
@@ -1597,23 +1490,13 @@ fa(char) {
 	#thread-watcher {
 		--window-name: 'Threads';
 
-		& > .move {
-			padding-right: calc(var(--pad) * 2 + var(--font-size) * 4) $i;
-		}
-		.menu-button, .refresh {
-			box(var(--font-size));
-			center(center);
-			position: absolute;
-
+		.menu-button, .close {
 			&::before {
-				pad();
+				margin-left: 1ch;
 			}
 		}
 		.refresh {
-			right: calc(var(--pad) + var(--font-size) + 1ch);
-		}
-		.menu-button {
-			right: calc(var(--pad) + var(--font-size) * 3);
+			pad(0);
 		}
 	}
 	#watched-threads {
@@ -1642,14 +1525,13 @@ fa(char) {
 		}
 	}
 	#watcher-status:not(:empty) {
-		margin-right: 7ch;
-
 		&::before { content: '('; }
 		&::after { content: ')'; }
 	}
 	.watcher {
 		&-link {
 			fg(2);
+			gap: 1ch;
 			width: 100%;
 			overflow: auto;
 
@@ -1657,10 +1539,7 @@ fa(char) {
 				fg();
 			}
 		}
-		&-page, &-unread {
-			margin-right: 1ch $i;
-		}
-		&-title {
+		&-page, &-unread, &-title {
 			mar(0);
 		}
 
@@ -1688,12 +1567,11 @@ fa(char) {
 
 	// Menu
 	#menu, .submenu {
-		bgc();
-		pad(0);
+		brd();
 
 		a {
 			color: unset $i;
-			text-decoration: none $i;
+			text-decoration: none;
 		}
 
 		.entry {
@@ -1705,9 +1583,7 @@ fa(char) {
 				hl();
 			}
 			&.disabled {
-				background-color: transparent $i;
 				fg(2);
-				text-decoration: line-through;
 				pointer-events: none;
 			}
 
@@ -1742,20 +1618,31 @@ fa(char) {
 			brd(bottom);
 			pad(0);
 		}
+		.close {
+			position: absolute $i;
+			top: 0;
+			right: 0;
+		}
 		.section {
 			&-container {
 				bg();
 				pad();
 				border-radius: 0 0 var(--border-radius) var(--border-radius) $i;
+
+				& > section {
+					display: flex;
+					flex-direction: column;
+					gap: calc(var(--pad) * 2) $i;
+				}
 			}
-			&-main {
-				margin-top: calc(var(--pad) * -2);
+			&-main div::before {
+				border-color: var(--border) $i;
 			}
 			/#sauce-doc, &-filter > select {
-				mar(bottom);
+				width: fit-content;
 			}
 			&-filter {
-				height: calc(100% - var(--pad) * 3) $i;
+				height: 100% $i;
 
 				& > div {
 					height: calc(100% - var(--pad) * 2) $i;
@@ -1779,7 +1666,7 @@ fa(char) {
 			display: flex;
 			replace-text();
 
-			a {
+			& > a {
 				text-decoration: none;
 				fg(2);
 				pad();
@@ -1788,7 +1675,7 @@ fa(char) {
 					fg();
 				}
 			}
-			.tab-selected {
+			& > .tab-selected {
 				hl();
 			}
 		}
@@ -1812,16 +1699,12 @@ fa(char) {
 			}
 
 			& > div {
+				background-color: transparent $i;
 				padding-left: $select-size + 1px;
 
 				&::before {
 					left: ($select-size / 2);
 					width: ($select-size / 2);
-					border-bottom-left-radius: var(--border-radius);
-				}
-
-				&:last-of-type {
-					bg();
 				}
 			}
 		}
@@ -1835,16 +1718,6 @@ fa(char) {
 		pad(0);
 		brd(0);
 		mar(0);
-
-		& + & {
-			margin-top: calc(var(--pad) * 2) $i;
-		}
-		& > div:first-of-type label {
-			mar(top, 0);
-		}
-		/.section-main div::before, & {
-			border-color: var(--border) $i;
-		}
 	}
 	legend {
 		normalise-header();
@@ -1936,20 +1809,6 @@ fa(char) {
 			--reserve-border: var(--border);
 			mar(top, 0);
 		}
-		.board {
-			padding-{sidebar-pos}: var(--sidebar-width) $i;
-
-			&::after {
-				content: '';
-				position: fixed;
-				{sidebar-pos}: 0;
-				top: 0;
-				box(calc(var(--sidebar-width) - var(--border-width)), 100vh);
-				bg(2);
-				brd(sidebar-pos == left ? right : left);
-				//z-index: -1;
-			}
-		}
 		#header-bar {
 			// Don't get me affected by header-focus()
 			--bg2: var(--reserve-bg2) $i;
@@ -1968,17 +1827,16 @@ fa(char) {
 			}
 		}
 		#notifications {
+			position: fixed $i;
 			left: var(--sidebar-width);
-			top: calc(100% + var(--pad) * 2.5 + var(--border-width)) $i;
+			top: 0 $i;
 		}
 		#yous {
 			position: absolute;
 			{sidebar-pos}: var(--pad);
 			top: calc(var(--header-h) + var(--pad) + 100vh - var(--font-size) * var(--line-height) * 2 - var(--pad) * 4);
-			//z-index: 45;
 			width: calc(var(--sidebar-width) - var(--pad) * 2) $i;
-			center(sidebar-pos == left ? right : left);
-			gap: 1ch;
+			text-align: sidebar-pos == left ? right : left;
 
 			#header-bar:not(:has(> #shortcuts:hover)) & {
 				display: none $i;
@@ -1991,10 +1849,49 @@ fa(char) {
 				}
 			}
 		}
-		.boardList > span,
 		#thread-watcher .close, #qr .close,
+		.boardList > span,
 		#shortcut-watcher {
 			display: none $i;
+		}
+
+		// Banner
+		.board {
+			padding-{sidebar-pos}: var(--sidebar-width) $i;
+
+			&::after {
+				content: '';
+				position: fixed;
+				{sidebar-pos}: 0;
+				top: 0;
+				box(calc(var(--sidebar-width) - var(--border-width)), 100vh);
+				bg(2);
+				brd(sidebar-pos == left ? right : left);
+			}
+
+			&Banner {
+				position: fixed;
+				top: 0;
+				{sidebar-pos}: 0;
+				z-index: 1;
+				width: var(--sidebar-width);
+				bg(2);
+				brd(sidebar-pos == left ? right : left);
+			}
+
+			if (!board-title-image) {
+				/body {
+					--board-title-height: calc(var(--header-size) + var(--pad));
+				}
+				&Banner {
+					brd(sidebar-pos == left ? right : left, 0);
+					mar();
+					width: calc(var(--sidebar-width) - var(--pad) * 2);
+				}
+				&Title {
+					mar(0);
+				}
+			}
 		}
 
 		// Boards
@@ -2005,13 +1902,11 @@ fa(char) {
 			margin-top: calc(var(--threads-pos) + var(--pad) + var(--section-height) + var(--header-h));
 			box(var(--sidebar-width), var(--section-height));
 			overflow: auto;
-			box-sizing: content-box $i; // ..so the width stays with the border
-			z-index: 10; // 45
+			z-index: 10;
 
 			&::before {
 				content: 'Boards';
 				normalise-header();
-				text-align: left;
 				mar();
 				mar(bottom, 0);
 			}
@@ -2051,12 +1946,6 @@ fa(char) {
 			right: var(--pad);
 			height: calc(var(--font-size) * var(--line-height));
 			center();
-			fg(2);
-
-			&:hover {
-				fg();
-				text-decoration: none $i;
-			}
 		}
 		.show-board-list-button {
 			fa('\f055');
@@ -2065,41 +1954,32 @@ fa(char) {
 			fa('\f056');
 		}
 
-		// Banner
-		.boardBanner {
-			position: fixed;
-			top: 0;
-			{sidebar-pos}: 0;
-			z-index: 1;
-			width: var(--sidebar-width);
-			bg(2);
-			padding: 0 var(--pad);
-			brd(sidebar-pos == left ? right : left);
-		}
-		if (!board-title-image) {
-			body {
-				--board-title-height: calc(var(--header-size) + var(--pad));
-			}
-			.board {
-				&Banner {
-					brd(sidebar-pos == left ? right : left, 0);
-					mar();
-					width: calc(var(--sidebar-width) - var(--pad) * 2);
-				}
-				&Title {
-					mar(0);
-				}
-			}
-		}
-
 		// Shortcuts
 		#shortcut {
 			&s {
 				position: fixed;
 				{sidebar-pos}: var(--pad);
 				top: calc(var(--pad) + 100vh - var(--font-size) * var(--line-height) - var(--pad) * 2);
-				//z-index: 45;
 				width: calc(var(--sidebar-width) - var(--pad) * 2) $i;
+
+				../-stats, &::after {
+					z-index: -1;
+				}
+
+				&::before, &::after {
+					content: '';
+					position: absolute;
+				}
+				&::before {
+					right: 8ch;
+					box(var(--gradient-size), 100%);
+					background-image: linear-gradient(90deg, transparent, var(--bg3));
+				}
+				&::after {
+					right: 0;
+					box(8ch, 100%);
+					bg(3);
+				}
 			}
 			&-updater,
 			&-stats {
@@ -2123,25 +2003,6 @@ fa(char) {
 					{sidebar-pos}: var(--sidebar-width) $i;
 					bottom: 0 $i;
 				}
-			}
-
-			&s::before {
-				content: '';
-				position: absolute;
-				right: 8ch;
-				box(var(--gradient-size), 100%);
-				background-image: linear-gradient(90deg, transparent, var(--bg3));
-			}
-			&s::after {
-				content: '';
-				position: absolute;
-				right: 0;
-				box(8ch, 100%);
-				bg(3);
-			}
-			&s::after,
-			&-stats {
-				z-index: -1;
 			}
 		}
 		#update {
@@ -2185,7 +2046,7 @@ fa(char) {
 			position: fixed;
 			{sidebar-pos}: 0 $i;
 			{sidebar-pos == left ? right : left}: unset $i;
-			z-index: 10; // 45
+			z-index: 10;
 
 			&::after {
 				content: '';
@@ -2204,15 +2065,13 @@ fa(char) {
 				normalise-header();
 				bg(2);
 				border-radius: 0 $i;
-				mar(top);
+				mar();
 				mar(bottom, 0);
-				mar(left);
-				mar(right);
-				justify-content: left $i;
 				cursor: unset;
 
 				&::before {
 					fg();
+					text-align: left $i;
 				}
 			}
 		}
@@ -2224,12 +2083,10 @@ fa(char) {
 			textarea {
 				min-width: unset;
 				width: 100% $i;
+				resize: vertical;
 			}
 		}
 		#thread-watcher {
-			.menu-button {
-				right: var(--pad);
-			}
 			#menu {
 				{sidebar-pos}: var(--sidebar-width) $i;
 				top: 0 $i;
@@ -2273,7 +2130,7 @@ fa(char) {
 				--section-height: calc(var(--header-size) + var(--section-content-height));
 				--threads-pos: board-title-image ? \
 					calc(var(--board-title-height) - var(--pad)) :
-					var(--board-title-height)
+					var(--board-title-height);
 			}
 			#custom-board-list,
 			#full-board-list {
