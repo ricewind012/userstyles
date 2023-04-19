@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           GitHub
 @namespace      github.com/openstyles/stylus
-@version        2.0.0
+@version        1.0.0
 @description    A new userstyle
 @author         Me
 
@@ -550,6 +550,14 @@ brd-radius(pos) {
 	/**
 	 * Global
 	**/
+	a {
+		color: var(--fg-link);
+	}
+	p {
+		mar(bottom);
+	}
+
+	// Primer
 	body,
 	pre,
 	.markdown-body,
@@ -593,8 +601,7 @@ brd-radius(pos) {
 		brd(0);
 		mar(left, 0);
 
-		.UnderlineNav &,
-		.tabnav-tabs & {
+		.UnderlineNav & {
 			margin-left: 1ch $i;
 		}
 		.pagehead-actions & {
@@ -633,12 +640,15 @@ brd-radius(pos) {
 			mar(0);
 		}
 	}
-
-	a {
-		color: var(--fg-link);
-	}
-	p {
-		mar(bottom);
+	.subnav-item {
+		&:first-child {
+			border-top-left-radius: var(--border-radius) $i;
+			border-bottom-left-radius: var(--border-radius) $i;
+		}
+		&:last-child {
+			border-top-right-radius: var(--border-radius) $i;
+			border-bottom-right-radius: var(--border-radius) $i;
+		}
 	}
 
 	.form {
@@ -655,6 +665,12 @@ brd-radius(pos) {
 		}
 		&-checkbox {
 			padding-left: s('calc(%s + 1ch)', $select-size) $i;
+
+			input {
+				&[type="checkbox"], &[type="radio"] {
+					margin-left: s('calc(%s - 1ch)', $select-size * -1) $i;
+				}
+			}
 		}
 	}
 	.FormControl {
@@ -683,10 +699,6 @@ brd-radius(pos) {
 			&.mr-2 {
 				margin-right: 1ch $i;
 			}
-
-			.form-{i} & {
-				margin: 2px 0 0 -24px $i;
-			}
 		}
 	}
 	.btn, .Button {
@@ -698,6 +710,9 @@ brd-radius(pos) {
 		.file-header &,
 		#repository-container-header & {
 			--bg2: var(--bg);
+		}
+		.flash & {
+			--pad: calc(var(--save-pad) / 2);
 		}
 
 		colors = {
@@ -746,10 +761,6 @@ brd-radius(pos) {
 			/.Button--iconOnly {
 				--pad: calc(var(--save-pad) / 2);
 			}
-
-			& > .octicon {
-				fg();
-			}
 		}
 		// TEMP
 		&.social-reaction-summary-item {
@@ -775,11 +786,107 @@ brd-radius(pos) {
 		}
 	}
 
+	// GitHub
+	.timeline-comment,
+	.file {
+		brd();
+
+		&-header {
+			brd(bottom);
+			brd-radius(top);
+		}
+	}
+	.timeline-comment {
+		&.current-user,
+		&.current-user &-header {
+			border-color: var(--color-accent-muted) $i;
+		}
+		&-header {
+			pad();
+
+			.Button {
+				background-color: transparent $i;
+				fg(2);
+				pad(0);
+				brd(0);
+
+				&:hover {
+					fg();
+				}
+			}
+		}
+
+		.Label {
+			bgc();
+		}
+	}
+	.comment-body,
+	.post-merge-message {
+		pad();
+	}
+	.pr-review-reactions .just-bottom,
+	.pr-review-reactions .has-reactions,
+	.pr-review-reactions .has-reactions.comment-reactions {
+		mar();
+		align-items: center;
+	}
+	.toolbar-commenting {
+		mar(0);
+
+		.btn-octicon {
+			bg();
+			mar(right, 0);
+		}
+	}
+	.timeline-new-comment .form-actions {
+		bg(2);
+		mar(0);
+		pad();
+		brd(top);
+
+		.btn:not(.btn-primary) {
+			bg();
+		}
+	}
+	.full-commit {
+		brd();
+
+		.commit-meta {
+			brd-radius(bottom);
+		}
+	}
+	.range-editor {
+		bg(2);
+		brd();
+	}
+	.previewable-comment-form .comment-form-head.tabnav {
+		brd-radius(top);
+	}
+	.upload-enabled.focused {
+		shd(0);
+	}
+	.drag-and-drop {
+		brd();
+		brd(top, 0);
+		brd-radius(bottom);
+	}
+	.branch-action {
+		&-body {
+			border-radius: var(--border-radius);
+		}
+		&-item {
+			lnh();
+			pad();
+			padding-left: calc(var(--pad) * 2 + 30px) $i;
+		}
+	}
+
 	/**
 	 * Hide elements
 	**/
 	// I. Unsorted
 	.topics-row-container, .BorderGrid-row:first-child div.my-3, article.color-bg-subtle > .color-bg-default > .d-flex, // Topic tags
+	article.border.rounded.color-shadow-small.my-4 > h2.f6.color-fg-muted.px-3.mt-3, // "Based on repositories you’ve starred"
 	.BorderGrid-cell > .mt-3:last-child, [href$="/network/dependents"] > .px-2, // + N contributors/etc.
 	.new-discussion-timeline .Layout-sidebar > div > .my-3, // Most helpful users
 	.Layout-main > .thread-subscription-status,
@@ -935,6 +1042,10 @@ brd-radius(pos) {
 		max-height: 0;
 	}
 
+	.tabnav-tab {
+		lnh();
+	}
+
 	// Lefthand side repository sidebar
 	.Layout {
 		--Layout-sidebar-width: var(--sidebar-width) $i;
@@ -966,19 +1077,28 @@ brd-radius(pos) {
 	 * Also includes the js sticky headers to be inside the header,
 	 * if stuck (.is-stuck)
 	 */
-	.application-main .Layout-main .Box-header, .file-header,
+	main .Box-header, .file-header,
 	#repo-content-turbo-frame[src$="/releases"] .col-md-2,
 	.js-position-sticky,
 	.Layout-sidebar > *,
 	.js-header-wrapper {
 		position: sticky $i;
+	}
+	#repo-content-turbo-frame[src$="/releases"] .col-md-2,
+	.Layout-sidebar > *,
+	.js-header-wrapper {
 		top: calc(var(--header-h) + var(--body-pad));
 		z-index: 999 $i;
 	}
-	.application-main .Layout-main .Box-header, .file-header,
+	main .Box-header, .file-header,
 	.js-position-sticky {
 		top: var(--header-h);
 		z-index: 998 $i;
+
+		// Can't see it, anyway
+		[data-target="diff-layout.mainContainer"] & {
+			position: unset $i;
+		}
 	}
 	.js-position-sticky {
 		height: var(--header-h);
@@ -991,8 +1111,10 @@ brd-radius(pos) {
 			[data-target="readme-toc.content"] > & {
 				margin-left: calc(var(--sidebar-width) + var(--pad) * 2 - 2px);
 
+				/file-tree-toggle[class],
+				/.pr-toolbar .f5,
 				& > .text-mono {
-					display: none;
+					display: none $i;
 				}
 			}
 
@@ -1020,10 +1142,18 @@ brd-radius(pos) {
 			[aria-label="Edit this file"] {
 				margin-left: calc(var(--pad) * 2);
 			}
+			[aria-label="Table of Contents"] {
+				margin-left: calc(var(--pad) * -1) $i;
+			}
 		}
 	}
-	.Layout-sidebar > * {
-		z-index: 998 $i;
+	.Layout-sidebar {
+		& > * {
+			z-index: 998 $i;
+		}
+		.is-stuck ~ .Layout > &[data-original-top] > * {
+			top: 60px;
+		}
 	}
 	#repo-content-turbo-frame[src$="/releases"] .col-md-2 {
 		height: fit-content;
@@ -1036,7 +1166,17 @@ brd-radius(pos) {
 		z-index: 999 $i;
 	}
 	.pr-toolbar {
-		position: unset;
+		margin-top: var(--border-width);
+
+		&.is-stuck {
+			pad(0);
+			brd(bottom);
+
+			& > .diffbar {
+				bg(-tr2);
+				padding: 0 16px;
+			}
+		}
 	}
 	.gh-header {
 		&-sticky, &-shadow {
@@ -1050,6 +1190,7 @@ brd-radius(pos) {
 
 		&.is-stuck {
 			margin-left: calc(var(--font-size) * 1.5 + var(--sidebar-width) + var(--body-pad));
+			width: calc(100% - var(--font-size) * 1.5 - var(--sidebar-width) - var(--body-pad) - 48px - 8px * 2 - var(--pad) * 15) $i;
 
 			& > .d-flex {
 				justify-content: flex-start $i;
@@ -1229,6 +1370,9 @@ brd-radius(pos) {
 		/.page-profile .f4.text-normal, h1, h2 {
 			normalise-header(false);
 		}
+		h1, h2, h3, h4, h5, h6 {
+			lnh();
+		}
 		pre {
 			bg(2);
 			pad();
@@ -1313,6 +1457,10 @@ brd-radius(pos) {
 		}
 		&-footer {
 			bg(2);
+
+			.btn:not(.btn-primary) {
+				bg();
+			}
 		}
 		&-row--focus-gray.navigation-focus {
 			background-color: transparent $i;
@@ -1650,40 +1798,8 @@ brd-radius(pos) {
 	}
 
 	/**
-	 * Unsorted (and stuff they don't yet want to update)
+	 * Unsorted
 	**/
-	.timeline-comment,
-	.file {
-		brd();
-
-		&-header {
-			brd(bottom);
-			brd-radius(top);
-		}
-	}
-	.timeline-comment {
-		&.current-user,
-		&.current-user &-header {
-			border-color: var(--color-accent-muted) $i;
-		}
-	}
-	.full-commit {
-		brd();
-
-		.commit-meta {
-			brd-radius(bottom);
-		}
-	}
-	.range-editor {
-		bg(2);
-		brd();
-	}
-	.previewable-comment-form .comment-form-head.tabnav {
-		brd-radius(top);
-	}
-	.drag-and-drop {
-		brd-radius(bottom);
-	}
 	#blob-path {
 		margin-left: 1ch $i;
 	}
