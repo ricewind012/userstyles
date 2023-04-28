@@ -23,9 +23,12 @@
 @var text     search-results-width "Search results width"    345px
 ==/UserStyle== */
 
-$small-screen = 768px
-$select-size = 16px
-$i = !important
+// Variables
+vendors = official;
+$small-screen = 768px;
+$select-shadow = inset 0 1px 2px rgba(0, 0, 0, 0.1);
+$select-size = 16px;
+$i = !important;
 
 // Stylus
 svar(var) {
@@ -37,7 +40,7 @@ cond(n, yes, no) {
 }
 
 sel-cond(sel, pos) {
-	pos ? s('%s-%s', sel, pos) : sel
+	pos ? s('%s-%s', sel, pos) : sel;
 }
 
 color-a(n, bright = true) {
@@ -65,8 +68,8 @@ bgc(n1 =, n2 =) {
 	fg(n2);
 }
 
-hl(n = ) {
-	background-color: n ? s('var(--hl-%s)', n) : var(--hl) $i;
+hl() {
+	background-color: var(--hl) $i;
 	color: var(--hl-fg) $i;
 }
 
@@ -102,7 +105,6 @@ rad(n = 1) {
 }
 
 brd(pos =, color = border) {
-	//color = (typeof(color) == 'ident' || typeof(color) == 'string') ? svar(color) : color;
 	if (color) {
 		color = svar(color);
 	}
@@ -120,19 +122,13 @@ box(w, h = w) {
 	height: h $i;
 }
 
-pos(offset = 0) {
-	left: offset $i;
-	top: offset $i;
-	right: offset $i;
-	bottom: offset $i;
+flex(display = flex, alignment = center, justification =) {
+	display: display $i;
+	align-items: alignment $i;
+	justify-content: justification $i;
 }
 
-center() {
-	display: flex $i;
-	align-items: center $i;
-}
-
-// etc.
+// Animation
 anim(name =, func = ) {
 	@media (prefers-reduced-motion: no-preference) {
 		{name ? animation : transition}: name var(--trans-dur) func $i;
@@ -140,9 +136,10 @@ anim(name =, func = ) {
 }
 
 dropfade() {
-	anim(dropfade, cubic-bezier(.2, .9, .6, 1));
+	anim(dropfade, cubic-bezier(0.2, 0.9, 0.6, 1));
 }
 
+// Focus
 focus(p = focus) {
 	anim();
 
@@ -157,22 +154,21 @@ header-focus(class = page-focus) {
 	.{class} & {
 		--bg2: var(--accent);
 		--fg: var(--accent-fg);
-		--fg2: var(--accent-fg);
 		--border: var(--accent-border);
 	}
 
-	// Chromuim is unable to recognise the selector
-	@supports not (-moz-appearance: none) { :root:not(:-moz-window-inactive) {
+	// Stylus is unable to recognise :where()
+	:root:not(:-moz-window-inactive) & {
 		--bg2: var(--accent);
 		--fg: var(--accent-fg);
-		--fg2: var(--accent-fg);
 		--border: var(--accent-border);
-	}}
+	}
 }
 
+// Text
 replace-text(content =, text-color = fg, pos = after) {
-	letter-spacing: -9999px $i;
 	color: transparent $i;
+	letter-spacing: -9999px $i;
 
 	if (content) { // Replace
 		&::{pos} {
@@ -196,13 +192,20 @@ hide-chars(amount, pos, bg =) {
 	&::{element} {
 		content: '' $i;
 		position: absolute $i;
-		pos();
-		box(s('%sch', amount), 100%);
+		inset: 0;
+		box(s('%sch', amount), calc(1em * var(--line-height)));
 		bg(bg);
 	}
 }
 
-// Input normalisation
+// Normalisation
+disabled() {
+	&:disabled {
+		opacity: 0.5 $i;
+		cursor: not-allowed $i;
+	}
+}
+
 normalise-select() {
 	appearance: none $i;
 	bgc(2);
@@ -213,10 +216,12 @@ normalise-select() {
 		linear-gradient(180deg, var(--bg2) 30%, var(--fg) 30%) $i;
 	background-size: 20px 20px $i;
 	background-repeat: no-repeat $i;
-	background-position: right 4px $i;
-	padding: var(--pad) 20px var(--pad) var(--pad) $i;
+	background-position: right 50% $i;
+	pad();
+	padding-right: calc(var(--pad) + 20px) $i;
 	brd();
 	focus();
+	disabled();
 }
 
 normalise-input() {
@@ -225,6 +230,7 @@ normalise-input() {
 	pad();
 	brd();
 	focus();
+	disabled();
 
 	&::placeholder {
 		fg(2);
@@ -239,11 +245,7 @@ normalise-button() {
 	brd();
 	cursor: pointer $i;
 	focus();
-
-	&:disabled {
-		opacity: .5 $i;
-		pointer-events: none $i;
-	}
+	disabled();
 }
 
 normalise-color() {
@@ -252,10 +254,12 @@ normalise-color() {
 	brd();
 	box($select-size);
 	focus();
+	disabled();
 
 	&::-webkit-color-swatch {
-		border: none $i;
-		border-radius: calc(var(--border-radius) * .33) $i;
+		brd(0);
+		// Prevent from making it look like a radio input
+		border-radius: calc(var(--border-radius) * 0.33) $i;
 
 		&-wrapper {
 			pad(0);
@@ -266,8 +270,8 @@ normalise-color() {
 normalise-checkbox(label = true) {
 	if (label) {
 		/label {
-			line-height: var(--line-height) $i;
-			center();
+			lnh();
+			flex();
 			gap: 1ch $i;
 		}
 	}
@@ -275,8 +279,9 @@ normalise-checkbox(label = true) {
 	appearance: none $i;
 	bg(2);
 	brd();
-	border-radius: calc(var(--border-radius) * .33) $i;
-	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1) $i;
+	// Prevent from making it look like a radio input
+	border-radius: calc(var(--border-radius) * 0.33) $i;
+	box-shadow: $select-shadow $i;
 	mar(0);
 	position: relative $i;
 	box($select-size);
@@ -286,30 +291,35 @@ normalise-checkbox(label = true) {
 	&::before, &::after {
 		content: '';
 		position: absolute $i;
-		pos();
+		inset: 0;
 		background-color: var(--hl) $i;
 		transform-origin: 0 0 $i;
+	}
+	&:disabled {
+		&::before, &::after {
+			background-color: var(--fg2) $i;
+		}
 	}
 
 	&::before {
 		transform: rotate(-45deg) translateY(45%) translateX(-30%) scaleX(0.25) scaleY(0) $i;
 	}
-	&::after {
-		transform: rotate(225deg) translateY(-30%) translateX(-95%) scaleX(0.25) scaleY(0) $i;
-	}
 	&:indeterminate::before {
 		transform: rotate(0) translateY(37.5%) translateX(10%) scaleX(0.8) scaleY(0.25) $i;
-		transition-duration: 33.33333333ms $i;
+		transition-duration: 33.3ms $i;
+	}
+	&::after {
+		transform: rotate(225deg) translateY(-30%) translateX(-95%) scaleX(0.25) scaleY(0) $i;
 	}
 
 	&:checked {
 		&::before {
 			transform: rotate(-45deg) translateY(45%) translateX(-30%) scaleX(0.25) scaleY(0.4) $i;
-			transition-duration: 33.33333333ms $i;
+			transition-duration: 33.3ms $i;
 		}
 		&::after {
 			transform: rotate(225deg) translateY(-30%) translateX(-95%) scaleX(0.25) scaleY(1.2) $i;
-			transition-delay: 33.33333333ms $i;
+			transition-delay: 33.3ms $i;
 			anim();
 		}
 	}
@@ -320,7 +330,7 @@ normalise-radio() {
 	bg(2);
 	brd();
 	border-radius: 50% $i;
-	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1) $i;
+	box-shadow: $select-shadow $i;
 	mar(0);
 	position: relative $i;
 	box($select-size);
@@ -329,14 +339,14 @@ normalise-radio() {
 	&::before {
 		content: '';
 		position: absolute $i;
-		pos(3px);
+		inset: $select-size / 5;
 		background-color: var(--hl) $i;
 		border-radius: 50% $i;
 		transition: transform var(--trans-dur) linear $i;
 		transform: scale(0) $i;
 	}
 	&:disabled::before {
-		background-color: var(--fg3) $i;
+		background-color: var(--fg2) $i;
 	}
 	&:checked::before {
 		transition-timing-function: cubic-bezier(0, 0, 0.3, 1.5) $i;
@@ -363,7 +373,7 @@ normalise-header(first = true) {
 // Website-specific functions
 icon(url) {
 	box(16px);
-	center();
+	flex();
 
 	svg {
 		box(var(--icon-size));
@@ -787,7 +797,7 @@ $chat-title = 'section.container.themed'
 		}
 		.mainContent {
 			pad();
-			center();
+			flex();
 			gap: 1ch;
 		}
 
@@ -1192,7 +1202,7 @@ $chat-title = 'section.container.themed'
 
 				&, .header {
 					line-height: unset;
-					center();
+					flex();
 				}
 			}
 
@@ -1378,7 +1388,7 @@ $chat-title = 'section.container.themed'
 					margin-left: calc(var(--idk) + var(--avatar-spacing) + var(--avatar-size) * var(--line-height));
 					min-height: unset;
 					height: calc(var(--avatar-size) * var(--line-height));
-					center();
+					flex();
 
 					& + .messageContent {
 						margin-top: var(--avatar-spacing) $i;
