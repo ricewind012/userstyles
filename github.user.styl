@@ -409,7 +409,7 @@ brd-radius(pos) {
 		--color-action-list-item-danger-hover-bg: color-a(1) $i;
 		--color-action-list-item-danger-active-bg: color-a(9) $i;
 
-		// Colors
+		// State
 		colors = {
 			danger:    9,
 			severe:    9,
@@ -485,6 +485,46 @@ brd-radius(pos) {
 		--color-btn-selected-bg: var(--hl) $i;
 		--color-btn-focus-bg: var(--hl) $i;
 
+		// Spacing
+		for i in range(4, 48, 4) {
+			--base-size-{i}: var(--pad);
+		}
+		for i in condensed normal spacious {
+			--stack-gap-{i}: var(--pad);
+			--stack-padding-{i}: var(--pad);
+			--controlStack-small-gap-{i}: var(--pad);
+			--controlStack-medium-gap-{i}: var(--pad);
+			--controlStack-large-gap-{i}: var(--pad);
+		}
+		for i in xsmall small medium large xlarge {
+			--control-{i}-gap: var(--pad);
+			--control-{i}-paddingBlock: var(--pad);
+			--control-{i}-paddingInline-normal: var(--pad);
+			--control-{i}-paddingInline-spacious: var(--pad);
+		}
+
+		// Text
+		for i in body title {
+			--text-{i}-lineHeight-small: var(--line-height);
+			--text-{i}-lineHeight-medium: var(--line-height);
+			--text-{i}-lineHeight-large: var(--line-height);
+		}
+		for i in codeBlock caption subtitle display {
+			--text-{i}-lineHeight: var(--line-height);
+		}
+
+		--fontStack-monospace: var(--font-code);
+		--fontStack-sansSerif: var(--font-normal);
+		--fontStack-system: var(--font-normal);
+
+		// Other variables
+		--borderWidth-thin: var(--border-width);
+		--borderWidth-thick: calc(var(--border-width) * 2);
+		--borderWidth-thicker: calc(var(--border-width) * 4);
+		for i in small medium large full {
+			--borderRadius-{i}: var(--border-radius);
+		}
+
 		// Unsorted
 		--color-intro-shelf-gradient-in: var(--bg2) $i;
 		--color-social-count-bg: var(--bg2) $i;
@@ -497,33 +537,6 @@ brd-radius(pos) {
 
 		--color-accent-emphasis: var(--hl) $i;
 		--color-fg-on-emphasis: var(--hl-fg) $i;
-
-		// probably temp vars
-		for i in range(4, 48, 4) {
-			--base-size-{i}: var(--pad);
-		}
-		for i in condensed normal spacious {
-			--primer-stack-gap-{i}: var(--pad);
-			--primer-stack-padding-{i}: var(--pad);
-			--primer-controlStack-small-gap-{i}: var(--pad);
-			--primer-controlStack-medium-gap-{i}: var(--pad);
-			--primer-controlStack-large-gap-{i}: var(--pad);
-			--primer-control-medium-paddingInline-{i}: var(--pad);
-		}
-		for i in xsmall small medium large xlarge {
-			--primer-text-body-lineHeight-{i}: var(--line-height);
-			--primer-borderRadius-{i}: var(--border-radius);
-			--primer-control-{i}-paddingBlock: var(--pad);
-			//--primer-control-{i}-size: var(--pad);
-			--primer-control-{i}-gap: var(--pad);
-		}
-
-		--primer-borderWidth-thin: var(--border-width);
-		--primer-borderRadius-full: var(--border-radius);
-
-		--primer-fontStack-monospace: var(--font-code);
-		--primer-fontStack-sansSerif: var(--font-normal);
-		--primer-fontStack-system: var(--font-normal);
 
 		// save
 		--save-bg-opacity: var(--bg-opacity);
