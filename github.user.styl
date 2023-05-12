@@ -489,6 +489,9 @@ brd-radius(pos) {
 		for i in range(4, 48, 4) {
 			--base-size-{i}: var(--pad);
 		}
+		for i in range(64, 128, 16) {
+			--base-size-{i}: var(--pad);
+		}
 		for i in condensed normal spacious {
 			--stack-gap-{i}: var(--pad);
 			--stack-padding-{i}: var(--pad);
@@ -497,10 +500,12 @@ brd-radius(pos) {
 			--controlStack-large-gap-{i}: var(--pad);
 		}
 		for i in xsmall small medium large xlarge {
+			--controlStack-{i}-gap-auto: var(--pad);
 			--control-{i}-gap: var(--pad);
 			--control-{i}-paddingBlock: var(--pad);
 			--control-{i}-paddingInline-normal: var(--pad);
 			--control-{i}-paddingInline-spacious: var(--pad);
+			--control-{i}-paddingInline-condensed: var(--pad);
 		}
 
 		// Text
@@ -545,6 +550,10 @@ brd-radius(pos) {
 
 	// Settings
 	body {
+		--reserve-bg2: var(--bg2);
+		--reserve-fg: var(--fg);
+		--reserve-border: var(--border);
+
 		// Settings
 		settings = \
 			'sidebar-width'
@@ -893,6 +902,7 @@ brd-radius(pos) {
 	**/
 	// I. Unsorted
 	.topics-row-container, .BorderGrid-row:first-child div.my-3, article.color-bg-subtle > .color-bg-default > .d-flex, // Topic tags
+	[style="--sticky-pane-height:100vh;"] > div > div > main > div > div > :last-child, // New search right sidebar
 	article.border.rounded.color-shadow-small.my-4 > h2.f6.color-fg-muted.px-3.mt-3, // "Based on repositories you’ve starred"
 	.BorderGrid-cell > .mt-3:last-child, [href$="/network/dependents"] > .px-2, // + N contributors/etc.
 	.new-discussion-timeline .Layout-sidebar > div > .my-3, // Most helpful users
@@ -901,7 +911,6 @@ brd-radius(pos) {
 	.Details .Link--secondary.text-mono, // Commit hash
 	.QueryBuilder-leadingVisualWrap, // icon
 	.js-calendar-graph > .f6, // "Learn how we count contributions"
-	.header-search-key-slash, // Header search hotkey icon
 	[title="Label: Latest"], // "Latest" release label
 	.locked-conversation, // Issue comment in a locked conversation
 	#global-nav, // Header links
@@ -916,7 +925,8 @@ brd-radius(pos) {
 	[href="/account/choose?action=upgrade"],
 	[href^="/organizations/enterprise_plan"],
 	.col-md-8.col-lg-6.py-4 > article.color-bg-default, // "App recommended by GitHub" / "Staff pick"
-	[aria-label="Explore navigation"] > div > .text-right // "Get e-mail updates"
+	[aria-label="Explore navigation"] > div > .text-right, // "Get e-mail updates"
+	[data-action="click:qbsearch-input#showFeedbackDialog"]
 	{
 		display: none $i;
 	}
@@ -969,12 +979,18 @@ brd-radius(pos) {
 			fg();
 		}
 	}
-	.header-search {
-		max-width: calc(var(--sidebar-width) - var(--font-size) * 1.5 + var(--pad)) $i;
-
-		&-input::placeholder {
-			color: var(--color-fg-muted) $i;
+	.search {
+		&-input {
+			max-width: calc(var(--sidebar-width) - var(--font-size) * 1.5 + var(--pad)) $i;
 		}
+		&-with-dialog {
+			bg();
+			//height: var(--header-h);
+		}
+	}
+	.header-search-button.placeholder {
+		fg(2);
+		cursor: text;
 	}
 	.octicon-mark-github {
 		box(calc(var(--font-size) * 1.5));
@@ -1538,22 +1554,42 @@ brd-radius(pos) {
 			pad(0);
 		}
 	}
-	.jump-to {
-		&-suggestions {
-			shd(big);
-			brd-radius(bottom);
 
-			&-path {
-				min-height: unset;
+	#search-suggestions-dialog {
+		brd(0);
+	}
+	.search-suggestions {
+		// Don't get me affected by header-focus()
+		--bg2: var(--reserve-bg2) $i;
+		--fg: var(--reserve-fg) $i;
+		--border: var(--reserve-border) $i;
+		brd();
+		left: 0;
+		top: 0;
+
+		.ActionList {
+			../ .QueryBuilder-ListWrap, &Item {
+				pad(0);
+				mar(0);
 			}
 
-			.navigation-item:not(:last-child) {
-				brd(bottom);
+			&Wrap {
+				brd(top);
 			}
-		}
-		&-suggestions-path &-octicon {
-			width: unset;
-			margin-right: 1ch $i;
+			&Item-description {
+				display: none;
+			}
+			&-sectionDivider {
+				&:empty {
+					display: none;
+				}
+
+				&-title {
+					normalise-header(false);
+					mar(left);
+					mar(right);
+				}
+			}
 		}
 	}
 
@@ -1591,6 +1627,7 @@ brd-radius(pos) {
 				display: none;
 			}
 		}
+		.header-search-button.placeholder > :is(.mr-2, .d-flex),
 		.UnderlineNav-octicon, .tabnav-tab > .octicon, // tabs
 		:is(.btn, .btn-link):not(.btn-octicon, [aria-haspopup], [role]) > \
 			.octicon:not(:only-child),
