@@ -587,18 +587,19 @@ $chat-title = 'section.container.themed'
 	[aria-label="Threads"][role="button"],
 	#channels .children > :not(.mentionsBadge),
 	#messagesNavigationDescription + [id^="chat-messages"] + .containerExpanded,
+	.sidebar .container:is(.top, .bottom),
 	#search-results .buttonsContainer,
 	.privateChannels > .searchBar,
 	.peopleColumn > .searchBar,
 	.peopleListItem .actions,
 	.sidebar .actionButtons,
-	.sidebar .unread,
 	.welcomeCTA,
 
 	// II. Nitro
 	.shinyButton,
 	.aboutMeGuildIcon,
 	.bannerNitroUpsell,
+	.avatarDecoration,
 	.subscribeTooltipWrapper,
 	.upsell,
 	.upsellContainer,
@@ -609,6 +610,7 @@ $chat-title = 'section.container.themed'
 	.premiumInlineNotice,
 	.premiumFeatureBorder,
 	.premiumFeatureBorder + .divider,
+	.birthdayFeatureBorder,
 	.profileThemeSectionPremiumBorder,
 	[href="/store"],
 	[aria-label="Send a gift"],
@@ -700,27 +702,12 @@ $chat-title = 'section.container.themed'
 		}
 	}
 	.banner {
-		background: none var(--background-floating) $i;
-
 		[aria-label="User Profile Modal"] & {
 			height: 84px;
 		}
 	}
 	.settingsBanner {
 		height: 40px;
-	}
-	.userPopoutInner {
-		background: none var(--profile-gradient-primary-color);
-
-		.popoutBannerPremium,
-		.bannerSVGWrapper {
-			height: 60px $i;
-			min-height: 60px $i;
-		}
-		/.accountProfileCard .avatar,
-		.avatarWrapperNormal {
-			top: 16px;
-		}
 	}
 
 	// V. Fixes
@@ -868,7 +855,7 @@ $chat-title = 'section.container.themed'
 		[style*="height: 56px"] {
 			height: unset $i;
 		}
-		.wrapper-28eC3z {
+		.wrapper-2PSQCG {
 			&, & > svg {
 				box(var(--guilds-size));
 			}
@@ -1056,6 +1043,7 @@ $chat-title = 'section.container.themed'
 			opacity: 1;
 			padding: var(--pad) 0 $i;
 			brd(,color4);
+			height: unset;
 			min-height: unset;
 			left: var(--chat-spacing) $i;
 			right: calc(var(--right-spacing) + var(--scrollbar-width)) $i;
@@ -1129,6 +1117,13 @@ $chat-title = 'section.container.themed'
 	}
 	.menu, .userPopoutOuter {
 		brd();
+	}
+	.userPopoutInner,
+	.userPopoutInner::before,
+	.roundedBanner,
+	.profileBadges,
+	.overlayBackground {
+		brd(0);
 	}
 
 	// Recent mentions
@@ -1432,7 +1427,7 @@ $chat-title = 'section.container.themed'
 			line-height: 1;
 			height: unset;
 		}
-		&.cozy:not(:hover) .timestamp {
+		&.cozy:not(:hover) .header > .timestamp {
 			display: none;
 		}
 		&.compact .timestamp {
@@ -1559,11 +1554,11 @@ $chat-title = 'section.container.themed'
 			mar(0);
 		}
 	}
-	textarea,
+	.textArea,
 	.attachButton,
 	.form .buttons {
-		height: 100% $i;
-		min-height: unset $i;
+		height: 100%;
+		min-height: unset;
 	}
 	.attachButton {
 		pad();
