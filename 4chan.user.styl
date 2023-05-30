@@ -390,6 +390,14 @@ fa(char) {
 	}
 }
 
+normal-colors() {
+	// Don't get me affected by header-focus()
+	--bg2: var(--reserve-bg2) $i;
+	--fg: var(--reserve-fg) $i;
+	--fg2: var(--reserve-fg2) $i;
+	--border: var(--reserve-border) $i;
+}
+
 @-moz-document domain("4chan.org"), domain("4channel.org") {
 	/**
 	 * Variables
@@ -406,6 +414,12 @@ fa(char) {
 		for i in settings {
 			\-\-{i}: convert(i);
 		}
+
+		// Save variables for future use
+		--reserve-bg2: var(--bg2);
+		--reserve-fg: var(--fg);
+		--reserve-fg2: var(--fg2);
+		--reserve-border: var(--border);
 
 		// Other
 		--header-size: calc(var(--font-size) * var(--line-height) + var(--pad) * 2 + var(--border-width));
@@ -518,6 +532,10 @@ fa(char) {
 	.menu-button {
 		fa('\f078');
 		pad(0);
+
+		&.active {
+			color: var(--hl) $i;
+		}
 
 		.fa,
 		#header-bar & > i {
@@ -684,6 +702,10 @@ fa(char) {
 	}
 	if (!sidebar) {
 		@media (min-width: $small-screen) {
+			#yous {
+				display: none;
+			}
+
 			#update-timer:not(.empty)::after {
 				content: ' seconds';
 			}
@@ -712,6 +734,7 @@ fa(char) {
 	}
 	.notification {
 		backdrop-filter: var(--popup-filter);
+		normal-colors();
 		fg();
 		text-shadow: none;
 		brd();
@@ -789,6 +812,11 @@ fa(char) {
 				text-shadow: 2px 2px #000;
 				letter-spacing: 0 $i;
 				padding: calc(var(--pad) * var(--board-title-pad)) var(--pad);
+
+				&[contenteditable="true"] {
+					outline: none;
+					box-shadow: 0 0 0 2px var(--hl);
+				}
 			}
 			&Subtitle {
 				display: none;
@@ -966,6 +994,7 @@ fa(char) {
 
 	// Thread
 	.thread {
+		width: 100%;
 		&, &Container {
 			display: inline-flex;
 			flex-direction: column;
@@ -1572,31 +1601,37 @@ fa(char) {
 	}
 
 	// Menu
-	#menu, .submenu {
-		brd();
+	#menu {
+		&, .submenu {
+			brd();
 
-		a {
-			color: unset $i;
-			text-decoration: none;
+			a {
+				color: unset $i;
+				text-decoration: none;
+			}
+
+			.entry {
+				pad();
+				padding-left: s('calc(var(--pad) + 1ch + %s)', $select-size) $i;
+				padding-right: calc(var(--pad) + 1em) $i;
+
+				&:not(.disabled).focused {
+					hl();
+				}
+				&.disabled {
+					fg(2);
+					pointer-events: none;
+				}
+
+				input[type="checkbox"] {
+					margin-left: s('calc(%s - 1ch)', $select-size * -1) $i;
+					top: 0;
+				}
+			}
 		}
 
-		.entry {
-			pad();
-			padding-left: s('calc(var(--pad) + 1ch + %s)', $select-size) $i;
-			padding-right: calc(var(--pad) + 1em) $i;
-
-			&:not(.disabled).focused {
-				hl();
-			}
-			&.disabled {
-				fg(2);
-				pointer-events: none;
-			}
-
-			input[type="checkbox"] {
-				margin-left: s('calc(%s - 1ch)', $select-size * -1) $i;
-				top: 0;
-			}
+		&[data-type="header"] {
+			normal-colors();
 		}
 	}
 
@@ -1809,18 +1844,10 @@ fa(char) {
 	if (!boards-hover && sidebar) {
 		// Global
 		body {
-			--reserve-bg2: var(--bg2);
-			--reserve-fg: var(--fg);
-			--reserve-fg2: var(--fg2);
-			--reserve-border: var(--border);
 			mar(top, 0);
 		}
 		#header-bar {
-			// Don't get me affected by header-focus()
-			--bg2: var(--reserve-bg2) $i;
-			--fg: var(--reserve-fg) $i;
-			--fg2: var(--reserve-fg2) $i;
-			--border: var(--reserve-border) $i;
+			normal-colors();
 			margin-top: calc(var(--header-h) * -1);
 			z-index: 46 $i;
 		}
