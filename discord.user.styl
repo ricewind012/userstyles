@@ -10,7 +10,6 @@
 @var text     guilds-size          "Guilds size"             24px
 @var checkbox sidebar-overlay      "Sidebar overlay"         1
 @var text     sidebar-width        "Sidebar width"           228px
-@var checkbox header-blur          "Header blur"             0
 
 @var checkbox messages-alt         "Cozy chat alt. look"     1
 @var text     message-separator    "Message separator"       '" ->"'
@@ -634,10 +633,10 @@ $chat-title = 'section.container.themed'
 	[aria-controls="billing-tab"],
 	[aria-controls="billing-tab"] + div,*/
 
-	// III. Made-obsolete gradients
+	// III. Made-obsolete gradients/shadows
 	.children::after,
 	.tabBody::before,
-	.sidebar + div > .content::before,
+	[class*="chat-"] > ::before,
 
 	// IV. Other elements
 	.guilds > .tree > div > .listItem:nth-last-child(2),
@@ -753,6 +752,31 @@ $chat-title = 'section.container.themed'
 				}
 			}
 		}
+
+		.header {
+			pad(0);
+			shd(0);
+			height: unset $i;
+
+			&:hover {
+				background-color: transparent;
+			}
+
+			&Content {
+				height: unset;
+			}
+			&Children {
+				display: none;
+			}
+
+			.name {
+				normalise-header();
+				pad(top);
+				mar(bottom, 0);
+				mar(left);
+				mar(right);
+			}
+		}
 	}
 
 	// Channels
@@ -847,12 +871,13 @@ $chat-title = 'section.container.themed'
 			bg(2);
 			header-focus();
 			pad(top);
+			brd(right);
 		}
 		.listItem {
 			width: 100% $i;
 			mar(bottom);
 		}
-		[style*="height: 56px"] {
+		[style*="height: 56px"] { // DMs
 			height: unset $i;
 		}
 		.wrapper-2PSQCG {
@@ -899,7 +924,6 @@ $chat-title = 'section.container.themed'
 				position: absolute;
 				top: var(--header-h);
 				bottom: unset;
-				left: 0;
 				z-index: 1;
 				box(var(--header-h), var(--sidebar-width));
 				transform-origin: top left;
@@ -907,130 +931,89 @@ $chat-title = 'section.container.themed'
 
 				{$guilds-scroller} {
 					brd(left);
+					brd(right, 0);
 					brd(bottom);
 				}
 				.listItem, .guildSeparator {
 					transform: rotate(90deg);
 				}
-				{$guilds-guild}::before {
-					left: unset;
-					top: calc(var(--pad) * -1);
-					box(var(--guilds-size), 1px);
+				.unreadMentionsIndicatorBottom,
+				.unreadMentionsIndicatorTop,
+				[href$="-lower_badge_masks"] { // lower badge mask
+					display: none;
 				}
 				.lowerBadge {
-					right: -4px;
-					bottom: -4px;
+					z-index: -1;
+
+					&::before {
+						content: '';
+						position: absolute;
+						left: calc(var(--pad) / -1.5 + 1px) $i;
+						background-color: var(--color1);
+					}
+
+					/.guilds {$guilds-guild}, & {
+						// God knows why this has to be less by 4 pixels
+						&::before {
+							left: calc(var(--pad) / 2 + 2px);
+							top: calc(var(--pad) * -1 - 2px);
+							box(
+								calc(var(--guilds-size) + var(--pad) * 1.5 - 4px),
+								calc(100% + var(--pad) * 2 + 4px)
+							);
+						}
+					}
 				}
 			}
+
 			.sidebar {
 				position: relative;
 				top: var(--header-h);
 				height: calc(100% - var(--header-h));
 			}
 		}
-		@media (max-width: $small-screen) {
-			.guilds {$guilds-scroller} {
-				brd(right);
-			}
-		}
-	} else {
-		.guilds {$guilds-scroller} {
-			brd(right);
-		}
 	}
 
 	// Header
 	{$chat-title} {
 		bg(2);
-		if (!header-blur) { header-focus(); }
-		padding: 0 calc(var(--scrollbar-width) + var(--right-spacing)) 0 var(--chat-spacing);
+		header-focus(app-focused);
+		lnh();
+		pad();
 		brd(bottom);
 		height: var(--header-h);
+		gap: var(--pad);
 
 		& > .children {
-			margin-right: var(--chat-spacing);
-
+			.avatar,
 			.title:not(.cursorPointer),
-			& > :first-child,
+			& > :first-child, // icon
 			& > .nicknames,
 			& > .akaBadge,
 			& > .divider {
 				display: none;
 			}
-			.title {
-				lnh();
-				fg();
+		}
+		.title {
+			lnh();
 
-				&Wrapper {
-					mar(0);
+			&Wrapper {
+				mar(0);
+			}
+			&.cursorPointer {
+				replace-text('Direct Messages');
 
-					& > .title:not(.cursorPointer) {
-						replace-text('No channel description');
-					}
-				}
-				&.cursorPointer {
-					margin-right: 1ch;
-					replace-text('Direct Messages');
+				&:not(:hover)::after {
+					fg(2);
 				}
 			}
 		}
 		.topic {
-			fg(2);
+			lnh();
 			mar(0);
-		}
-	}
-	.sidebar .header {
-		pad(0);
-		shd(0);
-		height: var(--header-h);
-	}
-	if (header-blur) {
-		.sidebar .header,
-		{$chat-title},
-		.searchHeader {
-			position: absolute;
-			bg(-tr);
-			brd(bottom);
-			width: 100%;
-		}
-		.sidebar .headerContent {
-			position: absolute;
-			top: 0;
-			left: var(--pad);
-			right: var(--pad);
-			height: inherit;
-		}
-		#channels,
-		.sidebar .unreadTop,
-		.searchResultsWrap,
-		.membersWrap > div > .content,
-		#messagesNavigationDescription + div {
-			margin-top: var(--header-h);
-		}
-		.newMessagesBar {
-			top: var(--header-h);
-		}
-	} else {
-		.sidebar .header {
-			height: unset $i;
 
 			&:hover {
-				background-color: transparent;
-			}
-
-			&Content {
-				height: unset;
-			}
-			&Children {
-				display: none;
-			}
-
-			.name {
-				normalise-header();
-				pad(top);
-				mar(bottom, 0);
-				mar(left);
-				mar(right);
+				fg();
 			}
 		}
 	}
@@ -1050,8 +1033,7 @@ $chat-title = 'section.container.themed'
 
 			&:first-child {
 				brd(top, 0);
-				border-radius: 0 0 var(--border-radius) var(--border-radius) $i
-				shd(mid);
+				border-radius: 0 0 var(--border-radius) var(--border-radius) $i;
 			}
 			&:last-child {
 				brd(bottom, 0);
@@ -1072,6 +1054,7 @@ $chat-title = 'section.container.themed'
 	}
 	.messagesErrorBar {
 		background-color: color-a(1);
+		brd(,color1);
 	}
 
 	// Icons
