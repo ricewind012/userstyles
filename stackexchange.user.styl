@@ -1,5 +1,5 @@
 /* ==UserStyle==
-@name           stackexchange.com - 10/31/2021, 3:59:50 PM
+@name           StackExchange
 @namespace      github.com/openstyles/stylus
 @version        1.0.0
 @description    A new userstyle
@@ -359,24 +359,22 @@ normalise-header(first = true) {
 	/**
 	 * Global
 	**/
+	// Variables
 	body {
+		// Colors
 		--theme-background-color: var(--bg) $i;
 		--theme-content-background-color: var(--bg)  $i;
 		--theme-content-border-color: transparent  $i;
 		--theme-body-font-color: var(--fg)  $i;
 		--theme-link-color: var(--fg-link) $i;
-		--theme-topbar-background-color: var(--accent) $i;
 
-		// Shadows
-		--bs-sm: var(--shadow-low) $i;
-		--bs-md: var(--shadow-big) $i;
-		--bs-lg: var(--shadow-big) $i;
+		--theme-topbar-accent-border: none $i;
 
 		// Syntax highlighting
 		--highlight-bg: var(--bg2) $i;
 		--highlight-color: var(--fg) $i;
-		--highlight-punctuation: var(--fg2) $i;
 		--highlight-comment: var(--fg2) $i;
+		--highlight-punctuation: var(--fg2) $i;
 		--highlight-attribute: var(--color9) $i;
 		--highlight-literal: var(--color10) $i;
 		--highlight-symbol: var(--color11) $i;
@@ -385,23 +383,59 @@ normalise-header(first = true) {
 		--highlight-addition: var(--color2) $i;
 		--highlight-deletion: var(--color1) $i;
 
+		// Fonts
+		--ff-sans: var(--font-normal) $i;
+		--ff-serif: var(--font-normal) $i;
+		--ff-mono: var(--font-code) $i;
+
+		for i in fine caption {
+			--fs-{i}: var(--font-size) $i;
+		}
+
+		// Spacing
+		for i in 1 2 4 6 8 12 16 24 32 48 64 96 128 {
+			--su{i}: var(--pad) $i;
+		}
+
 		// etc.
+		for i in sm md lg xl {
+			// Shadows
+			--bs-{i}: var(--shadow-low) $i;
+			--bs-{i}: var(--shadow-big) $i;
+			--bs-{i}: var(--shadow-big) $i;
+
+			// Border radius
+			--br-{i}: var(--border-radius) $i;
+			--br-{i}: var(--border-radius) $i;
+			--br-{i}: var(--border-radius) $i;
+
+			// Line height
+			--lh-{i}: var(--line-height) $i;
+			--lh-{i}: var(--line-height) $i;
+			--lh-{i}: var(--line-height) $i;
+		}
+
+		for i in xs xxl base 6 {
+			--lh-{i}: var(--line-height) $i;
+		}
+
 		--default-transition-duration: var(--trans-dur) $i;
 
-		--br-sm: var(--border-radius) $i;
-		--br-md: var(--border-radius) $i;
-		--br-lg: var(--border-radius) $i;
-
-		--lh-xs: var(--line-height) $i;
-		--lh-sm: var(--line-height) $i;
-		--lh-md: var(--line-height) $i;
-		--lh-lg: var(--line-height) $i;
-		--lh-xl: var(--line-height) $i;
-		--lh-xxl: var(--line-height) $i;
-		--lh-base: var(--line-height) $i;
-		--lh-6: var(--line-height) $i;
+		--reserve-bg2: var(--bg2);
+		--reserve-fg: var(--fg);
+		--reserve-border: var(--border);
+		--reserve-pad: var(--pad);
 
 		background-image: none;
+		padding-top: var(--header-h);
+	}
+
+	/**
+	 * Global
+	**/
+	h1, h2, h3, h4, h5, h6 {
+		lnh();
+		font-weight: normal $i;
 	}
 
 	/**
@@ -411,6 +445,7 @@ normalise-header(first = true) {
 	.site-header,
 	.s-navigation,
 	.s-topbar--content,
+	.s-topbar--container > nav,
 	#announcement-banner,
 
 	// II. Content
@@ -439,14 +474,12 @@ normalise-header(first = true) {
 		width: 100%;
 	}
 	.s {
-		&-topbar {
-			bg(2);
-			header-focus();
-			brd(bottom);
-			shd(0);
-		}
-
 		&-input {
+			--pad: calc(var(--reserve-pad) / 2);
+			// Don't get me affected by header-focus()
+			--bg2: var(--reserve-bg2);
+			--fg: var(--reserve-fg);
+			--border: var(--reserve-border);
 			normalise-input();
 			bg();
 
@@ -464,9 +497,29 @@ normalise-header(first = true) {
 			}
 		}
 
+		&-topbar {
+			bg(2);
+			header-focus();
+			brd(bottom);
+			shd(0);
+			height: var(--header-h);
+
+			&--searchbar {
+				pad(0);
+			}
+		}
+
 		&-popover {
-			bg(-tr);
+			// Don't get me affected by header-focus()
+			--bg2: var(--reserve-bg2);
+			--fg: var(--reserve-fg);
+			--border: var(--reserve-border);
+			bg();
 			brd();
+
+			&--arrow::after {
+				display: none $i;
+			}
 
 			.fc-dark {
 				fg();
@@ -474,11 +527,6 @@ normalise-header(first = true) {
 		}
 	}
 
-	.fs {
-		&-headline1, &-caption, &-category{
-			font-size: var(--font-size) $i;
-		}
-	}
 	#question-header {
 		& + div {
 			display: none $i;
