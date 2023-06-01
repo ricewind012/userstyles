@@ -393,7 +393,7 @@ $chat-title = 'section.container.themed'
 
 @-moz-document domain("discord.com") {
 	/**
- 	 * Global
+ 	 * Variables
 	**/
 	.theme-light, .theme-dark {
 		// Settings
@@ -420,20 +420,18 @@ $chat-title = 'section.container.themed'
 		--background-accent: var(--fg);
 		--background-floating: var(--bg);
 		--background-nested-floating: var(--bg);
+
 		--background-mobile-primary: var(--bg);
 		--background-mobile-secondary: var(--bg2);
+
 		--background-modifier-hover: var(--bg3);
 		--background-modifier-active: var(--bg4);
 		--background-modifier-selected: var(--hl);
 		--background-modifier-accent: var(--border);
 
-		--info-positive-background: color-a(10);
-		--info-warning-background: color-a(11);
-		--info-danger-background: color-a(9);
-		--info-help-background: color-a(12);
-
 		--modal-background: var(--bg);
 		--modal-footer-background: var(--bg2);
+
 		--input-background: var(--bg2);
 		--channeltextarea-background: var(--input-background);
 
@@ -441,33 +439,39 @@ $chat-title = 'section.container.themed'
 		--text-normal: var(--fg);
 		--text-muted: var(--fg2);
 		--text-link: var(--fg-link);
-		--text-positive: var(--color2);
-		--text-warning: var(--color3);
-		--text-danger: var(--color1);
 		--text-brand: var(--color4);
+
 		--interactive-normal: var(--fg2);
 		--interactive-muted: var(--fg2);
 		--interactive-active: var(--hl-fg);
 		--interactive-hover: var(--fg);
+
 		--header-primary: var(--fg);
 		--header-secondary: var(--fg2);
 		--channels-default: var(--fg2);
 
-		--status-positive-text: var(--fg);
-		--status-warning-text: var(--fg);
-		--status-danger-text: var(--fg);
-		--info-positive-text: var(--fg);
-		--info-warning-text: var(--fg);
-		--info-danger-text: var(--fg);
-		--info-help-text: var(--fg);
-		--info-positive-foreground: var(--fg);
-		--info-warning-foreground: var(--fg);
-		--info-danger-foreground: var(--fg);
-		--info-help-foreground: var(--fg);
-
 		--channel-text-area-placeholder: var(--fg2);
 		--input-placeholder-text: var(--fg2);
 		--textbox-markdown-syntax: var(--fg2);
+
+		// Info
+		colors = {
+			danger:   9,
+			positive: 10,
+			warning:  11,
+			help:     12
+		}
+		for k, v in colors {
+			--text-{k}: s('var(--color%s)', v - 8);
+
+			--info-{k}-background: color-a(v);
+			--info-{k}-foreground: var(--fg);
+			--info-{k}-text: var(--fg);
+
+			--status-{k}: color-a(v);
+			--status-{k}-background: color-a(v);
+			--status-{k}-text: var(--fg);
+		}
 
 		// Shadows
 		--elevation-stroke: var(--shadow-ins) var(--border);
@@ -476,19 +480,23 @@ $chat-title = 'section.container.themed'
 		--elevation-high: var(--shadow-big);
 		--guild-header-text-shadow: none;
 
+		// Scrollbar
+		for i in auto thin {
+			--scrollbar-{i}-thumb: var(--fg2);
+			--scrollbar-{i}-track: var(--bg2);
+		}
+
 		// Other
 		--focus-primary: var(--hl);
 		--brand-experiment: var(--color4);
 		--brand-experiment-400: var(--color12);
 		--brand-experiment-560: var(--color12);
 		--brand-experiment-600: var(--color12);
-
-		// Scrollbar
-		--scrollbar-auto-thumb: var(--scrollbar-thumb);
-		--scrollbar-auto-track: var(--scrollbar-track);
-		--scrollbar-thin-thumb: var(--scrollbar-thumb);
-		--scrollbar-thin-track: var(--scrollbar-track);
 	}
+
+	/**
+	 * Global
+	**/
 	.hljs {
 		lnh();
 		pad();
