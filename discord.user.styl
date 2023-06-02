@@ -462,15 +462,17 @@ $chat-title = 'section.container.themed'
 			help:     12
 		}
 		for k, v in colors {
-			--text-{k}: s('var(--color%s)', v - 8);
+			clr = s('var(--color%s)', v - 8);
+
+			--text-{k}: clr;
 
 			--info-{k}-background: color-a(v);
 			--info-{k}-foreground: var(--fg);
 			--info-{k}-text: var(--fg);
 
-			--status-{k}: color-a(v);
 			--status-{k}-background: color-a(v);
 			--status-{k}-text: var(--fg);
+			--status-{k}: clr;
 		}
 
 		// Shadows
@@ -494,87 +496,51 @@ $chat-title = 'section.container.themed'
 		--brand-experiment-600: var(--color12);
 	}
 
+	// Revert Discord
+	:root {
+		--chat-spacing: var(--body-pad) $i;
+		--right-spacing: var(--body-pad) $i;
+	}
+	.group-spacing {
+		&-0 { --f-msg-spacing: var(--pad); }
+		&-4 { --f-msg-spacing: calc(var(--pad) * 2); }
+		&-8 { --f-msg-spacing: calc(var(--pad) * 4); }
+		&-16 { --f-msg-spacing: calc(var(--pad) * 6); }
+		&-24 { --f-msg-spacing: calc(var(--pad) * 8); }
+	}
+
 	/**
 	 * Global
 	**/
-	.hljs {
-		lnh();
-		pad();
-		brd();
+	::-webkit-scrollbar {
+		width: var(--scrollbar-width) $i;
 
-		&-comment,
-		&-quote {
-			fg(2);
-		}
-		&-addition,
-		&-built_in,
-		&-deletion,
-		&-meta,
-		&-meta &-keyword,
-		&-name,
-		&-section,
-		&-selector-class,
-		&-selector-id,
-		&-selector-tag,
-		&-title,
-		&-keyword {
-			clr(9);
-		}
-		&-bullet,
-		&-doctag,
-		&-literal,
-		&-link,
-		&-meta &-meta-string,
-		&-number,
-		&-regexp,
-		&-string,
-		&-subst,
-		&-symbol {
-			clr(10);
-		}
-		&-selector-pseudo {
-			clr(12);
-		}
-		&-variable {
-			clr(13);
-		}
-		&-attr,
-		&-attribute,
-		&-selector-attr,
-		&-class &-title,
-		&-template-variable,
-		&-type {
-			clr(14);
+		&-thumb, &-track {
+			border-top: none $i;
+			border-bottom: none $i;
+			border-radius: 0 $i;
+			margin-bottom: 0 $i;
 		}
 	}
-	::-webkit-scrollbar {
-		// Normal
-		.messagesWrapper > &,
-		.contentRegionScroller&,
-		.quickswitcher .input + div& {
-			background-color: var(--scrollbar-auto-track);
-			width: var(--scrollbar-width);
 
-			&-thumb, &-track {
-				border-top: none;
-				border-bottom: none;
-				border-radius: 0;
-				margin-bottom: 0;
+	.tabBar {
+		height: unset;
+		gap: 0;
+
+		& > div {
+			lnh();
+			pad();
+			brd(0);
+			mar(0);
+			height: unset;
+
+			&[aria-selected="true"] {
+				hl();
 			}
 		}
 
-		// Thin
-		.thin& {
-			width: calc(var(--scrollbar-width) / 2);
-
-			&-button {
-				display: none;
-			}
-
-			&-track {
-				background-color: transparent $i;
-				border: none;
-			}
+		&Container {
+			brd(bottom);
 		}
 	}
 
@@ -594,7 +560,6 @@ $chat-title = 'section.container.themed'
 	[aria-label="Threads"][role="button"],
 	#channels .children > :not(.mentionsBadge),
 	#messagesNavigationDescription + [id^="chat-messages"] + .containerExpanded,
-	.sidebar .container:is(.top, .bottom),
 	#search-results .buttonsContainer,
 	.privateChannels > .searchBar,
 	.peopleColumn > .searchBar,
@@ -611,42 +576,41 @@ $chat-title = 'section.container.themed'
 	.upsell,
 	.upsellContainer,
 	.upsellTooltipWrapper,
+	.upsellOverlayContainer,
 	.premiumPromo,
 	.premiumUpsell,
 	.premiumIconWrapper,
 	.premiumInlineNotice,
 	.premiumFeatureBorder,
-	.premiumFeatureBorder + .divider,
-	.birthdayFeatureBorder,
-	.profileThemeSectionPremiumBorder,
-	[href="/store"],
-	[aria-label="Send a gift"],
-	#user-settings-cog-Billing,
+	.customizationSection:has(> .birthdayFeatureBorder), // Profiles
+	[href="/store"], // Private channels "Nitro" tab
+	[aria-label="Send a gift"], // Chat text area button
+	#user-settings-cog-Billing, // User context menu
 	#user-settings-cog-Discord_Nitro,
 	#user-settings-cog-Subscriptions,
 	#user-settings-cog-Nitro_Server_Boost,
 	#user-settings-cog-Library_Inventory,
-	#guild-context-guild-settings--GUILD_PREMIUM,
-	#guild-header-popout [role="group"]:first-child,
+	#guild-header-popout [role="group"]:first-child, // Server Boost
 	#guild-header-popout [role="group"]:first-child + div,
-	#profile-customization-tab .tabBar,
-	/*[aria-controls="GUILD_PREMIUM-tab"],
-	[aria-controls="GUILD_PREMIUM-tab"] + div,
-	[aria-controls="sticker-picker-tab-panel"],
-	[aria-controls="friend-requests-tab"] + div + div,
-	[aria-controls="nitro-server-boost-tab"],
-	[aria-controls="library-inventory-tab"],
-	[aria-controls="discord-nitro-tab"],
-	[aria-controls="subscriptions-tab"],
-	[aria-controls="billing-tab"],
-	[aria-controls="billing-tab"] + div,*/
+	[aria-label="Connections"] + div + div,
+	[aria-label="Connections"] + div + div + div,
+	[aria-label="Nitro"],
+	[aria-label="Nitro"] + div,
+	[aria-label="Subscriptions"],
+	[aria-label="Gift Inventory"],
+	[aria-label="Gift Inventory"] + div,
 
 	// III. Made-obsolete gradients/shadows
 	.children::after,
 	.tabBody::before,
 	[class*="chat-"] > ::before,
 
-	// IV. Other elements
+	// IV. Unread indicators
+	.sidebar .container:is(.top, .bottom),
+	.unreadMentionsIndicatorBottom,
+	.unreadMentionsIndicatorTop,
+
+	// V. Other elements
 	.guilds > .tree > div > .listItem:nth-last-child(2),
 	.guilds > .tree > div > .listItem:nth-last-child(3),
 	.guilds > .tree > div > .listItem:nth-last-child(4),
@@ -668,7 +632,7 @@ $chat-title = 'section.container.themed'
 	}
 
 	// Nitro pt. II
-	#profile-customization-tab .headingLgBold {
+	#profile-customization-tab .headingLgSemibold {
 		margin-bottom: 20px;
 	}
 
@@ -708,30 +672,21 @@ $chat-title = 'section.container.themed'
 			height: 0 $i;
 		}
 	}
-	.banner {
-		[aria-label="User Profile Modal"] & {
-			height: 84px;
-		}
-	}
-	.settingsBanner {
-		height: 40px;
-	}
 
 	// V. Fixes
 	.typingDots .text {
 		mar(left, 0);
-	}
-	.userInfoSection + .userInfoSection {
-		brd(top, 0);
 	}
 	.role {
 		fg();
 	}
 
 	// Sidebar
-	$sidebar-channel = '[data-dnd-name]'
-	$sidebar-channel-selected = '[class*="modeSelected-"]'
-	$sidebar-channel-unread = '[class*="modeUnread-"]'
+	$sidebar = {
+		channel:          '[data-dnd-name]'
+		channel-selected: '[class*="modeSelected-"]'
+		channel-unread:   '[class*="modeUnread-"]'
+	}
 
 	.sidebar {
 		--trans-dur: 300ms; // Almost no animation below that - lags too much
@@ -798,7 +753,7 @@ $chat-title = 'section.container.themed'
 			display: none;
 		}
 
-		{$sidebar-channel}:not(.clickable) > div {
+		{$sidebar[channel]}:not(.clickable) > div {
 			pad(0);
 
 			& > .content {
@@ -806,7 +761,7 @@ $chat-title = 'section.container.themed'
 				pad(0);
 				border-radius: var(--border-radius) 0 0 var(--border-radius) $i;
 			}
-			&:not({$sidebar-channel-selected}):hover > .content {
+			&:not({$sidebar[channel-selected]}):hover > .content {
 				background-color: transparent;
 			}
 		}
@@ -831,7 +786,7 @@ $chat-title = 'section.container.themed'
 			//content: '#';
 		}
 
-		{$sidebar-channel-selected} {
+		{$sidebar[channel-selected]} {
 			.icon {
 				color: var(--hl-fg);
 			}
@@ -839,7 +794,7 @@ $chat-title = 'section.container.themed'
 				cursor: default;
 			}
 		}
-		{$sidebar-channel-unread} {
+		{$sidebar[channel-unread]} {
 			.icon, .name {
 				fg();
 			}
@@ -865,22 +820,41 @@ $chat-title = 'section.container.themed'
 	}
 
 	// Servers sidebar
-	$guilds-scroller = '[class*="scroller-"]'
-	$guilds-guild = '.pill:not(:empty) + div > [data-dnd-name]'
-	$guilds-guild-selected = '[class*="selected-"]'
+	$guilds = {
+		scroller:       '[class*="scroller-"]'
+		guild:          '.pill:not(:empty) + div > [data-dnd-name]'
+		guild-selected: '[class*="selected-"]'
+	}
 
 	.guilds {
 		width: calc(var(--guilds-size) + var(--pad) * 2) $i;
 
-		.pill {
-			display: none;
-		}
-		{$guilds-scroller} {
+		{$guilds[scroller]} {
 			bg(2);
 			header-focus();
 			pad(top);
 			brd(right);
+
+			// Scrollbar on hover
+			&:hover > div {
+				margin-right: -1px;
+			}
+
+			&::-webkit-scrollbar {
+				width: 1px $i;
+
+				&-button {
+					display: none;
+				}
+				&-thumb {
+					background-color: var(--fg) $i;
+				}
+			}
+			&:not(:hover)::-webkit-scrollbar {
+				display: none $i;
+			}
 		}
+
 		.listItem {
 			width: 100% $i;
 			mar(bottom);
@@ -888,23 +862,23 @@ $chat-title = 'section.container.themed'
 		[style*="height: 56px"] { // DMs
 			height: unset $i;
 		}
+		.pill {
+			display: none;
+		}
 		.wrapper-2PSQCG {
 			&, & > svg {
 				box(var(--guilds-size));
 			}
 		}
-		{$guilds-guild}::before {
+		{$guilds[guild]}::before {
 			content: '';
 			position: absolute;
 			left: 0;
 			box(1px, var(--guilds-size));
 			background-color: var(--fg);
 		}
-		{$guilds-guild-selected}::before {
+		{$guilds[guild-selected]}::before {
 			--fg: var(--hl);
-		}
-		.item {
-			background-color: var(--fg);
 		}
 
 		// Server folders
@@ -937,7 +911,7 @@ $chat-title = 'section.container.themed'
 				transform-origin: top left;
 				transform: rotate(-90deg);
 
-				{$guilds-scroller} {
+				{$guilds[scroller]} {
 					brd(left);
 					brd(right, 0);
 					brd(bottom);
@@ -945,8 +919,6 @@ $chat-title = 'section.container.themed'
 				.listItem, .guildSeparator {
 					transform: rotate(90deg);
 				}
-				.unreadMentionsIndicatorBottom,
-				.unreadMentionsIndicatorTop,
 				[href$="-lower_badge_masks"] { // lower badge mask
 					display: none;
 				}
@@ -960,7 +932,7 @@ $chat-title = 'section.container.themed'
 						background-color: var(--color1);
 					}
 
-					/.guilds {$guilds-guild}, & {
+					~/ {$guilds[guild]}, & {
 						// God knows why this has to be less by 4 pixels
 						&::before {
 							left: calc(var(--pad) / 2 + 2px);
@@ -1022,6 +994,31 @@ $chat-title = 'section.container.themed'
 
 			&:hover {
 				fg();
+			}
+		}
+	}
+
+	// Search
+	.toolbar > .search {
+		mar(0);
+		order: -1;
+
+		& > :not(.open) > div {
+			width: 240px $i;
+			anim();
+
+			&:not(:hover) {
+				background-color: transparent $i;
+				width: 16px $i;
+			}
+		}
+
+		[role="button"] > div {
+			box(20px);
+			stroke: var(--interactive-normal);
+
+			svg {
+				color: var(--interactive-normal) $i;
 			}
 		}
 	}
@@ -1115,6 +1112,27 @@ $chat-title = 'section.container.themed'
 	.profileBadges,
 	.overlayBackground {
 		brd(0);
+	}
+
+	// Role background (stolen from gk)
+	.role {
+		overflow: hidden;
+		background-color: transparent;
+
+		&RemoveIcon {
+			position: absolute;
+		}
+		&Circle::after {
+			content: '';
+			position: relative;
+			display: block;
+			right: -100px;
+			min-width: 230px;
+			height: 69px;
+			background-color: inherit;
+			opacity: var(--bg-opacity);
+			pointer-events: none;
+		}
 	}
 
 	// Recent mentions
@@ -1239,24 +1257,6 @@ $chat-title = 'section.container.themed'
 		}
 	}
 
-	.tabBar {
-		height: unset;
-
-		& > div {
-			pad();
-			brd(0);
-			mar(0);
-
-			&[aria-selected="true"] {
-				hl();
-			}
-		}
-
-		&Container {
-			brd(bottom);
-		}
-	}
-
 	.downloadLink { // fix for "open original"
 		color: var(--text-link) $i;
 		opacity: 1;
@@ -1264,6 +1264,13 @@ $chat-title = 'section.container.themed'
 		&:not(:hover) {
 			text-decoration: none;
 		}
+	}
+
+	/**
+	 * Settings
+	**/
+	.contentColumn {
+		width: 0;
 	}
 
 	/**
@@ -1409,7 +1416,7 @@ $chat-title = 'section.container.themed'
 			}
 		}
 
-		&.hasThread::after { // unsupported
+		&.hasThread::after {
 			display: none;
 		}
 
@@ -1494,6 +1501,58 @@ $chat-title = 'section.container.themed'
 		}
 		.downloadWrapper {
 			mar(right, 0);
+		}
+	}
+
+	// Syntax highlighting
+	.hljs {
+		lnh();
+		pad();
+		brd();
+
+		&-comment,
+		&-quote {
+			fg(2);
+		}
+		&-addition,
+		&-built_in,
+		&-deletion,
+		&-meta,
+		&-meta &-keyword,
+		&-name,
+		&-section,
+		&-selector-class,
+		&-selector-id,
+		&-selector-tag,
+		&-title,
+		&-keyword {
+			clr(9);
+		}
+		&-bullet,
+		&-doctag,
+		&-literal,
+		&-link,
+		&-meta &-meta-string,
+		&-number,
+		&-regexp,
+		&-string,
+		&-subst,
+		&-symbol {
+			clr(10);
+		}
+		&-selector-pseudo {
+			clr(12);
+		}
+		&-variable {
+			clr(13);
+		}
+		&-attr,
+		&-attribute,
+		&-selector-attr,
+		&-class &-title,
+		&-template-variable,
+		&-type {
+			clr(14);
 		}
 	}
 
@@ -1644,90 +1703,4 @@ $chat-title = 'section.container.themed'
 	.highlight {
 		hl();
 	}
-
-	// Revert Discord
-	:root {
-		--chat-spacing: var(--body-pad) $i;
-		--right-spacing: var(--body-pad) $i;
-	}
-	.group-spacing {
-		&-0 { --f-msg-spacing: var(--pad); }
-		&-4 { --f-msg-spacing: calc(var(--pad) * 2); }
-		&-8 { --f-msg-spacing: calc(var(--pad) * 4); }
-		&-16 { --f-msg-spacing: calc(var(--pad) * 6); }
-		&-24 { --f-msg-spacing: calc(var(--pad) * 8); }
-	}
-
-	/**
-	 * etc.
-	**/
-	// Search
-	.toolbar > .search {
-		mar(0);
-		order: -1;
-
-		& > :not(.open) > div {
-			width: 240px $i;
-			anim();
-
-			&:not(:hover) {
-				background-color: transparent $i;
-				width: 16px $i;
-			}
-		}
-
-		[role="button"] > div {
-			box(20px);
-			stroke: var(--interactive-normal);
-
-			svg {
-				color: var(--interactive-normal) $i;
-			}
-		}
-	}
-
-	// Role background (stolen from gk)
-	.roleRemoveIcon {
-		position: absolute;
-	}
-	.role {
-		overflow: hidden;
-		background-color: transparent;
-	}
-	.roleCircle::after {
-		content: '';
-		position: relative;
-		display: block;
-		right: -100px;
-		min-width: 230px;
-		height: 69px;
-		background-color: inherit;
-		opacity: var(--bg-opacity);
-		pointer-events: none;
-	}
-
-	// Move guilds to the right side
-	/*
-	.baseLayer > .container {
-		flex-direction: row-reverse;
-	}
-	.listItem > .pill {
-		right: 0;
-		left: unset;
-
-		& > .item {
-			border-radius: 4px 0 0 4px;
-			margin-left: 4px;
-		}
-	}
-	*/
-
-	// Make sidebar resizeable
-	/*
-	.sidebar {
-		resize: horizontal;
-		min-width: 156px;
-		max-width: var(--sidebar-width);
-	}
-	*/
 }
