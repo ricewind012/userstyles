@@ -530,7 +530,7 @@ $chat-title = 'section.container.themed'
 			'More':          f104
 		}
 
-		'.channelTextArea .buttons': {
+		'.form .buttons': {
 			'Open sticker picker':           f249,
 			'Select emoji':                  f118,
 			'Send Message':                  f061
@@ -2104,10 +2104,8 @@ $chat-title = 'section.container.themed'
 		}
 		textarea,
 		.button {
+			--bg2: var(--bg);
 			lnh();
-		}
-		textarea {
-			pad();
 		}
 
 		.attachWrapper > button {
@@ -2162,8 +2160,10 @@ $chat-title = 'section.container.themed'
 			min-height: unset;
 		}
 	}
+	// <textarea>
 	.fontSize16Padding {
 		pad();
+		max-height: 200px;
 		right: 0;
 	}
 
