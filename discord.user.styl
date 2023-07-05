@@ -196,6 +196,16 @@ hide-chars(amount, pos, bg =) {
 	}
 }
 
+fa(char) {
+	font-size: 0 $i;
+
+	&::before {
+		content: s('"\%s"', char) $i;
+		font: var(--font-size) 'Font Awesome 6 Free' $i;
+		font-weight: 600 $i;
+	}
+}
+
 // Normalisation
 disabled() {
 	&:disabled {
@@ -368,30 +378,9 @@ normalise-header(first = true) {
 	}
 }
 
-// Website-specific functions
-icon(url) {
-	box(16px);
-	flex();
-
-	svg {
-		box(var(--icon-size));
-		background-color: var(--interactive-normal);
-		-webkit-mask-size: var(--icon-size);
-		-webkit-mask-repeat: no-repeat;
-		-webkit-mask-image: s("url('data:image/svg+xml,%s')", unquote(url));
-	}
-	&:hover svg {
-		background-color: var(--interactive-hover);
-	}
-	path {
-		display: none;
-	}
-}
-
 $chat-title = 'section.container.themed'
 
 @-moz-document domain("discord.com") {
-	@media (prefers-color-scheme:light){[class*="chat-"]{flex-direction:column-reverse}#app-mount {$chat-title} *{color:var(--accent-fg) $i}.guilds{bottom:calc(var(--sidebar-width)*-1) $i;top:unset $i;}.sidebar{top:unset $i;bottom:0}}
 	/**
  	 * Variables
 	**/
@@ -498,17 +487,84 @@ $chat-title = 'section.container.themed'
 		--brand-experiment-600: var(--color12);
 
 		--reserve-avatar-size: var(--avatar-size);
+		--reserve-pad: var(--pad);
 	}
 
 	/**
 	 * Global
 	**/
+	// Scrollbar
 	::-webkit-scrollbar {
 		box(var(--scrollbar-width));
 
 		&-thumb, &-track {
 			brd(0);
 			mar(0);
+		}
+	}
+
+	// Icons
+	icons = {
+		'.toolbar': {
+			'Clear search':                  f002,
+			'Pinned Messages':               f08d,
+			'Add Friends to DM':             f234,
+			'Start Voice Call':              f095,
+			'Start Video Call':              f03d,
+			'Show Member List':              f007,
+			'Hide Member List':              e073,
+			'Inbox':                         f01c
+		},
+
+		'.panels > .container > .flex': {
+			'Mute':                          f131,
+			'Deafen':                        f130,
+			'User Settings':                 f0ad
+		},
+
+		'[aria-label="Message Actions"] > .wrapper': {
+			'Add Reaction':  f118,
+			'Edit':          f305,
+			'Reply':         f3e5,
+			'Create Thread': 23,
+			'More':          f104
+		}
+
+		'.channelTextArea .buttons': {
+			'Open sticker picker':           f249,
+			'Select emoji':                  f118,
+			'Send Message':                  f061
+		}
+	}
+	for i in icons {
+		{i} {
+			gap: 1ch;
+
+			svg {
+				display: none;
+			}
+
+			for k, v in icons[i] {
+				{s('[aria-label=%s]', k)} {
+					fa(v);
+					fg(2);
+
+					&:hover {
+						fg();
+					}
+				}
+			}
+		}
+	}
+	.toolbar [role="button"] {
+		mar(0);
+		box(unset);
+	}
+	.panels > .container > .flex > .button {
+		box(unset);
+
+		&:hover {
+			background-color: transparent;
 		}
 	}
 
@@ -640,6 +696,7 @@ $chat-title = 'section.container.themed'
 	[href="https://support.discord.com"],
 	[aria-label="Notification Settings"],
 	[aria-label="Threads"][role="button"],
+	[aria-label="Show User Profile (Unavailable)"],
 	#channels .children > :not(.mentionsBadge),
 	#messagesNavigationDescription + [id^="chat-messages"] + .containerExpanded,
 	#search-results .buttonsContainer,
@@ -688,7 +745,7 @@ $chat-title = 'section.container.themed'
 	// III. Made-obsolete gradients/shadows
 	.children::after,
 	.tabBody::before,
-	[class*="chat-"] > ::before,
+	.content[style="position: relative;"] > div > ::before,
 
 	// IV. Unread indicators
 	.sidebar .container:is(.top, .bottom),
@@ -1094,16 +1151,7 @@ $chat-title = 'section.container.themed'
 
 			&:not(:hover) {
 				background-color: transparent $i;
-				width: 16px $i;
-			}
-		}
-
-		[role="button"] > div {
-			box(20px);
-			stroke: var(--interactive-normal);
-
-			svg {
-				color: var(--interactive-normal) $i;
+				width: 20px $i;
 			}
 		}
 	}
@@ -1145,29 +1193,6 @@ $chat-title = 'section.container.themed'
 	.messagesErrorBar {
 		background-color: color-a(1);
 		brd(,color1);
-	}
-
-	// Icons
-	.toolbar > .iconWrapper {
-		mar(0);
-		justify-content: center;
-	}
-	#app-mount [aria-label="Clear search"] > div {
-		icon('<svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="8" height="8" viewBox="0 0 8 8"><style> rect { width: 1px; height: 1px; } </style><rect x="0" y="3"/><rect x="0" y="2"/><rect x="1" y="1"/><rect x="2" y="0"/><rect x="3" y="0"/><rect x="4" y="1"/><rect x="5" y="2"/><rect x="5" y="3"/><rect x="4" y="4"/><rect x="3" y="5"/><rect x="2" y="5"/><rect x="1" y="4"/><rect x="5" y="5"/><rect x="6" y="6"/><rect x="7" y="7"/></svg>');
-		box(var(--icon-size));
-	}
-	[aria-label="Pinned Messages"][role="button"] {
-		icon('<svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="8" height="8" viewBox="0 0 8 8"><style> rect { width: 1px; height: 1px; } </style><rect x="5" y="0"/><rect x="6" y="1"/><rect x="5" y="1"/><rect x="4" y="1"/><rect x="7" y="2"/><rect x="6" y="2"/><rect x="5" y="2"/><rect x="4" y="2"/><rect x="3" y="2"/><rect x="1" y="2"/><rect x="6" y="3"/><rect x="5" y="3"/><rect x="4" y="3"/><rect x="3" y="3"/><rect x="2" y="3"/><rect x="5" y="4"/><rect x="4" y="4"/><rect x="3" y="4"/><rect x="4" y="5"/><rect x="2" y="5"/><rect x="5" y="6"/><rect x="1" y="6"/><rect x="0" y="7"/></svg>');
-	}
-	[aria-label="Inbox"][role="button"] {
-		icon('<svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="8" height="8" viewBox="0 0 8 8"><style> rect { width: 1px; height: 1px; } </style><rect x="0" y="0"/><rect x="0" y="1"/><rect x="0" y="2"/><rect x="0" y="3"/><rect x="0" y="4"/><rect x="0" y="5"/><rect x="0" y="6"/><rect x="0" y="7"/><rect x="1" y="0"/><rect x="2" y="0"/><rect x="3" y="0"/><rect x="4" y="0"/><rect x="5" y="0"/><rect x="6" y="0"/><rect x="7" y="0"/><rect x="7" y="1"/><rect x="7" y="2"/><rect x="7" y="3"/><rect x="7" y="4"/><rect x="7" y="5"/><rect x="7" y="6"/><rect x="7" y="7"/><rect x="6" y="7"/><rect x="6" y="6"/><rect x="5" y="6"/><rect x="5" y="7"/><rect x="4" y="7"/><rect x="3" y="7"/><rect x="2" y="7"/><rect x="2" y="6"/><rect x="1" y="6"/><rect x="1" y="7"/></svg>');
-	}
-	[aria-label$="Member List"] {
-		icon('<svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="8" height="8" viewBox="0 0 8 8"><style> rect { width: 1px; height: 1px; } </style><rect x="2" y="1"/><rect x="3" y="0"/><rect x="1" y="1"/><rect x="2" y="0"/><rect x="3" y="1"/><rect x="4" y="1"/><rect x="1" y="2"/><rect x="2" y="2"/><rect x="3" y="2"/><rect x="4" y="2"/><rect x="2" y="3"/><rect x="3" y="3"/><rect x="1" y="4"/><rect x="2" y="4"/><rect x="3" y="4"/><rect x="4" y="4"/><rect x="0" y="5"/><rect x="1" y="5"/><rect x="2" y="5"/><rect x="3" y="5"/><rect x="4" y="5"/><rect x="5" y="5"/><rect x="0" y="6"/><rect x="1" y="6"/><rect x="2" y="6"/><rect x="3" y="6"/><rect x="4" y="6"/><rect x="5" y="6"/><rect x="0" y="7"/><rect x="1" y="7"/><rect x="2" y="7"/><rect x="3" y="7"/><rect x="4" y="7"/><rect x="5" y="7"/><rect x="5" y="0"/><rect x="6" y="1"/><rect x="6" y="2"/><rect x="5" y="3"/><rect x="6" y="4"/><rect x="7" y="5"/><rect x="7" y="6"/><rect x="7" y="7"/></svg>');
-	}
-	.membersWrap::after {
-		background-color: transparent $i;
-		-webkit-mask: none $i;
 	}
 
 	/**
@@ -2036,25 +2061,20 @@ $chat-title = 'section.container.themed'
 			}
 		}
 
-		svg {
-			box(var(--font-size));
-		}
-		.button {
+		button {
+			pad(0);
 			mar(0);
-			border-radius: 0;;
 
-			&Wrapper {
-				display: flex;
+			& > .contents {
+				display: none;
 			}
-			&s {
-				brd(left);
-				height: unset;
-			}
-
-			&.contents {
-				pad();
-				mar(0);
-			}
+		}
+		.buttons {
+			pad(left);
+			brd(left);
+			mar(0);
+			height: unset;
+			align-items: center;
 		}
 	}
 	.form {
@@ -2090,6 +2110,26 @@ $chat-title = 'section.container.themed'
 			pad();
 		}
 
+		.attachWrapper > button {
+			fa(f055);
+			fg(2);
+			pad();
+			brd(right);
+			border-radius: 0;
+
+			&:hover {
+				fg();
+			}
+		}
+		.buttons [aria-label="Open GIF picker"] {
+			--bg2: var(--bg);
+			--pad: calc(var(--reserve-pad) / 2);
+			normalise-button();
+
+			&::before {
+				content: 'GIF';
+			}
+		}
 		.separator {
 			mar(0);
 
@@ -2117,8 +2157,7 @@ $chat-title = 'section.container.themed'
 		}
 
 		&,
-		/.attachButton,
-		/.form .buttons {
+		/.attachButton {
 			height: 100%;
 			min-height: unset;
 		}
@@ -2126,15 +2165,6 @@ $chat-title = 'section.container.themed'
 	.fontSize16Padding {
 		pad();
 		right: 0;
-	}
-	.attachButton {
-		pad();
-		brd(right);
-		width: unset;
-
-		&Inner, &Inner > svg {
-			height: var(--font-size);
-		}
 	}
 
 	.autocompleteAttached {
