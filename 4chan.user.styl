@@ -995,10 +995,32 @@ normal-colors() {
 	// Thread
 	.thread {
 		width: 100%;
-		&, &Container {
-			display: inline-flex;
-			flex-direction: column;
-			gap: var(--pad);
+
+		&Container {
+			pad(left);
+			// One reply threads look off with colorful threads
+			border-left: var(--thread-border) solid var(--border);
+			mar(left);
+			mar(bottom);
+
+			if (thread-colorful) {
+				sel = ''
+
+				for i in range(1, 3) {
+					for i in range(1, 7) {
+						sel = s('%s > %s', unquote(sel), unquote(selector()));
+
+						{sel} {
+							border-left-color: s('var(--color%s)', i);
+						}
+					}
+				}
+			}
+
+			& &,
+			~/ & {
+				mar(left, 0);
+			}
 		}
 	}
 	.post {
@@ -1033,8 +1055,6 @@ normal-colors() {
 		}
 
 		.threadContainer & {
-			mar(left);
-
 			@media (max-width: $small-screen) {
 				width: calc(100% - var(--pad));
 			}
@@ -1042,10 +1062,6 @@ normal-colors() {
 
 		if (post-full-width) {
 			width: 100% $i;
-
-			.threadContainer > &Container > & {
-				width: calc(100% - var(--pad)) $i;
-			}
 
 			&:not(.catalog-post) .menu-button {
 				position: absolute;
@@ -1088,6 +1104,9 @@ normal-colors() {
 			& > .postInfo > .inline {
 				margin-top: calc(var(--pad) * 3 + var(--font-size) * var(--line-height)) $i;
 			}
+		}
+		.thread &Container {
+			mar(bottom);
 		}
 		&Info {
 			bg(2);
@@ -1252,6 +1271,7 @@ normal-colors() {
 	#unread-line:not([hidden]) {
 		text-align: center;
 		brd(0);
+		mar(bottom);
 		display: block $i;
 		position: relative;
 		height: auto;
@@ -1291,25 +1311,6 @@ normal-colors() {
 		}
 		& > .postInfo {
 			position: unset;
-		}
-	}
-	.threadContainer {
-		// One reply threads look off with colorful threads
-		border-left: var(--thread-border) solid var(--border);
-		mar(left);
-
-		if (colorful-threads) {
-			sel = ''
-
-			for i in range(1, 3) {
-				for i in range(1, 7) {
-					sel = s('%s > %s', unquote(sel), unquote(selector()));
-
-					{sel} {
-						border-left-color: s('var(--color%s)', i);
-					}
-				}
-			}
 		}
 	}
 
