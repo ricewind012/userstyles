@@ -375,7 +375,7 @@ brd-radius(pos) {
 	/**
 	 * Variables
 	**/
-	:root, body {
+	[data-color-mode] {
 		// Background
 		--color-bg-canvas: var(--bg) $i;
 		--color-bg-primary: var(--bg) $i;
@@ -1724,10 +1724,38 @@ brd-radius(pos) {
 	/**
 	 * Code
 	**/
-	// Syntax highlighting
-	.blob-num, .blob-code, [class^="pl-"] {
-		font-family: var(--font-code) $i;
+	.react {
+		&-line-numbers {
+			bg(2);
+			brd(right);
+		}
+		/#read-only-cursor-text-area,
+		/[class^="pl-"],
+		&-code-text {
+			font-family: var(--font-code) $i;
+		}
 	}
+	#repos-sticky-header {
+		&, & > div {
+			position: unset;
+		}
+
+		// File info header
+		& > :first-child > :first-child {
+			display: none;
+		}
+	}
+	[aria-labelledby="file-name-id"] {
+		mar(0);
+
+		& > div {
+			pad(0);
+		}
+	}
+	#repos-file-tree {
+		bg(2);
+	}
+
 	.cm {
 		&-header,
 		&-def,
@@ -1831,16 +1859,6 @@ brd-radius(pos) {
 		}
 	}
 
-	// Line count
-	.blob-num {
-		bg(2);
-		brd(right);
-
-		&-expandable .directional-expander:not(:hover) {
-			background-color: var(--border) $i;
-		}
-	}
-
 	/**
 	 * Unsorted
 	**/
@@ -1875,7 +1893,8 @@ brd-radius(pos) {
 		font: var(--font-size) $i;
 	}
 	.text-mono,
-	.commit .sha {
+	.commit .sha,
+	.blob-code-inner {
 		font-family: var(--font-code) $i;
 	}
 	.gist-banner {
