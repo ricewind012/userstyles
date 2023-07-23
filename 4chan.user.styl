@@ -432,6 +432,10 @@ normal-colors() {
 		--gradient-size: 2ch;
 	}
 
+	.is_index {
+		--header-top-pos: s('calc(var(--header-h) + var(--body-pad) + var(--board-title-height) - var(--border-width) %s)', unquote(sidebar ? '+ var(--pad)' : '- var(--pad) / 2'));
+	}
+
 	/**
 	 * Global
 	**/
@@ -912,8 +916,15 @@ normal-colors() {
 	// Top icons
 	.navLinks {
 		position: absolute;
-		top: sidebar ? var(--pad) : var(--header-top-pos);
+		top: sidebar ? var(--top-icons-top-pos) : var(--header-top-pos);
 		right: var(--body-pad);
+
+		.is_index & {
+			--top-icons-top-pos: calc(var(--body-pad) - var(--border-width) - var(--pad) * 2);
+		}
+		.is_thread & {
+			--top-icons-top-pos: var(--pad);
+		}
 
 		// Catalog
 		/#index-options, & {
