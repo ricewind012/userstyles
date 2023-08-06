@@ -24,7 +24,6 @@
 
 	/* Shadows */
 	--shadow-ins: 0 0 0 var(--border-width);
-	--shadow-vrt: 0 0 8px var(--shadow-clr);
 	--shadow-low: 0 1px 4px var(--shadow-clr);
 	--shadow-mid: 0 4px 8px var(--shadow-clr);
 	--shadow-big: var(--shadow-mid), 0 28px 48px var(--shadow-clr);
