@@ -1,0 +1,266 @@
+/* ==UserStyle==
+@name           Global rules
+@namespace      github.com/openstyles/stylus
+@version        1.0.0
+@description    A new userstyle
+@author         Me
+==/UserStyle== */
+
+/**
+ *
+ * I.   Other settings
+ * II.  Color settings
+ * III. Variable declaration
+ * IV.  Scrollbar
+ *
+**/
+
+:root {
+	/* Text and icons */
+	--font-normal: system-ui;
+	--font-code: monospace;
+	--font-size: 12pt;
+	--delim: ' • ';
+
+	/* Shadows */
+	--shadow-ins: 0 0 0 var(--border-width);
+	--shadow-vrt: 0 0 8px var(--shadow-clr);
+	--shadow-low: 0 1px 4px var(--shadow-clr);
+	--shadow-mid: 0 4px 8px var(--shadow-clr);
+	--shadow-big: var(--shadow-mid), 0 28px 48px var(--shadow-clr);
+
+	/* Highlighting */
+	--hl: #1488ff;
+	--hl-fg: #fff;
+
+	/* etc. */
+	--pad: 8px;
+	--body-pad: 24px;
+	--bg-opacity: .25;
+	--line-height: 1.25;
+	--trans-dur: 150ms;
+	--border-width: 1px;
+	--border-radius: 0px;
+	--saturation-factor: 1;
+	--scrollbar-width: 16px;
+	--popup-filter: blur(18px);
+	--shadow-clr: rgba(0,0,0,.25);
+}
+
+@media (prefers-color-scheme: light) { :root {
+	--bg-h: 0;
+	--bg-s: 0%;
+	--bg-l: 100%;
+	--bg-l-mute: 6%;
+	--bg-sign: -;
+
+	--fg-h: 0;
+	--fg-s: 0%;
+	--fg-l: 15%;
+	--fg-mute-factor: 3;
+	--fg-sign: *;
+
+	--accent: var(--fg);
+	--accent-border: var(--fg);
+	--accent-fg: var(--bg);
+
+	--colorscheme-s: 11%;
+	--colorscheme-s-2: 7%;
+	--colorscheme-l: 43%;
+	--colorscheme-l-2: 8%;
+	/* */
+	--color1-h: 357;
+	--color2-h: 180;
+	--color3-h: 55;
+	--color4-h: 248;
+	--color5-h: 300;
+	--color6-h: 180;
+}}
+
+@media (prefers-color-scheme: dark) { :root {
+	--bg-h: 0;
+	--bg-s: 0%;
+	--bg-l: 8%;
+	--bg-l-mute: 3%;
+	--bg-sign: +;
+
+	--fg-h: 0;
+	--fg-s: 0%;
+	--fg-l: 80%;
+	--fg-mute-factor: 2;
+	--fg-sign: /;
+
+	--accent: var(--fg);
+	--accent-border: var(--fg);
+	--accent-fg: var(--bg);
+
+	--colorscheme-s: 17%;
+	--colorscheme-s-2: 7%;
+	--colorscheme-l: 61%;
+	--colorscheme-l-2: 8%;
+	/* */
+	--color1-h: 357;
+	--color2-h: 122;
+	--color3-h: 55;
+	--color4-h: 248;
+	--color5-h: 300;
+	--color6-h: 182;
+}}
+
+:root {
+	--header-h:  calc(var(--font-size) * var(--line-height) + var(--pad) * 2 + var(--border-width));
+
+	--bg:        hsl(var(--bg-h), var(--bg-s), var(--bg-l));
+	--bg2:       hsl(var(--bg-h), var(--bg-s), calc(var(--bg-l) var(--bg-sign) var(--bg-l-mute)));
+	--bg3:       hsl(var(--bg-h), var(--bg-s), calc(var(--bg-l) var(--bg-sign) var(--bg-l-mute) * 2));
+	--bg4:       hsl(var(--bg-h), var(--bg-s), calc(var(--bg-l) var(--bg-sign) var(--bg-l-mute) * 3));
+	--border:    hsl(var(--bg-h), var(--bg-s), calc(var(--bg-l) var(--bg-sign) var(--bg-l-mute) * 5));
+
+	--bg-tr:     hsla(var(--bg-h), var(--bg-s), var(--bg-l), calc(var(--bg-opacity) * 3));
+	--bg-tr2:    hsla(var(--bg-h), var(--bg-s), calc(var(--bg-l) var(--bg-sign) var(--bg-l-mute)), calc(var(--bg-opacity) * 3));
+	--bg-tr3:    hsla(var(--bg-h), var(--bg-s), calc(var(--bg-l) var(--bg-sign) var(--bg-l-mute) * 2), calc(var(--bg-opacity) * 3));
+
+	--fg:        hsl(var(--fg-h), var(--fg-s), var(--fg-l));
+	--fg2:       hsl(var(--fg-h), var(--fg-s), calc(var(--fg-l) var(--fg-sign) (var(--fg-mute-factor) * 1.33)));
+	--fg3:       hsl(var(--fg-h), var(--fg-s), calc(var(--fg-l) var(--fg-sign) (var(--fg-mute-factor) * 2)));
+	--fg-link:   #1488ff;
+
+	--color-s:   calc(var(--saturation-factor) * var(--colorscheme-s));
+	--color-s-2: calc(var(--color-s) + var(--colorscheme-s-2));
+	--color-l:   var(--colorscheme-l);
+	--color-l-2: calc(var(--color-l) + var(--colorscheme-l-2));
+
+	--color1:    hsl(var(--color1-h), var(--color-s),   var(--color-l));
+	--color9:    hsl(var(--color1-h), var(--color-s-2), var(--color-l-2));
+	--color2:    hsl(var(--color2-h), var(--color-s),   var(--color-l));
+	--color10:   hsl(var(--color2-h), var(--color-s-2), var(--color-l-2));
+	--color3:    hsl(var(--color3-h), var(--color-s),   var(--color-l));
+	--color11:   hsl(var(--color3-h), var(--color-s-2), var(--color-l-2));
+	--color4:    hsl(var(--color4-h), var(--color-s),   var(--color-l));
+	--color12:   hsl(var(--color4-h), var(--color-s-2), var(--color-l-2));
+	--color5:    hsl(var(--color5-h), var(--color-s),   var(--color-l));
+	--color13:   hsl(var(--color5-h), var(--color-s-2), var(--color-l-2));
+	--color6:    hsl(var(--color6-h), var(--color-s),   var(--color-l));
+	--color14:   hsl(var(--color6-h), var(--color-s-2), var(--color-l-2));
+
+	color-scheme: light dark !important;
+}
+
+::selection {
+	background-color: var(--hl) !important;
+	color: var(--hl-fg) !important;
+}
+
+/* Font */
+::placeholder, * {
+	font-family: var(--font-normal),
+		'Font Awesome 5 Free', 'Font Awesome 5 Brands',
+		'Font Awesome 6 Free', 'Font Awesome 6 Brands',
+		FontAwesome, FontAwesomeExtra
+	!important;
+	font-size: var(--font-size) !important;
+	/* Intended for Cozette font */
+	font-weight: normal !important;
+}
+code, pre, code *, pre * {
+	font-family: var(--font-code) !important;
+}
+
+/* Animations */
+@keyframes dropfade {
+	0% {
+		opacity: 0;
+		transform: translateY(-8px);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+	width: var(--scrollbar-width);
+}
+
+::-webkit-scrollbar-button {
+	display: flex;
+	width: var(--scrollbar-width);
+	height: var(--scrollbar-width);
+}
+::-webkit-scrollbar-button:vertical {
+	border-left: 1px solid transparent;
+}
+::-webkit-scrollbar-button:vertical:decrement {
+	background-image:
+		linear-gradient(transparent 68%, var(--bg2) 68%),
+		linear-gradient(135deg, var(--bg2) 45%, transparent 45%),
+		linear-gradient(45deg, var(--fg) 53%, var(--bg2) 53%);
+}
+::-webkit-scrollbar-button:vertical:decrement:active {
+	background-image:
+		linear-gradient(transparent 68%, var(--fg) 68%),
+		linear-gradient(135deg, var(--fg) 45%, transparent 45%),
+		linear-gradient(45deg, var(--bg2) 53%, var(--fg) 53%);
+}
+::-webkit-scrollbar-button:vertical:increment {
+	background-image:
+		linear-gradient(45deg, var(--bg2) 45%, transparent 45%),
+		linear-gradient(-225deg, transparent 53%, var(--bg2) 53%),
+		linear-gradient(-180deg, var(--bg2) 31%, var(--fg) 31%);
+}
+::-webkit-scrollbar-button:vertical:increment:active {
+	background-image:
+		linear-gradient(45deg, var(--fg) 45%, transparent 45%),
+		linear-gradient(-225deg, transparent 53%, var(--fg) 53%),
+		linear-gradient(-180deg, var(--fg) 31%, var(--bg2) 31%);
+}
+::-webkit-scrollbar-button:horizontal {
+	border-top: 1px solid transparent;
+}
+::-webkit-scrollbar-button:horizontal:decrement {
+	background-image:
+		linear-gradient(-135deg, transparent 53%, var(--bg2) 53%),
+		linear-gradient(-45deg, transparent 53%, var(--bg2) 53%),
+		linear-gradient(90deg, var(--fg) 70%, var(--bg2) 70%);
+}
+::-webkit-scrollbar-button:horizontal:decrement:active {
+	background-image:
+		linear-gradient(-135deg, transparent 53%, var(--fg) 53%),
+		linear-gradient(-45deg, transparent 53%, var(--fg) 53%),
+		linear-gradient(90deg, var(--bg2) 70%, var(--fg) 70%);
+}
+::-webkit-scrollbar-button:horizontal:increment {
+	background-image:
+		linear-gradient(135deg, transparent 53%, var(--bg2) 53%),
+		linear-gradient(45deg, transparent 53%, var(--bg2) 53%),
+		linear-gradient(-90deg, var(--fg) 70%, var(--bg2) 70%);
+}
+::-webkit-scrollbar-button:horizontal:increment:active {
+	background-image:
+		linear-gradient(135deg, transparent 53%, var(--fg) 53%),
+		linear-gradient(45deg, transparent 53%, var(--fg) 53%),
+		linear-gradient(-90deg, var(--bg2) 70%, var(--fg) 70%);
+}
+
+::-webkit-scrollbar-track {
+	background-color: var(--bg2) !important;
+	background-clip: border-box;
+	border: none !important;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: var(--fg2) !important;
+	background-clip: padding-box;
+	border: none !important;
+	border-radius: 0 !important;
+}
+::-webkit-scrollbar-thumb:active {
+	background-color: var(--fg) !important;
+}
+
+::-webkit-scrollbar-corner,
+::-webkit-scrollbar-resize {
+	background-color: var(--bg2);
+}
