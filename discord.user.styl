@@ -764,7 +764,7 @@ $chat-title = 'section.container.themed'
 	.threadSuggestionBar,
 	[data-list-id="chat-messages"] > [class^="groupStart"], // blocked
 	.userPopoutInner .lastSection,
-	.cozy .repliedMessage > span,
+	[class*="cozy-"] .repliedMessage > .username,
 	.communityInfoContainer,
 	.guildIconContainer,
 	.nowPlayingColumn,
@@ -1403,7 +1403,7 @@ $chat-title = 'section.container.themed'
 	}
 
 	// Messages
-	.message {
+	[class*="message-"] {
 		pad(0);
 		mar(0);
 		min-height: unset $i;
@@ -1412,7 +1412,7 @@ $chat-title = 'section.container.themed'
 			display: none;
 		}
 
-		&.compact {
+		&[class*="compact-"] {
 			--font-normal: var(--font-code); // for proper aligning
 			--alt-bg: var(--bg2);
 			--message-actions-pos-top: calc(var(--line-height) * 1px);
@@ -1432,7 +1432,7 @@ $chat-title = 'section.container.themed'
 				position: unset;
 				display: unset;
 			}
-			&:not(.groupStart) .username {
+			&:not([class*="groupStart-"]) .username {
 				display: none;
 			}
 
@@ -1466,11 +1466,7 @@ $chat-title = 'section.container.themed'
 			}
 		}
 
-		&.cozy > .contents > &Content,
-		&.cozy > .container {
-			mar(0);
-		}
-		&.cozy {
+		&[class*="cozy-"] {
 			mar(top);
 
 			.header {
@@ -1503,6 +1499,10 @@ $chat-title = 'section.container.themed'
 					z-index: 1;
 				}
 			}
+			& > .contents > .messageContent,
+			& > .container {
+				mar(0);
+			}
 
 			if (messages-alt) {
 				--message-actions-pos-top: 0;
@@ -1510,7 +1510,7 @@ $chat-title = 'section.container.themed'
 				pad(top);
 				brd(top);
 
-				.divider + .messageListItem > & {
+				[role="separator"] + li > & {
 					pad(top, 0);
 					brd(top, 0);
 				}
@@ -1520,8 +1520,8 @@ $chat-title = 'section.container.themed'
 				.avatar {
 					top: calc(var(--pad) / var(--line-height));
 				}
-				& > .repliedMessage {
-					margin-left: var(--avatar-spacing);
+				.repliedMessage {
+					margin-left: calc(var(--avatar-spacing) - var(--border-width));
 				}
 				& > .contents,
 				& > .container {
@@ -1551,24 +1551,25 @@ $chat-title = 'section.container.themed'
 			}
 		}
 
-		&:not(.groupStart) {
+		&:not([class*="groupStart-"]) {
 			pad(top, 0);
 			brd(top, 0);
 			margin-top: var(--cozy-top-border-width) $i;
+
+			.messageContent {
+				pad(top, 0);
+			}
 		}
-		&.mentioned {
+		&[class*="mentioned-"] {
 			brd(left, color3);
 		}
-		&.automodMessage,
-		&.ephemeral,
-		&.highlighted,
-		&.replying {
+		&[class*="automodMessage-"],
+		&[class*="ephemeral-"],
+		&[class*="highlighted-"],
+		&[class*="replying-"] {
 			brd(left, color4);
 		}
 
-		&:not(.groupStart) &Content {
-			pad(top, 0);
-		}
 		& > .contents {
 			position: relative;
 		}
@@ -1580,52 +1581,6 @@ $chat-title = 'section.container.themed'
 			.children {
 				mar(top);
 				height: unset;
-			}
-		}
-
-		&sWrapper .divider {
-			brd(0);
-			mar(0);
-			mar(top);
-			mar(bottom);
-			height: calc(var(--font-size) * var(--line-height));
-			top: 0 $i;
-
-			& > span {
-				lnh();
-				pad();
-
-				&::before {
-					content: '';
-					position: absolute;
-					inset: 0;
-					top: calc(50% - var(--border-width));
-					brd(top);
-					z-index: -1;
-				}
-			}
-
-			& > .content {
-				text-transform: uppercase;
-				mar(0);
-			}
-			& > .unreadPill {
-				bg();
-				clr(9);
-				white-space: pre;
-				position: unset;
-				height: unset;
-
-				&::before {
-					border-top-color: var(--color1) $i;
-				}
-				&::after {
-					content: ' messages';
-				}
-			}
-
-			svg {
-				display: none;
 			}
 		}
 
@@ -1646,15 +1601,63 @@ $chat-title = 'section.container.themed'
 			}
 		}
 	}
+	[data-list-id="chat-messages"] > [role="separator"] {
+		brd(0);
+		mar(0);
+		mar(top);
+		mar(bottom);
+		height: calc(var(--font-size) * var(--line-height));
+		top: 0 $i;
+
+		& > span {
+			lnh();
+			pad();
+
+			&::before {
+				content: '';
+				position: absolute;
+				inset: 0;
+				top: calc(50% - var(--border-width));
+				brd(top);
+				z-index: -1;
+			}
+		}
+
+		& > .content {
+			text-transform: uppercase;
+			mar(0);
+		}
+		& > .unreadPill {
+			bg();
+			clr(9);
+			white-space: pre;
+			position: unset;
+			height: unset;
+
+			&::before {
+				border-top-color: var(--color1) $i;
+			}
+			&::after {
+				content: ' messages';
+			}
+		}
+
+		svg {
+			display: none;
+		}
+	}
 	.botTag {
 		background-color: unset;
 		clr(5);
 		pad(0);
 		mar(0);
-		margin-left: 1ch $i;
 		top: 0;
 		height: unset $i;
 		vertical-align: unset;
+
+		[class*="cozy-"] & {
+			margin-left: 1ch $i;
+		}
 
 		&Verified {
 			display: none;
@@ -1665,18 +1668,17 @@ $chat-title = 'section.container.themed'
 		mar(0);
 		height: unset;
 
-		.message.cozy > .contents > &,
-		.message.cozy.groupStart:not(:hover) .header & {
+		[class*="message"][class*="cozy-"] > .contents > &,
+		[class*="message"][class*="cozy-"][class*="groupStart-"]:not(:hover) .header & {
 			display: none;
 		}
-		.message.compact .header & {
+		[class*="message"][class*="compact-"] .header & {
 			margin-right: 1ch $i;
 			width: var(--compact-timestamp-width) $i;
 		}
 	}
 	.repliedMessage {
 		lnh();
-		mar(top);
 		mar(right);
 
 		& ~ .buttonContainer {
@@ -1687,10 +1689,11 @@ $chat-title = 'section.container.themed'
 			border-top-left-radius: var(--border-radius);
 		}
 
-		.username,
 		& > img {
-			opacity: 1;
 			margin-right: 1ch;
+		}
+		.username {
+			opacity: 1;
 		}
 	}
 	.replyBadge {
@@ -1707,7 +1710,7 @@ $chat-title = 'section.container.themed'
 		right: var(--pad);
 
 		if (!messages-alt) {
-			.cozy & {
+			[class*="cozy-"] & {
 				--bg: var(--bg3);
 			}
 		}
@@ -1781,8 +1784,8 @@ $chat-title = 'section.container.themed'
 		}
 	}
 	.nonMediaAttachmentsContainer {
-		//margin-top: calc(var(--pad) * -1);
 		mar(top);
+		mar(bottom);
 	}
 
 	// Normal file
@@ -1956,24 +1959,14 @@ $chat-title = 'section.container.themed'
 	}
 
 	// Reactions
+	$reaction = {
+		normal: '[class*="reaction-"]',
+		own:    '[class*="reactionMe-"]'
+	}
 	.reaction {
-		background-color: var(--alt-bg) $i;
-		brd();
-		mar(right);
-		focus(focus-within);
-
 		&s {
 			pad(0);
-			margin-top: calc(var(--pad) * -1) $i;
-			margin-bottom: -0.25rem;
-
-			div + & {
-				margin-top: 0.25em $i;
-			}
-		}
-		&Me {
-			--alt-bg: color-a(3) $i;
-			--border: var(--color11) $i;
+			mar(0);
 		}
 		&Inner {
 			pad(0);
@@ -1984,11 +1977,21 @@ $chat-title = 'section.container.themed'
 			brd(left);
 			mar(0);
 		}
+	}
+	{$reaction[normal]} {
+		background-color: var(--alt-bg) $i;
+		brd();
+		mar(right);
+		focus(focus-within);
 
 		img {
 			pad();
 			mar(0);
 		}
+	}
+	{$reaction[own]} {
+		--alt-bg: color-a(3) $i;
+		--border: var(--color11) $i;
 	}
 
 	// Syntax highlighting
