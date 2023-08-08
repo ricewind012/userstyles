@@ -1601,6 +1601,10 @@ $chat-title = 'section.container.themed'
 			}
 		}
 	}
+	.message > .wrapper {
+		@extend [class*="message-"];
+		pad();
+	}
 	[data-list-id="chat-messages"] > [role="separator"] {
 		brd(0);
 		mar(0);
@@ -2182,8 +2186,9 @@ $chat-title = 'section.container.themed'
 	// Search results
 	.search {
 		&Header {
-			bg();
-			padding: 0 var(--pad);
+			bg(3);
+			pad(0);
+			pad(left);
 			brd(bottom);
 			height: var(--header-h);
 
@@ -2191,7 +2196,7 @@ $chat-title = 'section.container.themed'
 				gap: 0;
 			}
 
-			.item {
+			[role="tab"] {
 				lnh();
 				pad();
 				brd(0);
@@ -2215,38 +2220,85 @@ $chat-title = 'section.container.themed'
 
 				.scroller {
 					pad(0);
+					overflow: hidden $i;
+
+					[role="list"] {
+						/*
+						 * Move scrollbar away from the pages list,
+						 * as it is sticky now.
+						 */
+						overflow: hidden scroll;
+						height: calc(100% - var(--header-h) - var(--pad) * 2);
+
+						&::-webkit-scrollbar {
+							&-button, &-track {
+								--bg2: var(--bg);
+							}
+						}
+					}
+					& > .container { // pages
+						position: sticky;
+						bottom: 0;
+						z-index: 1;
+					}
 				}
 			}
 		}
 	}
-	.pageControl {
-		pad(0);
+	.page {
+		&Control {
+			pad(0);
 
-		&Container {
-			mar(top);
+			&Container {
+				bg(3);
+				brd(top);
+				mar(0);
+			}
+
+			button {
+				--bg2: var(--bg);
+				--pad: calc(var(--reserve-pad) / 2);
+				normalise-button();
+			}
+			.roundButton {
+				background-color: transparent;
+				fg(2);
+				pad();
+				brd(0);
+
+				&:hover {
+					fg();
+				}
+			}
+			.activeButton {
+				hl();
+			}
+		}
+		&Button {
+			lnh();
+			mar(0);
+			box(unset);
+			min-width: unset;
+			min-height: unset;
+
+			.iconCaret {
+				display: none;
+			}
 		}
 	}
 	#search-results {
 		pad();
 
 		.channelName {
-			normalise-header();
-
+			&Container {
+				normalise-header();
+			}
+			&Text {
+				lnh();
+			}
 			&Icon {
 				display: none;
 			}
-		}
-
-		.message {
-			pad(0);
-
-			& > div {
-				pad();
-				padding-left: calc(var(--idk) * -1 + var(--pad)) $i;
-			}
-		}
-		.avatar {
-			left: var(--pad) $i;
 		}
 	}
 	.highlight {
