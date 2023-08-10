@@ -277,6 +277,32 @@ normalise-color() {
 	}
 }
 
+normalise-range() {
+	appearance: none $i;
+	outline: none $i;
+	bg(2);
+	brd();
+	border-radius: 100px $i;
+	height: ($select-size / 2) $i;
+	focus();
+	disabled();
+
+	&::-webkit-slider {
+		&-container {
+			margin: 0 calc(var(--border-width) * -2) $i;
+		}
+		&-thumb {
+			appearance: none $i;
+			bg(2);
+			brd();
+			border-radius: 100px $i;
+			box-shadow: $select-shadow $i;
+			box($select-size);
+			focus(active);
+		}
+	}
+}
+
 normalise-checkbox(label = true) {
 	if (label) {
 		/label {
@@ -525,7 +551,7 @@ normal-colors() {
 			font-size: var(--font-size) $i;
 		}
 
-		&:hover {
+		&:not(.active):hover {
 			text-decoration: none $i;
 
 			&::before {
@@ -1139,6 +1165,15 @@ normal-colors() {
 		&Message {
 			mar(0);
 			pad();
+		}
+	}
+	.show-reply-button {
+		clr(4);
+		margin-right: 1ch;
+
+		&:hover {
+			clr(12);
+			text-decoration: none $i;
 		}
 	}
 	// For "hide reply" button
