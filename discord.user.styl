@@ -700,10 +700,12 @@ $chat-title = 'section.container.themed'
 	#channels .children > :not(.mentionsBadge),
 	#messagesNavigationDescription + [id^="chat-messages"] + .containerExpanded,
 	#search-results .buttonsContainer,
+	.sidebar .positionedContainer, // Unread bar
 	.privateChannels > .searchBar,
 	.peopleColumn > .searchBar,
 	.peopleListItem .actions,
 	.sidebar .actionButtons,
+	.guildIconV2Container, // Sidebar boost status
 	.welcomeCTA,
 
 	// II. Nitro
@@ -823,15 +825,19 @@ $chat-title = 'section.container.themed'
 		fg();
 	}
 
-	// Sidebar
+	/**
+	 * Sidebar
+	**/
 	$sidebar = {
-		channel:          '[data-dnd-name]'
+		channel:          'li'
 		channel-selected: '[class*="modeSelected-"]'
 		channel-unread:   '[class*="modeUnread-"]'
+		channel-category: '.wrapperCommon-I1TMDb'
 	}
 
 	.sidebar {
-		--trans-dur: 300ms; // Almost no animation below that - lags too much
+		// Almost no animation below that - lags too much
+		--trans-dur: 300ms;
 		width: var(--sidebar-width);
 
 		@media (max-width: $small-screen) {
@@ -839,8 +845,8 @@ $chat-title = 'section.container.themed'
 			min-width: 0;
 			anim();
 
-			.guilds:hover + div &,
-			.guilds + div &:hover {
+			.guilds:hover + .base &,
+			.guilds + .base &:hover {
 				width: var(--sidebar-width) $i;
 			}
 
@@ -858,13 +864,10 @@ $chat-title = 'section.container.themed'
 		}
 
 		.header {
+			background-color: transparent $i;
 			pad(0);
 			shd(0);
 			height: unset $i;
-
-			&:hover {
-				background-color: transparent;
-			}
 
 			&Content {
 				height: unset;
@@ -882,71 +885,133 @@ $chat-title = 'section.container.themed'
 			}
 		}
 	}
-
-	// Channels
 	.sidebarRegionScroller,
 	.content > .sidebar > * {
 		brd(right);
 	}
+
+	// Channels
 	#channels {
 		&::-webkit-scrollbar,
-		.unread {
+		.iconContainer,
+		.unread,
+
+		// "Browse Channels"
+		[style="height: 12px;"],
+		& > ul > [role="button"],
+		.sectionDivider {
 			display: none;
 		}
 
-		{$sidebar[channel]}:not(.clickable) > div {
+		// Channel
+		{$sidebar[channel]} {
 			pad(0);
 
-			& > .content {
-				mar(left, 0);
+			& > div {
 				pad(0);
-				border-radius: var(--border-radius) 0 0 var(--border-radius) $i;
-			}
-			&:not({$sidebar[channel-selected]}):hover > .content {
-				background-color: transparent;
-			}
-		}
-		.name {
-			lnh();
-			letter-spacing: 0;
-		}
-		.mainContent {
-			pad();
-			flex();
-			gap: 1ch;
-		}
+				height: unset;
 
-		.arrow {
-			position: unset;
-			box(var(--font-size));
-		}
-		.iconContainer {
-			display: none;
-		}
-		.channelName::before {
-			//content: '#';
-		}
+				&:not({$sidebar[channel-selected]}):hover .link {
+					background-color: transparent $i;
+				}
+			}
+			& > div:not([class]) { // voice
+				& > div {
+					pad(0);
+					mar(0);
+				}
+				.name {
+					fa(f095);
+					font-size: var(--font-size) $i;
 
+					&::before {
+						margin-right: 1ch;
+					}
+				}
+			}
+		}
+		// Special case for threads
+		& > ul > li > div {
+			mar(0);
+		}
 		{$sidebar[channel-selected]} {
-			.icon {
-				color: var(--hl-fg);
-			}
-			.mainContent {
+			.link {
 				cursor: default;
 			}
 		}
 		{$sidebar[channel-unread]} {
-			.icon, .name {
-				fg();
+			.name {
+				color: var(--hl);
 			}
+		}
+		.link {
+			pad();
+			brd(0);
+		}
+
+		// voice
+		.draggable {
+			&,
+			& > div {
+				height: unset;
+			}
+			.content {
+				brd(0);
+				mar(0);
+			}
+			& > :not([class*="selected-"]) > .content {
+				background-color: transparent;
+			}
+			.avatar {
+				mar();
+			}
+		}
+
+		// Category
+		.mainContent {
+			normalise-header(false);
+			mar(left);
+			mar(right);
+			display: flex;
+			flex-direction: row-reverse;
+		}
+		.arrow {
+			position: unset;
+			box(var(--font-size));
 		}
 	}
 
 	.privateChannels {
-		& > .scroller::-webkit-scrollbar,
+		& > :last-child::-webkit-scrollbar,
 		[style="height: 8px;"],
 		&HeaderContainer {
 			display: none;
+		}
+
+		.channel {
+			pad(0);
+			brd(0);
+			mar(0);
+			max-width: unset;
+
+			& > div {
+				background-color: transparent $i;
+
+				&:hover {
+					fg();
+				}
+
+				&[class*="selected-"] {
+					hl();
+				}
+			}
+		}
+		.layout {
+			pad();
+			height: unset;
+		}
+		.avatar {
+			mar(right);
 		}
 	}
 
