@@ -1722,9 +1722,140 @@ brd-radius(pos) {
 	}
 
 	/**
-	 * Code
+	 * React garbage
 	**/
+	// Global
+	[class^="Text-"] {
+		fg();
+	}
+	[data-component="text"] {
+		lnh();
+
+		.octicon {
+			fg();
+			vertical-align: middle $i;
+		}
+	}
+
+	// Input
+	.TextInput {
+		&-wrapper {
+			normalise-input();
+			shd(0);
+			max-width: 25vw $i;
+			min-height: unset $i;
+			focus(focus-within);
+
+			& > input {
+				pad(0);
+				mar(right);
+			}
+		}
+		&-icon {
+			&:first-child {
+				display: none;
+			}
+			&:last-child {
+				fg(2);
+
+				& > div {
+					mar(0);
+				}
+			}
+		}
+	}
+
+	// Buttons
+	[data-testid="raw-button"],
+	[class^="types__StyledButton-"]
+	[data-component="IconButton"] {
+		--pad: calc(var(--save-pad) / 2);
+		normalise-button();
+		shd(0);
+		box(unset, var(--header-h));
+
+		#repos-sticky-header & {
+			--bg2: var(--bg);
+		}
+	}
+	[data-component="leadingVisual"] { // octicon
+		fg();
+		margin-right: 1ch $i;
+	}
+
+	// Tabs
+	[class*="SegmentedControlList-"] {
+		margin-left: calc(var(--pad) * -1) $i;
+
+		& > li {
+			margin: calc(var(--pad) * -1) 0 $i;
+
+			&:last-child {
+				brd(right);
+			}
+		}
+
+		button {
+			--pad: calc(var(--save-pad) / 2);
+			normalise-button();
+			brd(0);
+			transition: none $i;
+
+			&:not(:hover) {
+				fg(2);
+			}
+			&[aria-current="true"] {
+				hl();
+			}
+
+			& > span {
+				all: unset $i;
+			}
+		}
+	}
+
+	// Code view
 	.react {
+		&-blob-sticky-header {
+			& + div {
+				bg(2);
+				pad();
+				brd();
+
+				& > div {
+					gap: var(--pad);
+					mar(0);
+				}
+			}
+		}
+		// Latest commit
+		&-code-view-bottom-padding {
+			& + div > :first-child {
+				bg(2);
+				brd();
+				mar(bottom);
+
+				& > div {
+					gap: var(--pad);
+					pad();
+
+					& > div {
+						gap: var(--pad);
+					}
+				}
+				a:not(.issue-link) {
+					fg();
+				}
+				img {
+					mar(right);
+					box(var(--font-size));
+				}
+			}
+		}
+		&-last-commit-history-group {
+			--bg2: var(--bg);
+		}
+
 		&-line-numbers {
 			bg(2);
 			brd(right);
@@ -1735,25 +1866,64 @@ brd-radius(pos) {
 			font-family: var(--font-code) $i;
 		}
 	}
-	#repos-sticky-header {
-		&, & > div {
-			position: unset;
-		}
+	react-app main > :not(:empty) {
+		margin: var(--body-pad);
+		max-width: calc(100% - var(--body-pad) * 2);
+	}
+	[data-selector="repos-split-pane-content"] {
+		pad(0);
 
-		// File info header
-		& > :first-child > :first-child {
-			display: none;
+		& > div {
+			mar(0);
 		}
 	}
-	[aria-labelledby="file-name-id"] {
+	#repos {
+		&-sticky-header {
+			top: calc(var(--header-h) - var(--border-width));
+
+			& > div {
+				position: unset;
+			}
+
+			// Latest commit sticky header
+			& > :first-child > :first-child {
+				display: none;
+			}
+
+			// Code
+			& + div {
+				brd();
+				border-top: none $i;
+			}
+		}
+		&-file-tree {
+			bg(2);
+		}
+	}
+	#StickyHeader {
+		pad(0);
+		mar(bottom);
+
+		& > div {
+			&,
+			& > div {
+				gap: var(--pad);
+			}
+		}
+	}
+	.d-flex.gap-2 {
+		gap: var(--pad) $i;
+
+		& > div {
+			mar(0);
+		}
+	}
+	[aria-labelledby^="file-name-id"] {
 		mar(0);
 
 		& > div {
 			pad(0);
 		}
-	}
-	#repos-file-tree {
-		bg(2);
 	}
 
 	.cm {
