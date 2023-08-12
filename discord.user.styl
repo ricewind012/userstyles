@@ -513,7 +513,8 @@ $chat-title = 'section.container.themed'
 			'Start Video Call':              f03d,
 			'Show Member List':              f007,
 			'Hide Member List':              e073,
-			'Inbox':                         f01c
+			'Inbox':                         f01c,
+			'More':                          f078
 		},
 
 		'.panels > .container > .flex': {
@@ -556,9 +557,14 @@ $chat-title = 'section.container.themed'
 			}
 		}
 	}
-	.toolbar [role="button"] {
-		mar(0);
-		box(unset);
+	.toolbar {
+		[role="button"] {
+			mar(0);
+			box(unset);
+		}
+		[aria-label="More"] {
+			order: 1;
+		}
 	}
 	.panels > .container > .flex > .button {
 		box(unset);
@@ -573,12 +579,18 @@ $chat-title = 'section.container.themed'
 		gap: 0;
 
 		& > div {
+			background-color: transparent $i;
+			fg(2);
 			lnh();
 			pad();
 			brd(0);
 			mar(0);
+			min-width: unset $i;
 			height: unset;
 
+			&:hover {
+				fg();
+			}
 			&[aria-selected="true"] {
 				hl();
 			}
@@ -1118,12 +1130,19 @@ $chat-title = 'section.container.themed'
 				transform: rotate(-90deg);
 
 				{$guilds[scroller]} {
+					padding-top: calc(var(--pad) / 2) $i;
 					brd(left);
 					brd(right, 0);
 					brd(bottom);
 				}
 				.listItem, .guildSeparator {
 					transform: rotate(90deg);
+				}
+				.tutorialContainer {
+					& > .listItem,
+					& + .listItem {
+						margin-bottom: calc(var(--pad) * 0.5) $i;
+					}
 				}
 				[href$="-lower_badge_masks"] { // lower badge mask
 					display: none;
@@ -1170,28 +1189,34 @@ $chat-title = 'section.container.themed'
 		height: var(--header-h);
 		gap: var(--pad);
 
-		& > .children {
-			.avatar,
-			.title:not(.cursorPointer),
-			& > :first-child, // icon
-			& > .nicknames,
-			& > .akaBadge,
-			& > .divider {
-				display: none;
-			}
+		.title:not(.cursorPointer),
+		.children .iconWrapper,
+		.iconContainer,
+		.nicknames,
+		.akaBadge,
+		.avatar,
+		.divider,
+		.caret {
+			display: none;
+		}
+		main > & > .children { // tabs
+			margin-left: calc(var(--pad) * -1);
 		}
 		.title {
 			lnh();
 
-			&Wrapper {
-				mar(0);
+			&.defaultColor:not(:hover)::after {
+				fg(2);
 			}
 			&.cursorPointer {
 				replace-text('Direct Messages');
+			}
+			&.parentChannelName {
+				replace-text('Thread');
+			}
 
-				&:not(:hover)::after {
-					fg(2);
-				}
+			&Wrapper {
+				mar(0);
 			}
 		}
 		.topic {
