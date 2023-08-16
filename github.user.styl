@@ -9,7 +9,6 @@
 
 @var checkbox remove-icons       "Partly remove icons" 1
 @var checkbox old-user-status    "Old user status"     1
-@var checkbox no-wrap            "No code wrapping"    1
 
 @var text     sidebar-width      "Sidebar width"       228px
 @var select   sidebar-pos        "Sidebar position" {
@@ -1814,41 +1813,68 @@ brd-radius(pos) {
 		}
 	}
 
-	// Code view
 	.react {
-		&-blob-sticky-header {
-			& + div {
-				bg(2);
-				pad();
-				brd();
-
-				& > div {
-					gap: var(--pad);
-					mar(0);
-				}
-			}
-		}
-		// Latest commit
-		&-code-view-bottom-padding {
-			& + div > :first-child {
-				bg(2);
-				brd();
-				mar(bottom);
-
-				& > div {
-					gap: var(--pad);
+		// Code view
+		&-blob {
+			// Header
+			&-sticky-header {
+				& + div {
+					bg(2);
 					pad();
+					brd();
 
 					& > div {
 						gap: var(--pad);
+						mar(0);
 					}
 				}
-				a:not(.issue-link) {
-					fg();
+			}
+
+			// <textarea>
+			&-print-hide {
+				font-family: var(--font-code) $i;
+				line-height: 21px $i;
+				margin-top: -1px $i;
+
+				&::selection {
+					bg(2);
+					color: transparent $i;
 				}
-				img {
-					mar(right);
-					box(var(--font-size));
+			}
+		}
+		&-code {
+			// Latest commit
+			&-view-bottom-padding {
+				& + div > div:first-of-type {
+					bg(2);
+					brd();
+					mar(bottom);
+
+					& > div {
+						gap: var(--pad);
+						pad();
+
+						& > div {
+							gap: var(--pad);
+						}
+					}
+					a:not(.issue-link) {
+						fg();
+					}
+					[data-testid="avatar-icon-link"] + span > a {
+						fg(-link);
+					}
+					img {
+						mar(right);
+						box(var(--font-size));
+					}
+				}
+			}
+
+			// File contents
+			&-text {
+				span {
+					font-family: var(--font-code) $i;
 				}
 			}
 		}
@@ -1856,14 +1882,20 @@ brd-radius(pos) {
 			--bg2: var(--bg);
 		}
 
-		&-line-numbers {
-			bg(2);
-			brd(right);
-		}
-		/#read-only-cursor-text-area,
-		/[class^="pl-"],
-		&-code-text {
+		&-line-number {
 			font-family: var(--font-code) $i;
+
+			&s {
+				bg(2);
+				lnh();
+				brd(right);
+			}
+
+			& > span { // arrow
+				mar(0);
+				left: -2ch;
+				top: -4px;
+			}
 		}
 	}
 	react-app main > :not(:empty) {
@@ -1924,6 +1956,9 @@ brd-radius(pos) {
 		& > div {
 			pad(0);
 		}
+	}
+	#highlighted-line-menu-container > button {
+		left: calc((16px + var(--pad) / 2) * -1);
 	}
 
 	.cm {
@@ -2008,24 +2043,6 @@ brd-radius(pos) {
 		}
 		&-matchingbracket {
 			background-color: var(--hl);
-		}
-	}
-
-	if (no-wrap) {
-		.blob-code-inner, .markdown-body pre > code, .markdown-body .highlight > pre {
-			white-space: pre-wrap !important;
-			overflow-wrap: anywhere !important;
-		}
-		/* GitHub Bug: Enable wrapping of long code lines */
-		body:not(.nowrap) .blob-code-inner,
-		body:not(.nowrap) .markdown-body pre > code,
-		body:not(.nowrap) .markdown-body .highlight > pre {
-			white-space: pre-wrap !important;
-			overflow-wrap: anywhere !important;
-			display: block !important;
-		}
-		body:not(.nowrap) td.blob-code-inner {
-			display: table-cell !important;
 		}
 	}
 
