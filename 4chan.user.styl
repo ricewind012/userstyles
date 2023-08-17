@@ -287,18 +287,34 @@ normalise-range() {
 	focus();
 	disabled();
 
+	range-track() {
+		margin: 0 calc(var(--border-width) * -2) $i;
+	}
+	range-thumb() {
+		appearance: none $i;
+		bg(2);
+		brd();
+		border-radius: 100px $i;
+		box-shadow: $select-shadow $i;
+		box($select-size);
+		focus(active);
+	}
+
 	&::-webkit-slider {
 		&-container {
-			margin: 0 calc(var(--border-width) * -2) $i;
+			range-track();
 		}
 		&-thumb {
-			appearance: none $i;
-			bg(2);
-			brd();
-			border-radius: 100px $i;
-			box-shadow: $select-shadow $i;
-			box($select-size);
-			focus(active);
+			range-thumb();
+		}
+	}
+
+	&::-moz-range {
+		&-track {
+			range-track();
+		}
+		&-thumb {
+			range-thumb();
 		}
 	}
 }

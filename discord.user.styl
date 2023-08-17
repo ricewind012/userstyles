@@ -1054,8 +1054,10 @@ $chat-title = 'section.container.themed'
 			brd(right);
 
 			// Scrollbar on hover
-			&:hover > div {
-				margin-right: -1px;
+			@supports not (-moz-appearance: none) {
+				&:hover > div {
+					margin-right: -1px;
+				}
 			}
 
 			&::-webkit-scrollbar {

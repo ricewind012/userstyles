@@ -254,6 +254,12 @@ normalise-color() {
 			pad(0);
 		}
 	}
+
+	&::-moz-color-swatch {
+		brd(0);
+		// Prevent from making it look like a radio input
+		border-radius: calc(var(--border-radius) * 0.33) $i;
+	}
 }
 
 normalise-checkbox(label = true) {
@@ -763,9 +769,7 @@ normalise-header(first = true) {
 
 	// Sidebar
 	#header {
-		--pad05: var(--pad);
 		bg(2);
-		header-focus();
 		pad(right);
 		shd(0);
 
@@ -866,6 +870,12 @@ normalise-header(first = true) {
 				.main {
 					margin-left: 16px;
 				}
+			}
+		}
+	} else {
+		@media (max-width: 850px) {
+			#header {
+				header-focus();
 			}
 		}
 	}

@@ -160,6 +160,8 @@
 	font-size: var(--font-size) !important;
 	/* Intended for Cozette font */
 	font-weight: normal !important;
+
+	scrollbar-color: var(--fg2) transparent !important;
 }
 code, pre, code *, pre * {
 	font-family: var(--font-code) !important;
