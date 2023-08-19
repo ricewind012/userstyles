@@ -1380,11 +1380,12 @@ normal-colors() {
 	.prettyprint {
 		bg();
 		font-family: var(--font-code) $i;
+		white-space: pre-wrap;
 		pad();
 		brd();
 		margin: var(--pad) 0;
+		max-width: unset;
 		display: block;
-		resize: horizontal;
 
 		&:last-child {
 			mar(bottom, 0);
