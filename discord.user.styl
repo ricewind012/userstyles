@@ -1074,7 +1074,7 @@ $chat-title = 'section.container.themed'
 		{$guilds[scroller]} {
 			bg(2);
 			header-focus();
-			pad(top);
+			padding-top: calc(var(--pad) / 2) $i;
 			brd(right);
 
 			// Scrollbar on hover
@@ -1104,6 +1104,7 @@ $chat-title = 'section.container.themed'
 			mar(bottom);
 		}
 		[style*="height: 56px"] { // DMs
+			mar(top);
 			height: unset $i;
 		}
 		.pill {
@@ -1113,13 +1114,20 @@ $chat-title = 'section.container.themed'
 			&, & > svg {
 				box(var(--guilds-size));
 			}
+			& > svg {
+				z-index: 3;
+			}
 		}
-		{$guilds[guild]}::before {
-			content: '';
-			position: absolute;
-			left: 0;
-			box(1px, var(--guilds-size));
-			background-color: var(--fg);
+		{$guilds[guild]} {
+			transform: none $i;
+
+			&::before {
+				content: '';
+				position: absolute;
+				left: 0;
+				box(1px, var(--guilds-size));
+				background-color: var(--fg);
+			}
 		}
 		{$guilds[guild-selected]}::before {
 			--fg: var(--hl);
@@ -1138,10 +1146,48 @@ $chat-title = 'section.container.themed'
 			brd(bottom);
 			height: unset $i;
 		}
+
+		// Current server & mentions
+		[href$="-lower_badge_masks"] { // lower badge mask
+			display: none;
+		}
+		.lowerBadge {
+			&::before {
+				content: '';
+				position: absolute;
+				background-color: var(--color1);
+			}
+
+			~/ {$guilds[guild]}, & {
+				position: relative;
+
+				&::before {
+					$w = calc(var(--guilds-size) + var(--pad));
+					$h = calc(100% + var(--pad) * 2 + 4px);
+					$left-pad-mult = guilds-horizontal ? -0.5 : -1;
+					$top-pixels = guilds-horizontal ? 2px : -4px;
+
+					// God knows why it's less by 4 pixels
+					left: s('calc(var(--pad) * %s)', $left-pad-mult);
+					top: s('calc(var(--pad) * -1 - %s)', $top-pixels);
+					box(
+						guilds-horizontal ? $w : $h,
+						guilds-horizontal ? $h : $w
+					);
+				}
+			}
+		}
 	}
 	.guildSeparator {
 		background-color: var(--border);
 		box(100%, var(--border-width));
+	}
+	.tutorialContainer {
+		& > .listItem,
+		& + .listItem,
+		& + [style] + .listItem {
+			margin-bottom: calc(var(--pad) * 0.5) $i;
+		}
 	}
 	if (guilds-horizontal) {
 		@media (min-width: $small-screen) {
@@ -1163,37 +1209,6 @@ $chat-title = 'section.container.themed'
 				}
 				.listItem, .guildSeparator {
 					transform: rotate(90deg);
-				}
-				.tutorialContainer {
-					& > .listItem,
-					& + .listItem {
-						margin-bottom: calc(var(--pad) * 0.5) $i;
-					}
-				}
-				[href$="-lower_badge_masks"] { // lower badge mask
-					display: none;
-				}
-				.lowerBadge {
-					z-index: -1;
-
-					&::before {
-						content: '';
-						position: absolute;
-						left: calc(var(--pad) / -1.5 + 1px) $i;
-						background-color: var(--color1);
-					}
-
-					~/ {$guilds[guild]}, & {
-						// God knows why this has to be less by 4 pixels
-						&::before {
-							left: calc(var(--pad) / 2 + 2px);
-							top: calc(var(--pad) * -1 - 2px);
-							box(
-								calc(var(--guilds-size) + var(--pad) * 1.5 - 4px),
-								calc(100% + var(--pad) * 2 + 4px)
-							);
-						}
-					}
 				}
 			}
 
