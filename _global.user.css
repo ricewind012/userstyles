@@ -24,9 +24,9 @@
 
 	/* Shadows */
 	--shadow-ins: 0 0 0 var(--border-width);
-	--shadow-low: 0 1px 4px var(--shadow-clr);
-	--shadow-mid: 0 4px 8px var(--shadow-clr);
-	--shadow-big: var(--shadow-mid), 0 28px 48px var(--shadow-clr);
+	--shadow-low: 0 1px 4px var(--shadow);
+	--shadow-mid: 0 4px 8px var(--shadow);
+	--shadow-big: var(--shadow-mid), 0 28px 48px var(--shadow);
 
 	/* Highlighting */
 	--hl: #1488ff;
@@ -43,7 +43,7 @@
 	--saturation-factor: 1;
 	--scrollbar-width: 16px;
 	--popup-filter: blur(18px);
-	--shadow-clr: rgba(0,0,0,.25);
+	--shadow: rgba(0,0,0,.25);
 }
 
 @media (prefers-color-scheme: light) { :root {
