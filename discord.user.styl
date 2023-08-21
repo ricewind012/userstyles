@@ -926,6 +926,8 @@ $chat-title = 'section.container.themed'
 
 	// Channels
 	#channels {
+		pad(0);
+
 		&::-webkit-scrollbar,
 		.iconContainer,
 		.unread,
@@ -1006,7 +1008,7 @@ $chat-title = 'section.container.themed'
 			normalise-header(false);
 			mar(left);
 			mar(right);
-			display: flex;
+			flex();
 			flex-direction: row-reverse;
 		}
 		.arrow {
@@ -1811,7 +1813,7 @@ $chat-title = 'section.container.themed'
 		mar(right);
 
 		& ~ .buttonContainer {
-			top: calc(var(--font-size) * var(--line-height) + var(--pad));
+			top: calc(var(--font-size) * var(--line-height));
 		}
 
 		&::before {
@@ -2283,7 +2285,6 @@ $chat-title = 'section.container.themed'
 	}
 	.textArea {
 		lnh();
-		margin-top: 2px;
 
 		&[style^="height"]:not(textarea) {
 			height: unset $i;
