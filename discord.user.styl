@@ -7,6 +7,7 @@
 @preprocessor stylus
 
 @var checkbox font-awesome         "Font Awesome as icons"   1
+@var checkbox role-background      "Colorful roles"          1
 
 @var checkbox guilds-horizontal    "Guilds horizontal"       1
 @var text     guilds-size          "Guilds size"             24px
@@ -619,7 +620,8 @@ $chat-title = 'section.container.themed'
 		}
 
 		&Container {
-			brd(bottom);
+			brd(0);
+			mar(0);
 		}
 	}
 
@@ -1341,83 +1343,569 @@ $chat-title = 'section.container.themed'
 	 * Popup
 	**/
 	// Global
-	.root.fullscreenOnMobile {
-		brd();
-		shd(big);
-
-		.message {
-			bg(2);
-			brd();
-			shd(big);
-		}
-	}
-	.footerSeparator {
-		brd(top);
-		shd(0);
-	}
-	.menu, .userPopoutOuter {
-		brd();
-	}
-	.userPopoutInner,
-	.userPopoutInner::before,
-	.roundedBanner,
-	.profileBadges,
-	.overlayBackground {
-		brd(0);
-	}
-
-	// Role background (stolen from gk)
-	.role {
-		overflow: hidden;
-		background-color: transparent;
-
-		&RemoveIcon {
-			position: absolute;
-		}
-		&Circle::after {
-			content: '';
-			position: relative;
-			display: block;
-			right: -100px;
-			min-width: 230px;
-			height: 69px;
-			background-color: inherit;
-			opacity: var(--bg-opacity);
-			pointer-events: none;
-		}
-	}
-
-	// Recent mentions
-	[aria-label="Recent Mentions"] {
-		.tab:last-child,
-		.scrollingFooterWrap {
-			display: none;
-		}
-		.channelHeader {
-			position: unset;
-		}
-		& > .header {
-			z-index: 1;
-		}
-		.tab.active {
-			background-color: transparent $i;
-			pad(0);
-			mar(0);
-			height: unset;
-			replace-text('Recent Mentions', header-primary);
-		}
-	}
-
-	// Modals
-	$qs-scroller = '[aria-label="Results"]'
-
-	#app-mount > .popouts > div,
-	[id^="popout"], // recent mentions, etc.
-	.menu {
+	.layerContainer > div {
 		dropfade();
 	}
 	.backdrop {
 		opacity: 0 $i;
+	}
+	.contentWrapper, // emojis/gifs
+	.messagesPopoutWrap // pinned/mentions
+	{
+		brd();
+		shd(big);
+	}
+
+	// Generic
+	.root.fullscreenOnMobile {
+		brd();
+		shd(big);
+
+		.header {
+			bg(2);
+			pad();
+			brd(bottom);
+		}
+		.content {
+			pad();
+
+			& > [aria-hidden] { // lmao
+				display: none;
+			}
+		}
+		.message {
+			bg(2);
+			padding-top: calc(var(--pad) / 2) $i;
+			brd();
+		}
+		.footer {
+			pad();
+			brd(top);
+			shd(0);
+		}
+	}
+
+	// Context menu
+	.menu {
+		brd();
+
+		.userPopoutOverlayBackground > & {
+			bg(2);
+			brd(0);
+			brd(top);
+			max-width: unset;
+		}
+
+		& > .scroller {
+			pad(0);
+
+			& > .wrapper { // reactions
+				pad(0);
+				brd(bottom);
+
+				[role="menuitem"] {
+					pad(0);
+
+					& > div {
+						bg(2);
+						pad();
+						brd(0);
+						brd(right);
+
+						&:hover {
+							hl();
+						}
+					}
+				}
+			}
+			& > [aria-hidden] { // lmao
+				display: none;
+			}
+		}
+		.icon {
+			box(var(--font-size));
+
+			&Container {
+				mar(left, 0);
+				margin-right: 1ch;
+				position: unset;
+				box(var(--font-size));
+
+				&Left {
+					& > img,
+					& > .icon {
+						position: absolute;
+						left: var(--pad);
+					}
+					// kill yourself
+					/#account-edit-custom-status .label,
+					~/ [role="menuitem"] > .label:only-child,
+					& + .label:last-child {
+						margin-left: calc(var(--font-size) + 1ch);
+					}
+				}
+			}
+		}
+		.hintContainer,
+		.caret {
+			color: inherit;
+			position: absolute;
+			right: var(--pad);
+			box(var(--font-size));
+		}
+		.mainStatusIcon {
+			mar(0);
+		}
+		.separator {
+			brd(bottom);
+			mar(0);
+		}
+	}
+	[role^="menuitem"] {
+		fg();
+		lnh();
+		pad();
+		brd(0);
+		mar(0);
+		min-height: unset;
+		flex-direction: row-reverse;
+
+		&[aria-expanded="true"],
+		&:hover {
+			hl();
+		}
+	}
+
+	// User
+	$user-info {
+		mar(0);
+
+		.divider {
+			display: none;
+		}
+		& > [dir] {
+			pad();
+			brd(top);
+			mar(top);
+			shd(0);
+
+			& > :first-child {
+				margin-top: calc(var(--pad) * -2);
+			}
+		}
+		.section {
+			pad(0);
+		}
+		.usernameSection {
+			pad();
+			pad(bottom, 0);
+		}
+		.userTag {
+			mar(bottom);
+		}
+		.customStatus {
+			lnh();
+
+			&Section {
+				mar(left);
+			}
+		}
+
+		.gameIcon {
+			border-radius: var(--border-radius);
+			box(calc(var(--font-size) * var(--line-height) * 2));
+		}
+		.contentGameImageUserPopoutV2 {
+			mar(left);
+		}
+		.note {
+			mar(0);
+		}
+		.textarea {
+			normalise-input();
+		}
+	}
+	// Remove nitro themes
+	$user-nitro-themes {
+		--profile-gradient-primary-color: var(--background-secondary-alt) $i;
+		--profile-gradient-secondary-color: var(--background-secondary-alt) $i;
+		--profile-gradient-overlay-color: transparent $i;
+		--profile-gradient-button-color: var(--button-secondary-background) $i;
+		--profile-avatar-border-color: var(--background-secondary-alt) $i;
+		--profile-message-input-border-color: var(--background-modifier-accent) $i;
+		--profile-body-background-color: var(--background-floating) $i;
+		--profile-body-background-hover: var(--background-modifier-hover) $i;
+		--profile-body-divider-color: var(--background-modifier-accent) $i;
+		--profile-role-pill-background-color: var(--background-secondary-alt) $i;
+		--profile-role-pill-border-color: var(--interactive-normal) $i;
+		pad(0);
+	}
+
+	.roundedBanner,
+	.overlayBackground {
+		brd(0);
+	}
+	.userPopout {
+		&Outer {
+			@extend $user-nitro-themes;
+			brd();
+		}
+		&OverlayBackground {
+			@extend $user-info;
+			margin-top: calc(var(--pad) * 4 + 11px) $i;
+
+			& > [dir] h2,
+			h4:not(.nickname) {
+				normalise-header(false);
+				flex-grow: 1;
+			}
+		}
+	}
+	.userProfile {
+		&Outer {
+			@extend $user-nitro-themes;
+			border-radius: var(--border-radius);
+
+			.tabBarContainer {
+				bg(2);
+				brd(top);
+			}
+			.topSection {
+				margin-bottom: calc(52px + var(--pad) * 2);
+
+				.header {
+					pad(0);
+					brd(0);
+
+					&Top {
+						top: calc(var(--pad) * 2);
+						right: calc(var(--pad) * 2);
+					}
+				}
+			}
+		}
+		&ModalOverlayBackground {
+			brd(top);
+			mar(0);
+
+			& > .body {
+				@extend $user-info;
+				brd(0);
+				mar(0);
+
+				& > .container {
+					pad();
+				}
+				& > .scrollerBase {
+					&,
+					&:not(.infoScroller) > :first-child {
+						mar(top, 0);
+					}
+				}
+				h1 {
+					normalise-header(false);
+				}
+			}
+		}
+	}
+	.accountProfilePopoutWrapper {
+		left: 0;
+
+		h3 {
+			normalise-header(false);
+		}
+	}
+	.userInfo {
+		&Section {
+			pad(0);
+
+			& + & {
+				pad(top);
+				brd(top);
+				mar(top);
+			}
+		}
+		&Text {
+			lnh();
+			mar(0);
+		}
+	}
+	.profileBadge {
+		box(var(--font-size));
+
+		/.badgeList,
+		&s {
+			pad();
+			brd();
+			gap: 1ch;
+			position: absolute;
+			top: var(--pad);
+			right: var(--pad);
+			z-index: 1;
+			min-height: unset;
+
+			&:empty {
+				display: none;
+			}
+		}
+	}
+	.role {
+		pad();
+		brd(0);
+		border-radius: var(--border-radius) $i;
+		mar(0);
+		gap: 1ch;
+		height: unset;
+
+		&s {
+			gap: var(--pad);
+		}
+		&Circle,
+		&Name {
+			mar(0);
+		}
+
+		// Stolen from gk
+		if (role-background) {
+			background-color: transparent;
+			overflow: hidden;
+
+			&RemoveIcon {
+				position: absolute;
+			}
+			&Circle::after {
+				content: '';
+				position: relative;
+				display: block;
+				right: -100px;
+				min-width: 230px;
+				height: 69px;
+				background-color: inherit;
+				opacity: var(--bg-opacity);
+				pointer-events: none;
+			}
+		}
+	}
+	.connectedAccount {
+		gap: var(--pad);
+
+		&sColumn {
+			width: calc(50% - var(--pad)) $i;
+			gap: var(--pad);
+		}
+		&Container {
+			normalise-button();
+			mar(0);
+			position: relative;
+			focus(focus-within);
+
+			.anchor {
+				position: absolute;
+				inset: 0;
+			}
+		}
+		&NameText {
+			fg();
+		}
+		&Verified,
+		&Open {
+			~/ .textXsNormal,
+			~/Children,
+			&Icon {
+				display: none;
+			}
+		}
+	}
+	.additionalActionsIcon {
+		normalise-button();
+		mar(left);
+		box(var(--font-size));
+	}
+
+	// Message search
+	[role="listbox"][style="width: 320px;"] {
+		brd();
+		margin-top: calc(-1px + var(--pad));
+		shd(big);
+		height: min-content;
+		max-height: 75vh;
+		overflow-y: scroll;
+
+		& > ul {
+			pad(0);
+
+			&:first-child {
+				margin-top: calc(var(--pad) * -1);
+			}
+
+			&::before {
+				display: none;
+			}
+		}
+
+		.header {
+			normalise-header(false);
+			letter-spacing: inherit;
+			mar(left);
+			mar(right);
+		}
+		.option {
+			pad();
+			brd(0);
+			mar(0);
+			height: unset;
+			gap: 1ch;
+
+			&.user {
+				display: grid;
+				grid-template-columns: var(--font-size) repeat(2, 1fr);
+
+				.filter {
+					display: none;
+				}
+			}
+
+			[aria-labelledby="FILTER_IN-header"] > ^[1..-1] { // channel
+				.resultChannel {
+					display: grid;
+					grid-template-columns: var(--font-size) repeat(2, 1fr);
+					flex-grow: 1;
+					gap: 1ch;
+
+					strong {
+						fg();
+					}
+				}
+				.searchResultChannel {
+					&Icon {
+						color: inherit;
+						box(var(--font-size));
+					}
+					&Icon,
+					&Category {
+						opacity: 1;
+						mar(0);
+						top: 0;
+					}
+				}
+				.filter {
+					display: none;
+				}
+			}
+
+			&:hover {
+				hl();
+
+				span,
+				strong {
+					color: inherit $i;
+				}
+			}
+
+			&::after {
+				display: none;
+			}
+
+			span {
+				mar(0);
+			}
+			.nonText {
+				&::before,
+				&::after {
+					content: '"';
+				}
+			}
+		}
+		.search {
+			&LearnMore,
+			&ClearHistory {
+				top: calc(var(--pad) / 2 / var(--line-height));
+				right: var(--pad);
+			}
+		}
+		.queryContainer,
+		.plusIcon {
+			display: none;
+		}
+		.display {
+			&Avatar {
+				box(var(--font-size));
+			}
+			&Username {
+				fg(2);
+			}
+		}
+	}
+
+	// Autocomplete
+	.autocomplete {
+		bg();
+		brd();
+		shd(big);
+		dropfade();
+
+		&Row {
+			lnh();
+			pad(0);
+
+			&[aria-selected="true"],
+			&:hover {
+				hl();
+
+				.autocompleteRowContentSecondary,
+				span {
+					color: inherit $i;
+				}
+			}
+
+			&Content {
+				color: inherit;
+				pad();
+				margin-left: calc(24px + 1ch);
+				gap: 1ch;
+
+				&Primary {
+					width: 50%;
+				}
+				&Secondary {
+					text-align: left;
+					mar(0);
+					width: 50%;
+				}
+			}
+			&Icon {
+				mar(right);
+				position: absolute;
+				left: var(--pad);
+			}
+
+			& > .base {
+				background-color: inherit $i;
+			}
+			.emojiImage {
+				box(24px);
+			}
+		}
+
+		.scrollerBase,
+		.base {
+			pad(0);
+		}
+		.divider {
+			pad(0);
+
+			&::after {
+				height: var(--border-width);
+			}
+		}
+	}
+	[data-list-id="channel-autocomplete"] > .base {
+		display: none;
+	}
+
+	// Quick switcher
+	$qs = {
+		scroller: '[aria-label="Results"]'
 	}
 
 	.quickswitcher {
@@ -1427,43 +1915,23 @@ $chat-title = 'section.container.themed'
 		dropfade();
 
 		.input {
-			lnh();
-			text-overflow: ellipsis;
-			pad();
-			border-radius: var(--border-radius);
-			shd(0);
+			--bg2: var(--bg);
+			normalise-input();
+			mar();
 			height: unset;
-
-			& + {$qs-scroller} {
-				bg();
-				brd(top);
-				z-index: 1;
-			}
-	
-			&:focus + {$qs-scroller} {
-				border-top-color: var(--hl) $i;
-				box-shadow: 0 calc(var(--border-width) * -1) var(--hl);
-			}
 		}
-
-		{$qs-scroller} {
+		{$qs[scroller]} {
+			bg();
+			brd(top);
 			border-radius: 0 0 var(--border-radius) var(--border-radius);
 			mar(0);
 		}
 		.content {
+			lnh();
 			height: auto $i;
 
 			&Default {
 				pad(0);
-
-				&, .header {
-					line-height: unset;
-					flex();
-				}
-			}
-
-			{$qs-scroller} > ^[1..-1] > :first-child {
-				margin-top: calc(var(--pad) * -1);
 			}
 		}
 		.header {
@@ -1477,38 +1945,102 @@ $chat-title = 'section.container.themed'
 			border-radius: 0;
 			height: unset;
 
-			& > .contentDefault {
+			& > .content {
 				lnh();
 				pad();
 				height: unset;
+				gap: 1ch;
 			}
 
+			.icon {
+				color: inherit;
+
+				&Container {
+					mar(0);
+					box(var(--font-size));
+				}
+			}
 			.note {
 				text-transform: unset;
-				mar(top, 0);
+				mar(0);
 			}
 			.miscContainer {
 				opacity: 1;
 			}
 
 			&[aria-selected="true"] {
-				background-color: var(--hl);
+				hl();
 
 				* {
 					color: var(--hl-fg);
 				}
 			}
-
-			&[aria-selected="false"] .contentUnread svg {
-				color: var(--header-primary);
-			}
 		}
 
-		[style="height: 15px;"] {
+		& > :last-child { // protip
 			display: none;
 		}
 	}
 
+	// Pinned messages & recent mentions
+	.messagesPopout {
+		pad();
+
+		&Wrap {
+			bg();
+
+			& > .header {
+				bg(2);
+				pad();
+				brd(bottom);
+				shd(0);
+				height: unset;
+				min-height: unset;
+				display: flex;
+
+				&.expanded {
+					pad(0);
+				}
+
+				.button {
+					--bg2: var(--bg);
+					--pad: calc(var(--reserve-pad) / 2);
+					normalise-button();
+					box(unset);
+					min-width: unset;
+					min-height: unset;
+				}
+			}
+			// D*scord doesn't have an icon anywhere else.
+			.inboxIcon {
+				display: none;
+			}
+			.expanded {
+				&InboxHeader {
+					pad(0);
+
+					& > :last-child {
+						display: none;
+					}
+				}
+				&TabSection {
+					height: unset;
+				}
+			}
+			.channelHeader {
+				bg(3);
+				pad();
+				brd();
+				brd(bottom, 0);
+				height: unset;
+			}
+		}
+	}
+	[data-list-id="recents"] > .container {
+		mar(bottom);
+	}
+
+	// Images
 	.downloadLink { // fix for "open original"
 		color: var(--text-link) $i;
 		opacity: 1;
@@ -1744,9 +2276,29 @@ $chat-title = 'section.container.themed'
 			}
 		}
 	}
-	.message > .wrapper {
-		@extend [class*="message-"];
-		pad();
+	.message {
+		& > .wrapper,
+		.root & .wrapper {
+			@extend [class*="message-"];
+			pad();
+		}
+		&Container { // recent mentions
+			bg(2);
+			pad();
+			brd();
+			mar(0);
+		}
+		&Group { // pinned
+			&Wrapper {
+				bg(2);
+				pad();
+				brd();
+				mar(bottom);
+			}
+			&Cozy {
+				@extend [class*="message-"];
+			}
+		}
 	}
 	[data-list-id="chat-messages"] > [role="separator"] {
 		brd(0);
@@ -2196,11 +2748,7 @@ $chat-title = 'section.container.themed'
 
 	// Message textbox
 	.channelTextArea {
-		div > & {
-			--channeltextarea-background: var(--bg);
-		}
-
-		& > div {
+		& > :first-child {
 			pad(right);
 			brd();
 			focus(focus-within);
@@ -2231,7 +2779,7 @@ $chat-title = 'section.container.themed'
 			align-items: center;
 		}
 	}
-	.form {
+	.chatContent > .form {
 		padding-left: var(--body-pad) $i;
 		padding-right: var(--body-pad) $i;
 		mar(top, 0);
@@ -2317,16 +2865,6 @@ $chat-title = 'section.container.themed'
 		pad();
 		max-height: 200px;
 		right: 0;
-	}
-
-	.autocompleteAttached {
-		bottom: calc(100% - var(--border-width));
-		shd(0);
-	}
-	#channel-attach {
-		margin-left: -1px;
-		margin-bottom: -8px;
-		shd(0);
 	}
 
 	// Search results
