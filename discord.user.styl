@@ -490,6 +490,7 @@ $chat-title = 'section.container.themed'
 		--brand-experiment-600: var(--color12);
 
 		--reserve-avatar-size: var(--avatar-size);
+		--reserve-fg: var(--fg);
 		--reserve-pad: var(--pad);
 	}
 
@@ -597,34 +598,160 @@ $chat-title = 'section.container.themed'
 		}
 	}
 
-	.tabBar {
+	// Headings
+	.heading {
+		&Sm,
+		&Md,
+		&Lg,
+		&Xl,
+		&Xxl,
+		&Deprecated12 {
+			&Normal,
+			&Medium,
+			&Semibold,
+			&Bold,
+			&Extrabold {
+				lnh();
+				flex-grow: 1;
+			}
+		}
+	}
+	.text {
+		&Xxs,
+		&Xs,
+		&Sm,
+		&Md,
+		&Lg {
+			&Normal,
+			&Medium,
+			&Semibold,
+			&Bold {
+				lnh();
+			}
+		}
+	}
+	.eyebrow {
+		normalise-header();
+		flex-grow: 1;
+	}
+
+	// Input
+	.textarea,
+	.inputDefault {
+		normalise-input();
+		box(unset);
+	}
+	.searchBar {
+		normalise-input();
+		focus(focus-within);
+
+		.inner {
+			pad(0);
+			gap: 1ch;
+		}
+		.input {
+			lnh();
+			pad(0);
+			mar(0);
+			height: unset $i;
+		}
+	}
+
+	// Buttons
+	.look {
+		&Outlined,
+		&Filled,
+		&Link {
+			button& {
+				normalise-button();
+				box(unset);
+				min-width: unset $i;
+				min-height: unset $i;
+
+				colors = {
+					Red:   9,
+					Green: 10
+				}
+				for k, v in colors {
+					&.color{k} {
+						background-color: color-a(v) $i;
+						border-color: s('var(--color%s)', v) $i;
+					}
+				}
+			}
+		}
+		&Link .contents {
+			background: none;
+		}
+	}
+
+	// Tabs
+	nav {
+		pad(0);
+	}
+	[role="tablist"] {
+		pad(0);
 		height: unset;
 		gap: 0;
 
-		& > div {
-			background-color: transparent $i;
-			fg(2);
-			lnh();
-			pad();
-			brd(0);
-			mar(0);
-			min-width: unset $i;
-			height: unset;
+		.separator {
+			display: none;
+		}
+		.eyebrow {
+			margin-top: calc(var(--pad) * 2) $i;
+		}
+	}
+	.tabBarContainer {
+		brd(0);
+		mar(0);
+	}
+	[role="tab"] {
+		background-color: transparent $i;
+		fg(2);
+		lnh();
+		pad();
+		brd(0);
+		mar(0);
+		box(unset);
+		min-width: unset $i;
 
-			&:hover {
-				fg();
-			}
-			&[aria-selected="true"] {
-				hl();
+		&:hover {
+			fg();
+		}
+		&[aria-selected="true"] {
+			hl();
+		}
+	}
+	[role="tabpanel"] {
+		.divider,
+		.sectionTitle {
+			display: none;
+		}
+	}
+
+	// Options
+	[role="option"] {
+		pad();
+		brd(0);
+		mar(0);
+		height: unset;
+		gap: 1ch;
+
+		&:hover {
+			hl();
+
+			* {
+				color: inherit $i;
 			}
 		}
 
-		&Container {
-			brd(0);
+		span,
+		.title {
 			mar(0);
 		}
 	}
 
+	// Text
 	.markup {
 		lnh();
 
@@ -1276,30 +1403,6 @@ $chat-title = 'section.container.themed'
 		}
 	}
 
-	// Search
-	.toolbar > .search {
-		mar(0);
-		order: -1;
-
-		& > :not(.open) > div {
-			pad(0);
-			width: 240px $i;
-			anim();
-
-			&:not(:hover) {
-				background-color: transparent $i;
-				width: 20px $i;
-			}
-		}
-
-		if (!font-awesome) {
-			.iconContainer {
-				display: block $i;
-				box(20px);
-			}
-		}
-	}
-
 	// Bar
 	.bar {
 		&Base {
@@ -1352,6 +1455,11 @@ $chat-title = 'section.container.themed'
 	.contentWrapper, // emojis/gifs
 	.messagesPopoutWrap // pinned/mentions
 	{
+		brd();
+		shd(big);
+	}
+	[role="listbox"] {
+		bg();
 		brd();
 		shd(big);
 	}
@@ -1521,9 +1629,6 @@ $chat-title = 'section.container.themed'
 		.note {
 			mar(0);
 		}
-		.textarea {
-			normalise-input();
-		}
 	}
 	// Remove nitro themes
 	$user-nitro-themes {
@@ -1554,10 +1659,11 @@ $chat-title = 'section.container.themed'
 			@extend $user-info;
 			margin-top: calc(var(--pad) * 4 + 11px) $i;
 
-			& > [dir] h2,
-			h4:not(.nickname) {
+			.eyebrow {
+				margin-top: calc(var(--pad) * 2) $i;
+			}
+			.headerText { // game header
 				normalise-header(false);
-				flex-grow: 1;
 			}
 		}
 	}
@@ -1724,9 +1830,7 @@ $chat-title = 'section.container.themed'
 
 	// Message search
 	[role="listbox"][style="width: 320px;"] {
-		brd();
 		margin-top: calc(-1px + var(--pad));
-		shd(big);
 		height: min-content;
 		max-height: 75vh;
 		overflow-y: scroll;
@@ -1750,12 +1854,6 @@ $chat-title = 'section.container.themed'
 			mar(right);
 		}
 		.option {
-			pad();
-			brd(0);
-			mar(0);
-			height: unset;
-			gap: 1ch;
-
 			&.user {
 				display: grid;
 				grid-template-columns: var(--font-size) repeat(2, 1fr);
@@ -1776,29 +1874,8 @@ $chat-title = 'section.container.themed'
 						fg();
 					}
 				}
-				.searchResultChannel {
-					&Icon {
-						color: inherit;
-						box(var(--font-size));
-					}
-					&Icon,
-					&Category {
-						opacity: 1;
-						mar(0);
-						top: 0;
-					}
-				}
 				.filter {
 					display: none;
-				}
-			}
-
-			&:hover {
-				hl();
-
-				span,
-				strong {
-					color: inherit $i;
 				}
 			}
 
@@ -1806,21 +1883,11 @@ $chat-title = 'section.container.themed'
 				display: none;
 			}
 
-			span {
-				mar(0);
-			}
 			.nonText {
 				&::before,
 				&::after {
 					content: '"';
 				}
-			}
-		}
-		.search {
-			&LearnMore,
-			&ClearHistory {
-				top: calc(var(--pad) / 2 / var(--line-height));
-				right: var(--pad);
 			}
 		}
 		.queryContainer,
@@ -2867,29 +2934,85 @@ $chat-title = 'section.container.themed'
 		right: 0;
 	}
 
-	// Search results
+	/**
+	 * Search
+	**/
 	.search {
-		&Header {
+		// Header
+		.toolbar & {
+			mar(0);
+			order: -1;
+
+			&Bar {
+				--bg2: var(--bg);
+				--fg: var(--reserve-fg);
+				--pad: calc(var(--reserve-pad) / 2);
+				normalise-input();
+				pad(0);
+				box(240px, unset);
+				focus(focus-within);
+			}
+
+			& > :not([class*="open-"]) {
+				& > div {
+					background-color: transparent $i;
+					brd(0);
+					width: 20px $i;
+				}
+				.DraftEditor-root {
+					--pad: 0;
+				}
+				.iconLayout {
+					cursor: pointer $i;
+				}
+			}
+		}
+
+		&Filter,
+		&Answer {
+			pad(left);
+			pad(right);
+			brd(0);
+			mar(0);
+			margin-top: 2px $i;
+			height: unset;
+		}
+		&Answer {
+			pad(left, 0);
+		}
+
+		.DraftEditor {
+			&-root,
+			/.public-DraftEditorPlaceholder-root,
+			/.public-DraftEditor-content {
+				lnh();
+				pad(0);
+				overflow-x: visible;
+			}
+			&-root {
+				pad(left);
+				margin-top: -2px;
+			}
+			&-editorContainer {
+				brd(0);
+				height: unset;
+			}
+		}
+
+		if (!font-awesome) {
+			.iconContainer {
+				display: block $i;
+				box(20px);
+			}
+		}
+
+		// Sidebar
+		&Header:not(.h5) { // .h5 - gifs header
 			bg(3);
 			pad(0);
 			pad(left);
 			brd(bottom);
 			height: var(--header-h);
-
-			&TabList {
-				gap: 0;
-			}
-
-			[role="tab"] {
-				lnh();
-				pad();
-				brd(0);
-				mar(0);
-
-				&:hover {
-					bgc();
-				}
-			}
 		}
 		&Result {
 			brd();
@@ -2926,6 +3049,25 @@ $chat-title = 'section.container.themed'
 						z-index: 1;
 					}
 				}
+			}
+
+			// Popout
+			&Channel {
+				&Icon {
+					color: inherit;
+					box(var(--font-size));
+				}
+				&Icon,
+				&Category {
+					opacity: 1;
+					mar(0);
+					top: 0;
+				}
+			}
+			&LearnMore,
+			&ClearHistory {
+				top: calc(var(--pad) / 2 / var(--line-height));
+				right: var(--pad);
 			}
 		}
 	}
