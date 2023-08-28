@@ -18,8 +18,6 @@
 @var text     avatar-size          "Avatar size"             var(--font-size)
 @var text     avatar-spacing       "Avatar spacing"          1ch
 @var text     avatar-border-radius "Avatar border radius"    6px
-@var checkbox avatar-status-border "Avatar status as border" 1
-@var text     avatar-stroke-size   "Avatar stroke size"      3px
 
 @var text     search-results-width "Search results width"    345px
 ==/UserStyle== */
@@ -396,7 +394,6 @@ $chat-title = 'section.container.themed'
 			'avatar-size',
 			'avatar-spacing',
 			'avatar-border-radius',
-			'avatar-stroke-size',
 			'search-results-width'
 
 		for i in settings {
@@ -489,7 +486,6 @@ $chat-title = 'section.container.themed'
 		--brand-experiment-560: var(--color12);
 		--brand-experiment-600: var(--color12);
 
-		--reserve-avatar-size: var(--avatar-size);
 		--reserve-fg: var(--fg);
 		--reserve-pad: var(--pad);
 	}
@@ -769,80 +765,11 @@ $chat-title = 'section.container.themed'
 	}
 
 	// Custom avatar rounding
-	.avatar > .wrapper,
-	.avatarHintInner,
-	.replyAvatar,
-	.avatar {
+	.chatContent .avatar {
 		border-radius: var(--avatar-border-radius) $i;
 	}
-	[mask^="url(#svg-mask-avatar-status-mobile"],
-	[mask^="url(#svg-mask-avatar-status-round"],
-	[mask="url(#svg-mask-avatar-default)"],
-	.avatar > .mask > foreignObject {
-		mask: none;
-		border-radius: var(--avatar-border-radius);
-	}
-	.avatarHoverTarget {
-		border-width: var(--avatar-stroke-size);
-	}
-	[mask^="url(#svg-mask-status"]:not([mask$="mobile)"]),
-	.avatar rect {
-		rx: 50%; ry: 50%;
-		stroke: var(--background-floating);
-		stroke-width: var(--avatar-stroke-size);
-
-		.userPopout & {
-			x: 64; y: 64;
-			stroke-width: calc(var(--avatar-stroke-size) * 1.5);
-		}
-
-		[aria-label="User Profile Modal"] & {
-			x: 98; y: 98;
-			stroke-width: calc(var(--avatar-stroke-size) * 2);
-		}
-	}
-
-	// Avatar status border
-	if (avatar-status-border) {
-		.avatar, .avatar > .wrapper {
-			// Size
-			.privateChannels &,
-			.peopleColumn &,
-			.members &,
-			.panels & {
-				--avatar-border-size: 2px;
-			}
-			[aria-modal] &,
-			.accountProfileCard & {
-				--avatar-border-size: 6px;
-			}
-
-			// Color
-			--avatar-border-color: var(--text-muted);
-			&[aria-label$="mobile"]		{ --avatar-border-color: var(--brand-experiment); }
-			&[aria-label$="Online"]		{ --avatar-border-color: var(--text-positive); }
-			&[aria-label$="Idle"]			{ --avatar-border-color: var(--text-warning); }
-			&[aria-label$="Disturb"]	{ --avatar-border-color: var(--text-danger); }
-
-			// Border
-			border: var(--avatar-border-size) solid var(--avatar-border-color);
-
-			rect {
-				display: none;
-			}
-		}
-
-		// Fixes
-		.avatar {
-			.privateChannels &,
-			.members & {
-				border: none;
-				width: 36px;
-			}
-			&Stack > img {
-				border: none;
-			}
-		}
+	.mask > circle {
+		fill: var(--bg3);
 	}
 
 	/**
