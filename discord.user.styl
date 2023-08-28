@@ -438,9 +438,6 @@ $chat-title = 'section.container.themed'
 		--header-secondary: var(--fg2);
 		--channels-default: var(--fg2);
 
-		--mention-background: color-a(12);
-		--mention-foreground: var(--color12);
-
 		--channel-text-area-placeholder: var(--fg2);
 		--input-placeholder-text: var(--fg2);
 		--textbox-markdown-syntax: var(--fg2);
@@ -466,6 +463,16 @@ $chat-title = 'section.container.themed'
 			--status-{k}: clr;
 		}
 
+		// Status
+		colors = {
+			dnd:    1,
+			online: 2,
+			idle:   3,
+		}
+		for k, v in colors {
+			--status-{k}: s('var(--color%s)', v);
+		}
+
 		// Shadows
 		--elevation-stroke: var(--shadow-ins) var(--border);
 		--elevation-low: var(--shadow-low);
@@ -488,6 +495,13 @@ $chat-title = 'section.container.themed'
 
 		--reserve-fg: var(--fg);
 		--reserve-pad: var(--pad);
+
+		for i in range(4, 16, 4) range(24, 80, 8) 96 {
+			--spacing-{i}: var(--pad);
+		}
+		for i in xs sm md lg xl xxl {
+			--radius-{i}: var(--border-radius);
+		}
 	}
 
 	/**
