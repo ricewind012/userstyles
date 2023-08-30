@@ -6,7 +6,9 @@ You'll have to declare the variables **in an another userstyle** for the same do
 ## Requirements
 [4chan](./4chan.user.styl): [4chan X](https://www.4chan-x.net)
 
-[Discord](./discord.user.styl): [class normalisation userscript](https://gist.github.com/2641a40fd44383320adde4b027a1d0b03bd550/202cfe26d010351d37b48849aab263b5) & [Revert Discord](../../../revert-discord)
+[Discord](./discord.user.styl): [class normalisation userscript](https://gist.github.com/2641a40fd44383320adde4b027a1d0b03bd550/202cfe26d010351d37b48849aab263b5)
+
+[GitHub](./github.user.styl), [SoundCloud](./soundcloud.user.styl): being logged in
 
 [Reddit](./reddit.user.styl): put the following in uBlock Origin's "My filters":
 ```adb
