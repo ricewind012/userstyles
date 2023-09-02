@@ -370,6 +370,14 @@ brd-radius(pos) {
 	border-{pos}-right-radius: var(--border-radius) $i;
 }
 
+normal-colors() {
+	// Don't get me affected by header-focus()
+	--bg2: var(--reserve-bg2) $i;
+	--fg: var(--reserve-fg) $i;
+	--fg2: var(--reserve-fg2) $i;
+	--border: var(--reserve-border) $i;
+}
+
 @-moz-document domain("github.com") {
 	/**
 	 * Variables
@@ -551,6 +559,7 @@ brd-radius(pos) {
 	body {
 		--reserve-bg2: var(--bg2);
 		--reserve-fg: var(--fg);
+		--reserve-fg2: var(--fg2);
 		--reserve-border: var(--border);
 
 		// Settings
@@ -768,13 +777,17 @@ brd-radius(pos) {
 		&-octicon {
 			@extend .btn;
 			mar(left);
-			vertical-align: unset;
+			vertical-align: super;
 
 			&,
 			~/-sm,
 			/.Button--small,
 			/.Button--iconOnly {
 				--pad: calc(var(--save-pad) / 2);
+			}
+
+			& > .octicon {
+				vertical-align: sub $i;
 			}
 		}
 		// TEMP
@@ -905,6 +918,7 @@ brd-radius(pos) {
 	article.border.rounded.color-shadow-small.my-4 > h2.f6.color-fg-muted.px-3.mt-3, // "Based on repositories you’ve starred"
 	.BorderGrid-cell > .mt-3:last-child, [href$="/network/dependents"] > .px-2, // + N contributors/etc.
 	.new-discussion-timeline .Layout-sidebar > div > .my-3, // Most helpful users
+	.footer, .AppHeader .Overlay-footer > :last-child,
 	.Layout-main > .thread-subscription-status,
 	#notification-subscribe-button-reason,
 	.Details .Link--secondary.text-mono, // Commit hash
@@ -912,10 +926,8 @@ brd-radius(pos) {
 	.js-calendar-graph > .f6, // "Learn how we count contributions"
 	[title="Label: Latest"], // "Latest" release label
 	.locked-conversation, // Issue comment in a locked conversation
-	#global-nav, // Header links
 	//.Skeleton,
 	get-repo, // Repository clone button
-	.footer,
 
 	// II. Recommendations / GitHub stuff
 	aside[aria-label="Star Topics"],
@@ -966,36 +978,183 @@ brd-radius(pos) {
 	}
 
 	// Header
-	.Header, .Header-old {
-		bgc(2);
-		header-focus();
-		lnh();
-		pad();
-		brd(bottom);
-		height: var(--header-h);
+	.AppHeader {
+		shd(0);
 
-		.page-focus &-link {
-			fg();
+		.Button,
+		&-button {
+			fg(2);
+			pad(0);
+			brd(0);
+			shd(0);
+			box(unset);
+			transition: none $i;
+
+			&:hover {
+				background-color: transparent $i;
+				fg();
+			}
+		}
+
+		&-globalBar {
+			bgc(2);
+			brd(bottom);
+			header-focus();
+			pad();
+			position: fixed;
+			top: 0;
+			width: 100%;
+
+			&-start,
+			&-end {
+				flex();
+
+				&,
+				~/-actions {
+					gap: 1ch $i;
+				}
+			}
+			&-start deferred-side-panel {
+				display: none;
+			}
+		}
+		&-logo {
+			mar(0);
+			box(var(--font-size));
+
+			& > .octicon {
+				fg();
+				box(var(--font-size));
+				vertical-align: unset $i;
+			}
+			&:not(:hover) > .octicon {
+				normal-colors();
+				fg(2);
+			}
+		}
+		&-context {
+			height: unset $i;
+
+			&-item {
+				normal-colors();
+				background-color: transparent $i;
+				pad(0);
+				min-width: unset $i;
+
+				&:hover &-label {
+					text-decoration: underline $i;
+				}
+			}
+			&-compact-trigger {
+				@extend .AppHeader-context-item;
+				mar(0);
+				height: unset $i;
+			}
+		}
+		// Make the search icon-only, it pops out anyway.
+		&-search {
+			&-whenRegular {
+				display: none $i;
+			}
+			&-whenNarrow {
+				display: grid $i;
+			}
+		}
+		&-actions {
+			&::before {
+				display: none $i;
+			}
+
+			// God knows why this makes it centered.
+			action-menu,
+			focus-group {
+				display: contents;
+			}
+
+			.Button {
+				&-visual {
+					mar(0);
+				}
+				&-label {
+					display: none;
+				}
+			}
+		}
+		&-user {
+			// God knows why this makes it centered.
+			&,
+			.Button-label,
+			include-fragment,
+			deferred-side-panel,
+			user-drawer-side-panel {
+				display: contents;
+			}
+
+			.avatar {
+				border-radius: 50% $i;
+				box(var(--font-size));
+			}
+		}
+		&-localBar {
+			bg(2);
+			pad(0);
+			brd(bottom);
+			margin-top: var(--header-h);
+
+			& > .UnderlineNav {
+				brd(0);
+			}
+		}
+
+		// Make mobile overlays look like normal popouts
+		.Overlay {
+			normal-colors();
+			brd();
+			height: unset !important;
+			dropfade();
+
+			&-backdrop {
+				&--side {
+					background-color: transparent;
+				}
+				for i in left right {
+					&--placement-{i} {
+						{i}: var(--base-size-16);
+					}
+				}
+			}
 		}
 	}
-	.search {
-		&-input {
-			max-width: calc(var(--sidebar-width) - var(--font-size) * 1.5 + var(--pad)) $i;
+	.search-input {
+		width: unset;
+	}
+
+	.application-main {
+		margin-top: var(--header-h);
+	}
+	#repository-container-header {
+		bg(2);
+		margin-top: calc(var(--header-h) * -1);
+
+		& > div {
+			max-width: unset;
 		}
-		&-with-dialog {
-			bg();
-			//height: var(--header-h);
+		.flex-auto.width-fit {
+			display: none;
+		}
+		.border-bottom {
+			mar(0);
 		}
 	}
-	.header-search-button.placeholder {
-		fg(2);
-		cursor: text;
-	}
-	.octicon-mark-github {
-		box(calc(var(--font-size) * 1.5));
-	}
-	#repository-container-header > [style] {
-		align-items: center;
+	.pagehead-actions {
+		pad(0);
+
+		& > li {
+			mar(right);
+		}
+		.BtnGroup {
+			mar(0);
+		}
 	}
 
 	// Tabs
@@ -1035,7 +1194,6 @@ brd-radius(pos) {
 		}
 
 		// Inside the header, if nothing else interrupts us
-		.page-profile &,
 		#dashboard & {
 			brd(0);
 			z-index: 999 $i;
@@ -1044,6 +1202,7 @@ brd-radius(pos) {
 			&-body {
 				position: fixed;
 				top: 0;
+				left: calc(var(--sidebar-width) + var(--body-pad));
 			}
 			&-item:hover {
 				color: var(--accent-fg) $i;
@@ -1094,7 +1253,7 @@ brd-radius(pos) {
 		}
 	}
 
-	// Sticky top header, sidebar & headers
+	// Sticky sidebar & headers
 	/*
 	 * Also includes the js sticky headers to be inside the header,
 	 * if stuck (.is-stuck)
@@ -1102,13 +1261,11 @@ brd-radius(pos) {
 	main .Box-header, .file-header,
 	#repo-content-turbo-frame[src$="/releases"] .col-md-2,
 	.js-position-sticky,
-	.Layout-sidebar > *,
-	.js-header-wrapper {
+	.Layout-sidebar > * {
 		position: sticky $i;
 	}
 	#repo-content-turbo-frame[src$="/releases"] .col-md-2,
-	.Layout-sidebar > *,
-	.js-header-wrapper {
+	.Layout-sidebar > * {
 		top: calc(var(--header-h) + var(--body-pad));
 		z-index: 999 $i;
 	}
@@ -1140,7 +1297,7 @@ brd-radius(pos) {
 				}
 			}
 
-			.page-focus & .Link--primary {
+			/:is(.page-focus, :not(:-moz-window-inactive)) & .Link--primary {
 				color: var(--accent-fg) $i;
 			}
 		}
@@ -1148,7 +1305,7 @@ brd-radius(pos) {
 		.btn {
 			--bg2: var(--bg);
 
-			.page-focus &-octicon-danger > .octicon {
+			/:is(.page-focus, :not(:-moz-window-inactive)) &-octicon-danger > .octicon {
 				color: var(--accent-fg) $i;
 			}
 		}
@@ -1180,9 +1337,8 @@ brd-radius(pos) {
 	#repo-content-turbo-frame[src$="/releases"] .col-md-2 {
 		height: fit-content;
 	}
-	.js-header-wrapper {
-		top: 0;
-	}
+	.AppHeader-globalBar,
+	.Overlay,
 	.Popover,
 	.SelectMenu {
 		z-index: 999 $i;
@@ -1209,6 +1365,7 @@ brd-radius(pos) {
 	.notification-shelf {
 		--pad: calc(var(--save-pad) / 2);
 		pad();
+		overflow: hidden;
 
 		&.is-stuck {
 			margin-left: calc(var(--font-size) * 1.5 + var(--sidebar-width) + var(--body-pad));
@@ -1220,7 +1377,7 @@ brd-radius(pos) {
 		}
 
 		.btn {
-			height: calc(var(--font-size) * var(--line-height) + var(--pad) * 2) $i;
+			margin-top: calc(var(--border-width) * -1) $i;
 
 			&-octicon {
 				display: none;
