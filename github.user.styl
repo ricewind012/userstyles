@@ -606,6 +606,14 @@ normal-colors() {
 			lnh();
 		}
 	}
+	.gap {
+		&-1,
+		&-2,
+		&-3,
+		&-4 {
+			gap: var(--pad) $i;
+		}
+	}
 	.dropdown-item.pl-5 {
 		padding-left: 24px $i;
 	}
@@ -1529,6 +1537,11 @@ normal-colors() {
 		&-show > .d-flex {
 			normalise-header();
 			align-items: end;
+
+			// Discussion subheading
+			.d-flex.flex-wrap.flex-items-center.mb-3 {
+				display: none $i;
+			}
 		}
 		&-title {
 			lnh();
@@ -1536,6 +1549,7 @@ normal-colors() {
 		}
 	}
 	#toc, #partial-visible-comments-header,
+	#sidebar-events-header,
 	#discussions-list,
 	.Subhead {
 		normalise-header(false);
@@ -1544,6 +1558,10 @@ normal-colors() {
 	}
 	#discussion-comment-count {
 		mar(0);
+	}
+	#sidebar-events-header,
+	#repo-content-pjax-container > div > .Subhead {
+		mar(top, 0);
 	}
 	.markdown-body {
 		/.page-profile .f4.text-normal, h1, h2 {
@@ -1565,8 +1583,11 @@ normal-colors() {
 		bg(2);
 		mar(0);
 
+		.loading-context {
+			margin-top: calc(var(--pad) * -2) $i;
+		}
 		.f5 {
-			normalise-header();
+			normalise-header(false);
 			align-items: end $i;
 
 			& > .btn {
@@ -2235,6 +2256,14 @@ normal-colors() {
 	.f1, .f2, .f3, .f4, .f5, .f6,
 	.f00-light, .f0-light, .f1-light, .f2-light, .f3-light {
 		font: var(--font-size) $i;
+	}
+	.text {
+		&-light,
+		&-normal,
+		&-bold,
+		&-semibold {
+			font-weight: normal $i;
+		}
 	}
 	.text-mono,
 	.commit .sha,
