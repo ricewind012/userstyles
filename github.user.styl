@@ -1200,22 +1200,6 @@ normal-colors() {
 				color: unset $i;
 			}
 		}
-
-		// Inside the header, if nothing else interrupts us
-		#dashboard & {
-			brd(0);
-			z-index: 999 $i;
-			position: relative;
-
-			&-body {
-				position: fixed;
-				top: 0;
-				left: calc(var(--sidebar-width) + var(--body-pad));
-			}
-			&-item:hover {
-				color: var(--accent-fg) $i;
-			}
-		}
 	}
 	.page-profile .position-sticky.mt-4 {
 		brd(0);
@@ -1578,21 +1562,62 @@ normal-colors() {
 	}
 
 	// Dashboard
-	.team-left-column {
-		--scrollbar-track: var(--bg);
-		bg(2);
-		mar(0);
+	.feed {
+		&-left-sidebar,
+		&-right-sidebar {
+			--scrollbar-track: var(--bg);
+			bg(2);
+			mar(0);
 
-		.loading-context {
-			margin-top: calc(var(--pad) * -2) $i;
+			h2 {
+				normalise-header(false);
+			}
+			.Button {
+				display: none $i;
+			}
+			.form-control {
+				--bg2: var(--bg);
+				normalise-input();
+			}
 		}
-		.f5 {
-			normalise-header(false);
-			align-items: end $i;
+		&-left-sidebar {
+			--scrollbar-track: var(--bg);
+			bg(2);
+			mar(0);
 
-			& > .btn {
-				text-transform: none;
-				letter-spacing: 0;
+			.loading-context {
+				margin-top: calc(var(--pad) * -2) $i;
+			}
+		}
+		&-right-sidebar {
+			pad();
+			brd(left);
+			margin-top: calc(var(--pad) * -2) $i;
+
+			& > div {
+				background-color: unset $i;
+				pad(0);
+				brd(0);
+			}
+		}
+		&-content {
+			pad(0);
+			brd(0);
+			mar(0);
+			gap: 0 $i;
+			max-width: unset $i;
+		}
+		&-main {
+			margin: var(--body-pad) $i;
+			max-width: unset $i;
+		}
+		&-item-content {
+			bg(2);
+			pad(0);
+			shd(0);
+
+			.btn {
+				--bg2: var(--bg);
 			}
 		}
 	}
@@ -1605,9 +1630,14 @@ normal-colors() {
 			}
 		}
 	}
-	[aria-label="Explore"] {
-		pad(top);
-		brd(left);
+	feed-container > :first-child {
+		normalise-header();
+		align-items: end $i;
+
+		& > div {
+			letter-spacing: initial $i;
+			text-transform: initial $i;
+		}
 	}
 
 	// Discussions
