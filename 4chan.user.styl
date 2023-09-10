@@ -1675,9 +1675,7 @@ normal-colors() {
 			}
 
 			.entry {
-				pad();
-				padding-left: s('calc(var(--pad) + 1ch + %s)', $select-size) $i;
-				padding-right: calc(var(--pad) + 1em) $i;
+				padding: var(--pad) s('calc(var(--pad) + 1ch + %s)', $select-size) $i;
 
 				&:not(.disabled).focused {
 					hl();
@@ -1685,6 +1683,14 @@ normal-colors() {
 				&.disabled {
 					fg(2);
 					pointer-events: none;
+				}
+
+				&::before {
+					font: var(--font-size) FontAwesome $i;
+					position: absolute;
+					left: var(--pad);
+					box(var(--font-size), calc(var(--font-size) * var(--line-height)));
+					flex(,,center);
 				}
 
 				input[type="checkbox"] {
@@ -1696,6 +1702,162 @@ normal-colors() {
 
 		&[data-type="header"] {
 			normal-colors();
+		}
+
+		// Icons
+		/*
+		 * No icons for submenus to align with Discord,
+		 * as it doesn't have them.
+		 */
+		icons = {
+			'thread watcher': {
+				':nth-child(1)':                f122 // Open all threads
+				':nth-child(2)':                f086 // Open unread threads 6e
+				':nth-child(3)':                f02d // Open dead threads
+				':nth-child(4)':                f1f8 // Prune dead threads
+				':nth-child(5)':                f10e // Dismiss posts quoting you
+			}
+
+			'header': {
+				'.watch-thread':                f006
+				'.unwatch-thread':              f005
+				':nth-child(2)':                f097 // Mark all unread
+
+				// Gallery
+				'.gallery-link': {
+					':nth-child(6)':              f1de // Slide Delay
+				}
+
+				// Header
+				':nth-child(6)': {
+					':nth-child(9)':              f040 // Edit custom board navigation
+				}
+
+				// Updater
+				':nth-child(7)': {
+					':nth-child(8)':              f021 // Interval
+				}
+			}
+
+			'post': {
+				'.report-link':                 f024
+				'.copy-text-link':              f0c5
+				'.edit-link':                   f040
+				'.download-link':               f019
+
+				// Hide
+				'[style="order: 20;"]': {
+					':nth-child(1)':              f070 // Apply
+				}
+
+				// Delete
+				'.delete-link': {
+					':nth-child(1)':              f03a // Post
+					':nth-child(2)':              f15b // File
+				}
+
+				// Filter
+				'[style="order: 50;"]': {
+					'[data-type="name"]':         f007
+					'[data-type="uniqueID"]':     f292
+					'[data-type="capcode"]':      f084
+					'[data-type="subject"]':      f1dc
+					'[data-type="comment"]':      f075
+					'[data-type="filename"]':     f15b
+					'[data-type="dimensions"]':   f03e
+					'[data-type="filesize"]':     f047
+					'[data-type="MD5"]':          f292
+				}
+
+				// Archive
+				'[style="order: 60;"]': {
+					// May not be a good idea to rely on this ...
+					'[href*="/#"]':               f03a // Post
+					'[href*="/search/username"]': f007 // Name
+					'[href*="/search/capcode"]':  f084 // Capcode
+					'[href*="/search/subject"]':  f1dc // Subject
+					'[href*="/search/filename"]': f15b // Filename
+					'[href*="/search/image"]':    f292 // Image MD5
+				}
+			}
+		}
+		menu-icon(icon) {
+			&::before {
+				content: s('"\%s"', icon);
+			}
+		}
+		for i in icons {
+			&{s('[data-type="%s"]', unquote(i))} {
+				for element, icon in icons[i] {
+					& > {element} {
+						if (typeof(icon) == 'ident') {
+							menu-icon(icon);
+						} else {
+							for element, icon in icon {
+								& > .submenu > {element} {
+									menu-icon(icon);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	.has-submenu::after {
+		content: '\f054';
+		font-family: FontAwesome $i;
+		right: var(--pad);
+		brd(0);
+		mar(0);
+
+		.left & {
+			content: '\f053';
+		}
+	}
+	@css {
+		.catalog-thread {
+			--watch-thread-icon: '\f006';
+
+			&.watched {
+				--watch-thread-icon: '\f005';
+			}
+		}
+		#menu {
+			&[data-type="header"] {
+				& > :is(:nth-child(2), :nth-child(4), :nth-child(7)),
+				& > :nth-child(5) > .submenu > :nth-child(4),
+				& > :nth-child(6) > .submenu > :is(:nth-child(4), :nth-child(7)),
+				& > :nth-child(7) > .submenu > :is(:nth-child(2), :nth-child(5)) {
+					border-bottom: var(--border-width) solid var(--border);
+				}
+			}
+			&[data-type="thread watcher"] {
+				& > :nth-child(5) {
+					border-bottom: var(--border-width) solid var(--border);
+				}
+				& > :is(:nth-child(11), :last-child) {
+					border-top: var(--border-width) solid var(--border);
+				}
+			}
+			&[data-type="post"] {
+				.catalog-thread & > :first-child::before {
+					content: var(--watch-thread-icon);
+				}
+				& > .copy-text-link,
+				& > [style="order: 60;"] > .submenu > :is(
+					:nth-child(2), /* Name */
+					:nth-child(3), /* Subject */
+				):nth-last-child(3),
+				[data-type="comment"]:not(:last-child) {
+					border-bottom: var(--border-width) solid var(--border);
+				}
+				& > .toggle-you,
+				.reply & [data-type="comment"],
+				[data-type="subject"] {
+					border-top: var(--border-width) solid var(--border);
+				}
+			}
 		}
 	}
 
