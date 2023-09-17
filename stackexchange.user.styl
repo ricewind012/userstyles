@@ -534,6 +534,19 @@ normalise-header(first = true) {
 				fg();
 			}
 		}
+		&-prose {
+			--s-prose-line-height: var(--line-height);
+			--s-prose-spacing: var(--pad);
+
+			pre:not(.s-code-block) {
+				pad();
+				brd();
+
+				& > code {
+					fg();
+				}
+			}
+		}
 	}
 	#question-header {
 		& + div {
@@ -566,10 +579,12 @@ normalise-header(first = true) {
 	.answer {
 		brd(bottom);
 	}
-	.comment-date,
-	.comment-date>a,
-	.comment-date>a:hover {
-		fg(2);
+	.comment-date {
+		&,
+		& > a,
+		& > a:hover {
+			fg(2);
+		}
 	}
 	.relativetime-clean {
 		&::before {
@@ -577,19 +592,6 @@ normalise-header(first = true) {
 		}
 		&::after {
 			content: ')';
-		}
-	}
-	.s-prose {
-		--s-prose-line-height: var(--line-height);
-		--s-prose-spacing: var(--pad);
-
-		pre:not(.s-code-block) {
-			pad();
-			brd();
-
-			& > code {
-				fg();
-			}
 		}
 	}
 }

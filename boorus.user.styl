@@ -426,9 +426,11 @@ normalise-header(first = true) {
 	#content {
 		pad(0);
 	}
-	#post-view,
-	#post-list {
-		display: flex;
+	#post {
+		&-view,
+		&-list {
+			display: flex;
+		}
 	}
 	.sidebar {
 		bg(2);

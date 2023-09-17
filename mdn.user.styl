@@ -420,11 +420,13 @@ normalise-header(first = true) {
 		--shadow-02: var(--shadow-big) $i;
 	}
 
-	a:not(:hover) {
-		text-decoration: none $i;
-	}
-	a:hover {
-		text-decoration: underline $i;
+	a {
+		&:not(:hover) {
+			text-decoration: none $i;
+		}
+		&:hover {
+			text-decoration: underline $i;
+		}
 	}
 
 	/**

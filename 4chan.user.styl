@@ -989,8 +989,9 @@ normal-colors() {
 		right: var(--body-pad);
 
 		.is_index & {
-			--top-icons-top-pos:
-				calc(var(--body-pad) - var(--border-width) - var(--pad) * 2);
+			--top-icons-top-pos: calc(
+				var(--body-pad) - var(--border-width) - var(--pad) * 2
+			);
 		}
 		.is_thread & {
 			--top-icons-top-pos: var(--pad);
@@ -1128,7 +1129,6 @@ normal-colors() {
 				display: none;
 			}
 		}
-
 		.inline & {
 			pad(0);
 			mar(0);
@@ -1138,7 +1138,6 @@ normal-colors() {
 				mar(left, 0);
 			}
 		}
-
 		.threadContainer & {
 			@media (max-width: $small-screen) {
 				width: calc(100% - var(--pad));
@@ -1506,7 +1505,6 @@ normal-colors() {
 			position: unset $i;
 		}
 	}
-
 	#qr,
 	#thread-watcher {
 		& > .move {
@@ -1660,7 +1658,6 @@ normal-colors() {
 			flex-direction: row-reverse;
 			gap: 1ch;
 		}
-
 		a {
 			pad();
 		}
@@ -1730,11 +1727,6 @@ normal-colors() {
 		&,
 		.submenu {
 			brd();
-
-			a {
-				color: unset $i;
-				text-decoration: none;
-			}
 		}
 
 		&[data-type="header"] {
@@ -1846,15 +1838,9 @@ normal-colors() {
 		}
 	}
 	.entry {
+		fg();
+		text-decoration: none $i;
 		padding: var(--pad) s('calc(var(--pad) + 1ch + %s)', $select-size) $i;
-
-		&:not(.disabled).focused {
-			hl();
-		}
-		&.disabled {
-			fg(2);
-			pointer-events: none;
-		}
 
 		&::before {
 			font: var(--font-size) FontAwesome $i;
@@ -1865,6 +1851,14 @@ normal-colors() {
 				calc(var(--font-size) * var(--line-height))
 			);
 			flex(,,center);
+		}
+
+		&:not(.disabled).focused {
+			hl();
+		}
+		&.disabled {
+			fg(2);
+			pointer-events: none;
 		}
 
 		input[type="checkbox"] {
@@ -1982,13 +1976,13 @@ normal-colors() {
 			&-main div::before {
 				border-color: var(--border) $i;
 			}
-			/#sauce-doc,
-			&-filter > select {
-				width: fit-content;
-			}
 			&-filter {
 				height: 100% $i;
 
+				/#sauce-doc,
+				& > select {
+					width: fit-content;
+				}
 				& > div {
 					height: calc(100% - var(--pad) * 2) $i;
 				}
@@ -2053,7 +2047,6 @@ normal-colors() {
 				}
 			}
 		}
-
 		code {
 			bgc(2);
 			brd();
@@ -2089,6 +2082,17 @@ normal-colors() {
 
 	// Gallery
 	.gal {
+		for k, v in prev right next left {
+			&-{k} {
+				brd(v);
+
+				&::after {
+					{v}: 25%;
+					border-{v}-color: var(--fg);
+				}
+			}
+		}
+
 		&-buttons,
 		&-sauce:empty {
 			display: none;
@@ -2102,16 +2106,6 @@ normal-colors() {
 			&:hover::after {
 				background-color: var(--hl);
 				border-color: var(--hl-fg);
-			}
-		}
-		for k, v in prev right next left {
-			&-{k} {
-				brd(v);
-
-				&::after {
-					{v}: 25%;
-					border-{v}-color: var(--fg);
-				}
 			}
 		}
 		&-thumbnails {

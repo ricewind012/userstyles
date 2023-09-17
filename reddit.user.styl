@@ -508,9 +508,10 @@ capitalise() {
 
 		&::before {
 			content: '/r/';
-		}
-		.profile-page &::before {
-			content: '/u/';
+
+			.profile-page & {
+				content: '/u/';
+			}
 		}
 
 		&,
@@ -1497,7 +1498,6 @@ capitalise() {
 		& > .spacer {
 			mar(0);
 		}
-		//.dropdown span {
 		.selected {
 			box-sizing: border-box;
 			flex(inline-flex);

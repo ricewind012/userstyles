@@ -553,7 +553,6 @@ normal-colors() {
 		--color-fg-on-emphasis: var(--hl-fg) $i;
 
 		// save
-		--save-bg-opacity: var(--bg-opacity);
 		--save-pad: var(--pad);
 	}
 
@@ -561,7 +560,6 @@ normal-colors() {
 	body {
 		--reserve-bg2: var(--bg2);
 		--reserve-fg: var(--fg);
-		--reserve-fg2: var(--fg2);
 		--reserve-border: var(--border);
 
 		// Settings
@@ -873,11 +871,13 @@ normal-colors() {
 	.post-merge-message {
 		pad();
 	}
-	.pr-review-reactions .just-bottom,
-	.pr-review-reactions .has-reactions,
-	.pr-review-reactions .has-reactions.comment-reactions {
-		mar();
-		align-items: center;
+	.pr-review-reactions {
+		.just-bottom,
+		.has-reactions,
+		.has-reactions.comment-reactions {
+			mar();
+			align-items: center;
+		}
 	}
 	.toolbar-commenting {
 		mar(0);
@@ -1024,6 +1024,7 @@ normal-colors() {
 			}
 		}
 		&-logo {
+			fg(2);
 			mar(0);
 			box(var(--font-size));
 
@@ -1218,19 +1219,6 @@ normal-colors() {
 				color: unset $i;
 			}
 		}
-	}
-	.page-profile .position-sticky.mt-4 {
-		brd(0);
-		mar(top, 0);
-		z-index: 999 $i;
-
-		& > div {
-			@extend .application-main > main > .container-sm;
-			margin: 0 var(--body-pad) $i;
-		}
-	}
-	.user-profile-sticky-bar {
-		max-height: 0;
 	}
 	.tabnav-tab {
 		lnh();
@@ -1765,9 +1753,6 @@ normal-colors() {
 	.dropdown {
 		&-menu {
 			pad(0);
-		}
-		&-menu {
-			margin-top: calc(var(--border-width) * 2 + var(--pad));
 			z-index: 1000;
 		}
 		&-divider {
@@ -1805,7 +1790,7 @@ normal-colors() {
 		--bg2: var(--reserve-bg2) $i;
 		--fg: var(--reserve-fg) $i;
 		--border: var(--reserve-border) $i;
-		brd();
+		brd(); // inline border-radius
 		left: 0;
 		top: 0;
 
@@ -1924,7 +1909,6 @@ normal-colors() {
 	if (old-user-status) {
 		.user-status {
 			&-circle-badge {
-				--base-size-8: var(--pad);
 				background-color: var(--color-scale-yellow-1);
 				border-color: var(--color-scale-yellow-3) $i;
 				width: 100% $i;
@@ -2335,8 +2319,8 @@ normal-colors() {
 		mar(0);
 	}
 	.js-navigation-item {
-		--primer-stack-padding-normal: 4px;
-		--base-size-8: 4px;
+		--pad: calc(var(--save-pad) / 2);
+		pad();
 	}
 	.js-yearly-contributions .dropdown {
 		mar(top, 0);

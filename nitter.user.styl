@@ -456,10 +456,6 @@ normalise-header(first = true) {
 	}
 
 	// Timeline
-	.profile-tabs .timeline-container {
-		brd();
-		width: calc(68% - var(--border-width) * 2) $i;
-	}
 	.profile {
 		&-banner {
 			mar(bottom);
@@ -471,6 +467,11 @@ normalise-header(first = true) {
 
 			&.sticky {
 				position: sticky;
+			}
+
+			&s .timeline-container {
+				brd();
+				width: calc(68% - var(--border-width) * 2) $i;
 			}
 
 			& > div {

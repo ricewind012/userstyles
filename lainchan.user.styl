@@ -486,10 +486,6 @@ normalise-header(first = true) {
 			width: inherit;
 			position: unset;
 
-			h2 {
-				display: none;
-			}
-
 			&_icon {
 				fg(2);
 				pad();
@@ -503,6 +499,10 @@ normalise-header(first = true) {
 				&.active {
 					hl();
 				}
+			}
+
+			h2 {
+				display: none;
 			}
 		}
 	}

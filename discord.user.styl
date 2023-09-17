@@ -1020,22 +1020,23 @@ normalise-header(first = true) {
 				pad(0);
 				height: unset;
 
+				&:not([class]) { // voice
+					& > div {
+						pad(0);
+						mar(0);
+					}
+					.name {
+						fa(f095);
+						font-size: var(--font-size) $i;
+
+						&::before {
+							margin-right: 1ch;
+						}
+					}
+				}
+
 				&:not({$sidebar[channel-selected]}):hover .link {
 					background-color: transparent $i;
-				}
-			}
-			& > div:not([class]) { // voice
-				& > div {
-					pad(0);
-					mar(0);
-				}
-				.name {
-					fa(f095);
-					font-size: var(--font-size) $i;
-
-					&::before {
-						margin-right: 1ch;
-					}
 				}
 			}
 		}
@@ -1058,7 +1059,7 @@ normalise-header(first = true) {
 			brd(0);
 		}
 
-		// voice
+		// Voice
 		.draggable {
 			&,
 			& > div {
@@ -1136,7 +1137,7 @@ normalise-header(first = true) {
 
 	// Servers sidebar
 	$guilds = {
-		scroller:       '[class*="scroller-"]'
+		container:      '[class*="scroller-"]'
 		guild:          '.pill:not(:empty) + div > [data-dnd-name]'
 		guild-selected: '[class*="selected-"]'
 	}
@@ -1144,7 +1145,7 @@ normalise-header(first = true) {
 	.guilds {
 		width: calc(var(--guilds-size) + var(--pad) * 2) $i;
 
-		{$guilds[scroller]} {
+		{$guilds[container]} {
 			bg(2);
 			header-focus();
 			padding-top: calc(var(--pad) / 2) $i;
@@ -1276,7 +1277,7 @@ normalise-header(first = true) {
 				transform-origin: top left;
 				transform: rotate(-90deg);
 
-				{$guilds[scroller]} {
+				{$guilds[container]} {
 					padding-top: calc(var(--pad) / 2) $i;
 					brd(left);
 					brd(right, 0);
@@ -1298,9 +1299,11 @@ normalise-header(first = true) {
 	/**
 	 * Header
 	**/
-	$chat-title = 'section.container.themed'
+	$chat = {
+		title: 'section.container.themed'
+	}
 
-	{$chat-title} {
+	{$chat[title]} {
 		bg(2);
 		header-focus(app-focused);
 		lnh();
@@ -1539,9 +1542,6 @@ normalise-header(first = true) {
 	$user-info {
 		mar(0);
 
-		.divider {
-			display: none;
-		}
 		& > [dir] {
 			pad();
 			brd(top);
@@ -1551,6 +1551,9 @@ normalise-header(first = true) {
 			& > :first-child {
 				margin-top: calc(var(--pad) * -2);
 			}
+		}
+		.divider {
+			display: none;
 		}
 		.section {
 			pad(0);
