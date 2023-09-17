@@ -282,7 +282,8 @@ normalise-checkbox(label = true) {
 	min-width: $select-size $i;
 	focus();
 
-	&::before, &::after {
+	&::before,
+	&::after {
 		content: '';
 		position: absolute $i;
 		inset: 0;
@@ -290,7 +291,8 @@ normalise-checkbox(label = true) {
 		transform-origin: 0 0 $i;
 	}
 	&:disabled {
-		&::before, &::after {
+		&::before,
+		&::after {
 			background-color: var(--fg2) $i;
 		}
 	}
@@ -593,9 +595,12 @@ normal-colors() {
 	.pagination a,
 	.pagination em,
 	.pagination span,
-	.state, .State,
-	.label, .Label,
-	.blob-num, .blob-code,
+	.state,
+	.State,
+	.label,
+	.Label,
+	.blob-num,
+	.blob-code,
 	.Box--condensed {
 		lnh();
 	}
@@ -640,8 +645,12 @@ normal-colors() {
 			display: none;
 		}
 
-		&::before { content: '('; }
-		&::after { content: ')'; }
+		&::before {
+			content: '(';
+		}
+		&::after {
+			content: ')';
+		}
 	}
 	.ActionList {
 		&Item {
@@ -650,7 +659,8 @@ normal-colors() {
 					display: none;
 				}
 
-				&, span {
+				&,
+				span {
 					hl();
 				}
 			}
@@ -682,7 +692,6 @@ normal-colors() {
 			border-bottom-right-radius: var(--border-radius) $i;
 		}
 	}
-
 	.form {
 		&-select {
 			normalise-select();
@@ -699,7 +708,8 @@ normal-colors() {
 			padding-left: s('calc(%s + 1ch)', $select-size) $i;
 
 			input {
-				&[type="checkbox"], &[type="radio"] {
+				&[type="checkbox"],
+				&[type="radio"] {
 					margin-left: s('calc(%s - 1ch)', $select-size * -1) $i;
 				}
 			}
@@ -733,7 +743,8 @@ normal-colors() {
 			}
 		}
 	}
-	.btn, .Button {
+	.btn,
+	.Button {
 		normalise-button();
 		shd(0);
 		box(unset);
@@ -752,7 +763,8 @@ normal-colors() {
 			primary: 10
 		}
 		for k, v in colors {
-			&-{k}, &--{k} {
+			&-{k},
+			&--{k} {
 				background-color: color-a(v) $i;
 				border-color: s('var(--color%s)', v) $i;
 			}
@@ -769,7 +781,9 @@ normal-colors() {
 		}
 	}
 	.btn {
-		.details-overlay:not(.BtnGroup-parent):not(.details-overlay-dark) > &:not([aria-label="Table of Contents"]) {
+		.details-overlay:not(.BtnGroup-parent):not(.details-overlay-dark) \
+			> &:not([aria-label="Table of Contents"])
+		{
 			normalise-select();
 
 			&::after {
@@ -807,15 +821,14 @@ normal-colors() {
 			line-height: 6px $i;
 			height: unset;
 		}
-
 		&.js-wiki-sidebar-toc-toggle-chevron-button {
 			--pad: calc(var(--save-pad) / 2);
 			brd(0);
 			mar(top);
 			mar(left, 0);
 		}
-
-		&, &-octicon {
+		&,
+		&-octicon {
 			& > .octicon:only-child {
 				fg();
 			}
@@ -968,24 +981,8 @@ normal-colors() {
 	}
 
 	/**
-	 * Content
+	 * Header
 	**/
-	// Content container
-	#repo-content {
-		&-pjax-container, &-turbo-frame {
-			/.application-main > main > .container,
-			& > .container {
-				&-sm, &-md, &-lg, &-xl {
-					pad(0);
-					margin: var(--body-pad) $i;
-					max-width: unset $i;
-					width: calc(100% - var(--body-pad) * 3);
-				}
-			}
-		}
-	}
-
-	// Header
 	.AppHeader {
 		shd(0);
 
@@ -1136,7 +1133,6 @@ normal-colors() {
 	.search-input {
 		width: unset;
 	}
-
 	.application-main {
 		margin-top: var(--header-h);
 	}
@@ -1162,6 +1158,28 @@ normal-colors() {
 		}
 		.BtnGroup {
 			mar(0);
+		}
+	}
+
+	/**
+	 * Content
+	**/
+	// Content container
+	#repo-content {
+		&-pjax-container,
+		&-turbo-frame {
+			/.application-main > main > .container,
+			& > .container {
+				&-sm,
+				&-md,
+				&-lg,
+				&-xl {
+					pad(0);
+					margin: var(--body-pad) $i;
+					max-width: unset $i;
+					width: calc(100% - var(--body-pad) * 3);
+				}
+			}
 		}
 	}
 
@@ -1214,7 +1232,6 @@ normal-colors() {
 	.user-profile-sticky-bar {
 		max-height: 0;
 	}
-
 	.tabnav-tab {
 		lnh();
 	}
@@ -1250,7 +1267,8 @@ normal-colors() {
 	 * Also includes the js sticky headers to be inside the header,
 	 * if stuck (.is-stuck)
 	 */
-	main .Box-header, .file-header,
+	main .Box-header,
+	.file-header,
 	#repo-content-turbo-frame[src$="/releases"] .col-md-2,
 	.js-position-sticky,
 	.Layout-sidebar > * {
@@ -1261,7 +1279,8 @@ normal-colors() {
 		top: calc(var(--header-h) + var(--body-pad));
 		z-index: 999 $i;
 	}
-	main .Box-header, .file-header,
+	main .Box-header,
+	.file-header,
 	.js-position-sticky {
 		top: var(--header-h);
 		z-index: 998 $i;
@@ -1349,11 +1368,11 @@ normal-colors() {
 		}
 	}
 	.gh-header {
-		&-sticky, &-shadow {
+		&-sticky,
+		&-shadow {
 			display: none $i;
 		}
 	}
-
 	.notification-shelf {
 		--pad: calc(var(--save-pad) / 2);
 		pad();
@@ -1403,7 +1422,8 @@ normal-colors() {
 				pad(0);
 			}
 			.Counter {
-				&::before, &::after {
+				&::before,
+				&::after {
 					display: none;
 				}
 			}
@@ -1439,11 +1459,14 @@ normal-colors() {
 		.list-style-none .text-small > :last-child {
 			fg(2);
 
-			&::before { content: '('; }
-			&::after { content: ')'; }
+			&::before {
+				content: '(';
+			}
+			&::after {
+				content: ')';
+			}
 		}
 	}
-
 	#partial-discussion-sidebar {
 		display: flex;
 		flex-direction: column;
@@ -1463,7 +1486,6 @@ normal-colors() {
 			}
 		}
 	}
-
 	#wiki-pages-box .Box-row {
 		pad(0);
 	}
@@ -1510,7 +1532,8 @@ normal-colors() {
 	}*/
 
 	// Content headers
-	.gh-header, .Subhead {
+	.gh-header,
+	.Subhead {
 		&-actions {
 			text-transform: initial;
 			letter-spacing: initial;
@@ -1532,7 +1555,8 @@ normal-colors() {
 			mar(0);
 		}
 	}
-	#toc, #partial-visible-comments-header,
+	#toc,
+	#partial-visible-comments-header,
 	#sidebar-events-header,
 	#discussions-list,
 	.Subhead {
@@ -1548,10 +1572,17 @@ normal-colors() {
 		mar(top, 0);
 	}
 	.markdown-body {
-		/.page-profile .f4.text-normal, h1, h2 {
+		/.page-profile .f4.text-normal,
+		h1,
+		h2 {
 			normalise-header(false);
 		}
-		h1, h2, h3, h4, h5, h6 {
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6 {
 			lnh();
 		}
 		pre {
@@ -1625,7 +1656,8 @@ normal-colors() {
 		top: var(--header-h) $i;
 
 		&::-webkit-scrollbar {
-			&-button, &-track {
+			&-button,
+			&-track {
 				--bg2: var(--bg);
 			}
 		}
@@ -1642,7 +1674,8 @@ normal-colors() {
 
 	// Discussions
 	.discussion {
-		&-spotlights-sortable, &s-header-wrap {
+		&-spotlights-sortable,
+		&s-header-wrap {
 			margin-left: calc(var(--sidebar-width) + var(--body-pad)) $i;
 		}
 		&-spotlights-sortable {
@@ -1655,7 +1688,10 @@ normal-colors() {
 	#repo-content-turbo-frame[src$="/discussions"] {
 		.Layout {
 			&-sidebar {
-				margin-top: calc(-188px - var(--body-pad) - var(--pad) * 5 - var(--font-size) * var(--line-height) - var(--border-width) * 6);
+				margin-top: calc(
+					-188px - var(--body-pad) - var(--pad) * 5 \
+					- var(--font-size) * var(--line-height) - var(--border-width) * 6
+				);
 
 				// Header
 				h2 + div > .mb-2 {
@@ -1673,7 +1709,6 @@ normal-colors() {
 		&-btn-octicon {
 			lnh();
 		}
-
 		&-header {
 			bg(2);
 
@@ -1695,11 +1730,11 @@ normal-colors() {
 		&-row--focus-gray.navigation-focus {
 			background-color: transparent $i;
 		}
-
 		&--overlay {
 			brd(,accent-border);
 
-			~/[role="dialog"], & {
+			~/[role="dialog"],
+			& {
 				shd(big);
 				fade(drop);
 			}
@@ -1740,7 +1775,8 @@ normal-colors() {
 		}
 	}
 	.SelectMenu {
-		/.Overlay, &-modal {
+		/.Overlay,
+		&-modal {
 			brd();
 			fade(drop);
 		}
@@ -1761,7 +1797,6 @@ normal-colors() {
 			pad(0);
 		}
 	}
-
 	#search-suggestions-dialog {
 		brd(0);
 	}
@@ -1775,7 +1810,8 @@ normal-colors() {
 		top: 0;
 
 		.ActionList {
-			../ .QueryBuilder-ListWrap, &Item {
+			../ .QueryBuilder-ListWrap,
+			&Item {
 				pad(0);
 				mar(0);
 			}
@@ -1893,7 +1929,8 @@ normal-colors() {
 				border-color: var(--color-scale-yellow-3) $i;
 				width: 100% $i;
 
-				&, &-container:hover & {
+				&,
+				&-container:hover & {
 					box-shadow: none $i;
 				}
 
@@ -1905,13 +1942,11 @@ normal-colors() {
 					& > div {
 						width: 100%;
 					}
-
 					.color-fg-muted {
 						color: var(--fg) $i;
 					}
 				}
 			}
-
 			&-message-wrapper {
 				width: 100% $i;
 				opacity: 1 $i;
@@ -2001,7 +2036,6 @@ normal-colors() {
 				brd(right);
 			}
 		}
-
 		button {
 			--pad: calc(var(--save-pad) / 2);
 			normalise-button();
@@ -2089,7 +2123,6 @@ normal-colors() {
 		&-last-commit-history-group {
 			--bg2: var(--bg);
 		}
-
 		&-line-number {
 			font-family: var(--font-code) $i;
 
@@ -2236,12 +2269,10 @@ normal-colors() {
 				}
 			}
 		}
-
 		&-activeline-background,
 		&-selected {
 			bg(2);
 		}
-
 		&-cursor {
 			border-left-color: var(--fg);
 		}
@@ -2252,6 +2283,40 @@ normal-colors() {
 		&-matchingbracket {
 			background-color: var(--hl);
 		}
+	}
+
+	/**
+	 * Theme fixes
+	**/
+	.text-small,
+	.h1, .h2, .h3, .h4, .h5, .h6,
+	.f1, .f2, .f3, .f4, .f5, .f6,
+	.f00-light, .f0-light, .f1-light, .f2-light, .f3-light {
+		font: var(--font-size) $i;
+	}
+	.text {
+		&-light,
+		&-normal,
+		&-bold,
+		&-semibold {
+			font-weight: normal $i;
+		}
+	}
+	.text-mono,
+	.commit .sha,
+	.blob-code-inner {
+		font-family: var(--font-code) $i;
+	}
+	.gist-banner {
+		--color-canvas-default: var(--bg2);
+	}
+	.user-mention,
+	.team-mention {
+		color: var(--fg-link);
+	}
+	[data-target="diff-layout.mainContainer"],
+	#discussion_bucket .Layout-main {
+		margin-left: 48px $i;
 	}
 
 	/**
@@ -2279,35 +2344,5 @@ normal-colors() {
 	.js-profile-editable-replace > .clearfix {
 		overflow: hidden;
 	}
-
-	// Theme fixes
-	.text-small,
-	.h1, .h2, .h3, .h4, .h5, .h6,
-	.f1, .f2, .f3, .f4, .f5, .f6,
-	.f00-light, .f0-light, .f1-light, .f2-light, .f3-light {
-		font: var(--font-size) $i;
-	}
-	.text {
-		&-light,
-		&-normal,
-		&-bold,
-		&-semibold {
-			font-weight: normal $i;
-		}
-	}
-	.text-mono,
-	.commit .sha,
-	.blob-code-inner {
-		font-family: var(--font-code) $i;
-	}
-	.gist-banner {
-		--color-canvas-default: var(--bg2);
-	}
-	.user-mention, .team-mention {
-		color: var(--fg-link);
-	}
-	[data-target="diff-layout.mainContainer"],
-	#discussion_bucket .Layout-main {
-		margin-left: 48px $i;
-	}
 }
+

@@ -283,7 +283,8 @@ normalise-checkbox(label = true) {
 	min-width: $select-size $i;
 	focus();
 
-	&::before, &::after {
+	&::before,
+	&::after {
 		content: '';
 		position: absolute $i;
 		inset: 0;
@@ -291,7 +292,8 @@ normalise-checkbox(label = true) {
 		transform-origin: 0 0 $i;
 	}
 	&:disabled {
-		&::before, &::after {
+		&::before,
+		&::after {
 			background-color: var(--fg2) $i;
 		}
 	}
@@ -366,33 +368,18 @@ normalise-header(first = true) {
 }
 
 @-moz-document regexp("(moz|chrome)-extension://.*") {
-	// Hide elements
-	#theme-label, #theme-label + div,
-	#header.sticky #details-wrapper,
-	#header.sticky #actions,
-	#newStyleAsUsercss ~ div,
-	#write-for-frames, // Plus sign for "write for"
-	#heading .info,
-	.sync-options, // ..section
-	#popup-button,
-	#manage-text,
-	#beautify,
-	#publish,
-	#lint {
-		display: none $i;
-	}
-
-	// Global
+	/**
+	 * Global
+	**/
 	body {
 		bgc();
 		--onoffswitch-width: 89px;
 	}
-
 	a {
-		&, &:hover {
+		&,
+		&:hover {
 			color: var(--fg-link);
 		}
-
 		&:not(:hover) {
 			text-decoration: none;
 		}
@@ -422,7 +409,6 @@ normalise-header(first = true) {
 			display: none $i;
 		}
 	}
-
 	input {
 		&:not([type]),
 		&[type="text"],
@@ -452,7 +438,8 @@ normalise-header(first = true) {
 			text-align: left;
 		}
 	}
-	input, select {
+	input,
+	select {
 		height: unset $i;
 	}
 	.onoffswitch {
@@ -467,7 +454,6 @@ normalise-header(first = true) {
 			display: none;
 		}
 	}
-
 	.checkmate {
 		box($select-size);
 
@@ -488,12 +474,12 @@ normalise-header(first = true) {
 	.radio-wrapper {
 		lnh();
 	}
-	.firefox .chromium-only, .chromium-only.chrome-no-popup-border {
+	.firefox .chromium-only,
+	.chromium-only.chrome-no-popup-border {
 		opacity: .5;
 		display: flex;
 		pointer-events: none;
 	}
-
 	button {
 		normalise-button();
 		background-image: none $i;
@@ -511,63 +497,26 @@ normalise-header(first = true) {
 	#cancel-button {
 		replace-text('Back');
 	}
-
-	// Editor
-	.cm-s-default .cm {
-		&-header, &-def, &-negative, &-qualifier, &-error, &-attribute, &-link {
-			clr(9);
-		}
-		&-quote, &-positive, &-number, &-variable-3, &-builtin, &-atom {
-			clr(10);
-		}
-		&-operator {
-			clr(11);
-		}
-		&-keyword, &-tag {
-			clr(12);
-		}
-		&-string, &-string-2, &-property {
-			clr(13);
-		}
-		&-variable, &-variable-2 {
-			clr(14);
-		}
-		&-comment, &-bracket, &-punctuation, &-meta {
-			fg(2);
-		}
-		&-matchhighlight {
-			hl();
-		}
-
-		if (show-whitespace) {
-			&-tab {
-				position: relative;
-
-				&::before {
-					content: '.';
-					position: absolute;
-					bottom: 50%;
-					left: 5%;
-					width: 90%;
-					display: block;
-					color: transparent;
-					border-bottom: 1px solid var(--fg3);
-				}
-			}
-		}
-	}
 	.CodeMirror {
-		bgc();
+		lnh();
 
 		&-gutters {
 			bg(2);
 			brd(right);
 		}
 		&-lines {
-			padding: var(--body-pad) 0;
+			padding: var(--body-pad) 0 $i;
 		}
 		&-line {
 			padding: 0 var(--body-pad) $i;
+
+			&::before {
+				content: '';
+				position: absolute;
+				left: 80ch;
+				box(1px, 100%);
+				background-color: var(--border);
+			}
 
 			&number {
 				fg(2);
@@ -578,26 +527,77 @@ normalise-header(first = true) {
 				}
 			}
 		}
-
 		&-activeline-background,
 		&-selected {
 			bg(2);
 		}
-
 		&-cursor {
-			border-left-color: var(--fg);
-		}
-		&-matchingbracket,
-		&-nonmatchingbracket {
-			color: var(--hl-fg) $i;
+			border-left-color: var(--fg) $i;
 		}
 		&-matchingbracket {
-			background-color: var(--hl);
+			hl();
 		}
-
-		&-search-hint {
+		&-nonmatchingbracket {
+			background-color: color-a(1) $i;
+			fg();
+		}
+	}
+	.cm {
+		&-header,
+		&-def,
+		&-negative,
+		&-qualifier,
+		&-error,
+		&-attribute,
+		&-link {
+			clr(9);
+		}
+		&-quote,
+		&-positive,
+		&-number,
+		&-variable-3,
+		&-builtin,
+		&-atom {
+			clr(10);
+		}
+		&-operator {
+			clr(11);
+		}
+		&-keyword,
+		&-tag {
+			clr(12);
+		}
+		&-string,
+		&-string-2,
+		&-property {
+			clr(13);
+		}
+		&-variable,
+		&-variable-2 {
+			clr(14);
+		}
+		&-comment,
+		&-bracket,
+		&-punctuation,
+		&-meta {
 			fg(2);
-			replace-text('/re/ for regex');
+		}
+		&-matchhighlight {
+			hl();
+		}
+		&-tab {
+			position: relative;
+
+			&::before {
+				content: '.';
+				position: absolute;
+				bottom: 50%;
+				left: 5%;
+				width: 90%;
+				display: block;
+				color: transparent;
+				border-bottom: 1px solid var(--fg3);
+			}
 		}
 
 		.applies {
@@ -614,14 +614,15 @@ normalise-header(first = true) {
 
 				label {
 					fg();
-					height: calc(var(--font-size) * var(--line-height) + var(--pad) * 2);
+					height: calc(
+						var(--font-size) * var(--line-height) + var(--pad) * 2
+					);
 
 					&::before {
 						font-size: inherit;
 						margin-right: 1ch;
 					}
 				}
-
 				li {
 					&:not(.applies-to-everything) {
 						& > * {
@@ -631,22 +632,19 @@ normalise-header(first = true) {
 							margin-right: calc(var(--pad) + 1ch) $i;
 						}
 					}
-
 					&:not(:only-child):not(:last-child) {
 						mar(bottom);
 					}
 				}
-
 				a {
 					margin-left: 1ch;
 					height: unset;
 				}
-
-				select, input {
+				select,
+				input {
 					--bg2: var(--bg);
 				}
 			}
-
 			&-to-item,
 			&-value-wrapper {
 				gap: var(--pad);
@@ -657,7 +655,6 @@ normalise-header(first = true) {
 			}
 		}
 	}
-
 	.colorpicker {
 		&-popup {
 			--main-background-color: var(--bg);
@@ -678,20 +675,20 @@ normalise-header(first = true) {
 				right: var(--pad);
 			}
 		}
-
 		&-sliders {
 			pad();
 			padding-right: calc(var(--switcher-width) / 1.5 + var(--pad) * 2) $i;
 			brd(top);
 		}
-		&-swatch, &-empty {
+		&-swatch,
+		&-empty {
 			left: var(--pad);
 			top: var(--pad);
 		}
-		&-hue, &-opacity {
+		&-hue,
+		&-opacity {
 			margin-left: calc(38px + var(--pad));
 		}
-
 		&-input {
 			&-container {
 				brd(top);
@@ -714,7 +711,6 @@ normalise-header(first = true) {
 				filter: invert();
 			}
 		}
-
 		&-palette {
 			--swatch-size: $select-size;
 			bg(2);
@@ -727,7 +723,27 @@ normalise-header(first = true) {
 		brd();
 	}
 
-	// Manage
+	/**
+	 * Hide elements
+	**/
+	#theme-label, #theme-label + div,
+	#header.sticky #details-wrapper,
+	#header.sticky #actions,
+	#newStyleAsUsercss ~ div,
+	#write-for-frames, // Plus sign for "write for"
+	#heading .info,
+	.sync-options, // ..section
+	#popup-button,
+	#manage-text,
+	#beautify,
+	#publish,
+	#lint {
+		display: none $i;
+	}
+
+	/**
+	 * Manage
+	**/
 	.newUI {
 		#installed {
 			mar(0);
@@ -746,6 +762,7 @@ normalise-header(first = true) {
 			&.odd {
 				bg(2);
 			}
+
 			& > * {
 				pad();
 			}
@@ -767,7 +784,9 @@ normalise-header(first = true) {
 		}
 	}
 
-	// Sidebar
+	/**
+	 * Sidebar
+	**/
 	#header {
 		bg(2);
 		pad(right);
@@ -797,12 +816,13 @@ normalise-header(first = true) {
 		h2 {
 			brd(bottom, 0);
 		}
-
 		summary {
 			position: unset $i;
 			mar(0);
 		}
-		input, select, button {
+		input,
+		select,
+		button {
 			--bg2: var(--bg);
 		}
 	}
@@ -833,10 +853,13 @@ normalise-header(first = true) {
 				flex-direction: column;
 			}
 		}
-
 		#header {
 			bg(-tr);
 			anim();
+
+			&::-webkit-scrollbar {
+				display: none;
+			}
 
 			&:not(:hover) {
 				width: var(--header-h) $i;
@@ -849,24 +872,19 @@ normalise-header(first = true) {
 					opacity: 1 $i;
 				}
 			}
-
-			&::-webkit-scrollbar {
-				display: none;
-			}
 		}
-
 		#stylus {
-			&-manage, &-edit {
-				#sections, #installed {
+			&-manage,
+			&-edit {
+				#sections,
+				#installed {
 					padding-left: var(--header-h);
 				}
 			}
-
 			&-install-usercss {
 				#header {
 					position: absolute;
 				}
-
 				.main {
 					margin-left: 16px;
 				}
@@ -952,7 +970,8 @@ normalise-header(first = true) {
 		position: relative;
 		left: 0;
 	}
-	#search-wrapper, #sort-wrapper {
+	#search-wrapper,
+	#sort-wrapper {
 		mar(bottom);
 
 		.info {
@@ -979,8 +998,10 @@ normalise-header(first = true) {
 		}
 	}
 
+	/**
+	 * Popups
+	**/
 	#stylus {
-		// Popup
 		.split-btn-menu {
 			--menu-pad: var(--pad);
 			pad(0);
@@ -991,6 +1012,7 @@ normalise-header(first = true) {
 			&-pedal {
 				display: none;
 			}
+
 			& > :first-child {
 				width: 100%;
 			}
@@ -1000,14 +1022,14 @@ normalise-header(first = true) {
 			--outer-padding: var(--pad);
 			width: 280px $i;
 
-			#installed {
-				brd(bottom);
-			}
 			/.styles-last & #installed {
 				brd(top);
 				brd(bottom, 0);
 			}
 
+			#installed {
+				brd(bottom);
+			}
 			.main-controls {
 				display: block;
 
@@ -1016,7 +1038,6 @@ normalise-header(first = true) {
 					mar(bottom);
 				}
 			}
-
 			.entry {
 				&::before {
 					top: 0;
@@ -1038,7 +1059,6 @@ normalise-header(first = true) {
 				.main-controls {
 					pad(right);
 				}
-
 				.style-name {
 					line-height: normal;
 					flex-direction: row;
@@ -1059,7 +1079,6 @@ normalise-header(first = true) {
 					fg();
 				}
 			}
-
 			#main-actions > * {
 				mar(top);
 			}
@@ -1077,29 +1096,27 @@ normalise-header(first = true) {
 			}
 		}
 
-		// Dialogs
 		.menu {
-			&-items-wrapper {
-				bg();
-				pad();
-				brd();
-				shd(big);
-			}
-
 			&-title,
 			/#confirm > div > b {
 				margin: auto;
 				pad(bottom);
 			}
 
+			&-items-wrapper {
+				bg();
+				pad();
+				brd();
+				shd(big);
+			}
 			&-item {
 				flex-direction: row;
 				justify-content: flex-start;
 
-				&:hover, &:active {
+				&:hover,
+				&:active {
 					background-color: transparent;
 				}
-
 				&:not(:last-of-type) {
 					mar(bottom);
 				}
@@ -1108,17 +1125,16 @@ normalise-header(first = true) {
 					margin: 0;
 				}
 			}
-
-			.checkbox-container {
-				box($select-size)
-				margin: 0;
-			}
 			&-icon {
 				width: $select-size;
 			}
-
 			&-buttons-wrapper {
 				pad(top);
+			}
+
+			.checkbox-container {
+				box($select-size);
+				margin: 0;
 			}
 		}
 
@@ -1143,7 +1159,6 @@ normalise-header(first = true) {
 					mar(0);
 				}
 			}
-
 			#options {
 				bg();
 				border-radius: 0 0 var(--border-radius) var(--border-radius);
@@ -1158,22 +1173,22 @@ normalise-header(first = true) {
 				}
 
 				.block {
+					&:last-child {
+						brd(bottom, 0);
+						mar(bottom, 0);
+					}
+
 					.options-wrapper ^[3..-1] {
 						padding: 0 var(--pad) var(--pad);
 						brd(bottom);
 						margin: var(--pad) 0;
 					}
 
-					&:last-child {
-						brd(bottom, 0);
-						mar(bottom, 0);
-					}
-
 					h1 {
 						padding-right: 1ch;
 					}
-
-					label, .label {
+					label,
+					.label {
 						mar(0);
 
 						&:not(:last-child) {
@@ -1188,7 +1203,6 @@ normalise-header(first = true) {
 						}
 					}
 				}
-
 				.iconset {
 					gap: 1ch;
 
@@ -1203,21 +1217,13 @@ normalise-header(first = true) {
 	#message-box {
 		background-color: transparent;
 
-		& > div {
-			bg();
-			brd();
-			shd(big);
-		}
-
 		&-title {
 			pad();
 			padding-left: calc(var(--pad) * 2 + 16px) $i;
 		}
-
 		&-contents {
 			pad();
 		}
-
 		&-buttons {
 			bg(2);
 			text-align: center;
@@ -1235,6 +1241,12 @@ normalise-header(first = true) {
 				display: none;
 			}
 		}
+
+		& > div {
+			bg();
+			brd();
+			shd(big);
+		}
 	}
 	.config {
 		&-dialog {
@@ -1246,7 +1258,6 @@ normalise-header(first = true) {
 			select {
 				width: 90px;
 			}
-
 			label {
 				mar(right, 0);
 				brd(top, 0);
@@ -1270,7 +1281,6 @@ normalise-header(first = true) {
 			}
 		}
 	}
-
 	#message-box > div,
 	#stylus-options,
 	#help-popup {
@@ -1296,7 +1306,6 @@ normalise-header(first = true) {
 				padding: 0 16px 16px 0;
 			}
 		}
-
 		&-close-icon {
 			top: 0;
 			right: 0;
@@ -1304,12 +1313,12 @@ normalise-header(first = true) {
 			flex(,,center);
 		}
 	}
-
 	#help-popup {
 		--pad-x: var(--pad);
 		--pad-y: var(--pad);
 
-		/#confirm > div, & {
+		/#confirm > div,
+		& {
 			bg();
 			pad(0);
 			brd();
@@ -1323,7 +1332,6 @@ normalise-header(first = true) {
 			border-radius: var(--border-radius) var(--border-radius) 0 0;
 			mar(0);
 		}
-
 		.contents {
 			pad();
 		}
@@ -1340,6 +1348,7 @@ normalise-header(first = true) {
 		&-note {
 			fg(2);
 		}
+
 		details[data-type="full"] {
 			clr(10);
 		}
@@ -1348,7 +1357,6 @@ normalise-header(first = true) {
 		bgc(2);
 		brd();
 	}
-
 	#search-replace-dialog {
 		bg(2);
 		brd(0);
@@ -1373,7 +1381,6 @@ normalise-header(first = true) {
 			background-color: unset $i;
 			pad(0);
 		}
-
 		[data-type="input-wrapper"] {
 			align-items: center;
 
@@ -1401,10 +1408,18 @@ normalise-header(first = true) {
 				height: calc(16px + var(--pad) - 1px); // TODO: doesn't work with uneven padding
 				flex();
 
-				&:first-child { border-radius: var(--border-radius) 0 0 var(--border-radius); }
-				&:last-child { border-radius: 0 var(--border-radius) var(--border-radius) 0; }
-				&:not(:first-child) { border-left: none; }
-				&:not(:last-child) { border-right: none; }
+				&:first-child {
+					border-radius: var(--border-radius) 0 0 var(--border-radius);
+				}
+				&:last-child {
+					border-radius: 0 var(--border-radius) var(--border-radius) 0;
+				}
+				&:not(:first-child) {
+					border-left: none;
+				}
+				&:not(:last-child) {
+					border-right: none;
+				}
 			}
 		}
 		[data-action] {
@@ -1421,7 +1436,6 @@ normalise-header(first = true) {
 				text-decoration: none;
 			}
 		}
-
 		.CodeMirror-search-hint {
 			display: none;
 		}

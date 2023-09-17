@@ -275,7 +275,8 @@ normalise-checkbox(label = true) {
 	min-width: $select-size $i;
 	focus();
 
-	&::before, &::after {
+	&::before,
+	&::after {
 		content: '';
 		position: absolute $i;
 		inset: 0;
@@ -283,7 +284,8 @@ normalise-checkbox(label = true) {
 		transform-origin: 0 0 $i;
 	}
 	&:disabled {
-		&::before, &::after {
+		&::before,
+		&::after {
 			background-color: var(--fg2) $i;
 		}
 	}
@@ -358,32 +360,9 @@ normalise-header(first = true) {
 }
 
 @-moz-document domain("last.fm") {
-	// Hide elements
-	.footer, .lazy-features-footer,
-	.scrobble-stats-info-toggle,
-	.shout-more-actions,
-
-	// Not logged in
-	[href="/join"],
-	[href^="/login"],
-	.chartlist-loved,
-	.site-auth--anon,
-	.catalogue-callout,
-	.shouting-unavailable,
-
-	// Play artist
-	//.player-bar-progress,
-	//.player-bar-inner-wrap,
-	//.player-bar-progress-wrap,
-	.header-new-info-desktop,
-	.section-playlink,
-	.chartlist-play,
-	.stationlink
-	{
-		display: none $i;
-	}
-
-	// Global
+	/**
+	 * Global
+	**/
 	body {
 		bgc();
 		lnh();
@@ -402,7 +381,8 @@ normalise-header(first = true) {
 		bg();
 		background-image: none $i;
 	}
-	.btn-primary, .btn-secondary {
+	.btn-primary,
+	.btn-secondary {
 		normalise-button();
 		bg();
 		letter-spacing: unset;
@@ -448,10 +428,14 @@ normalise-header(first = true) {
 	select {
 		normalise-select();
 	}
-	.search-field, .inplace-field {
+	.search-field,
+	.inplace-field {
 		normalise-input();
 	}
-	input, textarea, select, button {
+	input,
+	textarea,
+	select,
+	button {
 		--bg2: var(--bg);
 		height: unset $i;
 	}
@@ -464,7 +448,36 @@ normalise-header(first = true) {
 		}
 	}
 
-	// Header
+	/**
+	 * Hide elements
+	**/
+	.footer, .lazy-features-footer,
+	.scrobble-stats-info-toggle,
+	.shout-more-actions,
+
+	// Not logged in
+	[href="/join"],
+	[href^="/login"],
+	.chartlist-loved,
+	.site-auth--anon,
+	.catalogue-callout,
+	.shouting-unavailable,
+
+	// Play artist
+	//.player-bar-progress,
+	//.player-bar-inner-wrap,
+	//.player-bar-progress-wrap,
+	.header-new-info-desktop,
+	.section-playlink,
+	.chartlist-play,
+	.stationlink
+	{
+		display: none $i;
+	}
+
+	/**
+	 * Header
+	**/
 	.top-bar {
 		bgc(2);
 		header-focus();
@@ -550,7 +563,8 @@ normalise-header(first = true) {
 			display: none;
 		}
 
-		&, &-inner-wrap > .container {
+		&,
+		&-inner-wrap > .container {
 			bg(2);
 			pad(left, 0);
 			pad(right, 0);
@@ -585,7 +599,10 @@ normalise-header(first = true) {
 		padding-top: calc(var(--header-h) + var(--border-width));
 	}
 
-	// Content - main
+	/**
+	 * Content
+	**/
+	// Main
 	.page-content {
 		bg(2);
 		pad();
@@ -601,7 +618,8 @@ normalise-header(first = true) {
 		display: flex;
 		gap: var(--pad);
 
-		&::before, &::after {
+		&::before,
+		&::after {
 			display: none;
 		}
 	}
@@ -670,7 +688,6 @@ normalise-header(first = true) {
 				hl();
 			}
 		}
-
 		&-button {
 			fg();
 			pad(top, 0);
@@ -710,21 +727,24 @@ normalise-header(first = true) {
 	.subpage-title {
 		letter-spacing: unset;
 	}
-	.text-18, .subpage-title {
+	.text-18,
+	.subpage-title {
 		lnh();
 	}
 
-	// Content - artist
+	// Artist
 	.catalogue-tags {
 		margin-left: calc(var(--pad) * -1);
 		mar(top);
 
 		.tag {
-			&, &s-add {
+			&,
+			&s-add {
 				mar(left);
 				mar(bottom, 0);
 			}
-			&s-add, a {
+			&s-add,
+			a {
 				lnh();
 				letter-spacing: 0;
 				pad();
@@ -764,7 +784,8 @@ normalise-header(first = true) {
 				display: none;
 			}
 
-			&, &:hover {
+			&,
+			&:hover {
 				bg();
 			}
 			&:last-child {
@@ -894,7 +915,8 @@ normalise-header(first = true) {
 				lnh();
 				mar(top);
 			}
-			&-aux-text, &-regular-tags {
+			&-aux-text,
+			&-regular-tags {
 				fg(2);
 				lnh();
 				mar(top, 0);
@@ -914,12 +936,13 @@ normalise-header(first = true) {
 		}
 	}
 
-	// Content - search
+	// Search
 	.search {
 		&-form::after {
 			display: none;
 		}
-		&-reset, &-submit {
+		&-reset,
+		&-submit {
 			brd(left);
 		}
 		&-submit {
@@ -962,7 +985,7 @@ normalise-header(first = true) {
 		}
 	}
 
-	// Content - front page
+	// Front page
 	.home-welcome-header {
 		normalise-header();
 	}
@@ -1029,10 +1052,11 @@ normalise-header(first = true) {
 				}
 			}
 		}
+
 		context-colors = {
-			album: 10,
+			album:  10,
 			artist: 11,
-			track: 14
+			track:  14
 		}
 		for k, v in context-colors {
 			&-item--{k} .context::after {
@@ -1041,7 +1065,7 @@ normalise-header(first = true) {
 		}
 	}
 
-	// Content - settings
+	// Settings
 	.content-form {
 		form {
 			mar(top, 0);
@@ -1073,11 +1097,6 @@ normalise-header(first = true) {
 			mar(top);
 		}
 	}
-	colors = {
-		success: 10,
-		warning: 11,
-		error:   12
-	}
 	.alert {
 		lnh();
 		pad();
@@ -1086,6 +1105,11 @@ normalise-header(first = true) {
 			display: none;
 		}
 
+		colors = {
+			success: 10,
+			warning: 11,
+			error:   12
+		}
 		for k, v in colors {
 			&-{k} {
 				background-color: color-a(v);
@@ -1113,7 +1137,8 @@ normalise-header(first = true) {
 		&-details {
 			mar(right);
 		}
-		&-connect, &-disconnect {
+		&-connect,
+		&-disconnect {
 			normalise-button();
 			text-transform: unset;
 			mar(top, 0);

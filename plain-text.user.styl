@@ -8,7 +8,13 @@
 @preprocessor stylus
 ==/UserStyle== */
 
-@-moz-document domain("zsh.org"), domain("zsh.sourceforge.io"), domain("www.etalabs.net"), domain("opengroup.org"), domain("invisible-island.net") {
+@-moz-document \
+	domain("zsh.org"),
+	domain("zsh.sourceforge.io"),
+	domain("www.etalabs.net"),
+	domain("opengroup.org"),
+	domain("invisible-island.net")
+{
 	// Common
 	body {
 		background-color: var(--bg);
@@ -23,7 +29,9 @@
 		margin: var(--pad) 0;
 	}
 
-	h1, h2, h3, h4, h5, h6, .nav [href^="#h2"], center {
+	h1, h2, h3, h4, h5, h6,
+	.nav [href^="#h2"],
+	center {
 		background-color: unset
 		color: var(--fg);
 		text-align: left;
@@ -57,7 +65,8 @@
 		color: var(--fg2);
 	}
 
-	pre, table {
+	pre,
+	table {
 		background-color: var(--bg2);
 		border: var(--border-width) solid var(--border);
 		border-collapse: collapse;
@@ -67,19 +76,23 @@
 		padding: var(--pad);
 		white-space: pre-wrap;
 
-		&, * {
+		&,
+		* {
 			font-family: var(--font-code) !important;
 		}
 	}
 }
 
 @-moz-document domain("opengroup.org") {
-	.navheader, center + hr, a[href="#top"] {
+	.navheader,
+	center + hr,
+	a[href="#top"] {
 		display: none;
 	}
 
 	center {
-		/.box, & {
+		/.box,
+		& {
 			color: var(--fg2);
 			text-align: right;
 		}
@@ -100,7 +113,9 @@
 			font-style: normal;
 		}
 	}
-	ul, li, table {
+	ul,
+	li,
+	table {
 		color: var(--fg);
 	}
 	blockquote {
@@ -123,7 +138,8 @@
 		width: var(--sidebar-width);
 		display: var(--nav-display, flex);
 
-		&-top, &-top + br {
+		&-top,
+		&-top + br {
 			display: none;
 		}
 
@@ -136,14 +152,18 @@
 		}
 	}
 	body {
-		margin-left: var(--nav-margin, calc(var(--sidebar-width) + var(--body-pad)));
+		margin-left: var(
+			--nav-margin,
+			calc(var(--sidebar-width) + var(--body-pad))
+		);
 	}
 	@media (max-width: 768px) { :root {
 		--nav-display: none;
 		--nav-margin: var(--body-pad);
 	}}
 
-	h3, h4 {
+	h3,
+	h4 {
 		width: calc(100% - 30px);
 	}
 	pre {
@@ -152,3 +172,4 @@
 		border: unset;
 	}
 }
+

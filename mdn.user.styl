@@ -273,7 +273,8 @@ normalise-checkbox(label = true) {
 	min-width: $select-size $i;
 	focus();
 
-	&::before, &::after {
+	&::before,
+	&::after {
 		content: '';
 		position: absolute $i;
 		inset: 0;
@@ -281,7 +282,8 @@ normalise-checkbox(label = true) {
 		transform-origin: 0 0 $i;
 	}
 	&:disabled {
-		&::before, &::after {
+		&::before,
+		&::after {
 			background-color: var(--fg2) $i;
 		}
 	}
@@ -356,28 +358,9 @@ normalise-header(first = true) {
 }
 
 @-moz-document domain("developer.mozilla.org") {
-	// Remove elements
-	// I. Homepage
-	.featured-articles,
-	.recent-contributions,
-	.contributor-spotlight,
-	.homepage section > h1,
-	.homepage section > p,
-
-	// II. etc.
-	//.mandala-rotate, // rotating cpu eating bullshit
-	.theme-switcher-menu,
-	.auth-container,
-	[href$="/plus"],
-	#nav-footer
-	{
-		display: none $i;
-	}
-	.homepage {
-		margin-top: var(--body-pad);
-	}
-
-	// Global
+	/**
+	 * Global
+	**/
 	:root {
 		bg();
 
@@ -444,7 +427,32 @@ normalise-header(first = true) {
 		text-decoration: underline $i;
 	}
 
-	// Header
+	/**
+	 * Hide elements
+	**/
+	// I. Homepage
+	.featured-articles,
+	.recent-contributions,
+	.contributor-spotlight,
+	.homepage section > h1,
+	.homepage section > p,
+
+	// II. etc.
+	//.mandala-rotate, // rotating cpu eating bullshit
+	.theme-switcher-menu,
+	.auth-container,
+	[href$="/plus"],
+	#nav-footer
+	{
+		display: none $i;
+	}
+	.homepage {
+		margin-top: var(--body-pad);
+	}
+
+	/**
+	 * Header
+	**/
 	.top-navigation {
 		bg(2);
 		header-focus();
@@ -455,6 +463,9 @@ normalise-header(first = true) {
 		}
 	}
 
+	/**
+	 * Content
+	**/
 	// Homepage
 	.mandala-container {
 		bg();
@@ -466,7 +477,8 @@ normalise-header(first = true) {
 			caret-color: var(--fg) $i;
 			width: unset $i;
 
-			&, &::placeholder {
+			&,
+			&::placeholder {
 				text-decoration: none $i;
 			}
 		}
@@ -484,10 +496,6 @@ normalise-header(first = true) {
 				pad();
 				brd(bottom);
 
-				b > span {
-					fg();
-				}
-
 				&.highlight {
 					hl();
 
@@ -499,22 +507,28 @@ normalise-header(first = true) {
 				mark {
 					hl();
 				}
+				b > span {
+					fg();
+				}
 			}
 		}
 	}
 
-	// Content
+	// Page
 	.sidebar {
 		pad(0);
 	}
-	h1, h2, h3 {
+	h1,
+	h2,
+	h3 {
 		normalise-header(false);
 
 		.metadata & {
 			mar(top, 0);
 		}
 	}
-	.metadata, pre {
+	.metadata,
+	pre {
 		brd();
 		pad();
 		margin: var(--pad) 0 $i;
@@ -526,23 +540,23 @@ normalise-header(first = true) {
 		p {
 			fg();
 		}
-
 		strong {
 			text-transform: uppercase;
 		}
 	}
-	examples = {
-		bad:  9,
-		good: 10
-	}
 	.example {
-		for k, v in examples {
+		colors = {
+			bad:  9,
+			good: 10
+		}
+		for k, v in colors {
 			&-{k} {
 				border-color: s('var(--color%s)', v) $i;
 			}
 		}
 
-		&-bad, &-good {
+		&-bad,
+		&-good {
 			.token.comment {
 				fg(); // improve readability
 			}

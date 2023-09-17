@@ -355,7 +355,12 @@ normalise-header(first = true) {
 	}
 }
 
-@-moz-document domain("stackexchange.com"), domain("stackoverflow.com"), domain("superuser.com"), domain("askubuntu.com") {
+@-moz-document \
+	domain("stackexchange.com"),
+	domain("stackoverflow.com"),
+	domain("superuser.com"),
+	domain("askubuntu.com")
+{
 	/**
 	 * Global
 	**/
@@ -433,7 +438,12 @@ normalise-header(first = true) {
 	/**
 	 * Global
 	**/
-	h1, h2, h3, h4, h5, h6 {
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
 		lnh();
 		font-weight: normal $i;
 	}
@@ -488,7 +498,8 @@ normalise-header(first = true) {
 			}
 		}
 		&-select {
-			&::before, &::after {
+			&::before,
+			&::after {
 				display: none $i;
 			}
 
@@ -496,7 +507,6 @@ normalise-header(first = true) {
 				normalise-select();
 			}
 		}
-
 		&-topbar {
 			bg(2);
 			header-focus();
@@ -508,7 +518,6 @@ normalise-header(first = true) {
 				pad(0);
 			}
 		}
-
 		&-popover {
 			// Don't get me affected by header-focus()
 			--bg2: var(--reserve-bg2);
@@ -526,7 +535,6 @@ normalise-header(first = true) {
 			}
 		}
 	}
-
 	#question-header {
 		& + div {
 			display: none $i;
@@ -550,21 +558,27 @@ normalise-header(first = true) {
 			gap: 1ch;
 		}
 	}
-	.bc-black-2, .bc-black-075 {
+	.bc-black-2,
+	.bc-black-075 {
 		border-color: var(--border) $i;
 	}
 	ul.comments-list .comment > *,
 	.answer {
 		brd(bottom);
 	}
-	.comment-date, .comment-date>a, .comment-date>a:hover {
+	.comment-date,
+	.comment-date>a,
+	.comment-date>a:hover {
 		fg(2);
 	}
 	.relativetime-clean {
-		&::before { content: '('; }
-		&::after { content: ')'; }
+		&::before {
+			content: '(';
+		}
+		&::after {
+			content: ')';
+		}
 	}
-
 	.s-prose {
 		--s-prose-line-height: var(--line-height);
 		--s-prose-spacing: var(--pad);

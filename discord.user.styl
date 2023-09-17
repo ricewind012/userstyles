@@ -297,7 +297,8 @@ normalise-checkbox(label = true) {
 	min-width: $select-size $i;
 	focus();
 
-	&::before, &::after {
+	&::before,
+	&::after {
 		content: '';
 		position: absolute $i;
 		inset: 0;
@@ -305,7 +306,8 @@ normalise-checkbox(label = true) {
 		transform-origin: 0 0 $i;
 	}
 	&:disabled {
-		&::before, &::after {
+		&::before,
+		&::after {
 			background-color: var(--fg2) $i;
 		}
 	}
@@ -379,13 +381,12 @@ normalise-header(first = true) {
 	}
 }
 
-$chat-title = 'section.container.themed'
-
 @-moz-document domain("discord.com") {
 	/**
  	 * Variables
 	**/
-	.theme-light, .theme-dark {
+	.theme-light,
+	.theme-dark {
 		// Settings
 		settings = \
 			'guilds-size',
@@ -511,7 +512,8 @@ $chat-title = 'section.container.themed'
 	::-webkit-scrollbar {
 		box(var(--scrollbar-width));
 
-		&-thumb, &-track {
+		&-thumb,
+		&-track {
 			brd(0);
 			mar(0);
 		}
@@ -903,7 +905,8 @@ $chat-title = 'section.container.themed'
 			justify-content: space-between
 		}
 	}
-	.withTagAsButton, .withTagless {
+	.withTagAsButton,
+	.withTagless {
 		min-width: unset;
 	}
 
@@ -1181,7 +1184,8 @@ $chat-title = 'section.container.themed'
 			display: none;
 		}
 		.wrapper-2PSQCG {
-			&, & > svg {
+			&,
+			& > svg {
 				box(var(--guilds-size));
 			}
 			& > svg {
@@ -1228,7 +1232,8 @@ $chat-title = 'section.container.themed'
 				background-color: var(--color1);
 			}
 
-			~/ {$guilds[guild]}, & {
+			~/ {$guilds[guild]},
+			& {
 				position: relative;
 
 				&::before {
@@ -1277,11 +1282,11 @@ $chat-title = 'section.container.themed'
 					brd(right, 0);
 					brd(bottom);
 				}
-				.listItem, .guildSeparator {
+				.listItem,
+				.guildSeparator {
 					transform: rotate(90deg);
 				}
 			}
-
 			.sidebar {
 				position: relative;
 				top: var(--header-h);
@@ -1290,7 +1295,11 @@ $chat-title = 'section.container.themed'
 		}
 	}
 
-	// Header
+	/**
+	 * Header
+	**/
+	$chat-title = 'section.container.themed'
+
 	{$chat-title} {
 		bg(2);
 		header-focus(app-focused);
@@ -1384,7 +1393,7 @@ $chat-title = 'section.container.themed'
 	}
 
 	/**
-	 * Popup
+	 * Popups
 	**/
 	// Global
 	.layerContainer > div {
@@ -1486,6 +1495,7 @@ $chat-title = 'section.container.themed'
 						position: absolute;
 						left: var(--pad);
 					}
+
 					// kill yourself
 					/#account-edit-custom-status .label,
 					~/ [role="menuitem"] > .label:only-child,
@@ -1559,7 +1569,6 @@ $chat-title = 'section.container.themed'
 				mar(left);
 			}
 		}
-
 		.gameIcon {
 			border-radius: var(--border-radius);
 			box(calc(var(--font-size) * var(--line-height) * 2));
@@ -1787,7 +1796,6 @@ $chat-title = 'section.container.themed'
 				display: none;
 			}
 		}
-
 		.header {
 			normalise-header(false);
 			letter-spacing: inherit;
@@ -1795,6 +1803,10 @@ $chat-title = 'section.container.themed'
 			mar(right);
 		}
 		.option {
+			&::after {
+				display: none;
+			}
+
 			&.user {
 				display: grid;
 				grid-template-columns: var(--font-size) repeat(2, 1fr);
@@ -1818,10 +1830,6 @@ $chat-title = 'section.container.themed'
 				.filter {
 					display: none;
 				}
-			}
-
-			&::after {
-				display: none;
 			}
 
 			.nonText {
@@ -1913,7 +1921,7 @@ $chat-title = 'section.container.themed'
 
 	// Quick switcher
 	$qs = {
-		scroller: '[aria-label="Results"]'
+		container: '[aria-label="Results"]'
 	}
 
 	.quickswitcher {
@@ -1922,13 +1930,16 @@ $chat-title = 'section.container.themed'
 		shd(big);
 		dropfade();
 
+		& > :last-child { // protip
+			display: none;
+		}
 		.input {
 			--bg2: var(--bg);
 			normalise-input();
 			mar();
 			height: unset;
 		}
-		{$qs[scroller]} {
+		{$qs[container]} {
 			bg();
 			brd(top);
 			border-radius: 0 0 var(--border-radius) var(--border-radius);
@@ -1948,10 +1959,17 @@ $chat-title = 'section.container.themed'
 			mar(right);
 			width: 100%;
 		}
-
 		.result {
 			border-radius: 0;
 			height: unset;
+
+			&[aria-selected="true"] {
+				hl();
+
+				* {
+					color: var(--hl-fg);
+				}
+			}
 
 			& > .content {
 				lnh();
@@ -1959,7 +1977,6 @@ $chat-title = 'section.container.themed'
 				height: unset;
 				gap: 1ch;
 			}
-
 			.icon {
 				color: inherit;
 
@@ -1975,18 +1992,6 @@ $chat-title = 'section.container.themed'
 			.miscContainer {
 				opacity: 1;
 			}
-
-			&[aria-selected="true"] {
-				hl();
-
-				* {
-					color: var(--hl-fg);
-				}
-			}
-		}
-
-		& > :last-child { // protip
-			display: none;
 		}
 	}
 
@@ -2091,7 +2096,8 @@ $chat-title = 'section.container.themed'
 		mar(0);
 		min-height: unset $i;
 
-		&::before, &::after {
+		&::before,
+		&::after {
 			display: none;
 		}
 
@@ -2101,14 +2107,19 @@ $chat-title = 'section.container.themed'
 			--message-actions-pos-top: calc(var(--line-height) * 1px);
 
 			& > .contents {
-				text-indent: calc((var(--compact-timestamp-width) + var(--compact-username-width)) * -1 - 3ch);
+				text-indent: calc(
+					(var(--compact-timestamp-width) + var(--compact-username-width)) \
+					* -1 - 3ch
+				);
 				pad(0);
 				mar(0);
 			}
 			& > .container {
-				padding-left: calc(var(--compact-timestamp-width) + var(--compact-username-width) + 4ch) $i;
+				padding-left: calc(
+					var(--compact-timestamp-width) + var(--compact-username-width) \
+					+ 4ch
+				) $i;
 			}
-
 			.timestamp .separator {
 				fg(2);
 				opacity: 1;
@@ -2126,7 +2137,10 @@ $chat-title = 'section.container.themed'
 			}
 			.header {
 				text-indent: 0;
-				width: calc(var(--compact-timestamp-width) + var(--compact-username-width) + 3ch);
+				width: calc(
+					var(--compact-timestamp-width) + var(--compact-username-width) \
+					+ 3ch
+				);
 				display: inline-flex;
 				flex-shrink: 0;
 
@@ -2152,9 +2166,16 @@ $chat-title = 'section.container.themed'
 		&[class*="cozy-"] {
 			mar(top);
 
+			& > .contents > .messageContent,
+			& > .container {
+				mar(0);
+			}
 			.header {
 				pad();
-				padding-left: calc(var(--pad) + var(--avatar-spacing) + var(--avatar-size) * var(--line-height)) $i;
+				padding-left: calc(
+					var(--pad) + var(--avatar-spacing) \
+					+ var(--avatar-size) * var(--line-height)
+				) $i;
 				min-height: unset;
 
 				& > span {
@@ -2182,10 +2203,6 @@ $chat-title = 'section.container.themed'
 					z-index: 1;
 				}
 			}
-			& > .contents > .messageContent,
-			& > .container {
-				mar(0);
-			}
 
 			if (messages-alt) {
 				--message-actions-pos-top: 0;
@@ -2197,15 +2214,7 @@ $chat-title = 'section.container.themed'
 					pad(top, 0);
 					brd(top, 0);
 				}
-				.header {
-					padding-top: calc(var(--pad) / var(--line-height)) $i;
-				}
-				.avatar {
-					top: calc(var(--pad) / var(--line-height));
-				}
-				.repliedMessage {
-					margin-left: calc(var(--avatar-spacing) - var(--border-width));
-				}
+
 				& > .contents,
 				& > .container {
 					margin-left: calc(var(--pad) * -1) $i;
@@ -2216,20 +2225,29 @@ $chat-title = 'section.container.themed'
 					pad(left);
 					pad(right);
 				}
+				.header {
+					padding-top: calc(var(--pad) / var(--line-height)) $i;
+				}
+				.avatar {
+					top: calc(var(--pad) / var(--line-height));
+				}
+				.repliedMessage {
+					margin-left: calc(var(--avatar-spacing) - var(--border-width));
+				}
 			} else {
 				--cozy-top-border-width: calc(var(--border-width) * -1);
 				--message-actions-pos-top: var(--pad);
 				bg(2);
 				brd();
 
-				.header {
-					bg(2);
-					brd(bottom);
-				}
 				& > .contents > .messageContent,
 				& > .container {
 					bg(3);
 					pad();
+				}
+				.header {
+					bg(2);
+					brd(bottom);
 				}
 			}
 		}
@@ -2290,6 +2308,7 @@ $chat-title = 'section.container.themed'
 			@extend [class*="message-"];
 			pad();
 		}
+
 		&Container { // recent mentions
 			bg(2);
 			pad();
@@ -2329,7 +2348,6 @@ $chat-title = 'section.container.themed'
 				z-index: -1;
 			}
 		}
-
 		& > .content {
 			text-transform: uppercase;
 			mar(0);
@@ -2348,7 +2366,6 @@ $chat-title = 'section.container.themed'
 				content: ' messages';
 			}
 		}
-
 		svg {
 			display: none;
 		}
@@ -2388,14 +2405,13 @@ $chat-title = 'section.container.themed'
 		lnh();
 		mar(right);
 
-		& ~ .buttonContainer {
-			top: calc(var(--font-size) * var(--line-height));
-		}
-
 		&::before {
 			border-top-left-radius: var(--border-radius);
 		}
 
+		& ~ .buttonContainer {
+			top: calc(var(--font-size) * var(--line-height));
+		}
 		& > img {
 			margin-right: 1ch;
 		}
@@ -2477,7 +2493,6 @@ $chat-title = 'section.container.themed'
 				bg();
 			}
 		}
-
 		.footer {
 			lnh();
 			brd(0);
@@ -2656,7 +2671,8 @@ $chat-title = 'section.container.themed'
 		&Image,
 		&Thumbnail,
 		&Video {
-			img, video {
+			img,
+			video {
 				border-radius: var(--border-radius);
 			}
 		}
@@ -2765,7 +2781,6 @@ $chat-title = 'section.container.themed'
 				display: none;
 			}
 		}
-
 		button {
 			pad(0);
 			mar(0);
@@ -2798,7 +2813,9 @@ $chat-title = 'section.container.themed'
 			 * elements that change their attributes
 			 */
 			@extend .channelTextArea;
-			margin-bottom: calc(var(--font-size) * var(--line-height) + var(--pad) * 2);
+			margin-bottom: calc(
+				var(--font-size) * var(--line-height) + var(--pad) * 2
+			);
 
 			& > div > div {
 				pad(0);
@@ -2817,7 +2834,6 @@ $chat-title = 'section.container.themed'
 			--bg2: var(--bg);
 			lnh();
 		}
-
 		.attachWrapper > button {
 			fg(2);
 			pad();
@@ -2922,31 +2938,6 @@ $chat-title = 'section.container.themed'
 			pad(left, 0);
 		}
 
-		.DraftEditor {
-			&-root,
-			/.public-DraftEditorPlaceholder-root,
-			/.public-DraftEditor-content {
-				lnh();
-				pad(0);
-				overflow-x: visible;
-			}
-			&-root {
-				pad(left);
-				margin-top: -2px;
-			}
-			&-editorContainer {
-				brd(0);
-				height: unset;
-			}
-		}
-
-		if (!font-awesome) {
-			.iconContainer {
-				display: block $i;
-				box(20px);
-			}
-		}
-
 		// Sidebar
 		&Header:not(.h5) { // .h5 - gifs header
 			bg(3);
@@ -2979,7 +2970,8 @@ $chat-title = 'section.container.themed'
 						height: calc(100% - var(--header-h) - var(--pad) * 2);
 
 						&::-webkit-scrollbar {
-							&-button, &-track {
+							&-button,
+							&-track {
 								--bg2: var(--bg);
 							}
 						}
@@ -3009,6 +3001,31 @@ $chat-title = 'section.container.themed'
 			&ClearHistory {
 				top: calc(var(--pad) / 2 / var(--line-height));
 				right: var(--pad);
+			}
+		}
+
+		.DraftEditor {
+			&-root,
+			/.public-DraftEditorPlaceholder-root,
+			/.public-DraftEditor-content {
+				lnh();
+				pad(0);
+				overflow-x: visible;
+			}
+			&-root {
+				pad(left);
+				margin-top: -2px;
+			}
+			&-editorContainer {
+				brd(0);
+				height: unset;
+			}
+		}
+
+		if (!font-awesome) {
+			.iconContainer {
+				display: block $i;
+				box(20px);
 			}
 		}
 	}
@@ -3072,3 +3089,4 @@ $chat-title = 'section.container.themed'
 		hl();
 	}
 }
+

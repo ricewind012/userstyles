@@ -273,7 +273,8 @@ normalise-checkbox(label = true) {
 	min-width: $select-size $i;
 	focus();
 
-	&::before, &::after {
+	&::before,
+	&::after {
 		content: '';
 		position: absolute $i;
 		inset: 0;
@@ -281,7 +282,8 @@ normalise-checkbox(label = true) {
 		transform-origin: 0 0 $i;
 	}
 	&:disabled {
-		&::before, &::after {
+		&::before,
+		&::after {
 			background-color: var(--fg2) $i;
 		}
 	}
@@ -355,7 +357,11 @@ normalise-header(first = true) {
 	}
 }
 
-@-moz-document domain("nitter.net"), domain("nitter.unixfox.eu"), domain("nitter.namazso.eu") {
+@-moz-document \
+	domain("nitter.net"),
+	domain("nitter.unixfox.eu"),
+	domain("nitter.namazso.eu")
+{
 	/**
 	 * Global
 	**/
@@ -421,7 +427,8 @@ normalise-header(first = true) {
 		header-focus();
 		shd(0);
 
-		/.inner-nav, & {
+		/.inner-nav,
+		& {
 			height: var(--header-h);
 		}
 	}
@@ -429,7 +436,6 @@ normalise-header(first = true) {
 	/**
 	 * Content
 	**/
-
 	// Global
 	.container {
 		padding-top: var(--header-h);
@@ -458,7 +464,6 @@ normalise-header(first = true) {
 		&-banner {
 			mar(bottom);
 		}
-
 		&-tab {
 			pad(0);
 			mar(right);
@@ -504,7 +509,8 @@ normalise-header(first = true) {
 			grid-gap: calc(var(--pad) / 2);
 			pad(0);
 
-			& > a, img {
+			& > a,
+			img {
 				border-radius: var(--border-radius);
 			}
 		}
@@ -514,16 +520,16 @@ normalise-header(first = true) {
 		mar(0);
 
 		&-item {
+			&.active a {
+				hl();
+				border-color: transparent;
+			}
 			a {
 				pad();
 
 				&:hover {
 					fg();
 				}
-			}
-			&.active a {
-				hl();
-				border-color: transparent;
 			}
 		}
 	}
@@ -539,11 +545,9 @@ normalise-header(first = true) {
 		&-date {
 			margin-left: 1ch;
 		}
-
 		&-content {
 			lnh();
 		}
-
 		&-stat {
 			pad(0);
 			mar(top);
@@ -591,7 +595,8 @@ normalise-header(first = true) {
 	.main-thread {
 		brd(top);
 
-		/.reply, & {
+		/.reply,
+		& {
 			brd(bottom);
 			mar(0);
 		}
@@ -601,7 +606,8 @@ normalise-header(first = true) {
 		pad(0);
 		brd(0);
 
-		/.more-replies-text, & {
+		/.more-replies-text,
+		& {
 			pad(top);
 			pad(bottom);
 		}
@@ -633,7 +639,9 @@ normalise-header(first = true) {
 		margin-bottom: calc(var(--pad) / 2) $i;
 		flex(,,space-between);
 	}
-	button, select, input[type="text"] {
+	button,
+	select,
+	input[type="text"] {
 		--bg2: var(--bg);
 		position: unset $i;
 	}

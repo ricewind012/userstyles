@@ -273,7 +273,8 @@ normalise-checkbox(label = true) {
 	min-width: $select-size $i;
 	focus();
 
-	&::before, &::after {
+	&::before,
+	&::after {
 		content: '';
 		position: absolute $i;
 		inset: 0;
@@ -281,7 +282,8 @@ normalise-checkbox(label = true) {
 		transform-origin: 0 0 $i;
 	}
 	&:disabled {
-		&::before, &::after {
+		&::before,
+		&::after {
 			background-color: var(--fg2) $i;
 		}
 	}
@@ -357,7 +359,18 @@ normalise-header(first = true) {
 
 @-moz-document domain("unsplash.com") {
 	/**
-	 * Remove elements
+	 * Global
+	**/
+	body {
+		bgc();
+		lnh();
+	}
+	.M5vdR {
+		padding: var(--body-pad);
+	}
+
+	/**
+	 * Hide elements
 	**/
 	[data-test="client-side-hydration-complete"] > header + div:not([data-test]), // Sticky header
 	header > nav > :not(:first-child):not(.hzGh7), // Everything but the logo/search
@@ -380,18 +393,7 @@ normalise-header(first = true) {
 	#app > div[data-test] > footer + div, // ^
 	[data-test="search-photos-route"] + div // ^
 	{
-		display: none !important;
-	}
-
-	/**
-	 * Global
-	**/
-	body {
-		bgc();
-		lnh();
-	}
-	.M5vdR {
-		padding: var(--body-pad);
+		display: none $i;
 	}
 
 	/**
@@ -408,6 +410,7 @@ normalise-header(first = true) {
 				pad(left);
 				pad(right);
 			}
+
 			& > :first-child {
 				margin-right: 20px;
 			}
@@ -415,12 +418,10 @@ normalise-header(first = true) {
 				fill: var(--fg);
 			}
 		}
-
 		form {
 			bg();
 			brd();
 		}
-
 		/#react-autowhatever-1 {
 			bg(-tr);
 			pad(0);
@@ -431,7 +432,6 @@ normalise-header(first = true) {
 			& > div {
 				pad();
 			}
-
 			li > div > div {
 				normalise-button();
 
@@ -440,7 +440,6 @@ normalise-header(first = true) {
 				}
 			}
 		}
-
 		[aria-labelledby="unsplash-home"] + div > span:last-child,
 		input::placeholder {
 			fg(2);
@@ -448,7 +447,7 @@ normalise-header(first = true) {
 	}
 
 	/**
-	 * Menu
+	 * Popups
 	**/
 	button + [role="menu"] > div > div > div {
 		bg(-tr);
@@ -458,7 +457,6 @@ normalise-header(first = true) {
 		div[style="height: 8px;"] {
 			display: none;
 		}
-
 		[aria-label="Visual search form"] {
 			& > div > div > div {
 				border-color: var(--fg);
@@ -471,18 +469,15 @@ normalise-header(first = true) {
 					& > label {
 						display: none;
 					}
-
 					input {
 						normalise-input();
 					}
 				}
 			}
-
 			button > div > div:first-child {
 				display: none;
 			}
 		}
-
 		h4 {
 			margin: auto;
 
@@ -495,29 +490,28 @@ normalise-header(first = true) {
 		[download] {
 			fg();
 
+			&,
+			&:hover {
+				transition: none $i;
+			}
+
 			&:hover {
 				hl();
 
 				span {
-					color: var(--hl-fg) !important;
+					color: var(--hl-fg) $i;
 				}
-			}
-
-			&, &:hover {
-				transition: none !important;
 			}
 
 			span {
 				fg(2);
 			}
 		}
-
 		[style^="border-bottom-color"] {
-			border-bottom-color: var(--border) !important;
+			border-bottom-color: var(--border) $i;
 		}
-
 		hr {
-			background-color: var(--border) !important;
+			background-color: var(--border) $i;
 			mar(0);
 		}
 	}
@@ -538,26 +532,16 @@ normalise-header(first = true) {
 			}
 		}
 	}
-
 	[data-test="search-route"] > div:first-child {
-		position: unset !important;
+		position: unset $i;
 
 		& > div {
 			box-shadow: inset 0 -1px var(--accent-border);
 		}
-
 		li > a {
 			fg();
 			padding: 0 var(--pad);
 			height: 32px;
-
-			&:hover:not([aria-current]) {
-				background-color: var(--accent-border);
-			}
-
-			svg {
-				fill: var(--fg);
-			}
 
 			&[aria-current] {
 				bg();
@@ -565,8 +549,14 @@ normalise-header(first = true) {
 				brd(,accent-border);
 				brd(bottom, 0);
 			}
-		}
+			&:hover:not([aria-current]) {
+				background-color: var(--accent-border);
+			}
 
+			svg {
+				fill: var(--fg);
+			}
+		}
 		button[aria-haspopup="true"] span {
 			fg();
 		}
@@ -575,14 +565,14 @@ normalise-header(first = true) {
 	// Title
 	[data-test="search-route"] > div:nth-child(2) {
 		pad(top, 0);
-		padding-bottom: calc(var(--pad) * 2) !important;
+		padding-bottom: calc(var(--pad) * 2) $i;
 
 		& > div {
-			margin-top: calc(var(--pad) * 2) !important;
+			margin-top: calc(var(--pad) * 2) $i;
 		}
 	}
 	.FBggh { // top
-	brd(0);
+		brd(0);
 
 		& > a {
 			normalise-button();
@@ -608,7 +598,8 @@ normalise-header(first = true) {
 		&:hover {
 			border-color: var(--hl);
 
-			~/ a, & a {
+			~/ a,
+			& a {
 				color: var(--fg);
 			}
 		}
@@ -632,7 +623,7 @@ normalise-header(first = true) {
 		[itemprop="contentUrl"] + div button,
 		[title="Download photo"] {
 			normalise-button();
-			height: unset !important;
+			height: unset $i;
 		}
 	}
 
@@ -651,7 +642,6 @@ normalise-header(first = true) {
 				& > div:not(:last-child) button { // Like photo, add to collections
 					display: none;
 				}
-
 				& > div:last-child { // Download
 					& > div > a[download] {
 						background-color: var(--color10);
@@ -663,7 +653,7 @@ normalise-header(first = true) {
 					}
 					/#popover-download-button {
 						margin-left: -1px;
-						height: unset !important;
+						height: unset $i;
 
 						button {
 							background-color: var(--color10);
@@ -674,9 +664,11 @@ normalise-header(first = true) {
 					/#popover-download-button button {
 						border-color: var(--color2);
 
-						&, &:hover {
+						&,
+						&:hover {
 							anim();
 						}
+
 						&:hover {
 							background-color: var(--color2);
 						}

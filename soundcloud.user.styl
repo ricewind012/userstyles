@@ -275,7 +275,8 @@ normalise-checkbox(label = true) {
 	min-width: $select-size $i;
 	focus();
 
-	&::before, &::after {
+	&::before,
+	&::after {
 		content: '';
 		position: absolute $i;
 		inset: 0;
@@ -283,7 +284,8 @@ normalise-checkbox(label = true) {
 		transform-origin: 0 0 $i;
 	}
 	&:disabled {
-		&::before, &::after {
+		&::before,
+		&::after {
 			background-color: var(--fg2) $i;
 		}
 	}
@@ -407,7 +409,6 @@ fa(char) {
 				}
 			}
 		}
-
 		&-tag {
 			background-color: transparent $i;
 			lnh();
@@ -416,15 +417,14 @@ fa(char) {
 			mar(0);
 			height: unset $i;
 
-			&:not(:last-child) {
-				margin-right: 1ch $i;
-			}
-
 			&::before {
 				mar(0);
 			}
-		}
 
+			&:not(:last-child) {
+				margin-right: 1ch $i;
+			}
+		}
 		&-border-light {
 			brd();
 
@@ -434,7 +434,6 @@ fa(char) {
 				}
 			}
 		}
-
 		&-button {
 			normalise-button();
 			height: unset $i;
@@ -479,11 +478,12 @@ fa(char) {
 				pad();
 				brd(0);
 
-				&:hover {
-					fg();
-				}
 				&.active {
 					hl();
+				}
+
+				&:hover {
+					fg();
 				}
 			}
 		}
@@ -492,7 +492,6 @@ fa(char) {
 		&-nav {
 			mar(0);
 		}
-
 		&-container {
 			width: unset $i;
 		}
@@ -516,16 +515,7 @@ fa(char) {
 		/.listen-about {
 			margin-left: var(--sidebar-width) $i;
 		}
-
 		&-about {
-			&-row {
-				mar(bottom);
-
-				&s {
-					pad(0);
-					brd(0);
-				}
-			}
 			~/-listen__mainContent > & {
 				&-left {
 					display: none;
@@ -534,8 +524,16 @@ fa(char) {
 					pad(0);
 				}
 			}
-		}
 
+			&-row {
+				mar(bottom);
+
+				&s {
+					pad(0);
+					brd(0);
+				}
+			}
+		}
 		&-sidebar-right {
 			bg(2);
 			pad();
@@ -631,6 +629,7 @@ fa(char) {
 			&:hover {
 				fg();
 			}
+
 			&.selected {
 				hl();
 			}
@@ -656,6 +655,7 @@ fa(char) {
 				&:hover {
 					fg();
 				}
+
 				&.selected {
 					background-color: unset $i;
 					color: var(--hl) $i;
@@ -691,7 +691,8 @@ fa(char) {
 				}
 			}
 			&Avatar {
-				&, & > span {
+				&,
+				& > span {
 					box(24px);
 				}
 			}
@@ -712,7 +713,6 @@ fa(char) {
 				fg();
 			}
 		}
-
 		&Search {
 			--pad: calc(var(--reserve-pad) / 2);
 			pad();
@@ -743,7 +743,6 @@ fa(char) {
 		&__bg {
 			display: none;
 		}
-
 		&__control {
 			margin-left: 1ch $i;
 		}
@@ -751,7 +750,6 @@ fa(char) {
 		&__volume {
 			mar(right);
 		}
-
 		&__timeline {
 			mar(right);
 			brd(left);
@@ -811,7 +809,7 @@ fa(char) {
 	}
 
 	/**
-	 * Popup
+	 * Popups
 	**/
 	.dropdownContent {
 		&__container {
@@ -879,12 +877,12 @@ fa(char) {
 			fg();
 			pad();
 
-			&:hover {
-				hl();
-			}
-
 			&::after {
 				display: none;
+			}
+
+			&:hover {
+				hl();
 			}
 		}
 	}
@@ -1070,7 +1068,9 @@ fa(char) {
 		}
 	}
 	.playableTile {
-		padding-bottom: calc(var(--font-size) * var(--line-height) * 2 + var(--pad) * 4) $i;
+		padding-bottom: calc(
+			var(--font-size) * var(--line-height) * 2 + var(--pad) * 4
+		) $i;
 
 		&__mainHeadingLike {
 			display: none;
@@ -1083,7 +1083,9 @@ fa(char) {
 		pad(0);
 		brd();
 
-		button, input, textarea {
+		button,
+		input,
+		textarea {
 			--bg2: var(--bg);
 		}
 	}

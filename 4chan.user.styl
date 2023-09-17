@@ -340,7 +340,8 @@ normalise-checkbox(label = true) {
 	min-width: $select-size $i;
 	focus();
 
-	&::before, &::after {
+	&::before,
+	&::after {
 		content: '';
 		position: absolute $i;
 		inset: 0;
@@ -348,7 +349,8 @@ normalise-checkbox(label = true) {
 		transform-origin: 0 0 $i;
 	}
 	&:disabled {
-		&::before, &::after {
+		&::before,
+		&::after {
 			background-color: var(--fg2) $i;
 		}
 	}
@@ -465,18 +467,30 @@ normal-colors() {
 		--reserve-pad: var(--pad);
 
 		// Other
-		--header-size: calc(var(--font-size) * var(--line-height) + var(--pad) * 2 + var(--border-width));
-		--header-top-pos: calc(var(--header-h) + var(--body-pad) + var(--board-title-height) + var(--pad));
-		--board-title-height: board-title-image ? \
-			calc(var(--board-title-font-size) * var(--line-height) + var(--pad) * var(--board-title-pad) * 2 + var(--pad)) : \
-			var(--header-size);
+		--header-size: calc(
+			var(--font-size) * var(--line-height) \
+			+ var(--pad) * 2 + var(--border-width)
+		);
+		--header-top-pos: calc(
+			var(--header-h) + var(--body-pad) \
+			+ var(--board-title-height) + var(--pad)
+		);
+		--board-title-height: board-title-image \
+			? calc(
+				var(--board-title-font-size) * var(--line-height) \
+				+ var(--pad) * var(--board-title-pad) * 2 + var(--pad)
+			) \
+			: var(--header-size);
 
 		--thread-border: 1px;
 		--gradient-size: 2ch;
 	}
 
 	.is_index {
-		--header-top-pos: s('calc(var(--header-h) + var(--body-pad) + var(--board-title-height) - var(--border-width) %s)', unquote(sidebar ? '+ var(--pad)' : '- var(--pad) / 2'));
+		--header-top-pos: s(
+			'calc(var(--header-h) + var(--body-pad) + var(--board-title-height) - var(--border-width) %s)',
+			unquote(sidebar ? '+ var(--pad)' : '- var(--pad) / 2')
+		);
 	}
 
 	/**
@@ -486,7 +500,8 @@ normal-colors() {
 		box-sizing: border-box $i;
 	}
 
-	html, body {
+	html,
+	body {
 		background: none var(--bg);
 	}
 	body {
@@ -498,7 +513,8 @@ normal-colors() {
 	}
 
 	a {
-		&, &:hover {
+		&,
+		&:hover {
 			color: var(--fg-link) $i;
 		}
 		&:hover {
@@ -532,7 +548,8 @@ normal-colors() {
 			shd(0);
 		}
 	}
-	input, button {
+	input,
+	button {
 		height: unset $i;
 	}
 	select {
@@ -551,16 +568,20 @@ normal-colors() {
 	.current {
 		hl();
 	}
-	.dead-thread, .disabled:not(.replies-quoting-you) {
+	.dead-thread,
+	.disabled:not(.replies-quoting-you) {
 		opacity: 1;
 	}
 	.brackets-wrap {
-		&::before, &::after {
+		&::before,
+		&::after {
 			display: none;
 		}
 	}
 
-	.fa, .menu-button, .close {
+	.fa,
+	.menu-button,
+	.close {
 		fg(2);
 		box(unset);
 
@@ -707,7 +728,11 @@ normal-colors() {
 					content: '';
 					box(var(--gradient-size), 100%);
 					margin-right: calc(var(--gradient-size) * -1);
-					background-image: linear-gradient(90deg, var(--bg2), transparent);
+					background-image: linear-gradient(
+						90deg,
+						var(--bg2),
+						transparent
+					);
 				}
 			}
 		}
@@ -775,7 +800,8 @@ normal-colors() {
 	#notifications {
 		top: calc(100% + var(--border-width)) $i;
 
-		.message, .close {
+		.message,
+		.close {
 			pad();
 		}
 	}
@@ -963,14 +989,16 @@ normal-colors() {
 		right: var(--body-pad);
 
 		.is_index & {
-			--top-icons-top-pos: calc(var(--body-pad) - var(--border-width) - var(--pad) * 2);
+			--top-icons-top-pos:
+				calc(var(--body-pad) - var(--border-width) - var(--pad) * 2);
 		}
 		.is_thread & {
 			--top-icons-top-pos: var(--pad);
 		}
 
 		// Catalog
-		/#index-options, & {
+		/#index-options,
+		& {
 			flex();
 			gap: 1ch;
 		}
@@ -982,9 +1010,11 @@ normal-colors() {
 		}
 
 		// Thread
-		&Bot, &.desktop {
+		&Bot,
+		&.desktop {
 			replace-text();
 		}
+
 		a {
 			text-decoration: none;
 			position: absolute;
@@ -1082,7 +1112,8 @@ normal-colors() {
 		pad(0);
 		brd();
 
-		/div.thread > div:nth-of-type(2) > div.reply, & { // wtf
+		/div.thread > div:nth-of-type(2) > div.reply,
+		& { // wtf
 			mar(0);
 		}
 
@@ -1121,6 +1152,7 @@ normal-colors() {
 				position: absolute;
 				right: var(--pad);
 			}
+
 			&.op > &Info > .menu-button {
 				right: calc(var(--body-pad) + var(--border-width) + var(--pad));
 			}
@@ -1144,19 +1176,29 @@ normal-colors() {
 			// Make OP look the same as normal post
 			.file {
 				&Thumb {
-					margin-top: calc(var(--font-size) * var(--line-height) * 2 + var(--pad) * 4 + var(--border-width)) !important;
+					margin-top: calc(
+						var(--font-size) * var(--line-height) * 2 \
+						+ var(--pad) * 4 + var(--border-width)
+					) $i;
 				}
 				&Text {
 					position: absolute;
-					top: calc(var(--font-size) * var(--line-height) + var(--pad) * 2 + var(--border-width));
+					top: calc(
+						var(--font-size) * var(--line-height) \
+						+ var(--pad) * 2 + var(--border-width)
+					);
 					{image-right-side ? right : left}: 0;
 				}
 			}
 			& > .postMessage {
-				margin-top: calc(var(--font-size) * var(--line-height) + var(--pad) * 2) !important;
+				margin-top: calc(
+					var(--font-size) * var(--line-height) + var(--pad) * 2
+				) $i;
 			}
 			& > .postInfo > .inline {
-				margin-top: calc(var(--pad) * 3 + var(--font-size) * var(--line-height)) $i;
+				margin-top: calc(
+					var(--pad) * 3 + var(--font-size) * var(--line-height)
+				) $i;
 			}
 		}
 		.thread &Container {
@@ -1218,7 +1260,8 @@ normal-colors() {
 			clr(11);
 		}
 
-		&, &.deadlink:not(.forwardlink) {
+		&,
+		&.deadlink:not(.forwardlink) {
 			text-decoration: none $i;
 		}
 	}
@@ -1229,7 +1272,8 @@ normal-colors() {
 		fa('\f075');
 	}
 	.forwardlink {
-		&, &::before {
+		&,
+		&::before {
 			hl();
 		}
 	}
@@ -1292,6 +1336,7 @@ normal-colors() {
 					mar(0);
 					dropfade();
 				}
+
 				.postInfo:hover + .file > &,
 				&:hover {
 					display: unset;
@@ -1443,7 +1488,7 @@ normal-colors() {
 	}
 
 	/**
-	 * Popup
+	 * Popups
 	**/
 	#overlay {
 		background-color: transparent;
@@ -1462,7 +1507,8 @@ normal-colors() {
 		}
 	}
 
-	#qr, #thread-watcher {
+	#qr,
+	#thread-watcher {
 		& > .move {
 			accent();
 			pad();
@@ -1493,7 +1539,8 @@ normal-colors() {
 			flex-direction: column;
 			gap: var(--pad);
 		}
-		.persona, .textarea {
+		.persona,
+		.textarea {
 			gap: var(--pad);
 		}
 		textarea {
@@ -1521,7 +1568,8 @@ normal-colors() {
 				gap: 1ch;
 				focus(focus-within);
 
-				& > label, & > a {
+				& > label,
+				& > a {
 					mar(0);
 				}
 				& > a {
@@ -1565,7 +1613,10 @@ normal-colors() {
 	input[type="submit"] {
 		position: absolute;
 		right: var(--pad);
-		margin-top: s('calc(-80px - var(--header-h) - var(--pad) * 4 - %s + var(--border-width) * 3)', $select-size);
+		margin-top: s(
+			'calc(-80px - var(--header-h) - var(--pad) * 4 - %s + var(--border-width) * 3)',
+			$select-size
+		);
 	}
 	#file-n-submit {
 		height: unset;
@@ -1590,7 +1641,8 @@ normal-colors() {
 	#thread-watcher {
 		--window-name: 'Threads';
 
-		.menu-button, .close {
+		.menu-button,
+		.close {
 			&::before {
 				margin-left: 1ch;
 			}
@@ -1613,7 +1665,8 @@ normal-colors() {
 			pad();
 		}
 		.current a {
-			&, &:hover::before {
+			&,
+			&:hover::before {
 				color: var(--hl-fg) $i;
 			}
 		}
@@ -1625,8 +1678,12 @@ normal-colors() {
 		}
 	}
 	#watcher-status:not(:empty) {
-		&::before { content: '('; }
-		&::after { content: ')'; }
+		&::before {
+			content: '(';
+		}
+		&::after {
+			content: ')';
+		}
 	}
 	.watcher {
 		&-link {
@@ -1639,12 +1696,15 @@ normal-colors() {
 				fg();
 			}
 		}
-		&-page, &-unread, &-title {
+		&-page,
+		&-unread,
+		&-title {
 			mar(0);
 		}
 
 		if (color-unread) {
-			&-page, &-unread {
+			&-page,
+			&-unread {
 				display: none;
 			}
 			.replies-unread:not(.current) &-title {
@@ -1667,37 +1727,13 @@ normal-colors() {
 
 	// Menu
 	#menu {
-		&, .submenu {
+		&,
+		.submenu {
 			brd();
 
 			a {
 				color: unset $i;
 				text-decoration: none;
-			}
-
-			.entry {
-				padding: var(--pad) s('calc(var(--pad) + 1ch + %s)', $select-size) $i;
-
-				&:not(.disabled).focused {
-					hl();
-				}
-				&.disabled {
-					fg(2);
-					pointer-events: none;
-				}
-
-				&::before {
-					font: var(--font-size) FontAwesome $i;
-					position: absolute;
-					left: var(--pad);
-					box(var(--font-size), calc(var(--font-size) * var(--line-height)));
-					flex(,,center);
-				}
-
-				input[type="checkbox"] {
-					margin-left: s('calc(%s - 1ch)', $select-size * -1) $i;
-					top: 0;
-				}
 			}
 		}
 
@@ -1809,6 +1845,33 @@ normal-colors() {
 			}
 		}
 	}
+	.entry {
+		padding: var(--pad) s('calc(var(--pad) + 1ch + %s)', $select-size) $i;
+
+		&:not(.disabled).focused {
+			hl();
+		}
+		&.disabled {
+			fg(2);
+			pointer-events: none;
+		}
+
+		&::before {
+			font: var(--font-size) FontAwesome $i;
+			position: absolute;
+			left: var(--pad);
+			box(
+				var(--font-size),
+				calc(var(--font-size) * var(--line-height))
+			);
+			flex(,,center);
+		}
+
+		input[type="checkbox"] {
+			margin-left: s('calc(%s - 1ch)', $select-size * -1) $i;
+			top: 0;
+		}
+	}
 	.submenu {
 		margin-top: calc(var(--border-width) * -1);
 	}
@@ -1831,6 +1894,7 @@ normal-colors() {
 				--watch-thread-icon: '\f005';
 			}
 		}
+
 		#menu {
 			&[data-type="header"] {
 				& > :is(:nth-child(2), :nth-child(4), :nth-child(7)),
@@ -1840,18 +1904,22 @@ normal-colors() {
 					border-bottom: var(--border-width) solid var(--border);
 				}
 			}
+
 			&[data-type="thread watcher"] {
 				& > :nth-child(5) {
 					border-bottom: var(--border-width) solid var(--border);
 				}
+
 				& > :is(:nth-child(11), :last-child) {
 					border-top: var(--border-width) solid var(--border);
 				}
 			}
+
 			&[data-type="post"] {
 				.catalog-thread & > :first-child::before {
 					content: var(--watch-thread-icon);
 				}
+
 				& > .copy-text-link,
 				& > [style="order: 60;"] > .submenu > :is(
 					:nth-child(2), /* Name */
@@ -1860,6 +1928,7 @@ normal-colors() {
 				[data-type="comment"]:not(:last-child) {
 					border-bottom: var(--border-width) solid var(--border);
 				}
+
 				& > .toggle-you,
 				.reply & [data-type="comment"],
 				[data-type="subject"] {
@@ -1913,7 +1982,8 @@ normal-colors() {
 			&-main div::before {
 				border-color: var(--border) $i;
 			}
-			/#sauce-doc, &-filter > select {
+			/#sauce-doc,
+			&-filter > select {
 				width: fit-content;
 			}
 			&-filter {
@@ -1922,7 +1992,6 @@ normal-colors() {
 				& > div {
 					height: calc(100% - var(--pad) * 2) $i;
 				}
-
 				textarea {
 					height: 100%;
 					resize: none;
@@ -1937,7 +2006,8 @@ normal-colors() {
 				}
 			}
 		}
-		.sections-list, .credits {
+		.sections-list,
+		.credits {
 			display: flex;
 			replace-text();
 
@@ -2023,8 +2093,8 @@ normal-colors() {
 		&-sauce:empty {
 			display: none;
 		}
-
-		&-prev, &-next {
+		&-prev,
+		&-next {
 			opacity: 1;
 			bg(2);
 			flex: 0 0 calc(12px + var(--pad) * 2);
@@ -2044,7 +2114,6 @@ normal-colors() {
 				}
 			}
 		}
-
 		&-thumbnails {
 			bg();
 			brd(left);
@@ -2056,15 +2125,18 @@ normal-colors() {
 		&-highlight {
 			hl();
 		}
-
 		&-labels:not(&-hide-thumbnails) {
 			--gallery-width: 157px;
 		}
 		:root&-fit-height:not(&-pdf) &-viewport &-labels {
-			right: calc(var(--scrollbar-width) + var(--body-pad) + var(--gallery-width, 0px)) $i;
+			right: calc(
+				var(--scrollbar-width) + var(--body-pad) + var(--gallery-width, 0px)
+			) $i;
 			bottom: var(--body-pad) $i;
 		}
-		&-name, &-count, &-sauce {
+		&-name,
+		&-count,
+		&-sauce {
 			bgc();
 			pad();
 			brd();
@@ -2089,7 +2161,9 @@ normal-colors() {
 			& > body {
 				--sidebar-width: 0px;
 			}
-			.boardBanner, #qr, #thread-watcher {
+			.boardBanner,
+			#qr,
+			#thread-watcher {
 				display: none $i;
 			}
 		}
@@ -2101,7 +2175,10 @@ normal-colors() {
 		#yous {
 			position: absolute;
 			{sidebar-pos}: var(--pad);
-			top: calc(var(--header-h) + var(--pad) + 100vh - var(--font-size) * var(--line-height) * 2 - var(--pad) * 4);
+			top: calc(
+				var(--header-h) + var(--pad) + 100vh \
+				- var(--font-size) * var(--line-height) * 2 - var(--pad) * 4
+			);
 			width: calc(var(--sidebar-width) - var(--pad) * 2) $i;
 			text-align: sidebar-pos == left ? right : left;
 
@@ -2109,14 +2186,17 @@ normal-colors() {
 				display: none $i;
 			}
 		}
-		#board-list > span, #watched-threads {
+		#board-list > span,
+		#watched-threads {
 			&::-webkit-scrollbar {
-				&-button, &-track {
+				&-button,
+				&-track {
 					--bg2: var(--bg);
 				}
 			}
 		}
-		#thread-watcher .close, #qr .close,
+		#thread-watcher .close,
+		#qr .close,
 		.boardList > span,
 		#shortcut-watcher {
 			display: none $i;
@@ -2166,7 +2246,10 @@ normal-colors() {
 			position: absolute;
 			{sidebar-pos}: 0;
 			top: 0;
-			margin-top: calc(var(--threads-pos) + var(--pad) + var(--section-height) + var(--header-h));
+			margin-top: calc(
+				var(--threads-pos) + var(--pad) \
+				+ var(--section-height) + var(--header-h)
+			);
 			box(var(--sidebar-width), var(--section-height));
 			overflow: auto;
 			z-index: 10;
@@ -2226,21 +2309,30 @@ normal-colors() {
 			&s {
 				position: fixed;
 				{sidebar-pos}: var(--pad);
-				top: calc(var(--pad) + 100vh - var(--font-size) * var(--line-height) - var(--pad) * 2);
+				top: calc(
+					var(--pad) + 100vh \
+					- var(--font-size) * var(--line-height) - var(--pad) * 2
+				);
 				width: calc(var(--sidebar-width) - var(--pad) * 2) $i;
 
-				../-stats, &::after {
+				../-stats,
+				&::after {
 					z-index: -1;
 				}
 
-				&::before, &::after {
+				&::before,
+				&::after {
 					content: '';
 					position: absolute;
 				}
 				&::before {
 					right: 8ch;
 					box(var(--gradient-size), 100%);
-					background-image: linear-gradient(90deg, transparent, var(--bg3));
+					background-image: linear-gradient(
+						90deg,
+						transparent,
+						var(--bg3)
+					);
 				}
 				&::after {
 					right: 0;
@@ -2303,7 +2395,8 @@ normal-colors() {
 		}
 
 		// Popups
-		#qr, #thread-watcher {
+		#qr,
+		#thread-watcher {
 			bg(2);
 			brd(0);
 			shd(0);
@@ -2324,7 +2417,8 @@ normal-colors() {
 				background-color: var(--border);
 			}
 
-			/#header-bar, & {
+			/#header-bar,
+			& {
 				animation: none $i;
 			}
 
@@ -2344,7 +2438,9 @@ normal-colors() {
 		}
 		#qr {
 			&-filename-container,
-			input, button, textarea {
+			input,
+			button,
+			textarea {
 				bg();
 			}
 			textarea {
@@ -2388,24 +2484,33 @@ normal-colors() {
 		}
 		if (sidebar-pos == right) {
 			.post.op .menu-button {
-				right: calc(var(--sidebar-width) + var(--body-pad) + var(--border-width) + var(--pad));
+				right: calc(
+					var(--sidebar-width) + var(--body-pad) \
+					+ var(--border-width) + var(--pad)
+				);
 			}
 		}
 
 		if (sidebar-fixed) {
 			body {
 				--additional-pad: board-title-image ? 0px : var(--pad);
-				--section-content-height: calc((var(--font-size) * var(--line-height) + var(--pad) * 2) * var(--sidebar-items));
-				--section-height: calc(var(--header-size) + var(--section-content-height));
-				--threads-pos: board-title-image ? \
-					calc(var(--board-title-height) - var(--pad)) :
-					var(--board-title-height);
+				--section-content-height: calc(
+					(var(--font-size) * var(--line-height) + var(--pad) * 2) \
+					* var(--sidebar-items)
+				);
+				--section-height: calc(
+					var(--header-size) + var(--section-content-height)
+				);
+				--threads-pos: board-title-image \
+					? calc(var(--board-title-height) - var(--pad)) \
+					: var(--board-title-height);
 			}
 			#custom-board-list,
 			#full-board-list {
 				overflow: auto;
 
-				/#watched-threads, & {
+				/#watched-threads,
+				& {
 					height: var(--section-content-height);
 				}
 			}
@@ -2413,51 +2518,82 @@ normal-colors() {
 				top: var(--threads-pos) $i;
 			}
 			#qr {
-				top: calc(var(--threads-pos) + var(--section-height) * 2 + var(--pad) * 2) $i;
+				top: calc(
+					var(--threads-pos) + var(--section-height) * 2 + var(--pad) * 2
+				) $i;
 			}
 
 			if (sidebar-hover) {
 				body {
 					--section-content-height: 0px;
 				}
-				#watched-threads, #board-list, #board-list > span, #qr {
+				#watched-threads,
+				#board-list,
+				#board-list > span,
+				#qr {
 					anim();
 				}
-
 				#thread-watcher:hover {
-					--section-content-height: calc((var(--font-size) * var(--line-height) + var(--pad) * 2) * var(--sidebar-items));
+					--section-content-height: calc(
+						(var(--font-size) * var(--line-height) + var(--pad) * 2) \
+						* var(--sidebar-items)
+					);
 
 					& ~ #header-bar,
 					& ~ #qr {
-						--section-content-height: calc((var(--font-size) * var(--line-height) + var(--pad) * 2) * var(--sidebar-items));
-						--section-height: calc(var(--header-size) + var(--section-content-height));
+						--section-content-height: calc(
+							(var(--font-size) * var(--line-height) + var(--pad) * 2) \
+							* var(--sidebar-items)
+						);
+						--section-height: calc(
+							var(--header-size) + var(--section-content-height)
+						);
 					}
 					& ~ #header-bar > #board-list {
 						height: var(--header-size) $i;
 					}
 					& ~ #qr {
-						top: calc(var(--threads-pos) + var(--section-height) + var(--pad) * 7) $i;
+						top: calc(
+							var(--threads-pos) + var(--section-height) + var(--pad) * 7
+						) $i;
 					}
 				}
 				#header-bar:has(> #board-list:hover) {
-					--section-content-height: calc((var(--font-size) * var(--line-height) + var(--pad) * 2) * var(--sidebar-items));
-					--section-height: calc(var(--header-size) + var(--section-content-height));
+					--section-content-height: calc(
+						(var(--font-size) * var(--line-height) + var(--pad) * 2) \
+						* var(--sidebar-items)
+					);
+					--section-height: calc(
+						var(--header-size) + var(--section-content-height)
+					);
 
 					& > #board-list {
-						margin-top: calc(var(--board-title-height) + var(--header-size) + var(--additional-pad) + var(--header-h));
+						margin-top: calc(
+							var(--board-title-height) + var(--header-size) \
+							+ var(--additional-pad) + var(--header-h)
+						);
 					}
 
 					& ~ #qr {
-						--section-content-height: calc((var(--font-size) * var(--line-height) + var(--pad) * 2) * var(--sidebar-items));
-						--section-height: calc(var(--header-size) + var(--section-content-height));
-						top: calc(var(--threads-pos) + var(--section-height) + var(--header-size) + var(--pad) * 2) $i;
+						--section-content-height: calc(
+							(var(--font-size) * var(--line-height) + var(--pad) * 2) \
+							* var(--sidebar-items)
+						);
+						--section-height: calc(
+							var(--header-size) + var(--section-content-height)
+						);
+						top: calc(
+							var(--threads-pos) + var(--section-height) \
+							+ var(--header-size) + var(--pad) * 2
+						) $i;
 					}
 				}
 				#qr {
 					overflow: hidden;
 					height: var(--header-size);
 
-					&:hover, &:has(:focus) {
+					&:hover,
+					&:has(:focus) {
 						height: 100%;
 					}
 				}
@@ -2465,13 +2601,18 @@ normal-colors() {
 		}
 
 		if (!sidebar-fixed || !sidebar-hover-move) {
-			#qr, #board-list > span {
+			#qr,
+			#board-list > span {
 				&::before {
 					content: '';
 					position: absolute;
 					inset: 0;
 					right: var(--border-width) $i;
-					background-image: linear-gradient(0deg, var(--bg2), transparent);
+					background-image: linear-gradient(
+						0deg,
+						var(--bg2),
+						transparent
+					);
 					height: var(--gradient-size);
 					margin-top: calc(var(--gradient-size) * -1);
 				}

@@ -273,7 +273,8 @@ normalise-checkbox(label = true) {
 	min-width: $select-size $i;
 	focus();
 
-	&::before, &::after {
+	&::before,
+	&::after {
 		content: '';
 		position: absolute $i;
 		inset: 0;
@@ -281,7 +282,8 @@ normalise-checkbox(label = true) {
 		transform-origin: 0 0 $i;
 	}
 	&:disabled {
-		&::before, &::after {
+		&::before,
+		&::after {
 			background-color: var(--fg2) $i;
 		}
 	}
@@ -356,16 +358,9 @@ normalise-header(first = true) {
 }
 
 @-moz-document domain("lainchan.org") {
-	// Hide elements
-	.blotter,
-	footer, hr,
-	#mute_images
-	.board_image
-	{
-		display: none $i;
-	}
-
-	// Global
+	/**
+	 * Global
+	**/
 	body {
 		bgc();
 		pad(0);
@@ -377,7 +372,6 @@ normalise-header(first = true) {
 	a {
 		color: var(--fg-link) !important;
 	}
-
 	input {
 		&:not([type]),
 		&[type="text"],
@@ -407,7 +401,20 @@ normalise-header(first = true) {
 		mar(left);
 	}
 
-	// Header
+	/**
+	 * Hide elements
+	**/
+	.blotter,
+	footer, hr,
+	#mute_images
+	.board_image
+	{
+		display: none $i;
+	}
+
+	/**
+	 * Header
+	**/
 	header {
 		normalise-header();
 		flex(,,space-between);
@@ -420,7 +427,9 @@ normalise-header(first = true) {
 		fg(2);
 	}
 
-	// Popup
+	/**
+	 * Popups
+	**/
 	#options {
 		&_handler {
 			opacity: 1 $i;
@@ -463,7 +472,6 @@ normalise-header(first = true) {
 				color: var(--accent-fg) $i;
 			}
 		}
-
 		&_tablist {
 			bg(2);
 			pad(0);
@@ -488,12 +496,12 @@ normalise-header(first = true) {
 				flex();
 				gap: 1ch;
 
-				&.active {
-					hl();
-				}
-
 				&:not(.active):hover {
 					fg();
+				}
+
+				&.active {
+					hl();
 				}
 			}
 		}
@@ -503,7 +511,9 @@ normalise-header(first = true) {
 		mar(top);
 	}
 
-	// Content
+	/**
+	 * Content
+	**/
 	.hljs {
 		bgc();
 		lnh();

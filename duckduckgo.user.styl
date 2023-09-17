@@ -282,7 +282,8 @@ normalise-checkbox(label = true) {
 	min-width: $select-size $i;
 	focus();
 
-	&::before, &::after {
+	&::before,
+	&::after {
 		content: '';
 		position: absolute $i;
 		inset: 0;
@@ -290,7 +291,8 @@ normalise-checkbox(label = true) {
 		transform-origin: 0 0 $i;
 	}
 	&:disabled {
-		&::before, &::after {
+		&::before,
+		&::after {
 			background-color: var(--fg2) $i;
 		}
 	}
@@ -397,7 +399,9 @@ normalise-header(first = true) {
 			text-decoration: none;
 		}
 	}
-	input, select, textarea {
+	input,
+	select,
+	textarea {
 		fg();
 	}
 
@@ -498,10 +502,12 @@ normalise-header(first = true) {
 		margin-bottom: calc(var(--body-pad) - var(--pad)) $i;
 		width: 100%;
 
-		b::before, b::after {
-			content: '"';
+		b {
+			&::before,
+			&::after {
+				content: '"';
+			}
 		}
-
 		a {
 			color: var(--fg-link);
 		}
@@ -517,7 +523,6 @@ normalise-header(first = true) {
 			padding: var(--pad) 0;
 			brd(bottom);
 		}
-
 		&__heading {
 			fg();
 			text-align: center;
@@ -532,7 +537,8 @@ normalise-header(first = true) {
 		brd();
 		mar(bottom, 0);
 
-		&, &:hover {
+		&,
+		&:hover {
 			bg(2);
 		}
 
@@ -543,14 +549,15 @@ normalise-header(first = true) {
 			flex-direction: grid-items > 1 ? row : column;
 			gap: var(--pad);
 		}
-
 		&__body {
 			pad();
 		}
-		&__a, &__extras, &__icon, &__snippet {
+		&__a,
+		&__extras,
+		&__icon,
+		&__snippet {
 			mar(0);
 		}
-
 		&__title {
 			normalise-header();
 		}
@@ -568,7 +575,8 @@ normalise-header(first = true) {
 		&__icon {
 			vertical-align: unset;
 
-			&, &__img {
+			&,
+			&__img {
 				box(var(--font-size));
 				max-width: unset $i;
 			}
@@ -583,17 +591,20 @@ normalise-header(first = true) {
 			right: var(--pad);
 			vertical-align: unset;
 		}
-
 		&__snippet {
 			lnh();
 			display: block;
 
-			&, &:hover, & > b, & > strong {
+			&,
+			&:hover,
+			& > b,
+			& > strong {
 				fg();
 			}
 
 			if (result-hl) {
-				b, strong {
+				b,
+				strong {
 					hl();
 				}
 			}
@@ -616,7 +627,10 @@ normalise-header(first = true) {
 			}
 			&__icon {
 				position: absolute;
-				top: calc(var(--pad) * -2 - var(--font-size) * var(--line-height) + var(--border-width));
+				top: calc(
+					var(--pad) * -2 - var(--font-size) * var(--line-height) \
+					+ var(--border-width)
+				);
 				right: 0;
 			}
 			&__url {
@@ -638,7 +652,8 @@ normalise-header(first = true) {
 	.btn {
 		normalise-button();
 
-		&:hover, &:focus {
+		&:hover,
+		&:focus {
 			bgc(2);
 		}
 	}
@@ -651,9 +666,10 @@ normalise-header(first = true) {
 		.nav-link {
 			text-align: center;
 		}
-
 		.result {
-			width: grid-fixed ? var(--grid-width) : calc(var(--grid-items) - var(--pad));
+			width: grid-fixed \
+				? var(--grid-width) \
+				: calc(var(--grid-items) - var(--pad));
 
 			&s {
 				justify-content: center;

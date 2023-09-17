@@ -273,7 +273,8 @@ normalise-checkbox(label = true) {
 	min-width: $select-size $i;
 	focus();
 
-	&::before, &::after {
+	&::before,
+	&::after {
 		content: '';
 		position: absolute $i;
 		inset: 0;
@@ -281,7 +282,8 @@ normalise-checkbox(label = true) {
 		transform-origin: 0 0 $i;
 	}
 	&:disabled {
-		&::before, &::after {
+		&::before,
+		&::after {
 			background-color: var(--fg2) $i;
 		}
 	}
@@ -357,21 +359,6 @@ normalise-header(first = true) {
 
 @-moz-document regexp("^https?://wiki\..*"), domain("wikipedia.org") {
 	/**
-	 * Hide elements
-	**/
-	#p-logo,
-	#p-personal,
-	#p-lang > .uls-settings-trigger,
-
-	#firstHeading, #siteSub, #contentSub, #contentSub2,
-	.mw-editsection,
-	.rt-settingsLink,
-	#footer,
-	{
-		display: none;
-	}
-
-	/**
 	 * Global
 	**/
 	body {
@@ -381,12 +368,10 @@ normalise-header(first = true) {
 	a {
 		fg(-link);
 	}
-
 	#mw {
 		&-page-base {
 			background: var(--bg) none;
 		}
-
 		&-head {
 			width: calc(100% - var(--sidebar-width));
 		}
@@ -412,7 +397,6 @@ normalise-header(first = true) {
 			brd(0);
 			margin-left: calc(var(--sidebar-width) + var(--body-pad)) $i;
 		}
-
 		&-list-item {
 			lnh();
 			pad(0);
@@ -422,7 +406,6 @@ normalise-header(first = true) {
 		&-body {
 			lnh();
 		}
-
 		&-menu {
 			pad(0);
 			mar(0);
@@ -453,7 +436,11 @@ normalise-header(first = true) {
 			pad();
 		}
 		&Tail {
-			background-image: linear-gradient(to top right, var(--border) 50%, transparent 50%)
+			background-image: linear-gradient(
+				to top right,
+				var(--border) 50%,
+				transparent 50%
+			)
 
 			&::after {
 				bg(2);
@@ -465,6 +452,21 @@ normalise-header(first = true) {
 	}
 	#p-logo {
 		margin: auto;
+		display: none;
+	}
+
+	/**
+	 * Hide elements
+	**/
+	#p-logo,
+	#p-personal,
+	#p-lang > .uls-settings-trigger,
+
+	#firstHeading, #siteSub, #contentSub, #contentSub2,
+	.mw-editsection,
+	.rt-settingsLink,
+	#footer,
+	{
 		display: none;
 	}
 }

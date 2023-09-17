@@ -283,7 +283,8 @@ normalise-checkbox(label = true) {
 	min-width: $select-size $i;
 	focus();
 
-	&::before, &::after {
+	&::before,
+	&::after {
 		content: '';
 		position: absolute $i;
 		inset: 0;
@@ -291,7 +292,8 @@ normalise-checkbox(label = true) {
 		transform-origin: 0 0 $i;
 	}
 	&:disabled {
-		&::before, &::after {
+		&::before,
+		&::after {
 			background-color: var(--fg2) $i;
 		}
 	}
@@ -386,7 +388,9 @@ capitalise() {
 	 * Variables
 	**/
 	body {
-		--content-margin: match('^^\d+$', s('%s', content-margin)) ? s('%spx', content-margin) : content-margin;
+		--content-margin: match('^^\d+$', s('%s', content-margin)) \
+			? s('%spx', content-margin) \
+			: content-margin;
 		--sidebar-width: sidebar-width;
 
 		@media (max-width: $small-screen) {
@@ -425,7 +429,6 @@ capitalise() {
 			margin-bottom: var(--body-pad);
 		}
 	}
-
 	a {
 		color: var(--fg-link);
 
@@ -436,7 +439,6 @@ capitalise() {
 	.gray {
 		fg(2);
 	}
-
 	input[type="checkbox"] {
 		normalise-checkbox();
 	}
@@ -495,7 +497,8 @@ capitalise() {
 			//width: 100%;
 		}
 
-		&, &-bottom-left {
+		&,
+		&-bottom-left {
 			flex();
 		}
 	}
@@ -510,7 +513,8 @@ capitalise() {
 			content: '/u/';
 		}
 
-		&, a {
+		&,
+		a {
 			fg();
 		}
 	}
@@ -558,16 +562,16 @@ capitalise() {
 		bottom: 0;
 		z-index: 100;
 
-		if (sidebar-show) {
-			@media (max-width: $small-screen) {
-				display: none;
-			}
-		}
-
 		if (sticky) {
 			// This has to be like that in order to be able to scroll it
 			position: fixed;
 			overflow: auto;
+		}
+
+		if (sidebar-show) {
+			@media (max-width: $small-screen) {
+				display: none;
+			}
 		}
 
 		&::-webkit-scrollbar {
@@ -583,6 +587,25 @@ capitalise() {
 		pad(0);
 		mar(bottom);
 
+		&expando {
+			bg();
+			pad();
+			brd();
+			mar(top);
+			height: unset $i;
+
+			& > label {
+				margin-bottom: calc(var(--pad) / 2);
+			}
+			input,
+			p {
+				mar(bottom, 0);
+			}
+		}
+
+		& > label {
+			flex();
+		}
 		input[type="text"] {
 			normalise-input();
 			min-width: unset $i;
@@ -597,34 +620,15 @@ capitalise() {
 				text-transform: capitalize;
 			}
 		}
-		& > label {
-			flex();
-		}
-
-		&expando {
-			bg();
-			pad();
-			brd();
-			mar(top);
-			height: unset $i;
-
-			& > label {
-				margin-bottom: calc(var(--pad) / 2);
-			}
-
-			input, p {
-				mar(bottom, 0);
-			}
-		}
 	}
 	.titlebox {
-		:not(a), h1 a {
+		:not(a),
+		h1 a {
 			fg();
 		}
 		a {
 			color: var(--fg-link);
 		}
-
 		.bottom {
 			pad(top, 0);
 			brd(top);
@@ -656,7 +660,10 @@ capitalise() {
 				left: -2ch;
 				box(
 					2ch,
-					calc(var(--font-size) * var(--line-height) + var(--pad) + var(--border-width) * 2)
+					calc(
+						var(--font-size) * var(--line-height) \
+						+ var(--pad) + var(--border-width) * 2
+					)
 				);
 				background-image: linear-gradient(90deg, transparent, var(--bg2));
 			}
@@ -740,15 +747,17 @@ capitalise() {
 			mar(top);
 			mar(bottom, 0);
 		}
-		&, * {
-			fg();
-			lnh();
-		}
+
 		&-spoiler-text {
 			background-color: unset $i;
 			pointer-events: none;
 		}
 
+		&,
+		* {
+			fg();
+			lnh();
+		}
 		blockquote {
 			border-left: 2px solid var(--fg2);
 			mar(left, 0);
@@ -769,21 +778,29 @@ capitalise() {
 		table {
 			mar(top);
 		}
-		th, td {
+		th,
+		td {
 			brd();
 			padding: calc(var(--pad) / 2) var(--pad);
 		}
-		.-lists, ul, ol {
+		.-lists,
+		ul,
+		ol {
 			padding-left: 3ch;
 		}
-		p, h3, h4, ul, ol {
+		p,
+		h3,
+		h4,
+		ul,
+		ol {
 			mar(0);
 		}
 		a {
 			fg(-link);
 		}
 	}
-	code, pre {
+	code,
+	pre {
 		bg();
 		pad(0);
 		brd();
@@ -859,7 +876,6 @@ capitalise() {
 				fg(2);
 			}
 		}
-
 		.link &-content .self-divider {
 			brd(top);
 			mar(0);
@@ -879,13 +895,13 @@ capitalise() {
 		pad(0);
 		position: relative;
 	}
-
 	.nav-buttons {
 		lnh();
 		margin-bottom: var(--body-pad) $i;
 		capitalise();
 	}
-	.nextprev, .nextsuggestions {
+	.nextprev,
+	.nextsuggestions {
 		fg();
 
 		a {
@@ -900,7 +916,6 @@ capitalise() {
 				replace-text('Next');
 			}
 		}
-
 		.separator {
 			display: none;
 		}
@@ -937,6 +952,7 @@ capitalise() {
 				fa(0fe);
 			}
 		}
+
 		&area {
 			position: relative;
 		}
@@ -957,7 +973,8 @@ capitalise() {
 		.author {
 			fg();
 		}
-		.child, .showreplies {
+		.child,
+		.showreplies {
 			brd(left, 0);
 			mar(left, 0);
 			mar(top);
@@ -1037,8 +1054,10 @@ capitalise() {
 				}
 			}
 			&-header,
-			&-meta, &-meta > *,
-			&-footer, &-footer > * {
+			&-meta,
+			&-meta > *,
+			&-footer,
+			&-footer > * {
 				lnh();
 			}
 			&-header {
@@ -1066,7 +1085,11 @@ capitalise() {
 		&-expando {
 			&::before {
 				height: calc(var(--font-size) * var(--line-height)) $i;
-				background-image: linear-gradient(180deg, transparent, var(--bg2)) $i;
+				background-image: linear-gradient(
+					180deg,
+					transparent,
+					var(--bg2)
+				) $i;
 			}
 
 			&.collapsed {
@@ -1115,7 +1138,9 @@ capitalise() {
 			display: none;
 		}
 	}
-	dl, dt, dd {
+	dl,
+	dt,
+	dd {
 		mar(0);
 	}
 	dl {
@@ -1169,7 +1194,8 @@ capitalise() {
 			brd(top);
 		}
 	}
-	.thing, .search-result {
+	.thing,
+	.search-result {
 		background-color: var(--bg2);
 		pad();
 		brd();
@@ -1230,6 +1256,15 @@ capitalise() {
 	.entry {
 		mar(left, 0);
 
+		.profile-page .comment > & {
+			brd(top);
+			mar(top);
+
+			& > .buttons {
+				margin-left: -1ch;
+			}
+		}
+
 		.buttons {
 			.profile-page & {
 				pad(top);
@@ -1254,22 +1289,10 @@ capitalise() {
 				pad(0);
 			}
 		}
-		.profile-page .comment > & {
-			brd(top);
-			mar(top);
-
-			& > .buttons {
-				margin-left: -1ch;
-			}
-		}
 	}
 	.tagline {
 		position: static $i;
 
-		.author, .subreddit {
-			fg();
-			mar(right, 0);
-		}
 		.profile-page & {
 			position: absolute $i;
 			top: var(--pad);
@@ -1281,7 +1304,11 @@ capitalise() {
 				position: absolute;
 				left: -2ch;
 				box(2ch, 100%);
-				background-image: linear-gradient(90deg, transparent, var(--bg2));
+				background-image: linear-gradient(
+					90deg,
+					transparent,
+					var(--bg2)
+				);
 			}
 		}
 		.listing-page:not(.profile-page) & {
@@ -1290,7 +1317,9 @@ capitalise() {
 		.comments-page .thing:not(.comment) &:not(.crosspost-preview-tagline) {
 			replace-text();
 
-			../, ../ a, & > time {
+			../,
+			../ a,
+			& > time {
 				fg(2);
 			}
 			& > time::after {
@@ -1303,6 +1332,12 @@ capitalise() {
 			& > .stickied-tagline {
 				margin-left: 1ch;
 			}
+		}
+
+		.author,
+		.subreddit {
+			fg();
+			mar(right, 0);
 		}
 	}
 	.profile-page .parent {
@@ -1344,12 +1379,12 @@ capitalise() {
 				bottom: var(--pad);
 			}
 
-			&.collapsed {
-				fa(0fe);
-			}
-
 			&:not(:hover) {
 				fg(2);
+			}
+
+			&.collapsed {
+				fa(0fe);
 			}
 		}
 		&-gate__show-once {
@@ -1382,6 +1417,7 @@ capitalise() {
 			&::before {
 				clr(1);
 			}
+
 			&:hover::before {
 				clr(9);
 			}
@@ -1414,11 +1450,13 @@ capitalise() {
 		.thing[data-domain^="self"]:not([data-crosspost-root-subreddit]) & {
 			display: none;
 		}
+
 		for k, v in domains {
 			.thing[data-domain=\"{k}\"] & > a {
 				replace-text(s('"%s"', v), fg2);
 			}
 		}
+
 		.thing[data-domain="reddit.com"] & a,
 		.thing[data-url^="https://www.reddit.com/gallery"] & > a {
 			replace-text('Album', fg2);
@@ -1452,24 +1490,24 @@ capitalise() {
 		right: 0;
 		top: 0;
 
-		//.dropdown span {
-		.selected {
-			box-sizing: border-box;
-			flex(inline-flex);
-
-			/.dropdown.lightdrop .selected, & {
-				normalise-select();
-				text-decoration: none $i;
-				cursor: pointer;
-			}
-		}
-
 		.content > & {
 			top: calc(var(--font-size) * -1 - var(--border-width));
 		}
 
 		& > .spacer {
 			mar(0);
+		}
+		//.dropdown span {
+		.selected {
+			box-sizing: border-box;
+			flex(inline-flex);
+
+			/.dropdown.lightdrop .selected,
+			& {
+				normalise-select();
+				text-decoration: none $i;
+				cursor: pointer;
+			}
 		}
 	}
 	.drop-choices {

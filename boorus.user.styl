@@ -273,7 +273,8 @@ normalise-checkbox(label = true) {
 	min-width: $select-size $i;
 	focus();
 
-	&::before, &::after {
+	&::before,
+	&::after {
 		content: '';
 		position: absolute $i;
 		inset: 0;
@@ -281,7 +282,8 @@ normalise-checkbox(label = true) {
 		transform-origin: 0 0 $i;
 	}
 	&:disabled {
-		&::before, &::after {
+		&::before,
+		&::after {
 			background-color: var(--fg2) $i;
 		}
 	}
@@ -356,17 +358,33 @@ normalise-header(first = true) {
 }
 
 @-moz-document domain("safebooru.org"), domain("yande.re") {
-	// Hide elements
+	/**
+	 * Hide elements
+	**/
 	.status-notice {
 		display: none $i;
 	}
 
-	// Global
+	/**
+	 * Global
+	**/
 	body {
 		bgc();
 		lnh();
 	}
-	body, div, h1, h2, h3, h4, h5, h6, p, ul, li, dd, dt {
+	body,
+	div,
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6,
+	p,
+	ul,
+	li,
+	dd,
+	dt {
 		background-color: unset;
 		color: unset;
 	}
@@ -385,18 +403,26 @@ normalise-header(first = true) {
 			normalise-button();
 		}
 	}
-	h1, h2, h3, h4, h5 {
+	h1,
+	h2,
+	h3,
+	h4,
+	h5 {
 		normalise-header(false);
 	}
 
-	// Header
+	/**
+	 * Header
+	**/
 	#header {
 		bg(2);
 		header-focus();
 		mar(0);
 	}
 
-	// Content
+	/**
+	 * Content
+	**/
 	#content {
 		pad(0);
 	}
@@ -441,11 +467,12 @@ normalise-header(first = true) {
 				float: right;
 			}
 		}
+
 		colors = {
 			copyright: 12,
 			character: 11,
-			artist: 10,
-			metadata: 9
+			artist:    10,
+			metadata:  9
 		}
 		for k, v in colors {
 			&-{k} > a {
@@ -453,7 +480,6 @@ normalise-header(first = true) {
 			}
 		}
 	}
-
 	.content {
 		bg();
 		padding: var(--body-pad);
@@ -465,20 +491,25 @@ normalise-header(first = true) {
 }
 
 @-moz-document domain("safebooru.org") {
-	// Hide elements
+	/**
+	 * Hide elements
+	**/
 	#site-title,
 	#subnavbar,
 	.image-sublinks {
 		display: none;
 	}
 
-	// Header
+	/**
+	 * Header
+	**/
 	#navbar {
 		brd(bottom);
 		height: var(--header-h);
 		box-sizing: border-box;
 
-		&, li {
+		&,
+		li {
 			pad(0);
 			flex();
 		}
@@ -498,24 +529,31 @@ normalise-header(first = true) {
 }
 
 @-moz-document domain("yande.re") {
-	// Hide elements
+	/**
+	 * Hide elements
+	**/
 	#title,
 	#news-ticker {
 		display: none $i;
 	}
 
-	// Global
+	/**
+	 * Global
+	**/
 	body {
 		pad(0);
 	}
 
-	// Header
+	/**
+	 * Header
+	**/
 	#main-menu {
 		bg(2);
 		header-focus();
 		brd(bottom);
 
-		ul, li {
+		ul,
+		li {
 			mar(0);
 		}
 		ul {
