@@ -3,6 +3,8 @@ None of them work as is, as they are intended to be used all at once.
 
 You'll have to declare the variables **in an another userstyle** for the same domain as the userstyle(s) you are installing, so you don't lose them if the styles ever update. Example [here](./_global.user.css).
 
+If you wish to resize the sidebar(s) with a mouse, install [this userscript](./_global-resize-sidebar.user.js).
+
 ## Requirements
 [4chan](./4chan.user.styl): [4chan X](https://www.4chan-x.net)
 

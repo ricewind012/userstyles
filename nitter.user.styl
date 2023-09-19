@@ -462,8 +462,8 @@ normalise-header(first = true) {
 		}
 		&-tab {
 			pad(0);
-			mar(right);
-			max-width: calc(32% - var(--pad));
+			width: var(--sidebar-width);
+			max-width: unset;
 
 			&.sticky {
 				position: sticky;
@@ -471,7 +471,8 @@ normalise-header(first = true) {
 
 			&s .timeline-container {
 				brd();
-				width: calc(68% - var(--border-width) * 2) $i;
+				width: calc(100% - var(--sidebar-width)) $i;
+				box-sizing: border-box;
 			}
 
 			& > div {

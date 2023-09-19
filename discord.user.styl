@@ -942,6 +942,19 @@ normalise-header(first = true) {
 		channel-category: '.wrapperCommon-I1TMDb'
 	}
 
+	#-sidebar-separator {
+		top: var(--header-h);
+
+		if (!guilds-horizontal) {
+			top: 0;
+			margin-left: calc(var(--guilds-size) + var(--pad) * 2);
+
+			// Settings opened
+			#app-mount:has(> [tabindex="0"]) ~ & {
+				margin-left: 0;
+			}
+		}
+	}
 	.sidebar {
 		// Almost no animation below that - lags too much
 		--trans-dur: 300ms;

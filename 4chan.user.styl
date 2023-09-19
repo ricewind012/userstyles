@@ -2146,6 +2146,16 @@ normal-colors() {
 		body {
 			mar(top, 0);
 		}
+		#-sidebar-separator {
+			top: 0;
+
+			if (sidebar-pos == right) {
+				right: calc(
+					var(--sidebar-width) - var(--sidebar-separator-width) / 2
+				);
+				left: auto;
+			}
+		}
 		#header-bar {
 			normal-colors();
 			margin-top: calc(var(--header-h) * -1);
@@ -2611,6 +2621,10 @@ normal-colors() {
 					margin-top: calc(var(--gradient-size) * -1);
 				}
 			}
+		}
+	} else {
+		#-sidebar-separator {
+			display: none;
 		}
 	}
 }
