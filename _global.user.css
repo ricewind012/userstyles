@@ -190,60 +190,70 @@ code, pre, code *, pre * {
 	display: flex;
 	width: var(--scrollbar-width);
 	height: var(--scrollbar-width);
-}
-::-webkit-scrollbar-button:vertical {
-	border-left: 1px solid transparent;
-}
-::-webkit-scrollbar-button:vertical:decrement {
-	background-image:
-		linear-gradient(transparent 68%, var(--bg2) 68%),
-		linear-gradient(135deg, var(--bg2) 45%, transparent 45%),
-		linear-gradient(45deg, var(--fg) 53%, var(--bg2) 53%);
-}
-::-webkit-scrollbar-button:vertical:decrement:active {
-	background-image:
-		linear-gradient(transparent 68%, var(--fg) 68%),
-		linear-gradient(135deg, var(--fg) 45%, transparent 45%),
-		linear-gradient(45deg, var(--bg2) 53%, var(--fg) 53%);
-}
-::-webkit-scrollbar-button:vertical:increment {
-	background-image:
-		linear-gradient(45deg, var(--bg2) 45%, transparent 45%),
-		linear-gradient(-225deg, transparent 53%, var(--bg2) 53%),
-		linear-gradient(-180deg, var(--bg2) 31%, var(--fg) 31%);
-}
-::-webkit-scrollbar-button:vertical:increment:active {
-	background-image:
-		linear-gradient(45deg, var(--fg) 45%, transparent 45%),
-		linear-gradient(-225deg, transparent 53%, var(--fg) 53%),
-		linear-gradient(-180deg, var(--fg) 31%, var(--bg2) 31%);
-}
-::-webkit-scrollbar-button:horizontal {
-	border-top: 1px solid transparent;
-}
-::-webkit-scrollbar-button:horizontal:decrement {
-	background-image:
-		linear-gradient(-135deg, transparent 53%, var(--bg2) 53%),
-		linear-gradient(-45deg, transparent 53%, var(--bg2) 53%),
-		linear-gradient(90deg, var(--fg) 70%, var(--bg2) 70%);
-}
-::-webkit-scrollbar-button:horizontal:decrement:active {
-	background-image:
-		linear-gradient(-135deg, transparent 53%, var(--fg) 53%),
-		linear-gradient(-45deg, transparent 53%, var(--fg) 53%),
-		linear-gradient(90deg, var(--bg2) 70%, var(--fg) 70%);
-}
-::-webkit-scrollbar-button:horizontal:increment {
-	background-image:
-		linear-gradient(135deg, transparent 53%, var(--bg2) 53%),
-		linear-gradient(45deg, transparent 53%, var(--bg2) 53%),
-		linear-gradient(-90deg, var(--fg) 70%, var(--bg2) 70%);
-}
-::-webkit-scrollbar-button:horizontal:increment:active {
-	background-image:
-		linear-gradient(135deg, transparent 53%, var(--fg) 53%),
-		linear-gradient(45deg, transparent 53%, var(--fg) 53%),
-		linear-gradient(-90deg, var(--bg2) 70%, var(--fg) 70%);
+
+	&:vertical {
+		border-left: 1px solid transparent;
+
+		&:decrement {
+			background-image:
+				linear-gradient(transparent 68%, var(--bg2) 68%),
+				linear-gradient(135deg, var(--bg2) 45%, transparent 45%),
+				linear-gradient(45deg, var(--fg) 53%, var(--bg2) 53%);
+
+			&:active {
+				background-image:
+					linear-gradient(transparent 68%, var(--fg) 68%),
+					linear-gradient(135deg, var(--fg) 45%, transparent 45%),
+					linear-gradient(45deg, var(--bg2) 53%, var(--fg) 53%);
+			}
+		}
+
+		&:increment {
+			background-image:
+				linear-gradient(45deg, var(--bg2) 45%, transparent 45%),
+				linear-gradient(-225deg, transparent 53%, var(--bg2) 53%),
+				linear-gradient(-180deg, var(--bg2) 31%, var(--fg) 31%);
+
+			&:active {
+				background-image:
+					linear-gradient(45deg, var(--fg) 45%, transparent 45%),
+					linear-gradient(-225deg, transparent 53%, var(--fg) 53%),
+					linear-gradient(-180deg, var(--fg) 31%, var(--bg2) 31%);
+			}
+		}
+	}
+
+	&:horizontal {
+		border-top: 1px solid transparent;
+
+		&:decrement {
+			background-image:
+				linear-gradient(-135deg, transparent 53%, var(--bg2) 53%),
+				linear-gradient(-45deg, transparent 53%, var(--bg2) 53%),
+				linear-gradient(90deg, var(--fg) 70%, var(--bg2) 70%);
+
+			&:active {
+				background-image:
+					linear-gradient(-135deg, transparent 53%, var(--fg) 53%),
+					linear-gradient(-45deg, transparent 53%, var(--fg) 53%),
+					linear-gradient(90deg, var(--bg2) 70%, var(--fg) 70%);
+			}
+		}
+
+		&:increment {
+			background-image:
+				linear-gradient(135deg, transparent 53%, var(--bg2) 53%),
+				linear-gradient(45deg, transparent 53%, var(--bg2) 53%),
+				linear-gradient(-90deg, var(--fg) 70%, var(--bg2) 70%);
+
+			&:active {
+				background-image:
+					linear-gradient(135deg, transparent 53%, var(--fg) 53%),
+					linear-gradient(45deg, transparent 53%, var(--fg) 53%),
+					linear-gradient(-90deg, var(--bg2) 70%, var(--fg) 70%);
+			}
+		}
+	}
 }
 
 ::-webkit-scrollbar-track {
@@ -257,9 +267,10 @@ code, pre, code *, pre * {
 	background-clip: padding-box;
 	border: none !important;
 	border-radius: 0 !important;
-}
-::-webkit-scrollbar-thumb:active {
-	background-color: var(--fg) !important;
+
+	&:active {
+		background-color: var(--fg) !important;
+	}
 }
 
 ::-webkit-scrollbar-corner,
