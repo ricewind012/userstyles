@@ -375,18 +375,25 @@ normalise-header(first = true) {
 		&-head {
 			width: calc(100% - var(--sidebar-width));
 		}
+
+		// Sidebar
 		&-panel {
 			bg(2);
 			pad();
 			brd(right);
-			margin-top: calc(var(--pad) * -2) $i;
-			width: var(--sidebar-width);
-			position: fixed;
+			display: block $i;
 			overflow: auto;
-			height: 100%;
+			position: fixed;
+			top: var(--header-h);
+			bottom: 0;
+			width: var(--sidebar-width) $i;
 
 			&::-webkit-scrollbar {
 				display: none;
+			}
+
+			& > :first-child {
+				margin-top: calc(var(--pad) * -2) $i;
 			}
 		}
 	}
@@ -413,7 +420,7 @@ normalise-header(first = true) {
 			&-heading {
 				normalise-header(false);
 				background: none $i;
-				//display: block $i;
+				display: block $i;
 			}
 			&-content {
 				mar(0);
@@ -471,3 +478,26 @@ normalise-header(first = true) {
 	}
 }
 
+@-moz-document domain("wiki.archlinux.org") {
+	// Global
+	a:not(.new) {
+		#content &,
+		#footer &,
+		header.mw-header li:not(.new) &,
+		#mw-navigation li:not(.new) &,
+		#mw-panel li:not(.new) &,
+		#column-one li:not(.new) & {
+			&,
+			&:hover,
+			&:active:hover {
+				fg(-link);
+			}
+		}
+	}
+	#mw {
+		// Sidebar
+		&-sidebar-button {
+			display: none;
+		}
+	}
+}

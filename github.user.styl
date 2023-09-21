@@ -1106,6 +1106,7 @@ normal-colors() {
 			pad(0);
 			brd(bottom);
 			margin-top: var(--header-h);
+			margin-{sidebar-pos}: var(--sidebar-width);
 
 			& > .UnderlineNav {
 				brd(0);
@@ -1176,9 +1177,9 @@ normal-colors() {
 				&-lg,
 				&-xl {
 					pad(0);
-					margin: var(--body-pad) $i;
+					mar(0);
+					width: 100% $i;
 					max-width: unset $i;
-					width: calc(100% - var(--body-pad) * 3);
 				}
 			}
 		}
@@ -1224,29 +1225,115 @@ normal-colors() {
 		lnh();
 	}
 
-	// Lefthand side repository sidebar
+	// Sidebar
+	@css {
+		body:has(
+			/* No sidebar */
+			.hx_Layout--sidebar-hidden, /* Diff */
+
+			/*
+			 * They hide the sidebar on "smaller" screens,
+			 * and you can't even make it appear by yourself.
+			 */
+			/*react-app*/[app-name="react-code-view"]
+		) {
+			--sidebar-width: 0px !important;
+		}
+	}
 	.Layout {
-		--Layout-sidebar-width: var(--sidebar-width) $i;
-		--Layout-gutter: var(--body-pad) $i;
+		grid-template-columns: unset $i;
 
-		if (sidebar-pos == left) {
-			grid-template-columns: auto calc(100% - var(--Layout-sidebar-width) - var(--Layout-gutter)) $i;
+		&-main {
+			margin: var(--body-pad) $i;
+			margin-{sidebar-pos}: calc(var(--sidebar-width) + var(--body-pad)) $i;
+		}
+		&-sidebar {
+			bg(2);
+			pad();
+			brd(sidebar-pos == left ? right : left);
+			overflow: scroll $i;
+			position: fixed $i;
+			{sidebar-pos}: 0;
+			top: var(--header-h) $i;
+			bottom: 0;
+			box(var(--sidebar-width), unset);
 
-			&-main {
-				grid-column: 2/span 2 $i;
+			.btn,
+			.Button,
+			.form-control,
+			::-webkit-scrollbar {
+				--bg2: var(--bg) $i;
 			}
-			&-sidebar {
-				grid-column: 1 $i;
-			}
-		} else {
-			grid-template-columns: calc(100% - var(--Layout-sidebar-width) - var(--Layout-gutter)) auto $i;
+		}
+	}
+	// Why the fuck is there another one ?
+	.PageLayout {
+		--Layout-pane-width: var(--sidebar-width) $i;
 
-			&-main {
-				grid-column: 1 $i;
+		&-columns {
+			grid-template-columns: unset;
+		}
+		&-pane {
+			@extend .Layout-sidebar;
+		}
+		&-content {
+			padding: var(--body-pad) $i;
+			margin-{sidebar-pos}: var(--sidebar-width);
+			grid-area: unset $i;
+		}
+	}
+
+	// Content headers
+	.gh-header,
+	.Subhead {
+		&-actions {
+			text-transform: initial;
+			letter-spacing: initial;
+			mar(0);
+		}
+	}
+	.gh-header {
+		&-show > .d-flex {
+			normalise-header();
+			align-items: end;
+
+			// Discussion subheading
+			.d-flex.flex-wrap.flex-items-center.mb-3 {
+				display: none $i;
 			}
-			&-sidebar {
-				grid-column: 2/span 2 $i;
-			}
+		}
+		&-title {
+			lnh();
+			mar(0);
+		}
+	}
+	#toc,
+	#partial-visible-comments-header,
+	#sidebar-events-header,
+	#discussions-list,
+	.Subhead {
+		normalise-header(false);
+		align-items: end $i;
+		gap: 1ch $i;
+	}
+	.markdown-body {
+		/.page-profile .f4.text-normal,
+		h1,
+		h2 {
+			normalise-header(false);
+		}
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6 {
+			lnh();
+		}
+		pre {
+			bg(2);
+			pad();
+			brd();
 		}
 	}
 
@@ -1258,12 +1345,10 @@ normal-colors() {
 	main .Box-header,
 	.file-header,
 	#repo-content-turbo-frame[src$="/releases"] .col-md-2,
-	.js-position-sticky,
-	.Layout-sidebar > * {
+	.js-position-sticky {
 		position: sticky $i;
 	}
-	#repo-content-turbo-frame[src$="/releases"] .col-md-2,
-	.Layout-sidebar > * {
+	#repo-content-turbo-frame[src$="/releases"] .col-md-2 {
 		top: calc(var(--header-h) + var(--body-pad));
 		z-index: 999 $i;
 	}
@@ -1325,14 +1410,6 @@ normal-colors() {
 			}
 		}
 	}
-	.Layout-sidebar {
-		& > * {
-			z-index: 998 $i;
-		}
-		.is-stuck ~ .Layout > &[data-original-top] > * {
-			top: 60px;
-		}
-	}
 	#repo-content-turbo-frame[src$="/releases"] .col-md-2 {
 		height: fit-content;
 	}
@@ -1343,7 +1420,9 @@ normal-colors() {
 		z-index: 999 $i;
 	}
 	.pr-toolbar {
-		margin-top: var(--border-width);
+		mar(0);
+		margin-left: var(--sidebar-width) $i;
+		margin-top: var(--border-width) $i;
 
 		&.is-stuck {
 			pad(0);
@@ -1360,6 +1439,10 @@ normal-colors() {
 		&-shadow {
 			display: none $i;
 		}
+	}
+	#sidebar-events-header,
+	#repo-content-pjax-container > div > .Subhead {
+		mar(top, 0);
 	}
 	.notification-shelf {
 		--pad: calc(var(--save-pad) / 2);
@@ -1387,12 +1470,12 @@ normal-colors() {
 		replace-text('Back');
 	}
 
-	// Sidebar
 	.BorderGrid {
 		mar(0);
 		display: flex;
 		flex-direction: column;
 		gap: calc(var(--pad) * 2);
+		top: 0;
 
 		&-cell {
 			pad(0);
@@ -1431,7 +1514,7 @@ normal-colors() {
 				position: absolute;
 				right: 0;
 				box(2ch, 100%);
-				background-image: linear-gradient(90deg, transparent, var(--bg));
+				background-image: linear-gradient(90deg, transparent, var(--bg2));
 			}
 
 			& > .ml-2 {
@@ -1455,7 +1538,39 @@ normal-colors() {
 			}
 		}
 	}
+	main > div > .container-xl {
+		pad(0);
+		max-width: unset;
+	}
+	#repo-content-pjax-container > .clearfix.container-xl.px-3.px-md-4.px-lg-5.mt-4:not(:has(.Layout)),
+	/:is(.gutter-condensed, #discussion_bucket) > .col-md-9,
+	.new-discussion-timeline > .pb-3,
+	.gh-header-meta,
+	.gh-header,
+	.orghead,
+	.clearfix > .tabnav,
+	.commit {
+		margin-{sidebar-pos}: calc(var(--sidebar-width) + var(--body-pad)) $i;
+		margin-{sidebar-pos == left ? right : left}: var(--body-pad) $i;
+	}
+	#repo-content-pjax-container > .clearfix.container-xl.px-3.px-md-4.px-lg-5.mt-4:not(:has(.Layout)) {
+		width: calc(100% - var(--body-pad) * 2) $i;
+	}
+	#repository-container-header {
+		margin-{sidebar-pos}: var(--sidebar-width) $i;
+	}
+	.gutter-condensed {
+		mar(0);
+
+		& > .col-md-3 {
+			@extend .Layout-sidebar;
+			flex-shrink: unset $i;
+		}
+	}
+
+	// Discussions
 	#partial-discussion-sidebar {
+		@extend .Layout-sidebar;
 		display: flex;
 		flex-direction: column;
 		gap: calc(var(--pad) * 2);
@@ -1474,110 +1589,19 @@ normal-colors() {
 			}
 		}
 	}
+	#discussion_bucket {
+		mar(0);
+
+		& > .clearfix {
+			pad(0);
+		}
+		.Layout-sidebar {
+			pad(0);
+		}
+	}
+	// Wiki
 	#wiki-pages-box .Box-row {
 		pad(0);
-	}
-
-	// ok
-	/*#repo-content {
-		&-pjax-container, &-turbo-frame {
-			/.application-main > main > .container,
-			& > .container {
-				&-sm, &-md, &-lg, &-xl {
-					mar(0);
-					width: calc(100% - var(--body-pad) * 2) $i;
-				}
-			}
-		}
-	}
-	.header-search {
-		max-width: calc(var(--sidebar-width) - var(--font-size) * 1.5 - var(--body-pad)) $i;
-	}
-	.Layout {
-		--Layout-gutter: 0px $i;
-
-		&-sidebar {
-			bg(2);
-			pad();
-			brd(sidebar-pos == left ? right : left);
-
-			.page-profile & {
-				margin-top: -48px;
-			}
-
-			& > * {
-				top: calc(var(--header-h) + var(--pad));
-			}
-			.btn,
-			.form-control,
-			::-webkit-scrollbar {
-				--bg2: var(--bg) $i;
-			}
-		}
-		&-main {
-			margin: var(--body-pad) $i;
-		}
-	}*/
-
-	// Content headers
-	.gh-header,
-	.Subhead {
-		&-actions {
-			text-transform: initial;
-			letter-spacing: initial;
-			mar(0);
-		}
-	}
-	.gh-header {
-		&-show > .d-flex {
-			normalise-header();
-			align-items: end;
-
-			// Discussion subheading
-			.d-flex.flex-wrap.flex-items-center.mb-3 {
-				display: none $i;
-			}
-		}
-		&-title {
-			lnh();
-			mar(0);
-		}
-	}
-	#toc,
-	#partial-visible-comments-header,
-	#sidebar-events-header,
-	#discussions-list,
-	.Subhead {
-		normalise-header(false);
-		align-items: end $i;
-		gap: 1ch $i;
-	}
-	#discussion-comment-count {
-		mar(0);
-	}
-	#sidebar-events-header,
-	#repo-content-pjax-container > div > .Subhead {
-		mar(top, 0);
-	}
-	.markdown-body {
-		/.page-profile .f4.text-normal,
-		h1,
-		h2 {
-			normalise-header(false);
-		}
-		h1,
-		h2,
-		h3,
-		h4,
-		h5,
-		h6 {
-			lnh();
-		}
-		pre {
-			bg(2);
-			pad();
-			brd();
-		}
 	}
 
 	// Dashboard
@@ -1662,7 +1686,7 @@ normal-colors() {
 	.discussion {
 		&-spotlights-sortable,
 		&s-header-wrap {
-			margin-left: calc(var(--sidebar-width) + var(--body-pad)) $i;
+			margin-{sidebar-pos}: calc(var(--sidebar-width) + var(--body-pad)) $i;
 		}
 		&-spotlights-sortable {
 			margin-top: var(--body-pad) $i;
@@ -1674,11 +1698,6 @@ normal-colors() {
 	#repo-content-turbo-frame[src$="/discussions"] {
 		.Layout {
 			&-sidebar {
-				margin-top: calc(
-					-188px - var(--body-pad) - var(--pad) * 5 \
-					- var(--font-size) * var(--line-height) - var(--border-width) * 6
-				);
-
 				// Header
 				h2 + div > .mb-2 {
 					normalise-header();
@@ -2298,7 +2317,7 @@ normal-colors() {
 	}
 	[data-target="diff-layout.mainContainer"],
 	#discussion_bucket .Layout-main {
-		margin-left: 48px $i;
+		padding-left: 48px $i;
 	}
 
 	/**
@@ -2328,3 +2347,10 @@ normal-colors() {
 	}
 }
 
+@-moz-document regexp(
+	"^https://github.com/.*/.*/(issues|pulls|projects|releases).*"
+) {
+	body {
+		--sidebar-width: 0px $i;
+	}
+}

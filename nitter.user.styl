@@ -458,25 +458,28 @@ normalise-header(first = true) {
 	// Timeline
 	.profile {
 		&-banner {
-			mar(bottom);
+			margin-left: var(--sidebar-width);
+			mar(bottom, 0);
 		}
 		&-tab {
 			pad(0);
+			brd(right);
 			width: var(--sidebar-width);
 			max-width: unset;
+			overflow: scroll;
+			position: fixed $i;
+			top: var(--header-h);
+			bottom: 0;
 
-			&.sticky {
-				position: sticky;
-			}
+			&s {
+				width: 100%;
+				max-width: unset;
 
-			&s .timeline-container {
-				brd();
-				width: calc(100% - var(--sidebar-width)) $i;
-				box-sizing: border-box;
-			}
-
-			& > div {
-				brd();
+				.timeline-container {
+					brd();
+					width: calc(100% - var(--sidebar-width)) $i;
+					box-sizing: border-box;
+				}
 			}
 		}
 		&-card {
@@ -497,8 +500,9 @@ normalise-header(first = true) {
 	.photo-rail {
 		&-card {
 			pad();
-			brd(top);
-			width: calc(100% - var(--pad) * 2 - var(--border-width) * 2);
+			brd(0);
+			mar(0);
+			box-sizing: border-box;
 		}
 		&-header {
 			normalise-header();
