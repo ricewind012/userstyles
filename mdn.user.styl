@@ -362,8 +362,6 @@ normalise-header(first = true) {
 	 * Global
 	**/
 	:root {
-		bg();
-
 		// Background
 		--background-primary: var(--bg) $i;
 		--background-secondary: var(--bg2) $i;
@@ -418,6 +416,8 @@ normalise-header(first = true) {
 		--elem-radius: var(--border-radius) $i;
 		--shadow-01: none $i;
 		--shadow-02: var(--shadow-big) $i;
+
+		overflow-x: hidden;
 	}
 
 	a {
@@ -465,7 +465,7 @@ normalise-header(first = true) {
 		}
 	}
 	.article-actions-container {
-		padding-left: var(--sidebar-width);
+		margin-left: var(--sidebar-width);
 	}
 
 	/**
@@ -529,6 +529,7 @@ normalise-header(first = true) {
 		&-container {
 			bg(2);
 			brd(right);
+			display: flex $i;
 			position: fixed;
 			top: var(--header-h);
 			bottom: 0;
@@ -585,6 +586,9 @@ normalise-header(first = true) {
 		summary {
 			mar(bottom);
 		}
+		li:first-of-type strong {
+			mar(top, 0);
+		}
 		ol {
 			ol,
 			ul {
@@ -599,7 +603,7 @@ normalise-header(first = true) {
 			}
 		}
 		strong {
-			normalise-header();
+			normalise-header(false);
 		}
 		a {
 			pad(0);
@@ -610,6 +614,12 @@ normalise-header(first = true) {
 	.toc {
 		pad(0);
 		display: block $i;
+
+		&-container {
+			height: unset $i;
+			overflow: unset $i;
+			mask-image: none $i;
+		}
 	}
 	.in-nav-toc {
 		display: none;
@@ -637,11 +647,27 @@ normalise-header(first = true) {
 			}
 		}
 	}
+	.sidebar em {
+		@extend .document-toc-link;
+		@extend .document-toc-link[aria-current="true"];
+
+		&:hover,
+		& > a {
+			color: var(--hl-fg) $i;
+		}
+	}
 
 	// Page
-	.main-wrapper {
-		pad(0);
-		max-width: unset;
+	.main {
+		&-wrapper {
+			pad(0);
+			max-width: unset;
+			gap: 0 $i;
+			grid-template-columns: var(--sidebar-width) 1fr $i;
+		}
+		&-content {
+			padding: var(--body-pad) $i;
+		}
 	}
 	h1,
 	h2,

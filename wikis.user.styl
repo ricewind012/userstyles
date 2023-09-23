@@ -357,10 +357,16 @@ normalise-header(first = true) {
 	}
 }
 
-@-moz-document regexp("^https?://wiki\..*"), domain("wikipedia.org") {
+@-moz-document \
+	regexp("^https?://wiki\..*"),
+	regexp("^https?://\w+\.wikipedia.org/wiki/.*\?useskin=vector$")
+{
 	/**
 	 * Global
 	**/
+	* {
+		box-sizing: border-box $i;
+	}
 	body {
 		bg();
 		--sidebar-width: 228px;
@@ -372,30 +378,6 @@ normalise-header(first = true) {
 		&-page-base {
 			background: var(--bg) none;
 		}
-		&-head {
-			width: calc(100% - var(--sidebar-width));
-		}
-
-		// Sidebar
-		&-panel {
-			bg(2);
-			pad();
-			brd(right);
-			display: block $i;
-			overflow: auto;
-			position: fixed;
-			top: var(--header-h);
-			bottom: 0;
-			width: var(--sidebar-width) $i;
-
-			&::-webkit-scrollbar {
-				display: none;
-			}
-
-			& > :first-child {
-				margin-top: calc(var(--pad) * -2) $i;
-			}
-		}
 	}
 	.mw {
 		&-body {
@@ -404,9 +386,23 @@ normalise-header(first = true) {
 			brd(0);
 			margin-left: var(--sidebar-width) $i;
 		}
+		&-content-container {
+			max-width: unset $i;
+		}
+		&-header {
+			margin-left: var(--sidebar-width);
+		}
 		&-list-item {
 			lnh();
 			pad(0);
+		}
+		&-page-container {
+			pad(0);
+			max-width: unset $i;
+
+			&-inner {
+				display: block $i;
+			}
 		}
 	}
 	.vector {
@@ -429,6 +425,10 @@ normalise-header(first = true) {
 					pad(0);
 				}
 			}
+		}
+		&-sticky-toc-container {
+			pad(0);
+			mar(0);
 		}
 	}
 	.rt-tooltip {
@@ -457,9 +457,15 @@ normalise-header(first = true) {
 	h2 {
 		normalise-header();
 	}
+	li {
+		mar(0);
+	}
 	#p-logo {
 		margin: auto;
 		display: none;
+	}
+	#left-navigation {
+		margin-left: calc(var(--sidebar-width) + var(--body-pad));
 	}
 
 	/**
@@ -469,12 +475,104 @@ normalise-header(first = true) {
 	#p-personal,
 	#p-lang > .uls-settings-trigger,
 
+	#vector-toc-collapsed-button, .toctoggle, .toctogglespan,
 	#firstHeading, #siteSub, #contentSub, #contentSub2,
 	.mw-editsection,
 	.rt-settingsLink,
 	#footer,
 	{
 		display: none;
+	}
+
+	/**
+	 * Sidebar
+	**/
+	#mw-panel {
+		top: calc(50% + var(--header-h) / 2) $i;
+
+		&::-webkit-scrollbar {
+			display: none;
+		}
+
+		&,
+		&-toc {
+			bg(2);
+			pad();
+			brd(0);
+			brd(right);
+			mar(0);
+			overflow: hidden scroll $i;
+			display: block $i;
+			position: fixed $i;
+			left: 0 $i;
+			box(var(--sidebar-width), calc(50% - var(--header-h) / 2));
+		}
+		&-toc {
+			brd(bottom);
+			top: var(--header-h) $i;
+
+			&::after {
+				display: none $i;
+			}
+		}
+	}
+	#toc {
+		@extend #mw-panel
+		@extend #mw-panel-toc
+
+		&title {
+			text-align: left $i;
+		}
+		&toggle {
+			&,
+			&span {
+				display: one
+			}
+		}
+
+		h2 {
+			display: block;
+		}
+	}
+	.toc {
+		&title {
+			text-align: left $i;
+		}
+		&number {
+			fg();
+
+			&::after {
+				content: '.';
+			}
+		}
+
+		ul ul {
+			margin-left: 1.5em $i;
+		}
+	}
+	#p-navigation-label {
+		mar(top, 0);
+	}
+	.sidebar-toc {
+		&-header {
+			normalise-header();
+		}
+		&-title {
+			fg();
+		}
+		&-list,
+		&-contents {
+			lnh();
+		}
+		&-text {
+			pad(0);
+		}
+		&-numb::after {
+			content: '.';
+		}
+		&-list-item:not(&-level-1) {
+			padding-left: 1.5em $i;
+		}
 	}
 }
 

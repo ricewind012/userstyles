@@ -440,11 +440,15 @@ normalise-header(first = true) {
 	.container {
 		padding-top: var(--header-h);
 	}
-	.timeline-item {
-		pad();
+	.timeline {
+		margin: var(--body-pad);
 
-		&:not(:first-child) {
-			brd(top);
+		&-item {
+			pad();
+
+			&:not(:first-child) {
+				brd(top);
+			}
 		}
 	}
 	.username {
@@ -458,6 +462,7 @@ normalise-header(first = true) {
 	// Timeline
 	.profile {
 		&-banner {
+			brd(bottom);
 			margin-left: var(--sidebar-width);
 			mar(bottom, 0);
 		}
@@ -476,7 +481,6 @@ normalise-header(first = true) {
 				max-width: unset;
 
 				.timeline-container {
-					brd();
 					width: calc(100% - var(--sidebar-width)) $i;
 					box-sizing: border-box;
 				}
