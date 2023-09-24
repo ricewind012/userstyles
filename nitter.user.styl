@@ -363,7 +363,7 @@ normalise-header(first = true) {
 	domain("nitter.namazso.eu")
 {
 	/**
-	 * Global
+	 * Variables
 	**/
 	:root {
 		--accent_bg: var(--accent);
@@ -398,20 +398,67 @@ normalise-header(first = true) {
 		--play_button: var(--fg2);
 		--play_button_hover: var(--fg);
 
+		--reserve-fg: var(--fg);
+
 		lnh();
 	}
 
+	/**
+	 * Global
+	**/
+	* {
+		box-sizing: border-box $i;
+	}
 	a {
 		color: var(--fg-link);
 	}
+	input,
+	select {
+		position: unset $i;
+		height: unset $i;
+	}
+	input {
+		&[type="text"],
+		&[type="date"] {
+			normalise-input();
+			box(unset);
+		}
+	}
+	.pref {
+		&-group {
+			mar(0);
+			margin-bottom: calc(var(--pad) / 2) $i;
+			flex(,,space-between);
+		}
+		&-input {
+			height: unset $i;
+		}
+	}
+	.checkbox {
+		display: none;
+
+		&-container {
+			flex-direction: row-reverse;
+			justify-content: start $i;
+
+			input {
+				normalise-checkbox();
+				opacity: 1;
+			}
+		}
+	}
 	button {
 		normalise-button();
+	}
+	select {
+		normalise-select();
 	}
 
 	/**
 	 * Hide elements
 	**/
 	[href="https://liberapay.com/zedeus"],
+	.date-range .icon-container,
 	.inner-nav > a,
 	.top-ref
 	{
@@ -426,10 +473,28 @@ normalise-header(first = true) {
 		brd(bottom);
 		header-focus();
 		shd(0);
+		height: unset $i;
+	}
+	.inner-nav {
+		pad();
+		height: unset $i;
+		flex-grow: 1 $i;
+		flex-basis: unset $i;
+	}
+	.nav-item {
+		lnh();
+		height: unset $i;
 
-		/.inner-nav,
-		& {
-			height: var(--header-h);
+		&.right a {
+			pad(0);
+			margin-left: 1ch $i;
+		}
+		a {
+			fg(2);
+
+			&:hover {
+				--fg2: var(--accent-fg);
+			}
 		}
 	}
 
@@ -440,16 +505,87 @@ normalise-header(first = true) {
 	.container {
 		padding-top: var(--header-h);
 	}
-	.timeline {
-		margin: var(--body-pad);
+	.conversation,
+	.overlay-panel {
+		margin: var(--body-pad) $i;
+		max-width: unset $i;
+	}
+	.tab {
+		brd(bottom);
+		mar(0);
 
 		&-item {
-			pad();
-
-			&:not(:first-child) {
-				brd(top);
+			&.active a {
+				hl();
+				border-color: transparent;
+			}
+			&:not(.active) a:hover {
+				fg();
+			}
+			a {
+				pad();
 			}
 		}
+	}
+
+	// Profile
+	.timeline {
+		background-color: transparent $i;
+		margin: var(--body-pad);
+
+		&-container {
+			max-width: unset;
+		}
+		&-header {
+			pad();
+			brd(bottom);
+			mar(0);
+		}
+		&-item {
+			bg(2);
+			pad();
+			brd();
+			mar(bottom);
+		}
+		/.profile-tabs &-container {
+			width: calc(100% - var(--sidebar-width)) $i;
+		}
+	}
+	.quote {
+		bg();
+		brd();
+		mar(top);
+
+		&-text {
+			pad(0);
+			pad(left);
+			pad(right);
+		}
+
+		.tweet-name-row {
+			pad();
+		}
+		.card-container {
+			brd(0);
+			brd(top);
+		}
+	}
+	.show-more {
+		background-color: transparent $i;
+		pad(0);
+		brd(0);
+
+		a {
+			normalise-button();
+			text-decoration: none $i;
+			box(unset);
+		}
+	}
+	.pinned,
+	.retweet-header {
+		lnh();
+		mar(0);
+		mar(bottom);
 	}
 	.username {
 		margin-left: 1ch;
@@ -458,8 +594,6 @@ normalise-header(first = true) {
 		border-radius: var(--border-radius);
 		mar(top);
 	}
-
-	// Timeline
 	.profile {
 		&-banner {
 			brd(bottom);
@@ -479,23 +613,26 @@ normalise-header(first = true) {
 			&s {
 				width: 100%;
 				max-width: unset;
-
-				.timeline-container {
-					width: calc(100% - var(--sidebar-width)) $i;
-					box-sizing: border-box;
-				}
 			}
 		}
 		&-card {
+			white-space: nowrap $i;
 			pad();
+			display: block $i;
+			height: 100%;
 
+			&-avatar {
+				mar(0);
+			}
 			&-extra {
-				mar(top);
-
+				&,
 				&-links {
 					mar(top);
 				}
 			}
+		}
+		&-bio {
+			margin: var(--pad) 0 $i;
 		}
 		&-joindate {
 			mar(0);
@@ -506,7 +643,6 @@ normalise-header(first = true) {
 			pad();
 			brd(0);
 			mar(0);
-			box-sizing: border-box;
 		}
 		&-header {
 			normalise-header();
@@ -525,38 +661,29 @@ normalise-header(first = true) {
 			}
 		}
 	}
-	.tab {
-		brd(bottom);
-		mar(0);
-
-		&-item {
-			&.active a {
-				hl();
-				border-color: transparent;
-			}
-			a {
-				pad();
-
-				&:hover {
-					fg();
-				}
-			}
-		}
-	}
 	.tweet {
 		/.more-replies-text,
 		/.unavailable-box,
 		&-body {
 			margin-left: calc(48px + var(--pad));
 		}
+		/.replying-to,
 		&-header {
+			mar(0);
 			mar(bottom);
+		}
+		&-avatar img {
+			margin-left: calc(-48px - var(--pad));
+			margin-top: calc(1px * var(--line-height));
 		}
 		&-date {
 			margin-left: 1ch;
 		}
 		&-content {
 			lnh();
+		}
+		&-published {
+			mar(top);
 		}
 		&-stat {
 			pad(0);
@@ -579,19 +706,63 @@ normalise-header(first = true) {
 		&-title {
 			normalise-header();
 		}
+		&-content {
+			pad();
+		}
 		&-description {
 			mar(0);
-			mar(bottom);
+		}
+	}
+
+	// Search
+	.search {
+		&-field {
+			& > .pref-input {
+				mar(0);
+				mar(right);
+			}
+			& > label {
+				@extend button;
+				--bg2: var(--bg);
+				mar(0);
+			}
+			input {
+				--bg2: var(--bg);
+
+				&[type="text"] {
+					flex-grow: 1 $i;
+				}
+			}
+			button {
+				--bg2: var(--bg);
+				mar(right);
+				height: unset $i;
+			}
+		}
+		&-title {
+			normalise-header(false);
+			width: 100% $i;
+			max-height: unset $i;
+		}
+		&-row {
+			.pref-input {
+				pad(0);
+			}
+		}
+		&-panel {
+			& > div {
+				lnh();
+			}
+		}
+		&-field #search-panel-toggle:checked ~ &-panel {
+			max-height: unset $i;
+		}
+		&-toggles {
+			column-gap: var(--pad) $i;
 		}
 	}
 
 	// Tweet
-	.conversation {
-		brd(left);
-		brd(right);
-		mar(top);
-		mar(bottom);
-	}
 	.thread-line {
 		.timeline-item,
 		.more-replies {
@@ -602,14 +773,10 @@ normalise-header(first = true) {
 			}
 		}
 	}
+	.reply,
 	.main-thread {
-		brd(top);
-
-		/.reply,
-		& {
-			brd(bottom);
-			mar(0);
-		}
+		background-color: transparent;
+		mar(0);
 	}
 	.unavailable-box {
 		bg(2);
@@ -623,52 +790,41 @@ normalise-header(first = true) {
 		}
 	}
 
-	// Settings
+	// Settings / about
 	.overlay-panel {
-		pad();
-		brd();
-		margin: var(--body-pad) auto;
+		background-color: transparent $i;
+		pad(0);
+		margin-top: calc(var(--body-pad) - var(--pad) * 2) $i;
+
+		h1,
+		h2 {
+			normalise-header(false);
+			display: block $i;
+		}
 	}
 	fieldset {
-		margin-top: calc(var(--pad) * -2);
+		mar(0);
 	}
 	legend {
 		normalise-header(false);
 	}
 	.note {
-		padding: var(--pad) 0;
+		padding: var(--pad) 0 $i;
 		brd(top);
 		brd(bottom);
-		margin: var(--pad) 0;
+		margin: var(--pad) 0 $i;
 
 		&::before {
 			content: 'NOTE: ';
 		}
 	}
-	.pref-group {
-		margin-bottom: calc(var(--pad) / 2) $i;
-		flex(,,space-between);
-	}
-	button,
-	select,
-	input[type="text"] {
-		--bg2: var(--bg);
-		position: unset $i;
-	}
-	.preferences button {
-		mar(0);
-	}
-	select {
-		normalise-select();
-		height: unset;
-	}
-	input[type="text"] {
-		normalise-input();
-	}
-	.checkbox {
-		bg();
-		brd();
-		focus();
+	.preferences {
+		label {
+			pad(0);
+		}
+		button {
+			mar(0);
+		}
 	}
 }
 
