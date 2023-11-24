@@ -4,9 +4,9 @@
 // @version     1.0
 // @author      me
 //
-// @namespace   https://github.com/2641a40fd44383320adde4b027a1d0b03bd550/userstyles
-// @downloadURL https://github.com/2641a40fd44383320adde4b027a1d0b03bd550/userstyles/raw/master/_global-resize-sidebar.user.js
-// @updateURL   https://github.com/2641a40fd44383320adde4b027a1d0b03bd550/userstyles/raw/master/_global-resize-sidebar.user.js
+// @namespace   https://github.com/ricewind012/userstyles
+// @downloadURL https://github.com/ricewind012/userstyles/raw/master/_global-resize-sidebar.user.js
+// @updateURL   https://github.com/ricewind012/userstyles/raw/master/_global-resize-sidebar.user.js
 //
 // @match       https://developer.mozilla.org/*
 // @match       https://boards.4channel.org/*
@@ -38,18 +38,18 @@
 // @grant       GM_addValueChangeListener
 // ==/UserScript==
 
-function SetSidebarWidth(iWidth) {
+function SetSidebarWidth(nWidth) {
 	document.body.setAttribute(
 		'style',
-		`--sidebar-width: min(50vw, max(20vw, ${iWidth}px))`
-	)
+		`--sidebar-width: clamp(20vw, ${nWidth}px), 50vw);`
+	);
 }
 
-const k_strSmallScreen = '768px'
+const k_strSmallScreen = '768px';
 
-let elSeparator = document.createElement('div')
-elSeparator.id  = '-sidebar-separator'
-document.body.appendChild(elSeparator)
+let elSeparator = document.createElement('div');
+elSeparator.id  = '-sidebar-separator';
+document.body.appendChild(elSeparator);
 
 GM_addStyle(`
 	#-sidebar-separator {
@@ -67,28 +67,28 @@ GM_addStyle(`
 			display: none;
 		}
 	}
-`)
+`);
 
-let iSidebarWidth = GM_getValue('sidebar-width')
+let nSidebarWidth = GM_getValue('sidebar-width');
 
-if (iSidebarWidth)
-	SetSidebarWidth(iSidebarWidth)
+if (nSidebarWidth);
+	SetSidebarWidth(nSidebarWidth);
 
 GM_addValueChangeListener(
 	'sidebar-width',
-	(strName, iOldValue, iNewValue, bRemote) => SetSidebarWidth(iNewValue)
-)
+	(strName, nOldValue, nNewValue, bRemote) => SetSidebarWidth(nNewValue)
+);
 
 elSeparator.addEventListener('pointerdown', () => {
 	function fnMove(ev) {
-		GM_setValue('sidebar-width', ev.pageX)
+		GM_setValue('sidebar-width', ev.pageX);
 	}
 
 	function fnUp() {
-		removeEventListener('pointermove', fnMove)
-		removeEventListener('pointerup', fnUp)
+		removeEventListener('pointermove', fnMove);
+		removeEventListener('pointerup', fnUp);
 	}
 
-	addEventListener('pointermove', fnMove, { passive: true })
-	addEventListener('pointerup', fnUp, { passive: true })
-})
+	addEventListener('pointermove', fnMove, { passive: true });
+	addEventListener('pointerup', fnUp, { passive: true });
+});

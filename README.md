@@ -8,7 +8,7 @@ If you wish to resize the sidebar(s) with a mouse, install [this userscript](./_
 ## Requirements
 [4chan](./4chan.user.styl): [4chan X](https://www.4chan-x.net)
 
-[Discord](./discord.user.styl): [class normalisation userscript](https://gist.github.com/2641a40fd44383320adde4b027a1d0b03bd550/202cfe26d010351d37b48849aab263b5)
+[Discord](./discord.user.styl): [class normalisation userscript](./discord-normalise-classes.user.js)
 
 [GitHub](./github.user.styl), [SoundCloud](./soundcloud.user.styl): being logged in
 
