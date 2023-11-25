@@ -32,6 +32,10 @@
 	--hl: #1488ff;
 	--hl-fg: #fff;
 
+	/* Sidebar */
+	--sidebar-width: 228px;
+	--sidebar-separator-width: 8px;
+
 	/* etc. */
 	--pad: 8px;
 	--body-pad: 24px;
@@ -44,7 +48,6 @@
 	--scrollbar-width: 16px;
 	--popup-filter: blur(18px);
 	--shadow: rgba(0,0,0,.25);
-	--sidebar-separator-width: 8px;
 }
 
 @media (prefers-color-scheme: light) { :root {

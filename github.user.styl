@@ -10,7 +10,6 @@
 @var checkbox remove-icons       "Partly remove icons" 1
 @var checkbox old-user-status    "Old user status"     1
 
-@var text     sidebar-width      "Sidebar width"       228px
 @var select   sidebar-pos        "Sidebar position" {
 	'Left':  'left',
 	'Right': 'right'
@@ -41,7 +40,8 @@ color-a(n, bright = true) {
 	s = bright ? -2 : null;
 	n = n > 6 ? n - 8 : n;
 
-	s('hsla(var(--color%s-h),	var(--color-s%s),	var(--color-l%s), var(--bg-opacity))', n, s, s);}
+	s('hsla(var(--color%s-h),	var(--color-s%s),	var(--color-l%s), var(--bg-opacity))', n, s, s);
+}
 
 // Appearance
 bg(n =) {
@@ -562,8 +562,7 @@ normal-colors() {
 		--reserve-border: var(--border);
 
 		// Settings
-		settings = \
-			'sidebar-width'
+		settings = ''
 
 		for i in settings {
 			\-\-{i}: convert(i);

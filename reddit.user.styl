@@ -11,7 +11,6 @@
 @var text     content-margin "Content margin"          0
 
 @var checkbox sidebar-show   "Show the sidebar"        0
-@var text     sidebar-width  "Sidebar width"           228px
 @var select   sidebar-pos    "Sidebar position" {
 	'Left':  'left',
 	'Right': 'right'
@@ -42,7 +41,8 @@ color-a(n, bright = true) {
 	s = bright ? -2 : null;
 	n = n > 6 ? n - 8 : n;
 
-	s('hsla(var(--color%s-h),	var(--color-s%s),	var(--color-l%s), var(--bg-opacity))', n, s, s);}
+	s('hsla(var(--color%s-h),	var(--color-s%s),	var(--color-l%s), var(--bg-opacity))', n, s, s);
+}
 
 // Appearance
 bg(n =) {
@@ -390,11 +390,6 @@ capitalise() {
 		--content-margin: match('^^\d+$', s('%s', content-margin)) \
 			? s('%spx', content-margin) \
 			: content-margin;
-		--sidebar-width: sidebar-width;
-
-		@media (max-width: $small-screen) {
-			--sidebar-width: 0px;
-		}
 	}
 
 	/**

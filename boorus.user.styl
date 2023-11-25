@@ -32,7 +32,8 @@ color-a(n, bright = true) {
 	s = bright ? -2 : null;
 	n = n > 6 ? n - 8 : n;
 
-	s('hsla(var(--color%s-h),	var(--color-s%s),	var(--color-l%s), var(--bg-opacity))', n, s, s);}
+	s('hsla(var(--color%s-h),	var(--color-s%s),	var(--color-l%s), var(--bg-opacity))', n, s, s);
+}
 
 // Appearance
 bg(n =) {
@@ -436,7 +437,7 @@ normalise-header(first = true) {
 		pad();
 		brd(right);
 		mar(0);
-		width: 200px $i;
+		width: var(--sidebar-width) $i;
 
 		& > .space > h5 {
 			mar(top, 0);

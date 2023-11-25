@@ -24,7 +24,6 @@
 @var checkbox sidebar               "Header -> sidebar"            1
 @var checkbox sidebar-fixed         "Fixed elements"               1
 @var checkbox sidebar-hover         "Show content on hover"        1
-@var text     sidebar-width         "Sidebar width"                228px
 @var number   sidebar-items         "Sidebar items"                4
 @var select   sidebar-pos           "Sidebar position" {
 	'Left':  'left',
@@ -56,7 +55,8 @@ color-a(n, bright = true) {
 	s = bright ? -2 : null;
 	n = n > 6 ? n - 8 : n;
 
-	s('hsla(var(--color%s-h),	var(--color-s%s),	var(--color-l%s), var(--bg-opacity))', n, s, s);}
+	s('hsla(var(--color%s-h),	var(--color-s%s),	var(--color-l%s), var(--bg-opacity))', n, s, s);
+}
 
 // Appearance
 bg(n =) {
@@ -451,7 +451,6 @@ normal-colors() {
 			'board-title-font-size',
 			'board-title-pad',
 			'thread-margin',
-			'sidebar-width',
 			'sidebar-items'
 
 		for i in settings {

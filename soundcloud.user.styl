@@ -34,7 +34,8 @@ color-a(n, bright = true) {
 	s = bright ? -2 : null;
 	n = n > 6 ? n - 8 : n;
 
-	s('hsla(var(--color%s-h),	var(--color-s%s),	var(--color-l%s), var(--bg-opacity))', n, s, s);}
+	s('hsla(var(--color%s-h),	var(--color-s%s),	var(--color-l%s), var(--bg-opacity))', n, s, s);
+}
 
 // Appearance
 bg(n =) {
@@ -373,7 +374,6 @@ fa(char) {
 	 * Global
 	**/
 	body {
-		--sidebar-width: 250px;
 		--reserve-pad: var(--pad);
 		background: none var(--bg) $i;
 		fg();
