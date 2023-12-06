@@ -870,7 +870,7 @@ normalise-header(first = true) {
 	.threadSuggestionBar,
 	[data-list-id="chat-messages"] > [class^="groupStart"], // blocked
 	.userPopoutInner .lastSection,
-	[class*="cozy-"] .repliedMessage > .username,
+	[class*="cozy_"] .repliedMessage > .username,
 	.communityInfoContainer,
 	.guildIconContainer,
 	.nowPlayingColumn,
@@ -935,8 +935,8 @@ normalise-header(first = true) {
 	**/
 	$sidebar = {
 		channel:          'li'
-		channel-selected: '[class*="modeSelected-"]'
-		channel-unread:   '[class*="modeUnread-"]'
+		channel-selected: '[class*="modeSelected_"]'
+		channel-unread:   '[class*="modeUnread_"]'
 		channel-category: '.wrapperCommon-I1TMDb'
 	}
 
@@ -1080,7 +1080,7 @@ normalise-header(first = true) {
 				brd(0);
 				mar(0);
 			}
-			& > :not([class*="selected-"]) > .content {
+			& > :not([class*="selected_"]) > .content {
 				background-color: transparent;
 			}
 			.avatar {
@@ -1095,10 +1095,11 @@ normalise-header(first = true) {
 			mar(right);
 			flex();
 			flex-direction: row-reverse;
-		}
-		.arrow {
-			position: unset;
-			box(var(--font-size));
+
+			.icon {
+				position: unset;
+				box(var(--font-size));
+			}
 		}
 	}
 
@@ -1148,9 +1149,9 @@ normalise-header(first = true) {
 
 	// Servers sidebar
 	$guilds = {
-		container:      '[class*="scroller-"]'
+		container:      '.tree > div'
 		guild:          '.pill:not(:empty) + div > [data-dnd-name]'
-		guild-selected: '[class*="selected-"]'
+		guild-selected: '[class*="selected_"]'
 	}
 
 	.guilds {
@@ -1195,7 +1196,7 @@ normalise-header(first = true) {
 		.pill {
 			display: none;
 		}
-		.wrapper-2PSQCG {
+		.wrapper__3af0b {
 			&,
 			& > svg {
 				box(var(--guilds-size));
@@ -1364,6 +1365,7 @@ normalise-header(first = true) {
 		}
 		.icon {
 			--interactive-hover: var(--fg);
+			box(var(--font-size));
 		}
 	}
 
@@ -1609,6 +1611,9 @@ normalise-header(first = true) {
 		--profile-role-pill-border-color: var(--interactive-normal) $i;
 		pad(0);
 	}
+	.profileEffects {
+		display: none $i;
+	}
 
 	.roundedBanner,
 	.overlayBackground {
@@ -1632,7 +1637,7 @@ normalise-header(first = true) {
 		}
 	}
 	.userProfile {
-		&Outer {
+		/[class*="userProfileOuter_"] {
 			@extend $user-nitro-themes;
 			border-radius: var(--border-radius);
 
@@ -2105,7 +2110,7 @@ normalise-header(first = true) {
 	}
 
 	// Messages
-	[class*="message-"] {
+	[class*="message_"] {
 		pad(0);
 		mar(0);
 		min-height: unset $i;
@@ -2115,7 +2120,7 @@ normalise-header(first = true) {
 			display: none;
 		}
 
-		&[class*="compact-"] {
+		&[class*="compact_"] {
 			--font-normal: var(--font-code); // for proper aligning
 			--alt-bg: var(--bg2);
 			--message-actions-pos-top: calc(var(--line-height) * 1px);
@@ -2140,7 +2145,7 @@ normalise-header(first = true) {
 				position: unset;
 				display: unset;
 			}
-			&:not([class*="groupStart-"]) .username {
+			&:not([class*="groupStart_"]) .username {
 				display: none;
 			}
 
@@ -2177,7 +2182,7 @@ normalise-header(first = true) {
 			}
 		}
 
-		&[class*="cozy-"] {
+		&[class*="cozy_"] {
 			mar(top);
 
 			& > .contents > .messageContent,
@@ -2266,7 +2271,7 @@ normalise-header(first = true) {
 			}
 		}
 
-		&:not([class*="groupStart-"]) {
+		&:not([class*="groupStart_"]) {
 			pad(top, 0);
 			brd(top, 0);
 			margin-top: var(--cozy-top-border-width) $i;
@@ -2275,13 +2280,13 @@ normalise-header(first = true) {
 				pad(top, 0);
 			}
 		}
-		&[class*="mentioned-"] {
+		&[class*="mentioned_"] {
 			brd(left, color3);
 		}
-		&[class*="automodMessage-"],
-		&[class*="ephemeral-"],
-		&[class*="highlighted-"],
-		&[class*="replying-"] {
+		&[class*="automodMessage_"],
+		&[class*="ephemeral_"],
+		&[class*="highlighted_"],
+		&[class*="replying_"] {
 			brd(left, color4);
 		}
 
@@ -2319,7 +2324,7 @@ normalise-header(first = true) {
 	.message {
 		& > .wrapper,
 		.root & .wrapper {
-			@extend [class*="message-"];
+			@extend [class*="message_"];
 			pad();
 		}
 
@@ -2337,7 +2342,7 @@ normalise-header(first = true) {
 				mar(bottom);
 			}
 			&Cozy {
-				@extend [class*="message-"];
+				@extend [class*="message_"];
 			}
 		}
 	}
@@ -2393,7 +2398,7 @@ normalise-header(first = true) {
 		height: unset $i;
 		vertical-align: unset;
 
-		[class*="cozy-"] & {
+		[class*="cozy_"] & {
 			margin-left: 1ch $i;
 		}
 
@@ -2406,11 +2411,11 @@ normalise-header(first = true) {
 		mar(0);
 		height: unset;
 
-		[class*="message"][class*="cozy-"] > .contents > &,
-		[class*="message"][class*="cozy-"][class*="groupStart-"]:not(:hover) .header & {
+		[class*="message"][class*="cozy_"] > .contents > &,
+		[class*="message"][class*="cozy_"][class*="groupStart_"]:not(:hover) .header & {
 			display: none;
 		}
-		[class*="message"][class*="compact-"] .header & {
+		[class*="message"][class*="compact_"] .header & {
 			margin-right: 1ch $i;
 			width: var(--compact-timestamp-width) $i;
 		}
@@ -2447,7 +2452,7 @@ normalise-header(first = true) {
 		right: var(--pad);
 
 		if (!messages-alt) {
-			[class*="cozy-"] & {
+			[class*="cozy_"] & {
 				--bg: var(--bg3);
 			}
 		}
@@ -2549,7 +2554,7 @@ normalise-header(first = true) {
 		&,
 		& > div,
 		/.messageAttachment,
-		/[class*="imageWrapper-"] {
+		/[class*="imageWrapper_"] {
 			border-radius: var(--border-radius);
 		}
 	}
@@ -2697,8 +2702,8 @@ normalise-header(first = true) {
 
 	// Reactions
 	$reaction = {
-		normal: '[class*="reaction-"]',
-		own:    '[class*="reactionMe-"]'
+		normal: '[class*="reaction_"]',
+		own:    '[class*="reactionMe_"]'
 	}
 	.reaction {
 		&s {
@@ -2877,8 +2882,7 @@ normalise-header(first = true) {
 
 		// Typing
 		& > :last-child:not(:only-child) {
-			inset: 0;
-			left: var(--body-pad);
+			inset: 0 var(--body-pad);
 			top: unset;
 			lnh();
 			pad(bottom);
@@ -2924,7 +2928,7 @@ normalise-header(first = true) {
 				focus(focus-within);
 			}
 
-			& > :not([class*="open-"]) {
+			& > :not([class*="open_"]) {
 				& > div {
 					background-color: transparent $i;
 					brd(0);
@@ -3011,11 +3015,12 @@ normalise-header(first = true) {
 					top: 0;
 				}
 			}
-			&LearnMore,
-			&ClearHistory {
-				top: calc(var(--pad) / 2 / var(--line-height));
-				right: var(--pad);
-			}
+		}
+
+		&LearnMore,
+		&ClearHistory {
+			margin-right: calc(var(--pad) * -1);
+			top: calc(var(--pad) / 2 / var(--line-height)) $i;
 		}
 
 		.DraftEditor {
@@ -3036,11 +3041,9 @@ normalise-header(first = true) {
 			}
 		}
 
-		if (!font-awesome) {
-			.iconContainer {
-				display: block $i;
-				box(20px);
-			}
+		.iconContainer {
+			display: block $i;
+			box(var(--font-size));
 		}
 	}
 	.page {
