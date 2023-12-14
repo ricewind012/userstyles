@@ -1,0 +1,683 @@
+/* ==UserStyle==
+@name           Searchfox
+@namespace      github.com/openstyles/stylus
+@version        1.0.0
+@description    A new userstyle
+@author         Me
+
+@preprocessor stylus
+==/UserStyle== */
+
+// Variables
+vendors = official;
+$small-screen = 768px;
+$select-shadow = inset 0 1px 2px rgba(0, 0, 0, 0.1);
+$select-size = 16px;
+$i = !important;
+
+// Stylus
+svar(var) {
+	s('var(--%s)', var);
+}
+
+cond(n, yes, no) {
+	(n == 0 ? no : yes) $i;
+}
+
+sel-cond(sel, pos) {
+	pos ? s('%s-%s', sel, pos) : sel;
+}
+
+color-a(n, bright = true) {
+	s = bright ? -2 : null;
+	n = n > 6 ? n - 8 : n;
+
+	s('hsla(var(--color%s-h),	var(--color-s%s),	var(--color-l%s), var(--bg-opacity))', n, s, s);
+}
+
+// Appearance
+bg(n =) {
+	background-color: s('var(--bg%s)', n) $i;
+
+	if (n == -tr || n == -tr2 || n == -tr3) {
+		backdrop-filter: var(--popup-filter) $i;
+	}
+}
+
+fg(n =) {
+	color: s('var(--fg%s)', n) $i;
+}
+
+bgc(n1 =, n2 =) {
+	bg(n1);
+	fg(n2);
+}
+
+hl() {
+	background-color: var(--hl) $i;
+	color: var(--hl-fg) $i;
+}
+
+accent() {
+	background-color: var(--accent) $i;
+	color: var(--accent-fg) $i;
+}
+
+clr(n) {
+	color: s('var(--color%s)', n) $i;
+}
+
+lnh() {
+	line-height: var(--line-height) $i;
+}
+
+pad(pos =, n = 1) {
+	{sel-cond(padding, pos)}: \
+		(n == 0 ? 0 : pos == 0 ? 0 : var(--pad)) $i;
+}
+
+mar(pos =, n = 1) {
+	{sel-cond(margin, pos)}: \
+		(n == 0 ? 0 : pos == 0 ? 0 : var(--pad)) $i;
+}
+
+shd(n) {
+	box-shadow: cond(n, s('var(--shadow-%s)', n), none);
+}
+
+rad(n = 1) {
+	border-radius: cond(n, var(--border-radius), 0);
+}
+
+brd(pos =, color = border) {
+	if (color) {
+		color = svar(color);
+	}
+
+	{sel-cond(border, pos)}: \
+		(color == 0 ? none : pos == 0 ? none : var(--border-width) solid color) $i;
+	if (!pos) {
+		rad(pos);
+	}
+}
+
+// Position
+box(w, h = w) {
+	width: w $i;
+	height: h $i;
+}
+
+flex(display = flex, alignment = center, justification =) {
+	display: display $i;
+	align-items: alignment $i;
+	justify-content: justification $i;
+}
+
+// Animation
+anim(name =, func = ) {
+	@media (prefers-reduced-motion: no-preference) {
+		{name ? animation : transition}: name var(--trans-dur) func $i;
+	}
+}
+
+dropfade() {
+	anim(dropfade, cubic-bezier(0.2, 0.9, 0.6, 1));
+}
+
+// Focus
+focus(p = focus) {
+	anim();
+
+	&:{p} {
+		border-color: var(--hl) $i;
+		box-shadow: var(--shadow-ins) var(--hl) $i;
+		outline: none $i;
+	}
+}
+
+header-focus(class = page-focus) {
+	.{class} & {
+		--bg2: var(--accent);
+		--fg: var(--accent-fg);
+		--border: var(--accent-border);
+	}
+
+	// Stylus is unable to recognise :where()
+	:root:not(:-moz-window-inactive) & {
+		--bg2: var(--accent);
+		--fg: var(--accent-fg);
+		--border: var(--accent-border);
+	}
+}
+
+// Text
+// TODO: replace this
+replace-text(content =, text-color = fg, pos = after) {
+	color: transparent $i;
+	font-size: 0 $i;
+
+	if (content) { // Replace
+		&::{pos} {
+			content: content $i;
+			font-size: var(--font-size) $i;
+			color: svar(text-color) $i;
+		}
+	} else { // Hide
+		* {
+			font-size: var(--font-size) $i;
+			color: svar(text-color) $i;
+		}
+	}
+}
+
+hide-chars(amount, pos, bg =) {
+	margin-{pos}: s('-%sch', amount) $i;
+	position: relative $i;
+
+	element = pos == left ? before : after;
+	&::{element} {
+		content: '' $i;
+		position: absolute $i;
+		inset: 0;
+		box(s('%sch', amount), calc(1em * var(--line-height)));
+		bg(bg);
+	}
+}
+
+// Normalisation
+disabled() {
+	&:disabled {
+		opacity: 0.5 $i;
+		cursor: not-allowed $i;
+	}
+}
+
+normalise-select() {
+	appearance: none $i;
+	bgc(2);
+	lnh();
+	background-image:
+		linear-gradient(55deg, var(--bg2) 43%, transparent 45%),
+		linear-gradient(125deg, transparent 53%, var(--bg2) 55%),
+		linear-gradient(180deg, var(--bg2) 30%, var(--fg) 30%) $i;
+	background-size: 20px 20px $i;
+	background-repeat: no-repeat $i;
+	background-position: right 50% $i;
+	pad();
+	padding-right: calc(var(--pad) + 20px) $i;
+	brd();
+	focus();
+	disabled();
+}
+
+normalise-input() {
+	bgc(2);
+	lnh();
+	pad();
+	brd();
+	focus();
+	disabled();
+
+	&::placeholder {
+		fg(2);
+	}
+}
+
+normalise-button() {
+	bgc(2);
+	lnh();
+	background-image: none $i;
+	padding: var(--pad) calc(var(--pad) * 2) $i;
+	brd();
+	cursor: pointer $i;
+	focus();
+	disabled();
+}
+
+normalise-color() {
+	bg(2);
+	pad(0);
+	brd();
+	box($select-size);
+	focus();
+	disabled();
+
+	&::-webkit-color-swatch {
+		brd(0);
+		// Prevent from making it look like a radio input
+		border-radius: calc(var(--border-radius) * 0.33) $i;
+
+		&-wrapper {
+			pad(0);
+		}
+	}
+}
+
+normalise-checkbox(label = true) {
+	if (label) {
+		/label {
+			lnh();
+			flex();
+			gap: 1ch $i;
+		}
+	}
+
+	appearance: none $i;
+	bg(2);
+	brd();
+	// Prevent from making it look like a radio input
+	border-radius: calc(var(--border-radius) * 0.33) $i;
+	box-shadow: $select-shadow $i;
+	mar(0);
+	position: relative $i;
+	box($select-size);
+	min-width: $select-size $i;
+	focus();
+
+	&::before,
+	&::after {
+		content: '';
+		position: absolute $i;
+		inset: 0;
+		background-color: var(--hl) $i;
+		transform-origin: 0 0 $i;
+	}
+	&:disabled {
+		&::before,
+		&::after {
+			background-color: var(--fg2) $i;
+		}
+	}
+
+	&::before {
+		transform: rotate(-45deg) translateY(45%) translateX(-30%) scaleX(0.25) scaleY(0) $i;
+	}
+	&:indeterminate::before {
+		transform: rotate(0) translateY(37.5%) translateX(10%) scaleX(0.8) scaleY(0.25) $i;
+		transition-duration: 33.3ms $i;
+	}
+	&::after {
+		transform: rotate(225deg) translateY(-30%) translateX(-95%) scaleX(0.25) scaleY(0) $i;
+	}
+
+	&:checked {
+		&::before {
+			transform: rotate(-45deg) translateY(45%) translateX(-30%) scaleX(0.25) scaleY(0.4) $i;
+			transition-duration: 33.3ms $i;
+		}
+		&::after {
+			transform: rotate(225deg) translateY(-30%) translateX(-95%) scaleX(0.25) scaleY(1.2) $i;
+			transition-delay: 33.3ms $i;
+			anim();
+		}
+	}
+}
+
+normalise-radio() {
+	appearance: none $i;
+	bg(2);
+	brd();
+	border-radius: 50% $i;
+	box-shadow: $select-shadow $i;
+	mar(0);
+	position: relative $i;
+	box($select-size);
+	focus();
+
+	&::before {
+		content: '';
+		position: absolute $i;
+		inset: $select-size / 5;
+		background-color: var(--hl) $i;
+		border-radius: 50% $i;
+		transition: transform var(--trans-dur) linear $i;
+		transform: scale(0) $i;
+	}
+	&:disabled::before {
+		background-color: var(--fg2) $i;
+	}
+	&:checked::before {
+		transition-timing-function: cubic-bezier(0, 0, 0.3, 1.5) $i;
+		transform: scale(1) $i;
+		anim();
+	}
+}
+
+normalise-header(first = true) {
+	fg();
+	lnh();
+	text-transform: uppercase $i;
+	letter-spacing: 1px $i;
+	pad(0);
+	pad(bottom);
+	brd(bottom);
+	mar(0);
+	mar(bottom);
+	if (!first) {
+		margin-top: calc(var(--pad) * 2) $i;
+	}
+}
+
+@-moz-document domain("searchfox.org") {
+	/**
+	 * Variables
+	**/
+	:root {
+		--page-background: var(--bg) $i;
+		--page-foreground: var(--fg) $i;
+		--page-border-color: var(--border) $i;
+
+		--revision-text-color: var(--fg) $i;
+		--link-color: var(--fg-link) $i;
+		--link-hover-color: var(--fg-link) $i;
+
+		colors = {
+			type:     11
+			reserved: 12,
+			string:   13,
+			regex:    14,
+		}
+		for k, v in colors {
+			--syntax-{k}-color: s('var(--color%s)', v) $i;
+		}
+		--syntax-comment-color: var(--fg2) $i;
+		--syntax-symbol-highlight: var(--hl) $i;
+
+		--diff-minus-line-background: color-a(1) $i;
+		--diff-plus-line-background: color-a(2) $i;
+
+		--blame-popup-background: var(--bg) $i;
+		--blame-popup-color: var(--fg) $i;
+
+		--search-box-background-image: none $i;
+
+		--reserve-fg: var(--fg);
+		--reserve-pad: var(--pad);
+
+		lnh();
+	}
+
+	/**
+	 * Global
+	**/
+	a {
+		fg(-link);
+
+		&:not(:hover) {
+			text-decoration: none $i;
+		}
+	}
+	h1,
+	h2,
+	h3,
+	h4 {
+		normalise-header(false);
+	}
+	input {
+		&:not([type]),
+		&[type="text"],
+		&[type="number"],
+		&[type="search"],
+		/.field,
+		/textarea {
+			normalise-input();
+
+			@media (prefers-reduced-motion: no-preference) {
+				transition-property: border-color $i;
+			}
+		}
+		&[type="submit"],
+		&[type="button"],
+		/button {
+			normalise-button();
+		}
+		&[type="checkbox"] {
+			normalise-checkbox(false);
+			margin-right: 1ch $i;
+		}
+		&[type="range"] {
+			normalise-range();
+			shd(0);
+		}
+	}
+	input,
+	button {
+		height: unset $i;
+	}
+	select {
+		normalise-select();
+	}
+	label {
+		flex();
+	}
+	.navpanel-icon,
+	[class*="icon-"]::before {
+		fg();
+		lnh();
+		mar(0);
+		box(var(--font-size));
+	}
+	.icon-cog:not(:hover)::before {
+		fg(2);
+	}
+
+	/**
+	 * Hide elements
+	**/
+	.navpanel-icon.icon-down-dir,
+	#foot, .footer {
+		display: none;
+	}
+
+	/**
+	 * Content
+	**/
+	// Global
+	.content {
+		pad(0);
+
+		&:has(> #panel) {
+			margin-left: var(--sidebar-width);
+		}
+	}
+	.breadcrumbs {
+		bg(2);
+		pad();
+		brd(bottom);
+		width: 100%;
+	}
+	.path-separator {
+		fg(2);
+		mar(0);
+	}
+	table.folder-content {
+		a,
+		th {
+			padding: var(--pad);
+		}
+		tr:hover {
+			hl();
+			--fg: var(--hl-fg);
+		}
+	}
+	.mimetype-fixed-container {
+		fg();
+		pad();
+		padding-left: calc(16px + var(--pad) * 2) $i;
+	}
+
+	// Header
+	#search-box {
+		bg(2);
+		fg();
+		pad();
+		brd(bottom);
+		header-focus();
+
+		fieldset {
+			gap: var(--pad);
+		}
+		input {
+			--bg2: var(--bg);
+			--fg: var(--reserve-fg);
+			--pad: calc(var(--reserve-pad) / 2);
+		}
+	}
+	#option-section {
+		pad(0);
+		flex-direction: row;
+		gap: var(--pad);
+	}
+	#revision {
+		fg();
+		pad(top);
+	}
+
+	// Settings
+	.intro,
+	.settings-page {
+		margin: var(--body-pad);
+	}
+
+	// Search
+	.results,
+	.file {
+		tr {
+			lnh();
+		}
+		a {
+			fg();
+		}
+	}
+	.results td {
+		padding: 0 var(--pad);
+
+		&:first-child {
+			bg(2);
+			brd(right);
+
+			&,
+			a {
+				fg(2);
+				font-family: var(--font-code) $i;
+
+				&:hover {
+					fg();
+					text-decoration: none $i;
+				}
+			}
+		}
+	}
+	.result-head > td {
+		pad(top);
+	}
+
+	// Code
+	.info-box {
+		pad();
+		brd(0);
+		brd(bottom);
+		mar(0);
+
+		colors = {
+			error:   9,
+			warning: 10,
+			info:    11,
+		}
+		for k, v in colors {
+			&-{k} {
+				background-color: color-a(v) $i;
+				border-color: s('var(--color%s)', v) $i;
+			}
+		}
+
+		h4 {
+			mar(top, 0);
+		}
+	}
+	.source-line-with-number {
+		lnh();
+		pad(0);
+
+		&.stuck {
+			bg();
+		}
+		&.last-stuck {
+			brd(bottom);
+			shd(0);
+		}
+	}
+	.nesting-sticky-line {
+		top: calc(var(--nesting-level) * var(--font-size) * var(--line-height));
+	}
+	.line-number {
+		@extend .results td:first-child;
+		padding: 0 var(--pad);
+	}
+	.hovered {
+		hl();
+	}
+
+	/**
+	 * Popups
+	**/
+	#context-menu {
+		brd();
+		shd(big);
+	}
+
+	/**
+	 * Sidebar
+	**/
+	#panel {
+		--big-header-height: calc(
+			var(--header-h) + (
+				var(--font-size) * var(--line-height) - var(--border-width)
+			) * 2
+		);
+		bg(2);
+		brd(0);
+		brd(right);
+		left: 0;
+		top: var(--big-header-height);
+		box(var(--sidebar-width), calc(100vh - var(--big-header-height)));
+		max-height: unset;
+
+		&-toggle {
+			background-color: transparent $i;
+			brd(0);
+			normalise-header();
+			mar();
+			display: flex;
+			width: calc(100% - var(--pad) * 2);
+			pointer-events: none;
+		}
+
+		input,
+		button {
+			--bg2: var(--bg);
+		}
+		h4 {
+			mar(left);
+			mar(right);
+		}
+		.item {
+			pad();
+		}
+		.copy {
+			box(unset);
+		}
+	}
+	#show-settings {
+		margin-left: auto;
+		pointer-events: all;
+	}
+	.panel-accel {
+		pad();
+	}
+	.blame-popup {
+		pad();
+		brd();
+		shd(big);
+	}
+}
