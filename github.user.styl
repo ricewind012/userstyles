@@ -1941,7 +1941,8 @@ normal-colors() {
 	 * React garbage
 	**/
 	// Global
-	[class^="Text-"] {
+	[class^="Text-"],
+	[class^="Octicon-"] {
 		fg();
 	}
 	[data-component="text"] {
@@ -1985,8 +1986,8 @@ normal-colors() {
 	[data-testid="raw-button"],
 	[class^="types__StyledButton-"]
 	[data-component="IconButton"] {
-		--pad: calc(var(--save-pad) / 2);
 		normalise-button();
+		gap: 0 $i;
 		shd(0);
 		box(unset, var(--header-h));
 
@@ -1994,9 +1995,25 @@ normal-colors() {
 			--bg2: var(--bg);
 		}
 	}
+	[data-component="buttonContent"] {
+		& > * {
+			mar(0);
+		}
+	}
 	[data-component="leadingVisual"] { // octicon
 		fg();
 		margin-right: 1ch $i;
+	}
+	[class^="types__StyledButton-"][aria-haspopup] {
+		normalise-select();
+
+		[data-component="trailingAction"],
+		[data-component="trailingVisual"] {
+			display: none $i;
+		}
+	}
+	[class^="ButtonGroup-"] {
+		gap: var(--pad) $i;
 	}
 
 	// Tabs
@@ -2113,9 +2130,132 @@ normal-colors() {
 			}
 		}
 	}
-	react-app main > :not(:empty) {
-		margin: var(--body-pad);
-		max-width: calc(100% - var(--body-pad) * 2);
+	react-app {
+		&[app-name="commits"] {
+			& > div > div {
+				padding: var(--body-pad) $i;
+				pad(top, 0);
+
+				& > div > header {
+					mar(0);
+
+					& > div {
+						// Text
+						& > div > h1 {
+							normalise-header();
+							width: 100%;
+						}
+
+						// Border
+						&:last-child {
+							display: none;
+						}
+					}
+				}
+			}
+
+			// Content
+			main {
+				// Buttons
+				& > [class*=" "] > div > :first-child {
+					gap: var(--pad) $i;
+					mar(bottom);
+
+					& > div {
+						gap: var(--pad) $i;
+					}
+				}
+
+				// Commits
+				.border.rounded-2 {
+					brd(0);
+				}
+			}
+			[data-testid="commit-row-item"] {
+				bg(2);
+				pad();
+				brd();
+				mar(bottom);
+
+				& > .px-2 {
+					display: none $i;
+				}
+				button,
+				.Button {
+					--bg2: var(--bg);
+				}
+
+				.text-mono {
+					margin-right: calc(var(--pad) * 2) $i;
+
+					// Commit hash
+					.Button-label {
+						fg();
+						font-family: var(--font-code) $i;
+					}
+				}
+			}
+			[data-testid="listview-item-title-container"] {
+				pad(0);
+				flex();
+			}
+			[data-testid="listview-item-main-content"] {
+				pad(0);
+
+				& > div {
+					pad(0);
+				}
+			}
+
+			// Author
+			[data-testid="listview-item-description"] {
+				fg(2);
+				gap: var(--pad) $i;
+
+				// Commit description
+				&:first-child:not(:only-child) {
+					pad(top);
+					brd(top);
+					brd(bottom);
+					mar(bottom);
+				}
+			}
+
+			// Author name
+			[data-testid="avatar-icon-link"] + a {
+				fg();
+			}
+
+			// Right side
+			[data-testid="listview-item-metadata"] {
+				gap: var(--pad) $i;
+				pad(0);
+			}
+			[data-testid="listview-item-metadata-item"] {
+				gap: var(--pad) $i;
+			}
+
+			// Date
+			.Timeline-Item {
+				padding: var(--pad) 0 $i;
+				margin-top: calc(var(--pad) * -1) $i;
+
+				&::before {
+					background-color: var(--border) $i;
+				}
+			}
+			[class^="Timeline__TimelineBody-"] {
+				fg(2);
+
+				& > h3 {
+					padding: calc(var(--pad) / 2) var(--pad) $i;
+				}
+			}
+		}
+		&:not([app-name="commits"]) main > :not(:empty) {
+			margin: var(--body-pad);
+			max-width: calc(100% - var(--body-pad) * 2);
+		}
 	}
 	[data-selector="repos-split-pane-content"] {
 		pad(0);
