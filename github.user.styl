@@ -940,13 +940,11 @@ normal-colors() {
 	.footer, .AppHeader .Overlay-footer > :last-child,
 	.Layout-main > .thread-subscription-status,
 	#notification-subscribe-button-reason,
-	.Details .Link--secondary.text-mono, // Commit hash
 	.QueryBuilder-leadingVisualWrap, // icon
 	.js-calendar-graph > .f6, // "Learn how we count contributions"
 	[title="Label: Latest"], // "Latest" release label
 	.locked-conversation, // Issue comment in a locked conversation
 	//.Skeleton,
-	get-repo, // Repository clone button
 
 	// II. Recommendations / GitHub stuff
 	aside[aria-label="Star Topics"],
@@ -1283,20 +1281,6 @@ normal-colors() {
 			background: none transparent $i;
 			border-color: transparent $i;
 			z-index: 999 $i;
-
-			[data-target="readme-toc.content"] > & {
-				margin-left: calc(var(--sidebar-width) + var(--pad) * 2 - 2px);
-
-				/file-tree-toggle[class],
-				/.pr-toolbar .f5,
-				& > .text-mono {
-					display: none $i;
-				}
-			}
-
-			/:is(.page-focus, :not(:-moz-window-inactive)) & .Link--primary {
-				color: var(--accent-fg) $i;
-			}
 		}
 
 		.btn {
@@ -1310,18 +1294,6 @@ normal-colors() {
 	.js-sticky {
 		border-radius: 0 $i;
 		width: unset $i;
-
-		#readme > & {
-			--color-canvas-default: var(--color-bg-secondary);
-			justify-content: flex-start $i;
-
-			[aria-label="Edit this file"] {
-				margin-left: calc(var(--pad) * 2);
-			}
-			[aria-label="Table of Contents"] {
-				margin-left: calc(var(--pad) * -1) $i;
-			}
-		}
 	}
 	.Layout-sidebar {
 		& > * {
@@ -1941,6 +1913,7 @@ normal-colors() {
 	 * React garbage
 	**/
 	// Global
+	[class^="Link__StyledLink-"],
 	[class^="Text-"],
 	[class^="Octicon-"] {
 		fg();
@@ -1989,7 +1962,7 @@ normal-colors() {
 		normalise-button();
 		gap: 0 $i;
 		shd(0);
-		box(unset, var(--header-h));
+		box(unset);
 
 		#repos-sticky-header & {
 			--bg2: var(--bg);
@@ -2000,16 +1973,25 @@ normal-colors() {
 			mar(0);
 		}
 	}
-	[data-component="leadingVisual"] { // octicon
+
+	// Icons
+	[data-component="icon"],
+	[data-component="leadingVisual"] {
 		fg();
 		margin-right: 1ch $i;
 	}
-	[class^="types__StyledButton-"][aria-haspopup] {
-		normalise-select();
 
-		[data-component="trailingAction"],
-		[data-component="trailingVisual"] {
-			display: none $i;
+	[class^="types__StyledButton-"] {
+		&[data-size="small"] {
+			--pad: calc(var(--save-pad) / 2);
+		}
+		&[aria-haspopup] {
+			normalise-select();
+
+			[data-component="trailingAction"],
+			[data-component="trailingVisual"] {
+				display: none $i;
+			}
 		}
 	}
 	[class^="ButtonGroup-"] {
@@ -2046,7 +2028,38 @@ normal-colors() {
 		}
 	}
 
+	// etc.
+	[class^="Avatar__StyledAvatar-"] {
+		margin-right: 1ch $i;
+		box-shadow: 0 0 0 1px var(--border) $i;
+		box(var(--font-size));
+	}
+
 	.react {
+		// Repository overview
+		&-directory {
+			&-row {
+				height: unset $i;
+
+				&:hover {
+					bg(2);
+				}
+
+				td {
+					padding: calc(var(--pad) / 2) var(--pad) $i;
+					brd(top);
+				}
+			}
+			&-filename-column,
+			&-commit-age {
+				pad(0);
+			}
+			&-filename-column {
+				gap: var(--pad) $i;
+				height: unset $i;
+			}
+		}
+
 		// Code view
 		&-blob {
 			// Header
@@ -2111,8 +2124,25 @@ normal-colors() {
 				}
 			}
 		}
-		&-last-commit-history-group {
-			--bg2: var(--bg);
+		&-last-commit {
+			&-message {
+				gap: var(--pad) $i;
+
+				button {
+					--bg2: var(--bg);
+				}
+			}
+			&-history-group {
+				background-color: transparent $i;
+				pad(0);
+				brd(0);
+
+				&:hover {
+					span {
+						fg(-link);
+					}
+				}
+			}
 		}
 		&-line-number {
 			font-family: var(--font-code) $i;
@@ -2259,9 +2289,121 @@ normal-colors() {
 	}
 	[data-selector="repos-split-pane-content"] {
 		pad(0);
+		mar(0);
 
 		& > div {
 			mar(0);
+		}
+
+		// Repository overview
+		react-partial & > :last-child {
+			// Top buttons
+			& > :first-child {
+				pad(0);
+				pad(bottom);
+
+				& > div {
+					gap: var(--pad) $i;
+				}
+
+				// Icon buttons
+				a[data-no-visuals] {
+					mar(right);
+				}
+			}
+
+			// Content
+			& > :last-child {
+				gap: var(--pad) $i;
+
+				// Files
+				table[class] {
+					brd();
+				}
+				thead[class] {
+					display: none $i;
+				}
+				table[class] > tbody > :first-child {
+					fg();
+					height: unset $i;
+					position: sticky $i;
+					top: var(--header-h) $i;
+
+					& > td {
+						bg(2);
+						pad(0);
+						brd(0);
+
+						& > div {
+							pad();
+							gap: var(--pad) $i;
+							brd(bottom);
+							margin-bottom: calc(var(--border-width) * -1) $i;
+
+							& > div {
+								gap: var(--pad) $i;
+							}
+						}
+					}
+				}
+
+				// README
+				& > :last-child > :last-child:not([data-hpc]) {
+					brd();
+
+					// Tabs container
+					& > :first-child {
+						bg(2);
+						brd(0);
+						brd(bottom);
+						top: var(--header-h) $i;
+
+						// Tabs
+						nav {
+							pad(0);
+							min-height: unset $i;
+						}
+						ul {
+							gap: 0 $i;
+						}
+
+						// Tab
+						a {
+							fg(2);
+							lnh();
+							pad();
+							brd(0);
+
+							// Selected bottom border
+							&::after {
+								display: none $i;
+							}
+
+							// Selected
+							&[aria-current] {
+								--fg: var(--hl-fg);
+								hl();
+							}
+
+							&:not([aria-current]):hover {
+								background-color: transparent $i;
+								fg();
+							}
+						}
+
+						// Buttons
+						button {
+							--bg2: var(--bg);
+							--pad: calc(var(--save-pad) / 2);
+						}
+					}
+
+					// Content
+					& > div:last-of-type {
+						pad();
+					}
+				}
+			}
 		}
 	}
 	#repos {
@@ -2436,21 +2578,11 @@ normal-colors() {
 	/**
 	 * Unsorted
 	**/
-	#blob-path {
-		margin-left: 1ch $i;
-	}
 	#user-profile-frame > * > .mt-4:first-child .f4 {
 		mar(top);
 	}
-	.tab-size {
-		tab-size: 2 $i;
-	}
 	.Box-header .ml-n1 {
 		mar(0);
-	}
-	.js-navigation-item {
-		--pad: calc(var(--save-pad) / 2);
-		pad();
 	}
 	.js-yearly-contributions .dropdown {
 		mar(top, 0);
