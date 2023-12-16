@@ -1018,6 +1018,9 @@ normal-colors() {
 			&-start deferred-side-panel {
 				display: none;
 			}
+			&-end {
+				max-height: unset $i;
+			}
 		}
 		&-logo {
 			fg(2);
@@ -1132,6 +1135,10 @@ normal-colors() {
 	}
 	.application-main {
 		margin-top: var(--header-h);
+
+		&:has(react-app) {
+			margin: var(--body-pad);
+		}
 	}
 	#repository-container-header {
 		bg(2);
@@ -1921,6 +1928,10 @@ normal-colors() {
 	[data-component="text"] {
 		lnh();
 
+		&::before {
+			display: none $i;
+		}
+
 		.octicon {
 			fg();
 			vertical-align: middle $i;
@@ -1979,6 +1990,11 @@ normal-colors() {
 	[data-component="leadingVisual"] {
 		fg();
 		margin-right: 1ch $i;
+
+		& > div {
+			mar(0);
+			height: unset $i;
+		}
 	}
 
 	[class^="types__StyledButton-"] {
@@ -2163,8 +2179,7 @@ normal-colors() {
 	react-app {
 		&[app-name="commits"] {
 			& > div > div {
-				padding: var(--body-pad) $i;
-				pad(top, 0);
+				pad(0);
 
 				& > div > header {
 					mar(0);
@@ -2204,6 +2219,7 @@ normal-colors() {
 			[data-testid="commit-row-item"] {
 				bg(2);
 				pad();
+				gap: 0 $i;
 				brd();
 				mar(bottom);
 
@@ -2231,6 +2247,7 @@ normal-colors() {
 			}
 			[data-testid="listview-item-main-content"] {
 				pad(0);
+				pad(top);
 
 				& > div {
 					pad(0);
@@ -2274,6 +2291,14 @@ normal-colors() {
 					background-color: var(--border) $i;
 				}
 			}
+			.TimelineItem-Badge {
+				bg();
+				brd(0);
+
+				& > svg {
+					color: var(--border) $i;
+				}
+			}
 			[class^="Timeline__TimelineBody-"] {
 				fg(2);
 
@@ -2282,14 +2307,11 @@ normal-colors() {
 				}
 			}
 		}
-		&:not([app-name="commits"]) main > :not(:empty) {
-			margin: var(--body-pad);
-			max-width: calc(100% - var(--body-pad) * 2);
-		}
 	}
 	[data-selector="repos-split-pane-content"] {
 		pad(0);
 		mar(0);
+		max-width: unset $i;
 
 		& > div {
 			mar(0);
@@ -2385,9 +2407,14 @@ normal-colors() {
 								hl();
 							}
 
-							&:not([aria-current]):hover {
-								background-color: transparent $i;
-								fg();
+							&:not([aria-current]) {
+								&:hover {
+									background-color: transparent $i;
+									fg();
+								}
+								&:not(:hover) [data-component="icon"] {
+									--fg: var(--fg2);
+								}
 							}
 						}
 
@@ -2441,8 +2468,6 @@ normal-colors() {
 		}
 	}
 	.d-flex.gap-2 {
-		gap: var(--pad) $i;
-
 		& > div {
 			mar(0);
 		}
