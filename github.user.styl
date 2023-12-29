@@ -1136,7 +1136,7 @@ normal-colors() {
 	.application-main {
 		margin-top: var(--header-h);
 
-		&:has(react-app) {
+		&:has(react-app:not([app-name="blackbird-search"])) {
 			margin: var(--body-pad);
 		}
 	}
@@ -1985,6 +1985,20 @@ normal-colors() {
 		}
 	}
 
+	// Counter
+	[data-testid$="count-label"] {
+		background-color: transparent $i;
+		pad(0);
+		height: unset $i;
+
+		&::before {
+			content: '(';
+		}
+		&::after {
+			content: ')';
+		}
+	}
+
 	// Icons
 	[data-component="icon"],
 	[data-component="leadingVisual"] {
@@ -2012,6 +2026,79 @@ normal-colors() {
 	}
 	[class^="ButtonGroup-"] {
 		gap: var(--pad) $i;
+	}
+
+	// Lists
+	[class^="List__ListBox-"] {
+		pad(0);
+
+		[data-component="ActionList.Divider"] {
+			display: none $i;
+		}
+	}
+	[class^="Item__LiBox-"] {
+		fg(2);
+		lnh();
+		pad();
+		brd(0);
+		mar(0);
+		width: 100% $i;
+
+		// Active
+		&.gNwaKZ {
+			hl();
+		}
+
+		&::after {
+			display: none $i;
+		}
+
+		& > * {
+			pad(0);
+			height: unset $i;
+
+			// Icon
+			& > span {
+				fg();
+				mar(left, 0);
+				height: unset;
+
+				// Language circle
+				&:has(> div:empty) {
+					mar(right);
+				}
+			}
+		}
+		.negate-button {
+			box(unset);
+		}
+	}
+	[data-component="ActionList.Divider"] {
+		background-color: var(--border) $i;
+		mar(0);
+		height: var(--border-width) $i;
+	}
+
+	// Pagination
+	[class^="Pagination__PaginationContainer-"] {
+		mar(0);
+	}
+	[class^="Pagination__Page-"] {
+		normalise-button();
+		mar(right);
+		min-width: unset $i;
+		height: unset $i;
+
+		&[aria-disabled] {
+			@extend .Button:disabled;
+		}
+		&[aria-current] {
+			hl();
+		}
+
+		&::after {
+			display: none $i;
+		}
 	}
 
 	// Tabs
@@ -2049,6 +2136,13 @@ normal-colors() {
 		margin-right: 1ch $i;
 		box-shadow: 0 0 0 1px var(--border) $i;
 		box(var(--font-size));
+	}
+
+	// Body
+	[data-target="react-app.reactRoot"] {
+		& > div {
+			bg();
+		}
 	}
 
 	.react {
@@ -2177,6 +2271,114 @@ normal-colors() {
 		}
 	}
 	react-app {
+		&[app-name="blackbird-search"] {
+			// *Actual* body
+			.search-results-page > div > div > div {
+				// Sidebar
+				& > :first-child {
+					bg(2);
+					brd(right);
+					top: var(--header-h) $i;
+
+					& > [style^="--pane-width"] {
+						--pane-width: var(--sidebar-width) $i;
+
+						h2,
+						h3 {
+							normalise-header(false);
+							mar();
+						}
+						& + div {
+							display: none;
+						}
+					}
+					[data-testid="facets-pane"] {
+						pad(0);
+					}
+				}
+
+				// Content
+				& > :last-child > div > div {
+					padding: var(--body-pad) $i;
+
+					[data-testid="search-sub-header"] {
+						& > div {
+							gap: var(--pad) $i;
+
+							// Right side buttons
+							& > div {
+								mar(right);
+							}
+						}
+					}
+
+					// Results list
+					& > div > :nth-last-child(2) {
+						pad(top);
+					}
+					[data-testid="results-list"] {
+						gap: var(--pad) $i;
+
+						& > div {
+							// Header
+							& > :first-child,
+							// "Show X more matches"
+							& > a {
+								bg(3);
+								pad();
+								brd();
+								height: unset $i;
+
+								button {
+									--bg2: var(--bg);
+									--pad: calc(var(--save-pad) / 2);
+									normalise-button();
+									box(unset);
+								}
+							}
+
+							// Code
+							& > :nth-child(2) {
+								bg(2);
+								brd(left);
+								brd(right);
+
+								&:last-child {
+									brd(0);
+									brd(left);
+									brd(right);
+									brd(bottom);
+								}
+
+								& > div {
+									pad(0);
+								}
+								.blob-num {
+									bg(3);
+									brd(right);
+								}
+
+								// Separator
+								[style^="margin-top"] {
+									brd(bottom);
+									mar(0);
+								}
+							}
+						}
+					}
+
+					// Pagination
+					& > div > :last-child {
+						pad(top);
+						pad(bottom, 0);
+
+						& > div {
+							pad(0);
+						}
+					}
+				}
+			}
+		}
 		&[app-name="commits"] {
 			& > div > div {
 				pad(0);
