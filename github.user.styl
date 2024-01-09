@@ -1968,7 +1968,7 @@ normal-colors() {
 
 	// Buttons
 	[data-testid="raw-button"],
-	[class^="types__StyledButton-"]
+	[class*="types__StyledButton-"]
 	[data-component="IconButton"] {
 		normalise-button();
 		gap: 0 $i;
@@ -2011,7 +2011,7 @@ normal-colors() {
 		}
 	}
 
-	[class^="types__StyledButton-"] {
+	[class*="types__StyledButton-"] {
 		&[data-size="small"] {
 			--pad: calc(var(--save-pad) / 2);
 		}
@@ -2093,6 +2093,44 @@ normal-colors() {
 		background-color: var(--border) $i;
 		mar(0);
 		height: var(--border-width) $i;
+	}
+
+	// Tree
+	.PRIVATE_TreeView {
+		&-item {
+			&[aria-current] &-container {
+				hl();
+				--fg: var(--hl-fg);
+			}
+			&-container {
+				fg();
+				brd(0);
+
+				&::after {
+					display: none $i;
+				}
+
+				&:hover {
+					bg(3);
+				}
+			}
+			&-toggle {
+				fg(2);
+
+				&:hover {
+					fg();
+				}
+			}
+			&-content {
+				padding: 0 var(--pad) $i;
+			}
+			&-visual {
+				fg();
+			}
+			&-level-line:hover {
+				border-color: var(--border) $i;
+			}
+		}
 	}
 
 	// Pagination
@@ -2292,30 +2330,94 @@ normal-colors() {
 			}
 		}
 		&-code {
-			// Latest commit
 			&-view-bottom-padding {
-				& + div > div:first-of-type {
-					bg(2);
-					brd();
-					mar(bottom);
-
-					& > div {
-						gap: var(--pad);
-						pad();
+				& + div > div {
+					// Latest commit
+					&:first-of-type {
+						bg(2);
+						brd();
+						mar(bottom);
 
 						& > div {
 							gap: var(--pad);
+							pad();
+
+							& > div {
+								gap: var(--pad);
+							}
+						}
+						a:not(.issue-link) {
+							fg();
+						}
+						[data-testid="avatar-icon-link"] + span > a {
+							fg(-link);
+						}
+						img {
+							mar(right);
+							box(var(--font-size));
 						}
 					}
-					a:not(.issue-link) {
-						fg();
-					}
-					[data-testid="avatar-icon-link"] + span > a {
-						fg(-link);
-					}
-					img {
-						mar(right);
-						box(var(--font-size));
+
+					// Code view/symbols
+					&:last-of-type {
+						& > :first-child {
+							mar(right);
+						}
+
+						// Symbols
+						.panel-content-narrow-styles {
+							brd(0);
+							top: var(--header-h) $i;
+
+							button {
+								fg(2);
+							}
+						}
+
+						// what the hell ?
+						#symbols-pane > div {
+							& > :not([class*=" "]) > div {
+								& > :first-child,
+								& > div > :first-child {
+									brd(0);
+								}
+							}
+						}
+						#symbols-pane-header {
+							normalise-header();
+							justify-content: left;
+							width: 100% $i;
+						}
+						[aria-roledescription="Symbol Navigation Details"] {
+							pad(0);
+							pad(bottom);
+							brd(bottom);
+							mar(bottom);
+						}
+						[aria-labelledby="symbols-pane-header"] {
+							pad(0);
+
+							& > :nth-child(2) {
+								fg();
+								pad(0);
+							}
+						}
+
+						// Header/section, I don't know
+						.bVrwaI,
+						.coSTPM {
+							normalise-header(false);
+							background-color: transparent $i;
+							brd(top, 0);
+							height: unset $i;
+						}
+
+						// Bottom
+						.iEQKDS {
+							fg();
+							brd(top);
+							padding: var(--pad) 0 $i;
+						}
 					}
 				}
 			}
@@ -2354,6 +2456,7 @@ normal-colors() {
 				bg(2);
 				lnh();
 				brd(right);
+				mar(0);
 			}
 
 			& > span { // arrow
@@ -2362,7 +2465,29 @@ normal-colors() {
 				top: -4px;
 			}
 		}
+		&-tree-show-tree-items {
+			& > div {
+				pad(0);
+			}
+		}
 	}
+
+	// Code view sidebar
+	[style^="--sticky-pane-height"] > div > div  {
+		& > :first-child > div {
+			margin-left: calc(var(--body-pad) * -1) $i
+			top: var(--header-h) $i;
+			height: calc(100vh - var(--header-h)) $i;
+		}
+		& > :last-child {
+			margin-left: var(--body-pad);
+
+			@media (max-width: 1349px) and (min-width: 768px) {
+				mar(0);
+			}
+		}
+	}
+
 	react-app {
 		&[app-name="blackbird-search"] {
 			// *Actual* body
@@ -2709,8 +2834,39 @@ normal-colors() {
 				border-top: none $i;
 			}
 		}
+
+		// Code view sidebar
 		&-file-tree {
 			bg(2);
+
+			button,
+			[type="button"],
+			.TextInput-wrapper {
+				--bg2: var(--bg);
+			}
+
+			& > :first-child {
+				pad();
+				brd(bottom);
+
+				& > :first-child {
+					mar(bottom);
+				}
+				[role="tooltip"] {
+					mar(right);
+				}
+			}
+			& > :nth-child(2) {
+				pad();
+				brd(bottom);
+				mar(0);
+			}
+			& > :nth-child(3) {
+				// Shadow
+				&:empty {
+					display: none $i;
+				}
+			}
 		}
 	}
 	#StickyHeader {
@@ -2738,6 +2894,10 @@ normal-colors() {
 	}
 	#highlighted-line-menu-container > button {
 		left: calc((16px + var(--pad) / 2) * -1);
+	}
+	[style^="--pane-width"] + div {
+		background-color: var(--border) $i;
+		width: var(--border-width) $i;
 	}
 
 	.cm {
