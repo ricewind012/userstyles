@@ -2035,6 +2035,24 @@ normal-colors() {
 		[data-component="ActionList.Divider"] {
 			display: none $i;
 		}
+		li[role="none"] {
+			mar(0);
+
+			& > [aria-hidden="true"] {
+				normalise-header();
+				mar();
+			}
+		}
+	}
+	$li-item-icon {
+		fg();
+		mar(left, 0);
+		height: unset;
+
+		// Language circle
+		&:has(> div:empty) {
+			mar(right);
+		}
 	}
 	[class^="Item__LiBox-"] {
 		fg(2);
@@ -2048,6 +2066,9 @@ normal-colors() {
 		&.gNwaKZ {
 			hl();
 		}
+		&[role="menuitem"] {
+			fg();
+		}
 
 		&::after {
 			display: none $i;
@@ -2057,17 +2078,12 @@ normal-colors() {
 			pad(0);
 			height: unset $i;
 
-			// Icon
 			& > span {
-				fg();
-				mar(left, 0);
-				height: unset;
-
-				// Language circle
-				&:has(> div:empty) {
-					mar(right);
-				}
+				@extend $li-item-icon;
 			}
+		}
+		& > span {
+			@extend $li-item-icon;
 		}
 		.negate-button {
 			box(unset);
@@ -2127,6 +2143,83 @@ normal-colors() {
 
 			& > span {
 				all: unset $i;
+			}
+		}
+	}
+	$underline-nav = '[class^="UnderlineNav__NavigationList-"]';
+	{s('nav:has(%s)', unquote($underline-nav))} {
+		pad(0);
+		min-height: unset $i;
+	}
+	{$underline-nav} {
+		gap: 0 $i;
+
+		a {
+			fg(2);
+			lnh();
+			pad();
+			brd(0);
+
+			// Selected bottom border
+			&::after {
+				display: none $i;
+			}
+
+			// Selected
+			&[aria-current] {
+				--fg: var(--hl-fg);
+				hl();
+			}
+
+			&:not([aria-current]) {
+				&:hover {
+					background-color: transparent $i;
+					fg();
+				}
+				&:not(:hover) [data-component="icon"] {
+					--fg: var(--fg2);
+				}
+			}
+		}
+	}
+	[class^="TabNav__TabNavBase-"] {
+		pad(0);
+		brd(0);
+	}
+	[class^="TabNav__TabNavNav-"] {
+		bg(2);
+		brd(bottom);
+	}
+	[class^="TabNav__TabNavTabList-"] {
+		mar(0);
+
+		.TabNav-item {
+			pad();
+			brd(0);
+			transition: none $i;
+
+			&:not(:hover) {
+				fg(2);
+			}
+			&[aria-selected="true"] {
+				hl();
+			}
+		}
+	}
+
+	// Overlay
+	[class^="Overlay__StyledOverlay-"] {
+		bg();
+		brd();
+		shd(big);
+		dropfade();
+
+		[class^="Item__LiBox-"] {
+			transition: none $i;
+
+			&:hover {
+				hl();
+				--fg: var(--hl-fg);
 			}
 		}
 	}
@@ -2581,44 +2674,6 @@ normal-colors() {
 						brd(0);
 						brd(bottom);
 						top: var(--header-h) $i;
-
-						// Tabs
-						nav {
-							pad(0);
-							min-height: unset $i;
-						}
-						ul {
-							gap: 0 $i;
-						}
-
-						// Tab
-						a {
-							fg(2);
-							lnh();
-							pad();
-							brd(0);
-
-							// Selected bottom border
-							&::after {
-								display: none $i;
-							}
-
-							// Selected
-							&[aria-current] {
-								--fg: var(--hl-fg);
-								hl();
-							}
-
-							&:not([aria-current]) {
-								&:hover {
-									background-color: transparent $i;
-									fg();
-								}
-								&:not(:hover) [data-component="icon"] {
-									--fg: var(--fg2);
-								}
-							}
-						}
 
 						// Buttons
 						button {
