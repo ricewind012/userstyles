@@ -578,6 +578,9 @@ normal-colors() {
 	p {
 		mar(bottom);
 	}
+	mark {
+		hl();
+	}
 
 	// Primer
 	body,
@@ -1621,6 +1624,16 @@ normal-colors() {
 			.btn {
 				--bg2: var(--bg);
 			}
+			.details-overlay > .btn-link {
+				normalise-button();
+				--bg2: var(--bg);
+				--pad: calc(var(--save-pad) / 2);
+
+				& > svg {
+					fg();
+					mar(0);
+				}
+			}
 		}
 	}
 	.dashboard-sidebar {
@@ -1988,6 +2001,7 @@ normal-colors() {
 	// Counter
 	[data-testid$="count-label"] {
 		background-color: transparent $i;
+		fg();
 		pad(0);
 		height: unset $i;
 
@@ -2063,11 +2077,16 @@ normal-colors() {
 		width: 100% $i;
 
 		// Active
-		&.gNwaKZ {
+		$active = '.jllloE';
+		&{$active} {
 			hl();
+			--fg: var(--hl-fg);
 		}
 		&[role="menuitem"] {
 			fg();
+		}
+		&:not({$active}):hover {
+			bg(3);
 		}
 
 		&::after {
@@ -2474,7 +2493,7 @@ normal-colors() {
 
 	// Code view sidebar
 	[style^="--sticky-pane-height"] > div > div  {
-		& > :first-child > div {
+		[app-name="react-code-view"] & > :first-child > div {
 			margin-left: calc(var(--body-pad) * -1) $i
 			top: var(--header-h) $i;
 			height: calc(100vh - var(--header-h)) $i;
