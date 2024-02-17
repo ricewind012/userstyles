@@ -2077,7 +2077,7 @@ normal-colors() {
 		width: 100% $i;
 
 		// Active
-		$active = '.jllloE';
+		$active = '.juEGlc';
 		&{$active} {
 			hl();
 			--fg: var(--hl-fg);
@@ -2350,92 +2350,96 @@ normal-colors() {
 		}
 		&-code {
 			&-view-bottom-padding {
-				& + div > div {
-					// Latest commit
-					&:first-of-type {
-						bg(2);
-						brd();
-						mar(bottom);
+				& + div {
+					mar(0);
 
-						& > div {
-							gap: var(--pad);
-							pad();
+					& > div {
+						// Latest commit
+						&:first-of-type {
+							bg(2);
+							brd();
+							mar(bottom);
 
 							& > div {
 								gap: var(--pad);
-							}
-						}
-						a:not(.issue-link) {
-							fg();
-						}
-						[data-testid="avatar-icon-link"] + span > a {
-							fg(-link);
-						}
-						img {
-							mar(right);
-							box(var(--font-size));
-						}
-					}
+								pad();
 
-					// Code view/symbols
-					&:last-of-type {
-						& > :first-child {
-							mar(right);
-						}
-
-						// Symbols
-						.panel-content-narrow-styles {
-							brd(0);
-							top: var(--header-h) $i;
-
-							button {
-								fg(2);
-							}
-						}
-
-						// what the hell ?
-						#symbols-pane > div {
-							& > :not([class*=" "]) > div {
-								& > :first-child,
-								& > div > :first-child {
-									brd(0);
+								& > div {
+									gap: var(--pad);
 								}
 							}
-						}
-						#symbols-pane-header {
-							normalise-header();
-							justify-content: left;
-							width: 100% $i;
-						}
-						[aria-roledescription="Symbol Navigation Details"] {
-							pad(0);
-							pad(bottom);
-							brd(bottom);
-							mar(bottom);
-						}
-						[aria-labelledby="symbols-pane-header"] {
-							pad(0);
-
-							& > :nth-child(2) {
+							a:not(.issue-link) {
 								fg();
-								pad(0);
+							}
+							[data-testid="avatar-icon-link"] + span > a {
+								fg(-link);
+							}
+							img {
+								mar(right);
+								box(var(--font-size));
 							}
 						}
 
-						// Header/section, I don't know
-						.bVrwaI,
-						.coSTPM {
-							normalise-header(false);
-							background-color: transparent $i;
-							brd(top, 0);
-							height: unset $i;
-						}
+						// Code view/symbols
+						&:last-of-type {
+							& > :first-child:not(:only-child) {
+								mar(right);
+							}
 
-						// Bottom
-						.iEQKDS {
-							fg();
-							brd(top);
-							padding: var(--pad) 0 $i;
+							// Symbols
+							.panel-content-narrow-styles {
+								brd(0);
+								top: var(--header-h) $i;
+
+								button {
+									fg(2);
+								}
+							}
+
+							// what the hell ?
+							#symbols-pane > div {
+								& > :not([class*=" "]) > div {
+									& > :first-child,
+									& > div > :first-child {
+										brd(0);
+									}
+								}
+							}
+							#symbols-pane-header {
+								normalise-header();
+								justify-content: left;
+								width: 100% $i;
+							}
+							[aria-roledescription="Symbol Navigation Details"] {
+								pad(0);
+								pad(bottom);
+								brd(bottom);
+								mar(bottom);
+							}
+							[aria-labelledby="symbols-pane-header"] {
+								pad(0);
+
+								& > :nth-child(2) {
+									fg();
+									pad(0);
+								}
+							}
+
+							// Header/section, I don't know
+							.bVrwaI,
+							.coSTPM {
+								normalise-header(false);
+								background-color: transparent $i;
+								brd(top, 0);
+								height: unset $i;
+							}
+
+							// Bottom
+							.iEQKDS {
+								fg();
+								brd(top);
+								padding: var(--pad) 0 $i;
+							}
 						}
 					}
 				}
@@ -2747,89 +2751,79 @@ normal-colors() {
 			}
 		}
 	}
-	[data-selector="repos-split-pane-content"] {
-		pad(0);
-		mar(0);
-		max-width: unset $i;
+	// Repository overview
+	react-partial[partial-name="repos-overview"] > div > div {
+		// Top buttons
+		& > :nth-child(2) {
+			pad(0);
+			pad(bottom);
 
-		& > div {
-			mar(0);
+			& > div {
+				gap: var(--pad) $i;
+			}
+
+			// Icon buttons
+			a[data-no-visuals] {
+				mar(right);
+			}
 		}
 
-		// Repository overview
-		react-partial & > :last-child {
-			// Top buttons
-			& > :first-child {
-				pad(0);
-				pad(bottom);
+		// Content
+		& > :last-child {
+			gap: var(--pad) $i;
 
-				& > div {
-					gap: var(--pad) $i;
-				}
+			// Files
+			table[class] {
+				brd();
+			}
+			thead[class] {
+				display: none $i;
+			}
+			table[class] > tbody > :first-child {
+				fg();
+				height: unset $i;
+				position: sticky $i;
+				top: var(--header-h) $i;
 
-				// Icon buttons
-				a[data-no-visuals] {
-					mar(right);
+				& > td {
+					bg(2);
+					pad(0);
+					brd(0);
+
+					& > div {
+						pad();
+						gap: var(--pad) $i;
+						brd(bottom);
+						margin-bottom: calc(var(--border-width) * -1) $i;
+
+						& > div {
+							gap: var(--pad) $i;
+						}
+					}
 				}
 			}
 
-			// Content
-			& > :last-child {
-				gap: var(--pad) $i;
+			// README
+			& > :last-child > :last-child:not([data-hpc]) {
+				brd();
 
-				// Files
-				table[class] {
-					brd();
-				}
-				thead[class] {
-					display: none $i;
-				}
-				table[class] > tbody > :first-child {
-					fg();
-					height: unset $i;
-					position: sticky $i;
+				// Tabs container
+				& > :first-child {
+					bg(2);
+					brd(0);
+					brd(bottom);
 					top: var(--header-h) $i;
 
-					& > td {
-						bg(2);
-						pad(0);
-						brd(0);
-
-						& > div {
-							pad();
-							gap: var(--pad) $i;
-							brd(bottom);
-							margin-bottom: calc(var(--border-width) * -1) $i;
-
-							& > div {
-								gap: var(--pad) $i;
-							}
-						}
+					// Buttons
+					button {
+						--bg2: var(--bg);
+						--pad: calc(var(--save-pad) / 2);
 					}
 				}
 
-				// README
-				& > :last-child > :last-child:not([data-hpc]) {
-					brd();
-
-					// Tabs container
-					& > :first-child {
-						bg(2);
-						brd(0);
-						brd(bottom);
-						top: var(--header-h) $i;
-
-						// Buttons
-						button {
-							--bg2: var(--bg);
-							--pad: calc(var(--save-pad) / 2);
-						}
-					}
-
-					// Content
-					& > div:last-of-type {
-						pad();
-					}
+				// Content
+				& > div:last-of-type {
+					pad();
 				}
 			}
 		}
