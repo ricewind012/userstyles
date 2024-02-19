@@ -411,9 +411,10 @@ normal-colors() {
 
 		// Action list (sidebar)
 		--color-action-list-item-inline-divider: var(--border) $i;
-		--color-action-list-item-default-hover-bg: var(--bg2) $i;
+		--color-action-list-item-default-hover-bg: var(--bg3) $i;
 		--color-action-list-item-default-active-bg: var(--bg2) i;
-		--color-action-list-item-default-selected-bg: var(--bg2) $i;
+		// Can't target the active element in React parts, so make it more visible.
+		--color-action-list-item-default-selected-bg: var(--bg) $i;
 		--color-action-list-item-danger-hover-bg: color-a(1) $i;
 		--color-action-list-item-danger-active-bg: color-a(9) $i;
 
@@ -437,6 +438,7 @@ normal-colors() {
 		}
 
 		// Syntax highlighting
+		--color-prettylights-syntax-comment: var(--fg2) $i;
 		colors = {
 			constant:                9,
 			string:                  10,
@@ -475,6 +477,7 @@ normal-colors() {
 		--color-border-default: var(--border) $i;
 		--color-border-muted: var(--border) $i;
 		--color-border-subtle: var(--border) $i;
+		--color-avatar-border: var(--border) $i;
 
 		// Shadows
 		--color-shadow-medium: var(--shadow-low) $i;
@@ -539,6 +542,7 @@ normal-colors() {
 		}
 
 		// Unsorted
+		--color-tree-view-item-directory-fill: inherit $i;
 		--color-intro-shelf-gradient-in: var(--bg2) $i;
 		--color-social-count-bg: var(--bg2) $i;
 		--color-page-header-bg: var(--bg2) $i;
@@ -1933,11 +1937,6 @@ normal-colors() {
 	 * React garbage
 	**/
 	// Global
-	[class^="Link__StyledLink-"],
-	[class^="Text-"],
-	[class^="Octicon-"] {
-		fg();
-	}
 	[data-component="text"] {
 		lnh();
 
@@ -1946,7 +1945,6 @@ normal-colors() {
 		}
 
 		.octicon {
-			fg();
 			vertical-align: middle $i;
 		}
 	}
@@ -1970,8 +1968,6 @@ normal-colors() {
 				display: none;
 			}
 			&:last-child {
-				fg(2);
-
 				& > div {
 					mar(0);
 				}
@@ -2001,7 +1997,6 @@ normal-colors() {
 	// Counter
 	[data-testid$="count-label"] {
 		background-color: transparent $i;
-		fg();
 		pad(0);
 		height: unset $i;
 
@@ -2016,7 +2011,6 @@ normal-colors() {
 	// Icons
 	[data-component="icon"],
 	[data-component="leadingVisual"] {
-		fg();
 		margin-right: 1ch $i;
 
 		& > div {
@@ -2059,7 +2053,6 @@ normal-colors() {
 		}
 	}
 	$li-item-icon {
-		fg();
 		mar(left, 0);
 		height: unset;
 
@@ -2069,25 +2062,11 @@ normal-colors() {
 		}
 	}
 	[class^="Item__LiBox-"] {
-		fg(2);
 		lnh();
 		pad();
 		brd(0);
 		mar(0);
 		width: 100% $i;
-
-		// Active
-		$active = '.juEGlc';
-		&{$active} {
-			hl();
-			--fg: var(--hl-fg);
-		}
-		&[role="menuitem"] {
-			fg();
-		}
-		&:not({$active}):hover {
-			bg(3);
-		}
 
 		&::after {
 			display: none $i;
@@ -2122,20 +2101,13 @@ normal-colors() {
 				--fg: var(--hl-fg);
 			}
 			&-container {
-				fg();
 				brd(0);
 
 				&::after {
 					display: none $i;
 				}
-
-				&:hover {
-					bg(3);
-				}
 			}
 			&-toggle {
-				fg(2);
-
 				&:hover {
 					fg();
 				}
@@ -2145,9 +2117,6 @@ normal-colors() {
 			}
 			&-visual {
 				fg();
-			}
-			&-level-line:hover {
-				border-color: var(--border) $i;
 			}
 		}
 	}
@@ -2266,7 +2235,6 @@ normal-colors() {
 
 	// Overlay
 	[class^="Overlay__StyledOverlay-"] {
-		bg();
 		brd();
 		shd(big);
 		dropfade();
@@ -2284,15 +2252,7 @@ normal-colors() {
 	// etc.
 	[class^="Avatar__StyledAvatar-"] {
 		margin-right: 1ch $i;
-		box-shadow: 0 0 0 1px var(--border) $i;
 		box(var(--font-size));
-	}
-
-	// Body
-	[data-target="react-app.reactRoot"] {
-		& > div {
-			bg();
-		}
 	}
 
 	.react {
@@ -2333,18 +2293,6 @@ normal-colors() {
 						gap: var(--pad);
 						mar(0);
 					}
-				}
-			}
-
-			// <textarea>
-			&-print-hide {
-				font-family: var(--font-code) $i;
-				line-height: 21px $i;
-				margin-top: -1px $i;
-
-				&::selection {
-					bg(2);
-					color: transparent $i;
 				}
 			}
 		}
@@ -2390,10 +2338,6 @@ normal-colors() {
 							.panel-content-narrow-styles {
 								brd(0);
 								top: var(--header-h) $i;
-
-								button {
-									fg(2);
-								}
 							}
 
 							// what the hell ?
@@ -2436,7 +2380,6 @@ normal-colors() {
 
 							// Bottom
 							.iEQKDS {
-								fg();
 								brd(top);
 								padding: var(--pad) 0 $i;
 							}
@@ -2477,15 +2420,12 @@ normal-colors() {
 
 			&s {
 				bg(2);
-				lnh();
 				brd(right);
-				mar(0);
 			}
 
 			& > span { // arrow
 				mar(0);
-				left: -2ch;
-				top: -4px;
+				top: -2px;
 			}
 		}
 		&-tree-show-tree-items {
@@ -2595,7 +2535,6 @@ normal-colors() {
 									pad(0);
 								}
 								.blob-num {
-									bg(3);
 									brd(right);
 								}
 
@@ -2699,7 +2638,6 @@ normal-colors() {
 
 			// Author
 			[data-testid="listview-item-description"] {
-				fg(2);
 				gap: var(--pad) $i;
 
 				// Commit description
@@ -2729,13 +2667,8 @@ normal-colors() {
 			.Timeline-Item {
 				padding: var(--pad) 0 $i;
 				margin-top: calc(var(--pad) * -1) $i;
-
-				&::before {
-					background-color: var(--border) $i;
-				}
 			}
 			.TimelineItem-Badge {
-				bg();
 				brd(0);
 
 				& > svg {
@@ -2743,8 +2676,6 @@ normal-colors() {
 				}
 			}
 			[class^="Timeline__TimelineBody-"] {
-				fg(2);
-
 				& > h3 {
 					padding: calc(var(--pad) / 2) var(--pad) $i;
 				}
@@ -2780,7 +2711,6 @@ normal-colors() {
 				display: none $i;
 			}
 			table[class] > tbody > :first-child {
-				fg();
 				height: unset $i;
 				position: sticky $i;
 				top: var(--header-h) $i;
@@ -2909,91 +2839,7 @@ normal-colors() {
 		left: calc((16px + var(--pad) / 2) * -1);
 	}
 	[style^="--pane-width"] + div {
-		background-color: var(--border) $i;
 		width: var(--border-width) $i;
-	}
-
-	.cm {
-		&-header,
-		&-def,
-		&-negative,
-		&-qualifier,
-		&-error,
-		&-attribute,
-		&-link {
-			clr(9);
-		}
-		&-quote,
-		&-positive,
-		&-number,
-		&-variable-3,
-		&-builtin,
-		&-atom {
-			clr(10);
-		}
-		&-operator {
-			clr(11);
-		}
-		&-keyword,
-		&-tag {
-			clr(12);
-		}
-		&-string,
-		&-string-2,
-		&-property {
-			clr(13);
-		}
-		&-variable,
-		&-variable-2 {
-			clr(14);
-		}
-		&-comment,
-		&-bracket,
-		&-punctuation,
-		&-meta {
-			fg(2);
-		}
-		&-matchhighlight {
-			hl();
-		}
-	}
-	.CodeMirror {
-		bgc();
-		pad(0);
-
-		&-gutters {
-			bg(2);
-			brd(right);
-		}
-		&-line {
-			padding: 0 var(--body-pad) $i;
-
-			&s {
-				padding: var(--body-pad) 0;
-			}
-			&number {
-				fg(2);
-				font-family: var(--font-code) $i;
-
-				&:hover {
-					fg();
-				}
-			}
-		}
-		&-activeline-background,
-		&-selected {
-			bg(2);
-		}
-		&-cursor {
-			border-left-color: var(--fg);
-		}
-		&-matchingbracket,
-		&-nonmatchingbracket {
-			color: var(--hl-fg) $i;
-		}
-		&-matchingbracket {
-			background-color: var(--hl);
-		}
 	}
 
 	/**
@@ -3015,7 +2861,8 @@ normal-colors() {
 	}
 	.text-mono,
 	.commit .sha,
-	.blob-code-inner {
+	.blob-code-inner,
+	.react-file-line {
 		font-family: var(--font-code) $i;
 	}
 	.gist-banner {
