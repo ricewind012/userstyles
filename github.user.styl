@@ -1121,20 +1121,9 @@ normal-colors() {
 		// Make mobile overlays look like normal popouts
 		.Overlay {
 			normal-colors();
-			brd();
-			height: unset !important;
-			dropfade();
-
-			&-backdrop {
-				&--side {
-					background-color: transparent;
-				}
-				for i in left right {
-					&--placement-{i} {
-						{i}: var(--base-size-16);
-					}
-				}
-			}
+			mar(0);
+			box(var(--overlay-width), var(--overlay-height));
+			top: var(--header-h) $i;
 		}
 	}
 	.search-input {
@@ -1745,7 +1734,7 @@ normal-colors() {
 		/.Overlay,
 		&-modal {
 			brd();
-			fade(drop);
+			dropfade();
 		}
 		&-header,
 		&-item {
@@ -2439,32 +2428,35 @@ normal-colors() {
 			}
 		}
 	}
+	
+	react-app,
+	react-partial {
+		// Files
+		table[class] {
+			brd();
 
-	// Files
-	table[class] {
-		brd();
+			& > :first-child > :first-child {
+				position: sticky $i;
+				top: var(--header-h) $i;
+			}
+			td,
+			th {
+				bg(2);
+				pad(0);
+				brd(0);
+				brd(bottom);
 
-		& > :first-child > :first-child {
-			position: sticky $i;
-			top: var(--header-h) $i;
-		}
-		td,
-		th {
-			bg(2);
-			pad(0);
-			brd(0);
-			brd(bottom);
-
-			/[data-testid="up-tree"] > div,
-			& > span, // "Name" label
-			& > div {
-				padding: calc(var(--pad) / 2) var(--pad) $i;
+				/[data-testid="up-tree"] > div,
+				& > span, // "Name" label
+				& > div {
+					padding: calc(var(--pad) / 2) var(--pad) $i;
+				}
 			}
 		}
-	}
-	thead,
-	tr {
-		height: unset $i;
+		thead,
+		tr {
+			height: unset $i;
+		}
 	}
 
 	react-app {
