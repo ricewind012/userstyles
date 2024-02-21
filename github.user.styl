@@ -1552,11 +1552,6 @@ normal-colors() {
 		mar(top, 0);
 	}
 	.markdown-body {
-		/.page-profile .f4.text-normal,
-		h1,
-		h2 {
-			normalise-header(false);
-		}
 		h1,
 		h2,
 		h3,
@@ -1564,6 +1559,7 @@ normal-colors() {
 		h5,
 		h6 {
 			lnh();
+			normalise-header(false);
 		}
 		pre {
 			bg(2);
@@ -2259,15 +2255,8 @@ normal-colors() {
 		// Repository overview
 		&-directory {
 			&-row {
-				height: unset $i;
-
-				&:hover {
-					bg(2);
-				}
-
-				td {
-					padding: calc(var(--pad) / 2) var(--pad) $i;
-					brd(top);
+				&& td {
+					bg();
 				}
 			}
 			&-filename-column,
@@ -2449,6 +2438,33 @@ normal-colors() {
 				mar(0);
 			}
 		}
+	}
+
+	// Files
+	table[class] {
+		brd();
+
+		& > :first-child > :first-child {
+			position: sticky $i;
+			top: var(--header-h) $i;
+		}
+		td,
+		th {
+			bg(2);
+			pad(0);
+			brd(0);
+			brd(bottom);
+
+			/[data-testid="up-tree"] > div,
+			& > span, // "Name" label
+			& > div {
+				padding: calc(var(--pad) / 2) var(--pad) $i;
+			}
+		}
+	}
+	thead,
+	tr {
+		height: unset $i;
 	}
 
 	react-app {
@@ -2702,35 +2718,10 @@ normal-colors() {
 		// Content
 		& > :last-child {
 			gap: var(--pad) $i;
-
+			
 			// Files
-			table[class] {
-				brd();
-			}
-			thead[class] {
+			thead {
 				display: none $i;
-			}
-			table[class] > tbody > :first-child {
-				height: unset $i;
-				position: sticky $i;
-				top: var(--header-h) $i;
-
-				& > td {
-					bg(2);
-					pad(0);
-					brd(0);
-
-					& > div {
-						pad();
-						gap: var(--pad) $i;
-						brd(bottom);
-						margin-bottom: calc(var(--border-width) * -1) $i;
-
-						& > div {
-							gap: var(--pad) $i;
-						}
-					}
-				}
 			}
 
 			// README
