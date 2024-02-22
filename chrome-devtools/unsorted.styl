@@ -1,0 +1,58 @@
+// Suggest box
+.suggest-box {
+	box-shadow:
+		var(--shadow-ins) var(--border),
+		var(--drop-shadow) $i;
+
+	&-content-item {
+		//padding: 1px 0 1px 1px
+		//border: 1px solid transparent
+
+		.query {
+			//bold font
+		}
+	}
+}
+
+// Icons
+.tree-outline li.selected .icon {
+	background-color: var(--hl-fg) $i;
+}
+
+// Toolbar
+.search-bar {
+	bg(2);
+}
+.toolbar-shadow { // ?
+	height: var(--header-h) $i;
+}
+.toolbar {
+	.panel.network & {
+		bg();
+		brd(bottom);
+	}
+
+	&-search {
+		margin: calc(var(--pad) / 2) $i;
+
+		&-control {
+			bg(2);
+			brd(0);
+			mar(0);
+			height: unset $i;
+		}
+
+		&-navigation {
+			background-position: center $i;
+			height: 100% $i;
+		}
+
+		.search-replace, button {
+			bg();
+		}
+
+		& > .replace-toggle-toolbar {
+			mar(0);
+		}
+	}
+}

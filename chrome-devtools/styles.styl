@@ -1,0 +1,67 @@
+.styles {
+	&-section {
+		& > div {
+			pad();
+		}
+
+		.style-properties {
+			pad(0);
+			margin: 3px 0 $i;
+		}
+	}
+
+	&-name-value-separator {
+		width: 2ch $i;
+	}
+
+	&-sidebar-pane {
+		&-toolbar {
+			brd(bottom);
+
+			&-container {
+				bg(2);
+			}
+		}
+
+		&-filter-box {
+			& > input[type="search"] {
+				bg();
+				margin: calc(var(--pad) / 2) $i;
+			}
+
+			& + div {
+				center();
+			}
+		}
+	}
+}
+
+.tree-outline > li {
+	padding-left: calc(22px + var(--tab-size) * 1ch) $i;
+
+	&.not-parsed-ok.overloaded { // Invalid property
+		display: none;
+	}
+
+	& ~ li {
+		margin-top: calc(var(--pad) / 2);
+	}
+
+	// Checkbox
+	&:not(:hover) .enabled-button {
+		visibility: hidden $i;
+	}
+	.webkit-css-property {
+		margin-left: calc(-49px + 16px + 1ch) $i;
+	}
+}
+
+.enabled-button {
+	left: -34px $i;
+	top: 0 $i;
+}
+
+// Disable(?) the unit selecting "feature"
+select.unit {
+	pointer-events: none $i;
+}

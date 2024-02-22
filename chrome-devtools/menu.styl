@@ -1,0 +1,27 @@
+.soft-context-menu {
+	pad(0);
+	brd();
+	height: max-content $i;
+
+	&-item {
+		pad();
+
+		&-mouse-over [is=ui-icon].icon-mask {
+			--override-icon-mask-background-color: var(--hl-fg) $i;
+		}
+
+		.checkmark {
+			display: none $i;
+		}
+	}
+
+	&-separator {
+		height: unset $i;
+		mar(0);
+
+		& > div {
+			brd(bottom);
+			height: unset $i;
+		}
+	}
+}

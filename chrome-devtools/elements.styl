@@ -1,0 +1,45 @@
+.elements-disclosure {
+	// Remove context menu button on elements
+	.gutter-container {
+		display: none $i;
+	}
+	li {
+		padding-left: 2px $i;
+	}
+
+	// No border radius on element hover
+	li {
+		padding-left: 4px $i;
+
+		&.hovered:not(.selected) .selection {
+			left: 0 $i;
+			right: 0 $i;
+			border-radius: 0 $i;
+		}
+	}
+
+	// Highlight selected
+	li.selected {
+		&::before {
+			background-color: var(--hl-fg) $i;
+		}
+		.highlight * {
+			color: var(--hl-fg) $i;
+		}
+	}
+
+	// More compact view
+	li {
+		lnh();
+		pad(top, 0);
+	}
+}
+
+@keyframes dom-update {
+	0% {
+		hl();
+	}
+}
+.dom-update-highlight {
+	animation: 1s cubic-bezier(0, 0, 0.2, 1) dom-update $i;
+}

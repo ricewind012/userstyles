@@ -1,0 +1,71 @@
+.tabbed-pane {
+	&-header {
+		bg(2);
+		brd(bottom);
+		flex-basis: calc(var(--header-h) + var(--border-width)) $i;
+
+		&-tab {
+			border: var(--border-width) solid transparent $i;
+			brd(bottom, 0);
+			padding: 0 var(--pad) $i;
+			box(unset, var(--header-h));
+			position: relative;
+
+			&.selected {
+				background-color: var(--color-background) $i;
+				border-color: var(--color-details-hairline) $i;
+
+				&::after {
+					content: '';
+					position: absolute;
+					left: 0;
+					bottom: calc(var(--border-width) * -1);
+					box(100%, var(--border-width));
+					bg();
+				}
+			}
+
+			&.closeable {
+				padding-right: .8em $i;
+			}
+		}
+
+		// Bottom tabs
+		&[style*="cursor: ns-resize"] {
+			brd(top);
+			brd(bottom, 0);
+
+			.tabbed-pane-header-tab {
+				brd(top, 0);
+				border-bottom: var(--border-width) solid transparent $i;
+
+				&.selected {
+					background-color: var(--color-background) $i;
+					border-color: var(--color-details-hairline) $i;
+
+					&::after {
+						top: calc(var(--border-width) * -1);
+						bottom: unset;
+					}
+				}
+			}
+		}
+	}
+
+	&-content {
+		&.has-no-tabs {
+			background-color: unset $i;
+		}
+	}
+
+	&-tab-slider {
+		display: none;
+	}
+	&-left-toolbar {
+		mar(right, 0);
+		min-width: unset $i;
+	}
+}
+.shadow-split-widget.vbox > .shadow-split-widget-sidebar:not(.maximized) {
+	brd(top, 0);
+}

@@ -1,0 +1,74 @@
+.settings {
+	&-window-main {
+		pad(0);
+	}
+
+	&-block {
+		pad(bottom, 0);
+		mar(left, 0);
+		width: unset $i;
+	}
+	&-section-title {
+		normalise-header();
+		mar(left, 0);
+	}
+	&-container {
+		mar(bottom);
+
+		&::-webkit-scrollbar {
+			display: none;
+		}
+
+		&-wrapper {
+			margin: var(--body-pad);
+			inset: 0 $i;
+		}
+	}
+	&-tab p {
+		margin: var(--pad) 0 $i;
+	}
+
+	// Remove header
+	&-tab-container > header {
+		display: none;
+	}
+	&-container-wrapper {
+		pad(left);
+		pad(top);
+		brd(top, 0);
+	}
+}
+.dialog-close-button {
+	right: calc(var(--scrollbar-width) + 8px) $i;
+}
+
+.tabbed-pane-shadow.vertical-tab-layout {
+	div.tabbed-pane { // div to override border !important
+		&-header {
+			bg(2);
+			brd(right);
+			pad(0);
+			flex: unset $i;
+			overflow: unset $i;
+
+			&-tab {
+				lnh();
+				pad();
+				border: none;
+				height: unset $i;
+
+				&:not(.selected):hover {
+					fg();
+				}
+
+				&.selected {
+					hl();
+				}
+			}
+		}
+
+		&-content {
+			pad(0);
+		}
+	}
+}

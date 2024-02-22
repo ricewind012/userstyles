@@ -1,0 +1,19 @@
+.cm-content {
+	tab-size: var(--tab-size) $i;
+}
+.CodeMirror {
+	&-matchingbracket {
+		hl();
+		brd(bottom, 0);
+	}
+
+	.equal > span > span {
+		opacity: 1;
+	}
+}
+
+#sources-panel-sources-view .sources-toolbar {
+	bg(2);
+	brd(top);
+	flex: 0 0 var(--header-h) $i;
+}

@@ -1,0 +1,18 @@
+.console-message-wrapper {
+	--override-message-border-color: var(--border);
+	--override-warning-border-color: var(--color11);
+	--override-error-border-color: var(--color9);
+	--override-warning-background-color: color-a(11);
+	--override-error-background-color: color-a(9);
+
+	&:focus {
+		--override-focused-message-border-color: var(--hl) $i;
+		--override-focused-message-background-color: var(--hl) $i;
+		--override-error-text-color: var(--hl-fg) $i;
+		--override-warning-text-color: var(--hl-fg) $i;
+
+		* {
+			color: var(--hl-fg) $i;
+		}
+	}
+}
