@@ -1721,6 +1721,11 @@ normal-colors() {
 			brd();
 		}
 	}
+	.Overlay {
+		&::backdrop {
+			background-color: transparent $i;
+		}
+	}
 	.dropdown {
 		&-menu {
 			pad(0);
@@ -2600,12 +2605,13 @@ normal-colors() {
 						gap: var(--pad) $i;
 					}
 				}
-
-				// Commits
-				.border.rounded-2 {
-					brd(0);
-				}
 			}
+
+			// Commits
+			.border.rounded-2 {
+				brd(0);
+			}
+
 			[data-testid="commit-row-item"] {
 				bg(2);
 				pad();
@@ -2863,8 +2869,12 @@ normal-colors() {
 	/**
 	 * Unsorted
 	**/
-	#user-profile-frame > * > .mt-4:first-child .f4 {
-		mar(top);
+	#user-profile-frame  {
+		margin-top: calc(var(--pad) * -1) $i;
+
+		.f4.text-normal {
+			normalise-header(false);
+		}
 	}
 	.Box-header .ml-n1 {
 		mar(0);
