@@ -576,7 +576,7 @@ normalise-header(first = true) {
 		}
 	}
 	.panels > .container > .flex > .button {
-		box(unset);
+		box(var(--font-size));
 
 		&:hover {
 			background-color: transparent;
@@ -668,30 +668,31 @@ normalise-header(first = true) {
 	}
 
 	// Buttons
-	.look {
-		&Outlined,
-		&Filled,
-		&Link {
-			button& {
-				normalise-button();
-				box(unset);
-				min-width: unset $i;
-				min-height: unset $i;
+	button[class*="lookOutlined_"],
+	button[class*="lookFilled_"],
+	button[class*="lookLink_"] {
+		normalise-button();
+		box(unset);
+		min-width: unset $i;
+		min-height: unset $i;
 
-				colors = {
-					Red:   9,
-					Green: 10
-				}
-				for k, v in colors {
-					&.color{k} {
-						background-color: color-a(v) $i;
-						border-color: s('var(--color%s)', v) $i;
-					}
-				}
+		colors = {
+			Red:   9,
+			Green: 10,
+			Brand: 12,
+		}
+		for k, v in colors {
+			&{s('[class*="color%s"]', unquote(k))} {
+				background-color: color-a(v) $i;
+				border-color: s('var(--color%s)', v) $i;
 			}
 		}
-		&Link .contents {
-			background: none;
+	}
+	[role="button"][aria-haspopup] {
+		normalise-select();
+
+		.icons {
+			display: none $i;
 		}
 	}
 
@@ -814,10 +815,10 @@ normalise-header(first = true) {
 
 	// II. Nitro
 	.shinyButton,
-	.aboutMeGuildIcon,
 	.bannerNitroUpsell,
 	.avatarDecoration,
 	.subscribeTooltipWrapper,
+	.shopForAllBackgroundImage,
 	.upsell,
 	.upsellContainer,
 	.upsellTooltipWrapper,
@@ -828,11 +829,9 @@ normalise-header(first = true) {
 	.premiumInlineNotice,
 	.premiumFeatureBorder,
 	.customizationSection:has(> .birthdayFeatureBorder), // Profiles
+	.selectionGroup:has(.appIconSelectionContainer), // Appearance
 	[href="/store"], // Private channels "Nitro" tab
-	[aria-label="Send a gift"], // Chat text area button
-	[aria-label="Add Super Reaction"],
-	#message-add-reaction-1, // ^
-	#message-actions-add-reaction-1, // ^
+	[href="/shop"], // ^ "Shop"
 	#user-settings-cog-Billing,
 	#user-settings-cog-Discord_Nitro,
 	#user-settings-cog-Subscriptions,
@@ -840,8 +839,7 @@ normalise-header(first = true) {
 	#user-settings-cog-Library_Inventory,
 	#guild-header-popout [role="group"]:first-child, // Server Boost
 	#guild-header-popout [role="group"]:first-child + div,
-	[aria-label="Connections"] + div + div,
-	[aria-label="Connections"] + div + div + div,
+	[aria-label="Clips"] + div + div + div,
 	[aria-label="Nitro"],
 	[aria-label="Nitro"] + div,
 	[aria-label="Subscriptions"],
@@ -936,8 +934,9 @@ normalise-header(first = true) {
 	$sidebar = {
 		channel:          'li'
 		channel-selected: '[class*="modeSelected_"]'
-		channel-unread:   '[class*="modeUnread_"]'
+		channel-unread:   '[class*="modeUnreadImportant_"]'
 		channel-category: '.wrapperCommon-I1TMDb'
+		channel-private-selected: '[class*="selected_"]'
 	}
 
 	#-sidebar-separator {
@@ -997,9 +996,10 @@ normalise-header(first = true) {
 			.name {
 				normalise-header();
 				pad(top);
-				mar(bottom, 0);
+				mar(0);
 				mar(left);
 				mar(right);
+				width: 100%;
 			}
 		}
 	}
@@ -1123,7 +1123,7 @@ normalise-header(first = true) {
 					fg();
 				}
 
-				&[class*="selected-"] {
+				&{$sidebar[channel-private-selected]} {
 					hl();
 				}
 			}
