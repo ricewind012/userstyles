@@ -828,7 +828,8 @@ normalise-header(first = true) {
 	.premiumIconWrapper,
 	.premiumInlineNotice,
 	.premiumFeatureBorder,
-	.customizationSection:has(> .birthdayFeatureBorder), // Profiles
+	#profile-customization-tab > .container, // Profiles
+	.customizationSection:has(> .birthdayFeatureBorder), // ^
 	.selectionGroup:has(.appIconSelectionContainer), // Appearance
 	[href="/store"], // Private channels "Nitro" tab
 	[href="/shop"], // ^ "Shop"
@@ -838,7 +839,10 @@ normalise-header(first = true) {
 	#user-settings-cog-Nitro_Server_Boost,
 	#user-settings-cog-Library_Inventory,
 	#guild-header-popout [role="group"]:first-child, // Server Boost
-	#guild-header-popout [role="group"]:first-child + div,
+	#guild-header-popout [role="group"]:first-child + div, // ^ separator
+	.premiumSectionDivider, // Autocomplete
+	.premiumHeader, // ^
+	.premiumEmoji, // ^
 	[aria-label="Clips"] + div + div + div,
 	[aria-label="Nitro"],
 	[aria-label="Nitro"] + div,
@@ -1128,7 +1132,11 @@ normalise-header(first = true) {
 				}
 			}
 		}
-		.layout {
+		.link[aria-label^="unread"] {
+			color: var(--hl) $i;
+		}
+		[class^="layout_"] {
+			color: inherit;
 			pad();
 			height: unset;
 		}
@@ -1196,7 +1204,7 @@ normalise-header(first = true) {
 		.pill {
 			display: none;
 		}
-		.wrapper__3af0b {
+		[class^="wrapper_"]:not([role]) {
 			&,
 			& > svg {
 				box(var(--guilds-size));
@@ -1875,7 +1883,7 @@ normalise-header(first = true) {
 	// Autocomplete
 	.autocomplete {
 		bg();
-		brd();
+		brd(0);
 		shd(big);
 		dropfade();
 
