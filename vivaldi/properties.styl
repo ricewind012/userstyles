@@ -1,0 +1,46 @@
+// Remove elements
+.selectbox[title="Right"], // tabs
+.settings-navigation-header,
+.settings-sidebar ::-webkit-scrollbar {
+	display: none;
+}
+
+// Sidebar
+.settings-sidebar {
+	margin-top: -1px;
+}
+.button-category:not(.category-selected) {
+	fill: var(--colorFgFadedMore) i;
+	color: var(--colorFgFadedMore);
+
+	&:hover {
+		fill: var(--colorFg) i;
+		color: var(--colorFg);
+	}
+}
+
+// Tabs
+.TabbedView-List {
+	gap: 0;
+	pad(0);
+	brd(bottom, 0);
+	margin-left: -1px;
+	box-shadow: inset 0 -1px var(--colorBorder);
+
+	button {
+		background-color: transparent;
+		color: var(--colorFgFadedMore);
+		shd(0);
+
+		&:not(.active):hover {
+			background-color: transparent;
+			color: var(--colorFg);
+		}
+
+		&.active {
+			background-color: var(--colorBgLightIntense);
+			border-left: 1px solid var(--colorBorder);
+			border-right: 1px solid var(--colorBorder);
+		}
+	}
+}

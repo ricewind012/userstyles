@@ -1,0 +1,152 @@
+// Hide elements
+// I. Unsorted
+#browser.native:not(.tabs-top):not(.horizontal-menu):not(.minimal-ui) #header, // Non-top tabs header
+.webpageview[style^="visibility: hidden"],
+.panel input[type="search"] + div, // ..next to search bar
+.tab-strip::-webkit-scrollbar, // Tab overflow scrollbar
+
+// II. URL bar
+.toolbar-insideinput, // Adblocker
+.SiteInfoButton,
+.BookmarkButton {
+  display: none $i;
+}
+
+// III. Browser menu (accessible with Alt)
+.vivaldi-horizontal-icon,
+.vivaldi {
+	display: none $i;
+}
+#tabs-container.top {
+	pad(left, 0);
+}
+
+// IV. Popup
+#browser.popup {
+	#tabs-tabbar-container,
+	#panels-container,
+	.mainbar {
+		display: none $i;
+	}
+}
+
+// IV. Sync and email partnership
+/*.settings-navigation .tree-item {
+	display: contents;
+}
+.settings-navigation div[data-id="14"],*/
+.email-partnership,
+.account-create {
+	display: none $i;
+}
+
+// Colors
+#browser {
+	--colorBg: var(--bg) $i;
+	--colorBgAlpha: var(--bg-tr) $i;
+	--colorBgAlphaHeavy: var(--bg-tr2) $i;
+	--colorBgAlphaHeavier: var(--bg-tr3) $i;
+	--colorBgAlphaBlur: var(--bg) $i;
+	--colorBgLight: var(--bg2) $i;
+	--colorBgLighter: var(--bg3) $i;
+	--colorBgLightIntense: var(--colorBg) $i;
+	--colorBgDark: var(--colorBgLight) $i;
+	--colorBgDarker: var(--colorBgLighter) $i;
+	--colorBgIntense: var(--colorBgLight) $i;
+	--colorBgIntenser: var(--colorBgLighter) $i;
+	--colorBgIntser: @css { hsla(var(--bg-h), var(--bg-s), calc(var(--bg-l) var(--bg-sign) var(--bg-l-mute) * var(--bg-l-mute-start)), .95) } $i;
+
+	--colorBorder: var(--border) $i;
+	--colorBorderDisabled: var(--border) $i;
+	--colorBorderSubtle: var(--border) $i;
+	--colorBorderIntense: var(--border) $i;
+
+	--colorAccentBg: var(--accent) $i;
+	--colorAccentBgDark: var(--accent) $i;
+	--colorAccentBgDarker: var(--accent) $i;
+	//--colorAccentBgAlpha: var(--accent-a40) $i;
+	//--colorAccentBgAlphaHeavy: var(--accent-a25) $i;
+	--colorAccentBorder: var(--accent-border) $i;
+	--colorAccentBorderDark: var(--accent-border) $i;
+	--colorAccentFg: var(--accent-fg) $i;
+	--colorAccentFgAlpha: @css { hsla(var(--fg-h), var(--fg-s), var(--fg-l), var(--bg-opacity)) } $i;
+
+	--colorFg: var(--fg) $i;
+	--colorFgAlpha: @css { hsla(var(--fg-h), var(--fg-s), var(--fg-l), var(--bg-opacity)) } $i;
+	--colorFgIntense: var(--fg) $i;
+	--colorFgFadedMore: var(--fg2) $i;
+	--colorFgFadedMost: var(--fg2) $i;
+
+	--colorSuccessBg: var(--color10) $i;
+	--colorSuccessBgAlpha: color-a(10) $i;
+	--colorSuccessFg: var(--hl-fg) $i;
+
+	--colorWarningBg: var(--color11) $i;
+	--colorWarningBgAlpha: color-a(11) $i;
+	--colorWarningFg: var(--hl-fg) $i;
+
+	--colorErrorBg: var(--color9) $i;
+	--colorErorrBgAlpha: color-a(9) $i;
+	--colorErrorFg: var(--hl-fg) $i;
+
+	--colorWindowBg: var(--bg) $i;
+	--colorWindowFg: var(--fg) $i;
+
+	--colorHighlightBgFaded: var(--hl) $i;
+
+	--radius: var(--border-radius) $i;
+	--radiusCap: var(--border-radius) $i;
+	--radiusHalf: calc(var(--border-radius) / 2) $i;
+}
+
+// Normalise elements
+input {
+	/button,
+	/select,
+	/textarea,
+	&,
+	&[type="text"],
+	&[type="search"],
+	&[type="password"],
+	&[type="email"],
+	&[type="url"],
+	&[type="number"],
+	&[type="radio"],
+	&[type="date"],
+	&[type="time"],
+	&[type="checkbox"],
+	&[type="button"],
+	&[type="submit"] {
+		border-width: var(--border-width);
+	}
+	&[type="tel"],
+	&[type="text"],
+	&[type="search"],
+	&[type="email"],
+	&[type="url"],
+	&[type="date"],
+	&[type="time"],
+	&[type="password"],
+	&[type="number"] {
+		padding: 0 var(--pad);
+		shd(0);
+		height: unset;
+		focus();
+	}
+}
+
+// etc.
+#browser {
+	&,
+	& + div,
+	& + div + div {
+		lnh();
+	}
+}
+::-webkit-input-placeholder {
+	input&,
+	select&,
+	textarea& {
+		lnh();
+	}
+}

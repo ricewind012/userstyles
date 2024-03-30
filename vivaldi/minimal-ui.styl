@@ -1,0 +1,57 @@
+#browser.minimal-ui:not(.fullscreen) {
+	#header {
+		display: unset $i;
+	}
+
+	// Hide elements
+	.vivaldi, // Menu
+	&.native #pagetitle, // Native window title
+	#tabs-tabbar-container { // Tabs
+		display: none $i;
+	}
+
+	// Restore left/right side URL bar buttons
+	#main {
+		position: unset;
+	}
+	.mainbar > .toolbar-mainbar {
+		position: absolute;
+		left: 0;
+		top: calc(var(--header-h) / 2);
+	}
+	.UrlBar,
+	.toolbar-droptarget,
+	.toolbar-droptarget button,
+	.button-toolbar > button {
+		height: var(--header-h) $i;
+	}
+	.toolbar-mainbar > .button-toolbar {
+		display: flex $i;
+	}
+	.toolbar-tabbar > .button-toolbar > button,
+	.toolbar-tabbar > .toolbar-group > .button-toolbar > button {
+		min-height: var(--header-h) $i;
+	}
+
+	// Non-native window
+	#tabs-container {
+		display: flex $i;
+	}
+	.toggle-trash > button {
+		position: fixed;
+		left: var(--border-width);
+		top: var(--border-width);
+	}
+	&.horizontal-menu .toggle-trash > button {
+		left: unset;
+		top: calc(var(--header-h) + var(--border-width) * 2);
+		right: var(--border-width);
+	}
+	&:not(.native).linux {
+		.window-buttongroup button:not(:hover):not(:active) {
+			background-color: transparent;
+			fill: var(--colorFg);
+		}
+	}
+}
+

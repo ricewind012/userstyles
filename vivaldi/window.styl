@@ -1,0 +1,108 @@
+#browser {
+	// Non-native window
+	&:not(.native) {
+		brd();
+		header-focus($focus-class);
+	}
+
+	// Header
+	/#header {
+		bgc(2);
+		brd(bottom);
+		header-focus($focus-class);
+		box-sizing: content-box;
+		shd(0);
+	}
+	&:not(.fullscreen) #header {
+		min-height: var(--header-h) $i;
+	}
+
+	/.topmenu {
+		if (!horizontal-menu-oneline) {
+			flex-direction: column-reverse;
+			height: calc(var(--header-h) * 2 + var(--border-width));
+		}
+
+		/.horizontal-menu-pagetitle, & {
+			mar(0);
+		}
+		/.horizontal-menu-pagetitle, button {
+			height: var(--header-h);
+		}
+		button {
+			padding: 0 var(--pad);
+		}
+	}
+	.horizontal-menu-pagetitle {
+		margin: 0 calc(var(--window-button-size) * 3 + var(--pad) * 2) 0 var(--pad) $i;
+
+		&:empty::before {
+			content: 'Vivaldi';
+		}
+	}
+	.menubar.horizontal {
+		brd(top);
+	}
+
+	/#pagetitle {
+		white-space: pre-wrap $i;
+		pad(0);
+		margin: 0 calc((var(--window-button-size)) * 3 + var(--pad) * 2) 0 var(--pad) $i;
+		top: 0 $i;
+		height: var(--header-h) $i;
+		display: flex $i;
+		justify-content: center;
+
+		&::before {
+			content: 'Vivaldi'var(--delim);
+		}
+	}
+
+	// Window buttons
+	&.isblurred .window-buttongroup svg {
+		background-color: var(--colorFg) $i;
+	}
+	&.linux .window-buttongroup {
+		top: 0 $i;
+		right: var(--pad) $i;
+		height: var(--header-h);
+		align-items: center;
+
+		path {
+			display: none;
+		}
+		button {
+			background-color: transparent;
+			border-radius: var(--border-radius);
+			margin-left: 2pt $i;
+			box(var(--window-button-size));
+
+			&:hover, &:active {
+				background-color: var(--hl) $i;
+
+				svg {
+					background-color: var(--hl-fg);
+				}
+			}
+		}
+		svg {
+			background-color: var(--colorAccentFg);
+			-webkit-mask-size: var(--window-button-icon);
+			-webkit-mask-repeat: no-repeat;
+			box(var(--window-button-icon));
+		}
+
+		@css { .window-minimize svg {
+			-webkit-mask-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="8" height="8" viewBox="0 0 8 8"><style> rect { width: 1px; height: 1px; } </style><rect x="3" y="1"/><rect x="3" y="2"/><rect x="3" y="3"/><rect x="1" y="4"/><rect x="3" y="4"/><rect x="5" y="4"/><rect x="2" y="5"/><rect x="3" y="5"/><rect x="4" y="5"/><rect x="3" y="6"/></svg>');
+		}
+		.window-close svg {
+			-webkit-mask-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="8" height="8" viewBox="0 0 8 8"><style> rect { width: 1px; height: 1px; } </style><rect x="1" y="1"/><rect x="2" y="2"/><rect x="5" y="2"/><rect x="6" y="1"/><rect x="3" y="3"/><rect x="4" y="3"/><rect x="3" y="4"/><rect x="4" y="4"/><rect x="2" y="5"/><rect x="1" y="6"/><rect x="5" y="5"/><rect x="6" y="6"/></svg>');
+		}
+		.window-maximize svg {
+			-webkit-mask-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="8" height="8" viewBox="0 0 8 8"><style> rect { width: 1px; height: 1px; } </style><rect x="6" y="1"/><rect x="5" y="1"/><rect x="4" y="1"/><rect x="6" y="2"/><rect x="5" y="2"/><rect x="6" y="3"/><rect x="4" y="3"/><rect x="3" y="4"/><rect x="1" y="4"/><rect x="2" y="5"/><rect x="1" y="5"/><rect x="1" y="6"/><rect x="2" y="6"/><rect x="3" y="6"/></svg>');
+		}}
+	}
+	&.maximized .window-maximize svg {
+		-webkit-mask-image: url('data:image/svg+xml,');
+	}
+}

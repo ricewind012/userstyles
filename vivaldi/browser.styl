@@ -1,0 +1,414 @@
+// Tabs
+#tabs-tabbar-container {
+	bg();
+  pad(0);
+	top: -1px;
+	box($tabs-left-width, calc(100% + 1px));
+
+	&.left {
+		brd(right);
+
+		.tab.active {
+			hl();
+		}
+
+		.sync-and-trash-container {
+			max-width: fit-content $i;
+		}
+		.newtab {
+			left: 0 $i;
+		}
+
+		&:hover {
+			position: absolute;
+			z-index: 1;
+			width: 260px $i;
+			anim();
+
+			.newtab > button {
+				gap: 0;
+
+				&::after {
+					content: 'New tab';
+				}
+			}
+
+			.sync-and-trash-container {
+				mar(0);
+				margin-left: 2px $i;
+
+				button:hover {
+					cursor: pointer;
+				}
+
+				span {
+					align-items: center;
+
+					&::after {
+						content: 'Closed tabs';
+						margin-left: 1px;
+					}
+				}
+			}
+		}
+
+		.newtab > button {
+			&:hover {
+				cursor: pointer;
+			}
+
+			svg {
+				box(30px);
+			}
+		}
+	}
+
+	&.top {
+		.tab-header {
+			flex: 0 0 var(--header-h) $i;
+
+			.favicon {
+				padding: 0 $i;
+				flex: 0 0 16px $i;
+				min-width: 16px $i;
+				min-height: 16px $i;
+			}
+		}
+
+		&, & > div {
+			height: var(--header-h) $i;
+		}
+
+		.toolbar-tabbar > .button-toolbar > button,
+		.toolbar-tabbar > .toolbar-group > .button-toolbar > button {
+			min-height: var(--header-h) $i;
+		}
+
+		.newtab {
+			top: 0 $i;
+		}
+	}
+}
+.tab {
+	background-color: transparent $i;
+	fg();
+
+	&:hover {
+		bg(2);
+	}
+
+	&.isdiscarded {
+		filter: grayscale(50%) opacity(.5);
+	}
+
+	.tabs-left &,
+	.tabs-left &-header,
+	.tabs-left & .svg-tab-stack {
+		mar(0);
+	}
+	.tabs-left & .svg-tab-stack {
+		padding-right: 2px $i;
+	}
+	.tabs-left &-position &:not(&-in-accordion):not(&-accordion) {
+		border-radius: var(--radiusHalf) 0 0 var(--radiusHalf) $i;
+	}
+	.tabs-right &-position &:not(&-in-accordion):not(&-accordion) {
+		border-radius: 0 var(--radiusHalf) var(--radiusHalf) 0 $i;
+	}
+}
+.inner > [style*="height: auto"] {
+	width: unset $i;
+
+	&:hover + #webview-container {
+		margin-left: s('calc(%s + var(--border-width))', $tabs-left-width);
+	}
+}
+
+// Navigation bar
+.button-popup,
+.UrlBar-AddressField {
+	bg();
+}
+.UrlBar {
+	--ToolbarItemGap: var(--pad);
+
+	&-AddressField,
+	&-SearchField {
+		brd();
+		pad(0);
+		mar(0);
+		focus(focus-within);
+	}
+	#app &-UrlField,
+	/.UrlFragment-Wrapper {
+		pad(right, 0);
+		shd(0);
+	}
+
+	button:hover {
+		hl();
+	}
+}
+.UrlFragment-Wrapper {
+	pad();
+
+	/.UrlField, & {
+		height: unset $i;
+	}
+}
+.toolbar {
+	.mainbar > &-mainbar {
+		bgc(2);
+		header-focus($focus-class);
+
+		#browser:not(.minimal-ui) & {
+			brd(bottom);
+			box-sizing: content-box;
+		}
+
+		button:hover {
+			hl();
+			cursor: pointer;
+		}
+		& > .button-toolbar {
+			../, & > button {
+				height: var(--header-h);
+			}
+			& > .button-pressed {
+				background-image: none $i;
+			}
+		}
+	}
+
+	&-droptarget {
+		button svg {
+			flex: unset $i;
+		}
+	}
+	&-mainbar,
+	&-extensions {
+		&::before {
+			display: none;
+		}
+	}
+	&-extensions {
+		fg();
+
+		&, &:hover {
+			background-color: unset $i;
+		}
+
+		&, button {
+			height: 32px $i;
+		}
+	}
+}
+.button-popup-below.button-popup-arrow {
+	&-light::before, &-dark::before {
+		border-bottom-color: var(--colorBg);
+	}
+}
+
+// Panel
+#switch {
+	pad(top, 0);
+
+	.addwebpanel-wrapper > button:hover:not(:focus),
+	& > button:hover:not(:focus) {
+		color: unset $i;
+
+		svg .small-icon-fill,
+		svg .small-icon-outline {
+			fill: unset $i;
+		}
+	}
+}
+.panel h1 {
+	normalise-header();
+
+	.close {
+		box(24px);
+	}
+}
+.webpanel-header {
+	shd(mid);
+  border-bottom-color: var(--colorBgDarker) $i;
+  z-index: 1;
+}
+
+// Status info
+.StatusInfo {
+  bottom: 0 $i;
+  left: 0 $i;
+	right: var(--scrollbarWidth) $i;
+	pad(left, 0);
+
+	&-Content {
+		bg(-tr);
+		pad();
+		brd(0);
+		brd(top, bg-tr3);
+		brd(left, bg-tr3);
+		border-radius: 0 var(--radius) 0 0 $i;
+	}
+
+	#browser.tabs-left & {
+		padding-left: 32px $i;
+	}
+}
+
+// Popup
+.quick-command-container {
+	width: unset;
+}
+.OmniDropdown,
+.qc-modal {
+	bg(-tr);
+}
+.OmniDropdown {
+	--fg: var(--colorFg) $i;
+	--border: var(--colorBorder) $i;
+	pad(0);
+	brd();
+	brd(top, 0);
+	mar(0);
+	shd(big);
+	top: calc(100% + var(--pad) - var(--border-width));
+
+	&:empty {
+		display: none;
+	}
+
+	&-Label {
+		normalise-header();
+		opacity: 1;
+		mar();
+	}
+}
+.OmniLinkItem {
+	pad(left);
+	grid-gap: 1ch;
+
+	&-Url,
+	&-Details,
+	&-Favicon,
+	&-EraseButton {
+		height: 24px $i;
+		center();
+	}
+}
+
+// Shadow
+.button-popup,
+.extension-popup,
+#vivaldi-tooltip .tooltip .tab-group,
+.multiinput .multiinput-select,
+:not(.topmenu) > .menu > ul,
+.menu ul ul,
+#modal-bg > div,
+.colorpicker,
+.HintTooltip__content,
+.address-top-off .toolbar-mainbar .addressfield:focus-within,
+.address-bottom-off .toolbar-mainbar .addressfield:focus-within,
+.HUD,
+#vivaldi-tooltip .tooltip .tab-solo .tooltip-item,
+p.warning,
+.theme-schedule-timeline .theme-schedule-timeslice .timeslice-bubble,
+.VivaldiSelector .Inner__menu,
+.CalendarNotification,
+.CalendarPicker-Submenu,
+.CalendarEventBubble-Inner,
+.SearchDropdown,
+.contact-photo-picker .contact-photo-picker-overlay,
+.MailDisabled,
+.address-top-off .UrlBar .UrlBar-SearchField:focus-within,
+.address-bottom-off .UrlBar .UrlBar-SearchField:focus-within,
+.address-top-off .UrlBar .UrlBar-AddressField:focus-within,
+.address-bottom-off .UrlBar .UrlBar-AddressField:focus-within,
+.StartPage-GameButton .GameButton > button {
+	box-shadow:
+		var(--shadow-ins) var(--colorBorder),
+		var(--shadow-big) $i;
+}
+#vivaldi-tooltip .tab-group {
+	filter: none $i;
+
+	.tooltip-item {
+		box-shadow: inset 0 -1px var(--colorBorder) $i;
+	}
+}
+
+// Dialog
+.dialog {
+	&-title {
+		mar(bottom, 0);
+	}
+
+	&-title,
+	&-header,
+	&-content,
+	&-preview,
+	&-footer {
+		pad();
+	}
+
+	&-content,
+	&-preview {
+		pad(top, 0);
+	}
+
+	&-footer {
+		bg(2);
+		brd(top);
+		justify-content: space-between;
+	}
+}
+
+// Fix Vivaldi's shit
+.import-result {
+	.import-calendar &,
+	.import-data &,
+	.import-masterpassword &,
+	.open-session & {
+		display: inline-flex;
+
+		&::before {
+			display: unset $i;
+			position: unset $i;
+		}
+	}
+}
+
+// Tiled view
+#webview-container {
+	pad(0);
+	shd(0);
+}
+.mosaic-tile {
+	margin: 2px;
+
+	// Horizontal
+	&[style$="0% 0%;"]:last-child {
+		margin-top: calc(var(--pad) / 2);
+	}
+	&[style^="inset: 0% 0%"]:first-child {
+		margin-bottom: calc(var(--pad) / 2);
+	}
+
+	// Vertical
+	&[style^="inset: 0% 0%"]:last-child {
+		margin-left: calc(var(--pad) / 2);
+	}
+	&[style$="0% 0%;"]:first-child {
+		margin-right: calc(var(--pad) / 2);
+	}
+}
+.mosaic-split {
+	& &-line {
+		&,
+		&::before,
+		&::after {
+			bg();
+		}
+	}
+}
