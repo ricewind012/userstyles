@@ -1196,6 +1196,16 @@ normalise-header(first = true) {
 		.listItem {
 			width: 100% $i;
 			mar(bottom);
+
+			[class^="wrapper"]:not([role]) {
+				&,
+				& > svg {
+					box(var(--guilds-size));
+				}
+				& > svg {
+					z-index: 3;
+				}
+			}
 		}
 		[style*="height: 56px"] { // DMs
 			mar(top);
@@ -1203,15 +1213,6 @@ normalise-header(first = true) {
 		}
 		.pill {
 			display: none;
-		}
-		[class^="wrapper"]:not([role]) {
-			&,
-			& > svg {
-				box(var(--guilds-size));
-			}
-			& > svg {
-				z-index: 3;
-			}
 		}
 		{$guilds[guild]} {
 			transform: none $i;
@@ -1237,7 +1238,7 @@ normalise-header(first = true) {
 			}
 		}
 		[id^="folder-items"] {
-			mar(bottom);
+			margin-bottom: calc(var(--pad) / 2) $i;
 			brd(bottom);
 			height: unset $i;
 		}
@@ -1468,6 +1469,9 @@ normalise-header(first = true) {
 	}
 
 	// Context menu
+	.submenuPaddingContainer {
+		pad(0);
+	}
 	.menu {
 		brd();
 
@@ -1529,6 +1533,18 @@ normalise-header(first = true) {
 				}
 			}
 		}
+
+		// Emojis
+		.image {
+			box(var(--font-size));
+
+			&Container {
+				mar(left, 0);
+				mar(right);
+			}
+		}
+
+		// Arrow
 		.hintContainer,
 		.caret {
 			color: inherit;
@@ -1556,6 +1572,9 @@ normalise-header(first = true) {
 		&[aria-expanded="true"],
 		&:hover {
 			hl();
+		}
+		&[aria-haspopup] {
+			padding-right: calc(var(--pad) * 2 + var(--font-size)) $i;
 		}
 	}
 
@@ -2466,7 +2485,9 @@ normalise-header(first = true) {
 		}
 
 		&.isHeader {
-			top: calc(var(--header-h) + var(--pad));
+			top: messages-alt \
+				? var(--header-h) \
+				: calc(var(--header-h) + var(--pad));
 		}
 
 		& > .wrapper {
