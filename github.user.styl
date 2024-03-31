@@ -837,6 +837,19 @@ normal-colors() {
 			}
 		}
 	}
+	.SegmentedControl-item {
+		pad(0);
+		brd(0);
+		height: unset $i;
+
+		&--selected .Button {
+			hl();
+
+			&-label {
+				color: inherit $i;
+			}
+		}
+	}
 
 	// GitHub
 	.timeline-comment,
@@ -1266,6 +1279,9 @@ normal-colors() {
 		top: calc(var(--header-h) + var(--body-pad));
 		z-index: 999 $i;
 	}
+	.Layout-sidebar[data-target="diff-layout.sidebarContainer"] > * {
+		top: var(--body-pad);
+	}
 	main .Box-header,
 	.file-header,
 	.js-position-sticky {
@@ -1316,6 +1332,9 @@ normal-colors() {
 		z-index: 999 $i;
 	}
 	.pr-toolbar {
+		pad(0);
+		margin-left: -32px;
+		margin-right: -48px;
 		margin-top: var(--border-width);
 
 		&.is-stuck {
@@ -1528,6 +1547,10 @@ normal-colors() {
 		align-items: end $i;
 		gap: 1ch $i;
 	}
+	#toc {
+		pad();
+		mar(bottom, 0);
+	}
 	#discussion {
 		&-comment-count {
 			mar(0);
@@ -1567,6 +1590,7 @@ normal-colors() {
 
 			h2 {
 				normalise-header(false);
+				width: 100%;
 			}
 			.Button {
 				display: none $i;
@@ -1580,7 +1604,7 @@ normal-colors() {
 			width: var(--sidebar-width) $i;
 
 			.loading-context {
-				margin-top: calc(var(--pad) * -2) $i;
+				margin-top: calc(var(--pad) * -3) $i;
 			}
 		}
 		&-right-sidebar {
@@ -1664,6 +1688,9 @@ normal-colors() {
 	}
 
 	// Popup & boxes
+	tool-tip {
+		margin-top: 44px $i;
+	}
 	.Box {
 		&-btn-octicon {
 			lnh();
@@ -1926,6 +1953,13 @@ normal-colors() {
 	/**
 	 * React garbage
 	**/
+	// Body
+	[data-target="react-app.reactRoot"] {
+		& > div {
+			pad(0);
+		}
+	}
+
 	// Global
 	[data-component="text"] {
 		lnh();
@@ -2713,6 +2747,18 @@ normal-colors() {
 			}
 		}
 
+		// Branch
+		[data-testid="branch-info-bar"] {
+			bg(2);
+			pad();
+			brd();
+			mar(bottom);
+
+			button {
+				--bg2: var(--bg);
+			}
+		}
+
 		// Content
 		& > :last-child {
 			gap: var(--pad) $i;
@@ -2850,7 +2896,7 @@ normal-colors() {
 	}
 	.text-mono,
 	.commit .sha,
-	.blob-code-inner,
+	.blob-code-inner > *,
 	.react-file-line {
 		font-family: var(--font-code) $i;
 	}
