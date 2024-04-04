@@ -374,14 +374,19 @@ fa(char) {
 	 * Global
 	**/
 	body {
+		--reserve-fg: var(--fg);
 		--reserve-pad: var(--pad);
 		background: none var(--bg) $i;
 		fg();
+		pad(0);
 	}
 	a {
 		fg(-link);
 	}
 	.sc {
+		&-ir {
+			font: 0/0 a $i;
+		}
 		&-type {
 			&-light {
 				fg();
@@ -394,6 +399,9 @@ fa(char) {
 		&-text {
 			&-light {
 				fg();
+			}
+			.g-dark &-secondary {
+				color: inherit $i;
 			}
 		}
 		&-link {
@@ -434,16 +442,18 @@ fa(char) {
 			}
 		}
 		&-button {
-			normalise-button();
-			height: unset $i;
-
+			&:not([class*="playbackSoundBadge"]) {
+				normalise-button();
+				height: unset $i;
+			}
 			&-group > & {
 				mar(right);
 			}
+
 			&-play {
 				--pad: calc(var(--reserve-pad) / 2);
 			}
-			&-dropdown {
+			&-dropdown:not([class*="playbackSoundBadge"]) {
 				normalise-select();
 				height: unset $i;
 
@@ -636,6 +646,7 @@ fa(char) {
 		&__link {
 			--pad: calc(var(--reserve-pad) / 2);
 			--bg2: var(--bg);
+			--fg: var(--reserve-fg);
 			normalise-button();
 			margin-right: var(--reserve-pad);
 		}
@@ -743,7 +754,8 @@ fa(char) {
 			display: none;
 		}
 		&__control {
-			margin-left: 1ch $i;
+			mar(left);
+			width: 18px $i;
 		}
 		&__repeat,
 		&__volume {
@@ -921,6 +933,9 @@ fa(char) {
 		mar(0);
 		height: @css { max(calc(40px + 25vh), 300px) } $i;
 
+		&__foreground {
+			padding-right: calc(20px + 130px + 25vh) $i;
+		}
 		&__artwork {
 			box(25vh);
 		}
@@ -936,13 +951,16 @@ fa(char) {
 		mar(bottom);
 		shd(0);
 		flex();
+		flex-wrap: wrap $i;
+		gap: var(--pad) $i;
+
+		&::before {
+			display: none $i;
+		}
 
 		&__commentForm {
-			mar(bottom, 0);
-			mar(right);
-		}
-		&__footer {
-			flex-wrap: unset;
+			mar(0);
+			width: 100%;
 		}
 	}
 	.listenContent {
@@ -952,6 +970,7 @@ fa(char) {
 	}
 	.commentForm {
 		&__wrapper {
+			background-color: transparent $i;
 			pad(0);
 			brd(0);
 			height: unset $i;
@@ -985,13 +1004,18 @@ fa(char) {
 	}
 	.commentItem {
 		pad(0);
+		mar(bottom);
 		brd(bottom);
 
+		&__body {
+			fg();
+		}
 		&__createdAt {
 			fg(2);
 		}
-		&__replyButton {
-			--pad: calc(var(--reserve-pad) / 2);
+		&__timestampLink {
+			background-color: transparent $i;
+			pad(0);
 		}
 	}
 	.commentBadgeList {
@@ -1176,7 +1200,8 @@ fa(char) {
 					&__secondary,
 					&__uploadTime {
 						font-size: inherit !important;
-						width: 120px;
+						flex-shrink: 0 $i;
+						width: 130px;
 						text-align: left;
 					}
 					&__username,
