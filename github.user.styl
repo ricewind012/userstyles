@@ -385,38 +385,27 @@ normal-colors() {
 	**/
 	[data-color-mode] {
 		// Background
-		--color-bg-canvas: var(--bg) $i;
-		--color-bg-primary: var(--bg) $i;
-		--color-bg-secondary: var(--bg2) $i;
-		--color-bg-tertiary: var(--bg3) $i;
-		--color-bg-overlay: var(--bg) $i;
-		--color-canvas-default: var(--color-bg-canvas) $i;
-		--color-canvas-overlay: var(--color-bg-canvas) $i;
-		--color-canvas-inverse: var(--fg) $i;
-		--color-canvas-inset: var(--bg) $i;
-		--color-canvas-subtle: var(--color-bg-tertiary) $i;
+		--bgColor-default: var(--bg) $i;
+		--bgColor-inset: var(--bg) $i;
+		--bgColor-muted: var(--bg3) $i;
+		--bgColor-tertiary: var(--bg3) $i;
+		--bgColor-accent-emphasis: var(--hl) $i;
+
+		--page-header-bgColor: var(--bg2) $i;
+		--timelineBadge-bgColor: var(--bg2) $i;
+
+		--overlay-bgColor: var(--bg) $i;
+		--overlay-backdrop-bgColor: transparent $i;
 
 		// Text
-		--color-fg-default: var(--fg) $i;
-		--color-fg-muted: var(--fg2) $i;
-		--color-fg-subtle: var(--fg2) $i;
-		--color-primer-fg-disabled: var(--color-fg-muted) $i;
+		--fgColor-default: var(--fg) $i;
+		--fgColor-muted: var(--fg2) $i;
+		--fgColor-neutral: var(--fg2) $i;
+		--fgColor-accent: var(--fg-link) $i;
+		--fgColor-link: var(--fg-link) $i;
+		--fgColor-onEmphasis: var(--hl-fg) $i;
 
-		// Header
-		--color-header-bg: var(--bg2) $i;
-		--color-header-text: var(--fg) $i;
-		--color-header-logo: var(--color-header-text) $i;
-		--color-header-search-bg: var(--bg) $i;
-		--color-header-search-border: var(--border) $i;
-
-		// Action list (sidebar)
-		--color-action-list-item-inline-divider: var(--border) $i;
-		--color-action-list-item-default-hover-bg: var(--bg3) $i;
-		--color-action-list-item-default-active-bg: var(--bg2) i;
-		// Can't target the active element in React parts, so make it more visible.
-		--color-action-list-item-default-selected-bg: var(--bg) $i;
-		--color-action-list-item-danger-hover-bg: color-a(1) $i;
-		--color-action-list-item-danger-active-bg: color-a(9) $i;
+		--treeViewItem-leadingVisual-iconColor-rest: var(--fg2) $i;
 
 		// State
 		colors = {
@@ -431,10 +420,10 @@ normal-colors() {
 		for k, v in colors {
 			clr = s('var(--color%s)', v);
 
-			--color-{k}-emphasis: clr $i;
-			--color-{k}-subtle: color-a(v) $i;
-			--color-{k}-muted: s('var(--color%s)', v - 8) $i;
-			--color-{k}-fg: clr $i;
+			--bgColor-{k}-muted: color-a(v) $i;
+			--fgColor-{k}-emphasis: clr $i;
+			--fgColor-{k}-muted: s('var(--color%s)', v - 8) $i;
+			--fgColor-{k}: clr $i;
 		}
 
 		// Syntax highlighting
@@ -465,36 +454,27 @@ normal-colors() {
 			white:   7
 		}
 		for k, v in colors {
-			--color-ansi-{k}: s('var(--color%s)', v);
-			--color-ansi-{k}-bright: s('var(--color%s)', v + 8);
-			--color-checks-ansi-{k}: s('var(--color%s)', v);
-			--color-checks-ansi-{k}-bright: s('var(--color%s)', v + 8);
+			--color-ansi-{k}: s('var(--color%s)', v) $i;
+			--color-ansi-{k}-bright: s('var(--color%s)', v + 8) $i;
 		}
 		--color-ansi-gray: var(--color15) $i;
-		--color-checks-ansi-gray: var(--color15) $i;
 
 		// Borders
-		--color-border-default: var(--border) $i;
-		--color-border-muted: var(--border) $i;
-		--color-border-subtle: var(--border) $i;
-		--color-avatar-border: var(--border) $i;
+		--borderColor-default: var(--border) $i;
+		--borderColor-muted: var(--border) $i;
 
 		// Shadows
-		--color-shadow-medium: var(--shadow-low) $i;
-		--color-shadow-large: var(--shadow-big) $i;
-		--color-shadow-extra-large: var(--shadow-big) $i;
-		--color-overlay-shadow: var(--color-shadow-extra-large) $i;
+		--shadow-inset: none $i;
 
-		// Buttons
-		--color-btn-text: var(--fg) $i;
-		--color-btn-bg: var(--bg2) $i;
-		--color-btn-border: var(--border);
-		--color-btn-hover-bg: var(--bg2) $i;
-		--color-btn-hover-border: var(--border) $i;
-		--color-btn-active-bg: var(--bg2) $i;
-		--color-btn-active-border: var(--border) $i;
-		--color-btn-selected-bg: var(--hl) $i;
-		--color-btn-focus-bg: var(--hl) $i;
+		--shadow-resting-xsmall: none $i;
+		--shadow-resting-small: none $i;
+		--shadow-resting-medium: var(--shadow-low) $i;
+
+		--shadow-floating-small: var(--shadow-big) $i;
+		--shadow-floating-medium: var(--shadow-big) $i;
+		--shadow-floating-large: var(--shadow-big) $i;
+		--shadow-floating-xlarge: var(--shadow-big) $i;
+		--shadow-floating-legacy: var(--shadow-big) $i;
 
 		// Spacing
 		for i in range(4, 48, 4) {
@@ -540,20 +520,6 @@ normal-colors() {
 		for i in small medium large full {
 			--borderRadius-{i}: var(--border-radius);
 		}
-
-		// Unsorted
-		--color-tree-view-item-directory-fill: inherit $i;
-		--color-intro-shelf-gradient-in: var(--bg2) $i;
-		--color-social-count-bg: var(--bg2) $i;
-		--color-page-header-bg: var(--bg2) $i;
-		--color-timeline-text: var(--color-fg-muted) $i;
-		--color-timeline-badge-bg: var(--bg4) $i;
-		--color-primer-canvas-backdrop: transparent $i;
-		--color-primer-border-active: var(--hl) $i;
-		--color-primer-shadow-inset: none $i;
-
-		--color-accent-emphasis: var(--hl) $i;
-		--color-fg-on-emphasis: var(--hl-fg) $i;
 
 		// save
 		--save-pad: var(--pad);
@@ -862,10 +828,6 @@ normal-colors() {
 		}
 	}
 	.timeline-comment {
-		&.current-user,
-		&.current-user &-header {
-			border-color: var(--color-accent-muted) $i;
-		}
 		&-header {
 			pad();
 
@@ -1912,8 +1874,8 @@ normal-colors() {
 	if (old-user-status) {
 		.user-status {
 			&-circle-badge {
-				background-color: var(--color-scale-yellow-1);
-				border-color: var(--color-scale-yellow-3) $i;
+				background-color: var(--display-lemon-bgColor-muted);
+				border-color: var(--display-lemon-bgColor-emphasis) $i;
 				width: 100% $i;
 
 				&,
@@ -2258,6 +2220,7 @@ normal-colors() {
 	}
 
 	// Overlay
+	[data-testid="backdrop-anchor"] > div,
 	[class^="Overlay__StyledOverlay-"] {
 		brd();
 		shd(big);
@@ -2896,12 +2859,10 @@ normal-colors() {
 	}
 	.text-mono,
 	.commit .sha,
-	.blob-code-inner > *,
+	.blob-code-inner,
+	.blob-code-inner *,
 	.react-file-line {
 		font-family: var(--font-code) $i;
-	}
-	.gist-banner {
-		--color-canvas-default: var(--bg2);
 	}
 	.user-mention,
 	.team-mention {
