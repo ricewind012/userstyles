@@ -1620,6 +1620,24 @@ normal-colors() {
 				--bg2: var(--bg);
 			}
 		}
+
+		& > .d-flex > .py-3:first-child {
+			pad(top, 0);
+
+			.btn-link {
+				--bg2: var(--bg);
+				normalise-select();
+				mar(bottom);
+
+				.dropdown-caret {
+					display: none;
+				}
+			}
+		}
+
+		.btn {
+			--bg2: var(--bg);
+		}
 	}
 	feed-container > :first-child {
 		normalise-header();
@@ -2867,6 +2885,10 @@ normal-colors() {
 	.user-mention,
 	.team-mention {
 		color: var(--fg-link);
+	}
+	.vcard-detail .octicon {
+		mar(top, 0);
+		mar(right);
 	}
 	[data-target="diff-layout.mainContainer"],
 	#discussion_bucket .Layout-main {
