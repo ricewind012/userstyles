@@ -420,6 +420,7 @@ normal-colors() {
 		for k, v in colors {
 			clr = s('var(--color%s)', v);
 
+			--bgColor-{k}-emphasis: clr $i;
 			--bgColor-{k}-muted: color-a(v) $i;
 			--fgColor-{k}-emphasis: clr $i;
 			--fgColor-{k}-muted: s('var(--color%s)', v - 8) $i;
@@ -904,9 +905,15 @@ normal-colors() {
 			border-radius: var(--border-radius);
 		}
 		&-item {
+			--icon-size: 30px;
+
 			lnh();
 			pad();
-			padding-left: calc(var(--pad) * 2 + 30px) $i;
+			padding-left: calc(var(--pad) * 2 + var(--icon-size)) $i;
+
+			&-icon {
+				margin-left: calc(var(--icon-size) * -1 - var(--pad)) $i;
+			}
 		}
 	}
 
