@@ -938,7 +938,7 @@ normal-colors() {
 	// II. Recommendations / GitHub stuff
 	aside[aria-label="Star Topics"],
 	[href="https://desktop.github.com"],
-	[aria-label="Explore"] .js-notice, // Top notice
+	#explore-dashboard-responsive .js-notice, // Top notice
 	[href="/account/choose?action=upgrade"],
 	[href^="/organizations/enterprise_plan"],
 	.col-md-8.col-lg-6.py-4 > article.color-bg-default, // "App recommended by GitHub" / "Staff pick"
@@ -1628,13 +1628,12 @@ normal-colors() {
 			}
 		}
 
-		& > .d-flex > .py-3:first-child {
+		.py-3:first-child {
 			pad(top, 0);
 
-			.btn-link {
+			summary {
 				--bg2: var(--bg);
 				normalise-select();
-				mar(bottom);
 
 				.dropdown-caret {
 					display: none;
