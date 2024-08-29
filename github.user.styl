@@ -1561,7 +1561,7 @@ normal-colors() {
 				normalise-header(false);
 				width: 100%;
 			}
-			.Button {
+			.js-repos-container .Button {
 				display: none $i;
 			}
 			.form-control {
@@ -1573,7 +1573,7 @@ normal-colors() {
 			width: var(--sidebar-width) $i;
 
 			.loading-context {
-				margin-top: calc(var(--pad) * -3) $i;
+				margin-top: calc(var(--pad) * -2) $i;
 			}
 		}
 		&-right-sidebar {
@@ -1631,11 +1631,11 @@ normal-colors() {
 		.py-3:first-child {
 			pad(top, 0);
 
-			summary {
+			.Button {
 				--bg2: var(--bg);
 				normalise-select();
 
-				.dropdown-caret {
+				&-visual {
 					display: none;
 				}
 			}
