@@ -693,6 +693,14 @@ normal-colors() {
 			box(unset);
 			animation: unset $i;
 		}
+		&-input {
+			normalise-input();
+			height: unset $i;
+
+			&-leadingVisualWrap {
+				display: none $i;
+			}
+		}
 	}
 	for i in checkbox radio {
 		{s('input[type="%s"]', i)} {
@@ -1022,6 +1030,7 @@ normal-colors() {
 			&-item {
 				normal-colors();
 				background-color: transparent $i;
+				color: inherit $i;
 				pad(0);
 				min-width: unset $i;
 
@@ -1977,14 +1986,14 @@ normal-colors() {
 
 	// Buttons
 	[data-testid="raw-button"],
-	[class*="types__StyledButton-"]
+	[class*="prc-Button-ButtonBase-"]
 	[data-component="IconButton"] {
 		normalise-button();
 		gap: 0 $i;
 		shd(0);
 		box(unset);
 
-		#repos-sticky-header & {
+		#repository-container-header & {
 			--bg2: var(--bg);
 		}
 	}
@@ -2019,7 +2028,11 @@ normal-colors() {
 		}
 	}
 
-	[class*="types__StyledButton-"] {
+	colors = {
+		danger:  9,
+		primary: 10,
+	}
+	[class*="prc-Button-ButtonBase-"] {
 		&[data-size="small"] {
 			--pad: calc(var(--save-pad) / 2);
 		}
@@ -2029,6 +2042,14 @@ normal-colors() {
 			[data-component="trailingAction"],
 			[data-component="trailingVisual"] {
 				display: none $i;
+			}
+		}
+		for k, v in colors {
+			/{s('%s[data-variant="%s"]', unquote(selector()), unquote(k))} {
+				clr = s('var(--color%s)', v);
+
+				--bg2: clr $i;
+				--border: clr $i;
 			}
 		}
 	}
@@ -2144,92 +2165,30 @@ normal-colors() {
 	}
 
 	// Tabs
-	[class*="SegmentedControlList-"] {
-		margin-left: calc(var(--pad) * -1) $i;
-
-		& > li {
-			margin: calc(var(--pad) * -1) 0 $i;
-
-			&:last-child {
-				brd(right);
-			}
-		}
-		button {
-			--pad: calc(var(--save-pad) / 2);
-			normalise-button();
-			brd(0);
-			transition: none $i;
-
-			&:not(:hover) {
-				fg(2);
-			}
-			&[aria-current="true"] {
-				hl();
-			}
-
-			& > span {
-				all: unset $i;
-			}
-		}
-	}
-	$underline-nav = '[class^="UnderlineNav__NavigationList-"]';
-	{s('nav:has(%s)', unquote($underline-nav))} {
+	[class*="UnderlineTabbedInterface__StyledUnderlineWrapper-"] {
 		pad(0);
+		shd(0);
 		min-height: unset $i;
 	}
-	{$underline-nav} {
+	[class*="UnderlineTabbedInterface__StyledUnderlineItemList-"] {
 		gap: 0 $i;
+	}
+	[class*="UnderlineTabbedInterface__StyledUnderlineItem-"] {
+		background-color: transparent $i;
 
-		a {
+		&:not(:hover) {
 			fg(2);
-			lnh();
-			pad();
-			brd(0);
+		}
+		&[aria-current="page"] {
+			hl();
 
-			// Selected bottom border
 			&::after {
 				display: none $i;
 			}
-
-			// Selected
-			&[aria-current] {
-				--fg: var(--hl-fg);
-				hl();
-			}
-
-			&:not([aria-current]) {
-				&:hover {
-					background-color: transparent $i;
-					fg();
-				}
-				&:not(:hover) [data-component="icon"] {
-					--fg: var(--fg2);
-				}
-			}
 		}
-	}
-	[class^="TabNav__TabNavBase-"] {
-		pad(0);
-		brd(0);
-	}
-	[class^="TabNav__TabNavNav-"] {
-		bg(2);
-		brd(bottom);
-	}
-	[class^="TabNav__TabNavTabList-"] {
-		mar(0);
 
-		.TabNav-item {
-			pad();
-			brd(0);
-			transition: none $i;
-
-			&:not(:hover) {
-				fg(2);
-			}
-			&[aria-selected="true"] {
-				hl();
-			}
+		[data-component="icon"] {
+			color: inherit $i;
 		}
 	}
 
@@ -2752,6 +2711,7 @@ normal-colors() {
 				// Tabs container
 				& > :first-child {
 					bg(2);
+					padding-right: calc(var(--pad) / 2) $i;
 					brd(0);
 					brd(bottom);
 					top: var(--header-h) $i;
