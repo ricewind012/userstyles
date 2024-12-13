@@ -1113,7 +1113,7 @@ normal-colors() {
 		width: unset;
 	}
 	.application-main {
-		&:has(react-app:not([app-name="blackbird-search"])) {
+		&:has(react-app:not([app-name="blackbird-search"], [app-name="react-code-view"])) {
 			margin: var(--body-pad);
 		}
 	}
@@ -2390,16 +2390,11 @@ normal-colors() {
 	// Code view sidebar
 	[style^="--sticky-pane-height"] > div > div  {
 		[app-name="react-code-view"] & > :first-child > div {
-			margin-left: calc(var(--body-pad) * -1) $i
 			top: var(--header-h) $i;
 			height: calc(100vh - var(--header-h)) $i;
 		}
-		& > :last-child {
-			margin-left: var(--body-pad);
-
-			@media (max-width: 1349px) and (min-width: 768px) {
-				mar(0);
-			}
+		[data-selector="repos-split-pane-content"] {
+			padding: var(--body-pad);
 		}
 	}
 	
