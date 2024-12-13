@@ -538,6 +538,8 @@ normal-colors() {
 		for i in settings {
 			\-\-{i}: convert(i);
 		}
+
+		margin-top: var(--header-h);
 	}
 
 	/**
@@ -1111,15 +1113,12 @@ normal-colors() {
 		width: unset;
 	}
 	.application-main {
-		margin-top: var(--header-h);
-
 		&:has(react-app:not([app-name="blackbird-search"])) {
 			margin: var(--body-pad);
 		}
 	}
 	#repository-container-header {
 		bg(2);
-		margin-top: calc(var(--header-h) * -1);
 
 		& > div {
 			max-width: unset;
