@@ -428,7 +428,7 @@ normalise-header(first = true) {
 		}
 		&[type="submit"],
 		&[type="button"],
-		/button {
+		/button:not(.copy) {
 			normalise-button();
 		}
 		&[type="checkbox"] {
@@ -460,11 +460,22 @@ normalise-header(first = true) {
 	.icon-cog:not(:hover)::before {
 		fg(2);
 	}
+	.copy {
+		background-color: transparent $i;
+		brd(0);
+		box(unset);
+		vertical-align: unset $i;
+
+		&:not(:hover) > span::before {
+			fg(2);
+		}
+	}
 
 	/**
 	 * Hide elements
 	**/
 	.navpanel-icon.icon-down-dir,
+	#tree-switcher,
 	#foot, .footer {
 		display: none;
 	}
@@ -491,13 +502,22 @@ normalise-header(first = true) {
 		mar(0);
 	}
 	table.folder-content {
+		mar(0);
+
 		a,
 		th {
 			padding: var(--pad);
 		}
-		tr:hover {
+		a:not(.mimetype-fixed-container) {
+			fg(2);
+		}
+		.description {
+			pad(0);
+		}
+		tbody tr:hover {
 			hl();
 			--fg: var(--hl-fg);
+			--fg2: var(--hl-fg);
 		}
 	}
 	.mimetype-fixed-container {
@@ -516,6 +536,7 @@ normalise-header(first = true) {
 
 		fieldset {
 			gap: var(--pad);
+			min-height: unset $i;
 		}
 		input {
 			--bg2: var(--bg);
@@ -537,6 +558,7 @@ normalise-header(first = true) {
 	.intro,
 	.settings-page {
 		margin: var(--body-pad);
+		padding-left: var(--body-pad) $i;
 	}
 
 	// Search
@@ -549,21 +571,25 @@ normalise-header(first = true) {
 			fg();
 		}
 	}
-	.results td {
-		padding: 0 var(--pad);
+	.results {
+		mar(0);
 
-		&:first-child {
-			bg(2);
-			brd(right);
+		td {
+			padding: 0 var(--pad);
 
-			&,
-			a {
-				fg(2);
-				font-family: var(--font-code) $i;
+			&:first-child {
+				bg(2);
+				brd(right);
 
-				&:hover {
-					fg();
-					text-decoration: none $i;
+				&,
+				a {
+					fg(2);
+					font-family: var(--font-code) $i;
+
+					&:hover {
+						fg();
+						text-decoration: none $i;
+					}
 				}
 			}
 		}
@@ -607,9 +633,6 @@ normalise-header(first = true) {
 			shd(0);
 		}
 	}
-	.nesting-sticky-line {
-		top: calc(var(--nesting-level) * var(--font-size) * var(--line-height));
-	}
 	.line-number {
 		@extend .results td:first-child;
 		padding: 0 var(--pad);
@@ -625,6 +648,29 @@ normalise-header(first = true) {
 		brd();
 		shd(big);
 	}
+	.contextmenu {
+		&-same-section {
+			brd(0);
+		}
+		&-new-section {
+			brd(top);
+		}
+		&-link {
+			fg();
+			pad();
+
+			&:hover {
+				hl();
+			}
+
+			strong {
+				&::before,
+				&::after {
+					content: '"';
+				}
+			}
+		}
+	}
 
 	/**
 	 * Sidebar
@@ -632,8 +678,8 @@ normalise-header(first = true) {
 	#panel {
 		--big-header-height: calc(
 			var(--header-h) + (
-				var(--font-size) * var(--line-height) - var(--border-width)
-			) * 2
+				var(--font-size) * var(--line-height) + var(--pad) * 2 + var(--border-width) * 2
+			)
 		);
 		bg(2);
 		brd(0);
@@ -663,9 +709,16 @@ normalise-header(first = true) {
 		}
 		.item {
 			pad();
+
+			&:hover {
+				background-color: transparent $i;
+				text-decoration: underline $i;
+			}
 		}
-		.copy {
-			box(unset);
+		button.item {
+			background-color: transparent $i;
+			brd(0);
+			shd(0);
 		}
 	}
 	#show-settings {
