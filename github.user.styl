@@ -1907,13 +1907,6 @@ normal-colors() {
 	/**
 	 * React garbage
 	**/
-	// Body
-	[data-target="react-app.reactRoot"] {
-		& > div {
-			pad(0);
-		}
-	}
-
 	// Global
 	[data-component="text"] {
 		lnh();
@@ -1954,17 +1947,46 @@ normal-colors() {
 	}
 
 	// Buttons
-	[data-testid="raw-button"],
-	[class*="prc-Button-ButtonBase-"]
-	[data-component="IconButton"] {
+	colors = {
+		danger:  9,
+		primary: 10,
+	}
+	[class*="prc-Button-ButtonBase-"] {
 		normalise-button();
 		gap: 0 $i;
 		shd(0);
 		box(unset);
 
+		#repos-sticky-header &,
 		#repository-container-header & {
 			--bg2: var(--bg);
 		}
+
+		&[aria-disabled="true"] {
+			@extend .Button:disabled;
+		}
+		&[data-size="small"] {
+			--pad: calc(var(--save-pad) / 2);
+		}
+		&[aria-haspopup] {
+			normalise-select();
+
+			[data-component="trailingAction"],
+			[data-component="trailingVisual"] {
+				display: none $i;
+			}
+		}
+		for k, v in colors {
+			/{s('%s[data-variant="%s"]', unquote(selector()), unquote(k))} {
+				clr = s('var(--color%s)', v);
+
+				--bg2: clr $i;
+				--border: clr $i;
+			}
+		}
+	}
+	[class*="prc-ButtonGroup-ButtonGroup-"] {
+		gap: var(--pad) $i;
 	}
 	[data-component="buttonContent"] {
 		& > * {
@@ -1995,35 +2017,6 @@ normal-colors() {
 			mar(0);
 			height: unset $i;
 		}
-	}
-
-	colors = {
-		danger:  9,
-		primary: 10,
-	}
-	[class*="prc-Button-ButtonBase-"] {
-		&[data-size="small"] {
-			--pad: calc(var(--save-pad) / 2);
-		}
-		&[aria-haspopup] {
-			normalise-select();
-
-			[data-component="trailingAction"],
-			[data-component="trailingVisual"] {
-				display: none $i;
-			}
-		}
-		for k, v in colors {
-			/{s('%s[data-variant="%s"]', unquote(selector()), unquote(k))} {
-				clr = s('var(--color%s)', v);
-
-				--bg2: clr $i;
-				--border: clr $i;
-			}
-		}
-	}
-	[class^="ButtonGroup-"] {
-		gap: var(--pad) $i;
 	}
 
 	// Lists
@@ -2134,12 +2127,12 @@ normal-colors() {
 	}
 
 	// Tabs
-	[class*="UnderlineTabbedInterface__StyledUnderlineWrapper-"] {
+	[class*="UnderlineTabbedInterface__StyledComponentUnderlineWrapper-"] {
 		pad(0);
 		shd(0);
 		min-height: unset $i;
 	}
-	[class*="UnderlineTabbedInterface__StyledUnderlineItemList-"] {
+	[class*="UnderlineTabbedInterface__StyledComponentUnderlineItemList-"] {
 		gap: 0 $i;
 	}
 	[class*="UnderlineTabbedInterface__StyledUnderlineItem-"] {
