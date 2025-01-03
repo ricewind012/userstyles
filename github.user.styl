@@ -1933,6 +1933,9 @@ normal-colors() {
 				pad(0);
 				mar(right);
 			}
+			kbd {
+				display: none $i;
+			}
 		}
 		&-icon {
 			&:first-child {
@@ -2313,10 +2316,6 @@ normal-colors() {
 		&-last-commit {
 			&-message {
 				gap: var(--pad) $i;
-
-				button {
-					--bg2: var(--bg);
-				}
 			}
 			&-history-group {
 				background-color: transparent $i;
@@ -2378,6 +2377,9 @@ normal-colors() {
 				brd(0);
 				brd(bottom);
 
+				[class*="prc-Button-ButtonBase-"] {
+					--bg2: var(--bg);
+				}
 				/[data-testid="up-tree"] > div,
 				& > span, // "Name" label
 				& > div {
@@ -2630,7 +2632,8 @@ normal-colors() {
 			pad(0);
 			pad(bottom);
 
-			& > div {
+			& > div,
+			& > div > :nth-child(2) {
 				gap: var(--pad) $i;
 			}
 
@@ -2733,11 +2736,9 @@ normal-colors() {
 				brd(bottom);
 				mar(0);
 			}
-			& > :nth-child(3) {
-				// Shadow
-				&:empty {
-					display: none $i;
-				}
+			// Shadow
+			& > :empty {
+				display: none $i;
 			}
 		}
 	}
