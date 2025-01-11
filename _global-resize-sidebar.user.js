@@ -17,9 +17,9 @@
 // @match       https://discord.com/*
 // @match       https://github.com/*
 //
-// @match       https://nitter.net/*
-// @match       https://nitter.unixfox.eu/*
-// @match       https://nitter.namazso.eu/*
+// @match       https://nitter.poast.org/*
+// @match       https://nitter.privacydev.net/*
+// @match       https://xcancel.com/*
 //
 // @match       https://stackexchange.com/*
 // @match       https://stackoverflow.com/*
