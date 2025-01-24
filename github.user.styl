@@ -1136,10 +1136,60 @@ normal-colors() {
 				&-lg,
 				&-xl {
 					pad(0);
-					margin: var(--body-pad) $i;
+					mar(0);
+					width: 100% $i;
 					max-width: unset $i;
-					width: calc(100% - var(--body-pad) * 3);
 				}
+			}
+		}
+	}
+
+	.Layout {
+		--Layout-sidebar-width: var(--sidebar-width) $i;
+		--Layout-gutter: 0px $i;
+
+		&-sidebar {
+			bg(2);
+			pad();
+			brd(sidebar-pos == left ? right : left);
+
+			.page-profile & {
+				margin-top: -48px;
+			}
+
+			& > * {
+				top: calc(var(--header-h) + var(--pad));
+			}
+			.btn,
+			.Button,
+			.form-control,
+			.FormControl,
+			::-webkit-scrollbar {
+				--bg2: var(--bg) $i;
+			}
+		}
+		&-main {
+			margin: var(--body-pad) $i;
+		}
+
+		// Lefthand side repository sidebar
+		if (sidebar-pos == left) {
+			grid-template-columns: auto calc(100% - var(--Layout-sidebar-width) - var(--Layout-gutter)) $i;
+
+			&-main {
+				grid-column: 2/span 2 $i;
+			}
+			&-sidebar {
+				grid-column: 1 $i;
+			}
+		} else {
+			grid-template-columns: calc(100% - var(--Layout-sidebar-width) - var(--Layout-gutter)) auto $i;
+
+			&-main {
+				grid-column: 1 $i;
+			}
+			&-sidebar {
+				grid-column: 2/span 2 $i;
 			}
 		}
 	}
@@ -1182,32 +1232,6 @@ normal-colors() {
 	}
 	.tabnav-tab {
 		lnh();
-	}
-
-	// Lefthand side repository sidebar
-	.Layout {
-		--Layout-sidebar-width: var(--sidebar-width) $i;
-		--Layout-gutter: var(--body-pad) $i;
-
-		if (sidebar-pos == left) {
-			grid-template-columns: auto calc(100% - var(--Layout-sidebar-width) - var(--Layout-gutter)) $i;
-
-			&-main {
-				grid-column: 2/span 2 $i;
-			}
-			&-sidebar {
-				grid-column: 1 $i;
-			}
-		} else {
-			grid-template-columns: calc(100% - var(--Layout-sidebar-width) - var(--Layout-gutter)) auto $i;
-
-			&-main {
-				grid-column: 1 $i;
-			}
-			&-sidebar {
-				grid-column: 2/span 2 $i;
-			}
-		}
 	}
 
 	// Sticky sidebar & headers
@@ -1420,47 +1444,6 @@ normal-colors() {
 	#wiki-pages-box .Box-row {
 		pad(0);
 	}
-
-	// ok
-	/*#repo-content {
-		&-pjax-container, &-turbo-frame {
-			/.application-main > main > .container,
-			& > .container {
-				&-sm, &-md, &-lg, &-xl {
-					mar(0);
-					width: calc(100% - var(--body-pad) * 2) $i;
-				}
-			}
-		}
-	}
-	.header-search {
-		max-width: calc(var(--sidebar-width) - var(--font-size) * 1.5 - var(--body-pad)) $i;
-	}
-	.Layout {
-		--Layout-gutter: 0px $i;
-
-		&-sidebar {
-			bg(2);
-			pad();
-			brd(sidebar-pos == left ? right : left);
-
-			.page-profile & {
-				margin-top: -48px;
-			}
-
-			& > * {
-				top: calc(var(--header-h) + var(--pad));
-			}
-			.btn,
-			.form-control,
-			::-webkit-scrollbar {
-				--bg2: var(--bg) $i;
-			}
-		}
-		&-main {
-			margin: var(--body-pad) $i;
-		}
-	}*/
 
 	// Content headers
 	.gh-header,
