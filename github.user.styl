@@ -1153,13 +1153,6 @@ normal-colors() {
 			pad();
 			brd(sidebar-pos == left ? right : left);
 
-			.page-profile & {
-				margin-top: -48px;
-			}
-
-			& > * {
-				top: calc(var(--header-h) + var(--pad));
-			}
 			.btn,
 			.Button,
 			.form-control,
@@ -1248,7 +1241,7 @@ normal-colors() {
 	}
 	#repo-content-turbo-frame[src$="/releases"] .col-md-2,
 	.Layout-sidebar > * {
-		top: calc(var(--header-h) + var(--body-pad));
+		top: calc(var(--header-h) + var(--pad));
 		z-index: 999 $i;
 	}
 	.Layout-sidebar[data-target="diff-layout.sidebarContainer"] > * {
@@ -1352,9 +1345,6 @@ normal-colors() {
 	}
 
 	// Sidebar
-	#-sidebar-separator {
-		margin-left: calc(var(--body-pad) * 1.5);
-	}
 	.BorderGrid {
 		mar(0);
 		display: flex;
@@ -1366,7 +1356,7 @@ normal-colors() {
 			brd(0);
 			display: block;
 
-			& > h2 {
+			h2 {
 				normalise-header();
 
 				& > a {
@@ -2709,6 +2699,10 @@ normal-colors() {
 
 				& > :first-child {
 					mar(bottom);
+				}
+				& > :nth-child(2) > :nth-child(2) {
+					gap: var(--pad) $i;
+					display: flex $i;
 				}
 				[role="tooltip"] {
 					mar(right);
