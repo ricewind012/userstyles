@@ -1093,11 +1093,6 @@ normal-colors() {
 	.search-input {
 		width: unset;
 	}
-	.application-main {
-		&:has(react-app:not([app-name="blackbird-search"], [app-name="react-code-view"])) {
-			margin: var(--body-pad);
-		}
-	}
 	#repository-container-header {
 		bg(2);
 
@@ -1126,22 +1121,14 @@ normal-colors() {
 	 * Content
 	**/
 	// Content container
-	#repo-content {
-		&-pjax-container,
-		&-turbo-frame {
-			/.application-main > main > .container,
-			& > .container {
-				&-sm,
-				&-md,
-				&-lg,
-				&-xl {
-					pad(0);
-					mar(0);
-					width: 100% $i;
-					max-width: unset $i;
-				}
-			}
-		}
+	.container-sm,
+	.container-md,
+	.container-lg,
+	.container-xl {
+		pad(0);
+		mar(0);
+		width: 100% $i;
+		max-width: unset $i;
 	}
 
 	.Layout {
@@ -1613,22 +1600,8 @@ normal-colors() {
 			gap: var(--pad);
 		}
 	}
-	.new-discussion-timeline .Layout {
-		&-sidebar {
-			// Header
-			h2 + div > .mb-2 {
-				normalise-header();
-			}
-		}
-		&-main {
-			mar(top, 0);
-		}
-	}
 
 	// Popup & boxes
-	tool-tip {
-		margin-top: 44px $i;
-	}
 	.Box {
 		&-btn-octicon {
 			lnh();
@@ -2022,7 +1995,6 @@ normal-colors() {
 	}
 	[class^="Item__LiBox-"] {
 		lnh();
-		pad();
 		brd(0);
 		mar(0);
 		width: 100% $i;
@@ -2039,6 +2011,9 @@ normal-colors() {
 				@extend $li-item-icon;
 			}
 		}
+		& > a {
+			pad();
+		}
 		& > span {
 			@extend $li-item-icon;
 		}
@@ -2050,6 +2025,11 @@ normal-colors() {
 		background-color: var(--border) $i;
 		mar(0);
 		height: var(--border-width) $i;
+	}
+	[data-component="ActionList.Item--DividerContainer"] {
+		& > span {
+			lnh();
+		}
 	}
 
 	// Tree
@@ -2600,6 +2580,8 @@ normal-colors() {
 	}
 	// Repository overview
 	react-partial[partial-name="repos-overview"] > div > div {
+		mar(0);
+
 		// Top buttons
 		& > :nth-child(2) {
 			pad(0);
@@ -2721,7 +2703,6 @@ normal-colors() {
 	}
 	#StickyHeader {
 		pad(0);
-		mar(bottom);
 
 		& > div {
 			&,
