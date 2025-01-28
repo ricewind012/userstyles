@@ -2127,6 +2127,27 @@ normal-colors() {
 		}
 	}
 
+	// Sidebar
+	[style^="--sticky-pane-height"] > div > div > :first-child {
+		bg(2);
+		brd(right);
+		top: var(--header-h) $i;
+
+		& > [style^="--pane-width"] {
+			--pane-width: var(--sidebar-width) $i;
+			pad(0);
+
+			h2,
+			h3 {
+				normalise-header(false);
+				mar();
+			}
+			& + div {
+				display: none;
+			}
+		}
+	}
+
 	// etc.
 	[class^="Avatar__StyledAvatar-"] {
 		margin-right: 1ch $i;
@@ -2349,25 +2370,9 @@ normal-colors() {
 	react-app {
 		&[app-name="blackbird-search"] {
 			// *Actual* body
-			.search-results-page > div > div > div {
+			[style^="--sticky-pane-height"] > div > div {
 				// Sidebar
 				& > :first-child {
-					bg(2);
-					brd(right);
-					top: var(--header-h) $i;
-
-					& > [style^="--pane-width"] {
-						--pane-width: var(--sidebar-width) $i;
-
-						h2,
-						h3 {
-							normalise-header(false);
-							mar();
-						}
-						& + div {
-							display: none;
-						}
-					}
 					[data-testid="facets-pane"] {
 						pad(0);
 					}
@@ -2725,9 +2730,6 @@ normal-colors() {
 	}
 	#highlighted-line-menu-container > button {
 		left: calc((16px + var(--pad) / 2) * -1);
-	}
-	[style^="--pane-width"] + div {
-		width: var(--border-width) $i;
 	}
 
 	/**
