@@ -2083,19 +2083,20 @@ normal-colors() {
 	}
 
 	// Tabs
-	[class*="UnderlineTabbedInterface__StyledComponentUnderlineWrapper-"] {
+	[class*="prc-components-UnderlineWrapper-"] {
 		pad(0);
 		shd(0);
 		min-height: unset $i;
 	}
-	[class*="UnderlineTabbedInterface__StyledComponentUnderlineItemList-"] {
+	[class*="prc-components-UnderlineItemList-"] {
 		gap: 0 $i;
 	}
-	[class*="UnderlineTabbedInterface__StyledUnderlineItem-"] {
+	[class*="prc-components-UnderlineItem-"] {
 		background-color: transparent $i;
+		fg(2);
 
-		&:not(:hover) {
-			fg(2);
+		&:hover {
+			fg();
 		}
 		&[aria-current="page"] {
 			hl();
