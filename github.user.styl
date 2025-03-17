@@ -533,9 +533,6 @@ normal-colors() {
 		for i in small medium large full {
 			--borderRadius-{i}: var(--border-radius);
 		}
-
-		// save
-		--save-pad: var(--pad);
 	}
 
 	// Settings
@@ -543,6 +540,7 @@ normal-colors() {
 		--reserve-bg2: var(--bg2);
 		--reserve-fg: var(--fg);
 		--reserve-border: var(--border);
+		--reserve-pad: var(--pad);
 
 		// Settings
 		settings = ''
@@ -737,7 +735,7 @@ normal-colors() {
 			--bg2: var(--bg);
 		}
 		.flash & {
-			--pad: calc(var(--save-pad) / 2);
+			--pad: calc(var(--reserve-pad) / 2);
 		}
 
 		colors = {
@@ -787,7 +785,7 @@ normal-colors() {
 			~/-sm,
 			/.Button--small,
 			/.Button--iconOnly {
-				--pad: calc(var(--save-pad) / 2);
+				--pad: calc(var(--reserve-pad) / 2);
 			}
 
 			& > .octicon {
@@ -804,7 +802,7 @@ normal-colors() {
 			height: unset;
 		}
 		&.js-wiki-sidebar-toc-toggle-chevron-button {
-			--pad: calc(var(--save-pad) / 2);
+			--pad: calc(var(--reserve-pad) / 2);
 			brd(0);
 			mar(top);
 			mar(left, 0);
@@ -864,14 +862,6 @@ normal-colors() {
 	.post-merge-message {
 		pad();
 	}
-	.pr-review-reactions {
-		.just-bottom,
-		.has-reactions,
-		.has-reactions.comment-reactions {
-			mar();
-			align-items: center;
-		}
-	}
 	.toolbar-commenting {
 		mar(0);
 
@@ -890,13 +880,6 @@ normal-colors() {
 			bg();
 		}
 	}
-	.full-commit {
-		brd();
-
-		.commit-meta {
-			brd-radius(bottom);
-		}
-	}
 	.range-editor {
 		bg(2);
 		brd();
@@ -911,22 +894,6 @@ normal-colors() {
 		brd();
 		brd(top, 0);
 		brd-radius(bottom);
-	}
-	.branch-action {
-		&-body {
-			border-radius: var(--border-radius);
-		}
-		&-item {
-			--icon-size: 30px;
-
-			lnh();
-			pad();
-			padding-left: calc(var(--pad) * 2 + var(--icon-size)) $i;
-
-			&-icon {
-				margin-left: calc(var(--icon-size) * -1 - var(--pad)) $i;
-			}
-		}
 	}
 
 	/**
@@ -1117,8 +1084,6 @@ normal-colors() {
 		}
 	}
 	.pagehead-actions {
-		pad(0);
-
 		& > li {
 			mar(right);
 		}
@@ -1241,19 +1206,11 @@ normal-colors() {
 		top: calc(var(--header-h) + var(--pad));
 		z-index: 999 $i;
 	}
-	.Layout-sidebar[data-target="diff-layout.sidebarContainer"] > * {
-		top: var(--body-pad);
-	}
 	main .Box-header,
 	.file-header,
 	.js-position-sticky {
 		top: var(--header-h);
 		z-index: 998 $i;
-
-		// Can't see it, anyway
-		[data-target="diff-layout.mainContainer"] & {
-			position: unset $i;
-		}
 	}
 	.js-position-sticky {
 		height: var(--header-h);
@@ -1279,9 +1236,6 @@ normal-colors() {
 	.Layout-sidebar {
 		& > * {
 			z-index: 998 $i;
-		}
-		.is-stuck ~ .Layout > &[data-original-top] > * {
-			top: 60px;
 		}
 	}
 	#repo-content-turbo-frame[src$="/releases"] .col-md-2 {
@@ -1316,7 +1270,7 @@ normal-colors() {
 		}
 	}
 	.notification-shelf {
-		--pad: calc(var(--save-pad) / 2);
+		--pad: calc(var(--reserve-pad) / 2);
 		pad();
 		overflow: hidden;
 
@@ -1558,7 +1512,7 @@ normal-colors() {
 			.details-overlay > .btn-link {
 				normalise-button();
 				--bg2: var(--bg);
-				--pad: calc(var(--save-pad) / 2);
+				--pad: calc(var(--reserve-pad) / 2);
 
 				& > svg {
 					fg();
@@ -1925,7 +1879,7 @@ normal-colors() {
 			@extend .Button:disabled;
 		}
 		&[data-size="small"] {
-			--pad: calc(var(--save-pad) / 2);
+			--pad: calc(var(--reserve-pad) / 2);
 		}
 		&[aria-haspopup] {
 			normalise-select();
@@ -2139,34 +2093,32 @@ normal-colors() {
 	}
 
 	// Sidebar
-	[style^="--sticky-pane-height"] > div > div > :first-child {
+	[class*="prc-PageLayout-Pane-"] {
+		--pane-width: var(--sidebar-width) $i;
+		pad(0);
+
+		h2,
+		h3 {
+			normalise-header(false);
+			mar();
+		}
+	}
+	[class*="prc-PageLayout-PaneWrapper-"] {
 		bg(2);
 		brd(right);
 		top: var(--header-h) $i;
 
-		& > [style^="--pane-width"] {
-			--pane-width: var(--sidebar-width) $i;
-			pad(0);
-
-			h2,
-			h3 {
-				normalise-header(false);
-				mar();
-			}
-			& + div {
-				display: none;
-			}
-		}
 		.TextInput-wrapper,
 		button {
 			--bg2: var(--bg);
 		}
 	}
-
-	// etc.
-	[class^="Avatar__StyledAvatar-"] {
-		margin-right: 1ch $i;
-		box(var(--font-size));
+	[class*="prc-PageLayout-PaneVerticalDivider-"] {
+		display: none $i;
+	}
+	
+	[class*="prc-PageLayout-ContentWrapper-"] {
+		padding: var(--body-pad) $i;
 	}
 
 	.react {
@@ -2428,7 +2380,7 @@ normal-colors() {
 
 								button {
 									--bg2: var(--bg);
-									--pad: calc(var(--save-pad) / 2);
+									--pad: calc(var(--reserve-pad) / 2);
 									normalise-button();
 									box(unset);
 								}
@@ -2655,7 +2607,7 @@ normal-colors() {
 					// Buttons
 					button {
 						--bg2: var(--bg);
-						--pad: calc(var(--save-pad) / 2);
+						--pad: calc(var(--reserve-pad) / 2);
 					}
 				}
 
@@ -2760,7 +2712,7 @@ normal-colors() {
 
 		[class*="prc-Button-ButtonBase-"] {
 			--bg2: var(--bg);
-			--pad: calc(var(--save-pad) / 2);
+			--pad: calc(var(--reserve-pad) / 2);
 		}
 		.color-bg-default {
 			brd();
@@ -2770,8 +2722,6 @@ normal-colors() {
 		normalise-header();
 	}
 	[class*="prc-PageLayout-ContentWrapper-"] {
-		padding: var(--body-pad) $i;
-
 		.position-sticky {
 			pad(top, 0);
 			position: unset $i;
@@ -2779,9 +2729,6 @@ normal-colors() {
 		.diff-text-cell {
 			brd(left);
 		}
-	}
-	[class*="prc-PageLayout-PaneVerticalDivider-"] {
-		width: 0 $i;
 	}
 
 	[class*="ExpandableHunkHeaderDiffLine-module__expand-button-line-"] {
@@ -2800,7 +2747,7 @@ normal-colors() {
 			normalise-header(false);
 
 			button {
-				--pad: calc(var(--save-pad) / 2);
+				--pad: calc(var(--reserve-pad) / 2);
 			}
 		}
 		& > .pt-3 {
@@ -2823,7 +2770,7 @@ normal-colors() {
 	}
 	[class*="Diff-module__diffHeaderWrapper-"] {
 		button {
-			--pad: calc(var(--save-pad) / 2);
+			--pad: calc(var(--reserve-pad) / 2);
 		}
 	}
 	[class*="DiffFind-module__defaultStyles-"] {
