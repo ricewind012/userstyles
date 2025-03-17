@@ -460,6 +460,18 @@ normal-colors() {
 		}
 		--color-ansi-gray: var(--color15) $i;
 
+		// Diffs
+		colors = {
+			deletion: 1,
+			addition: 2,
+		};
+		str = 'color-mix(in srgb, var(--color%s) %s, transparent)';
+		for k, v in colors {
+			--diffBlob-{k}Line-bgColor: s(str, v, 10%) $i;
+			--diffBlob-{k}Num-bgColor: s(str, v, 20%) $i;
+			--diffBlob-{k}Word-bgColor: s(str, v, 25%) $i;
+		}
+
 		// Borders
 		--borderColor-default: var(--border) $i;
 		--borderColor-muted: var(--border) $i;
@@ -2147,6 +2159,10 @@ normal-colors() {
 				display: none;
 			}
 		}
+		.TextInput-wrapper,
+		button {
+			--bg2: var(--bg);
+		}
 	}
 
 	// etc.
@@ -2335,8 +2351,8 @@ normal-colors() {
 		}
 	}
 	
-	react-app,
-	react-partial {
+	react-app[app-name="react-code-view"],
+	react-partial[partial-name="repos-overview"] {
 		// Files
 		table[class] {
 			brd();
@@ -2496,7 +2512,7 @@ normal-colors() {
 			}
 
 			// Commits
-			.border.rounded-2 {
+			[class*="CommitGroup-module__panel-"] {
 				brd(0);
 			}
 
@@ -2717,11 +2733,6 @@ normal-colors() {
 			}
 		}
 	}
-	.d-flex.gap-2 {
-		& > div {
-			mar(0);
-		}
-	}
 	[aria-labelledby^="file-name-id"] {
 		mar(0);
 
@@ -2731,6 +2742,93 @@ normal-colors() {
 	}
 	#highlighted-line-menu-container > button {
 		left: calc((16px + var(--pad) / 2) * -1);
+	}
+
+	////
+	// NEW React pages
+	////
+
+	/**
+	 * Commit
+	**/
+	:root {
+		--header-height: var(--header-h) $i;
+	}
+
+	[class*="prc-PageLayout-HeaderContent-"] {
+		bg(2);
+		brd(bottom);
+
+		[class*="prc-Button-ButtonBase-"] {
+			--bg2: var(--bg);
+			--pad: calc(var(--save-pad) / 2);
+		}
+		.color-bg-default {
+			brd();
+		}
+	}
+	[class*="prc-PageHeader-Title-"] {
+		normalise-header();
+	}
+	[class*="prc-PageLayout-ContentWrapper-"] {
+		padding: var(--body-pad) $i;
+
+		.position-sticky {
+			pad(top, 0);
+			position: unset $i;
+		}
+		.diff-text-cell {
+			brd(left);
+		}
+	}
+	[class*="prc-PageLayout-PaneVerticalDivider-"] {
+		width: 0 $i;
+	}
+
+	[class*="ExpandableHunkHeaderDiffLine-module__expand-button-line-"] {
+		background-color: color-a(4) $i;
+		brd(0);
+		width: var(--line-number-cell-width-unified) $i;
+
+		&:hover {
+			background-color: color-a(12) $i;
+		}
+	}
+	[class*="Comment-module__commit-discussion-comments-"] {
+		gap: 0 $i;
+
+		& > :first-child {
+			normalise-header(false);
+
+			button {
+				--pad: calc(var(--save-pad) / 2);
+			}
+		}
+		& > .pt-3 {
+			pad(0);
+
+			& > div {
+				background-color: transparent $i;
+				pad(0);
+
+				& > button {
+					normalise-input();
+					fg(2);
+				}
+			}
+		}
+		& > .p-2 {
+			pad(0);
+			mar(top);
+		}
+	}
+	[class*="Diff-module__diffHeaderWrapper-"] {
+		button {
+			--pad: calc(var(--save-pad) / 2);
+		}
+	}
+	[class*="DiffFind-module__defaultStyles-"] {
+		all: unset;
 	}
 
 	/**
