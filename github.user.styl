@@ -1108,13 +1108,11 @@ normal-colors() {
 	#repository-container-header {
 		bg(2);
 
-		& > div {
-			max-width: unset;
-		}
 		.flex-auto.width-fit {
 			display: none;
 		}
 		.border-bottom {
+			pad(top);
 			mar(0);
 		}
 	}
@@ -1387,7 +1385,7 @@ normal-colors() {
 				position: absolute;
 				right: 0;
 				box(2ch, 100%);
-				background-image: linear-gradient(90deg, transparent, var(--bg));
+				background-image: linear-gradient(90deg, transparent, var(--bg2));
 			}
 
 			& > .ml-2 {
@@ -2228,6 +2226,10 @@ normal-colors() {
 							a:not(.issue-link) {
 								fg();
 							}
+							a,
+							button {
+								--bg2: var(--bg);
+							}
 							[data-testid="avatar-icon-link"] + span > a {
 								fg(-link);
 							}
@@ -2345,9 +2347,6 @@ normal-colors() {
 		[app-name="react-code-view"] & > :first-child > div {
 			top: var(--header-h) $i;
 			height: calc(100vh - var(--header-h)) $i;
-		}
-		[data-selector="repos-split-pane-content"] {
-			padding: var(--body-pad);
 		}
 	}
 	
