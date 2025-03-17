@@ -1817,6 +1817,10 @@ normal-colors() {
 	/**
 	 * React garbage
 	**/
+	sel(name) {
+		{s('/%s%s-"]', unquote(slice(selector(), 0, -2)), name)};
+	}
+
 	// Global
 	[data-component="text"] {
 		lnh();
@@ -2047,31 +2051,33 @@ normal-colors() {
 	}
 
 	// Tabs
-	[class*="prc-components-UnderlineWrapper-"] {
-		pad(0);
-		shd(0);
-		min-height: unset $i;
-	}
-	[class*="prc-components-UnderlineItemList-"] {
-		gap: 0 $i;
-	}
-	[class*="prc-components-UnderlineItem-"] {
-		background-color: transparent $i;
-		fg(2);
-
-		&:hover {
-			fg();
+	[class*="prc-components-"] {
+		{sel(UnderlineWrapper)} {
+			pad(0);
+			shd(0);
+			min-height: unset $i;
 		}
-		&[aria-current="page"] {
-			hl();
+		{sel(UnderlineItemList)} {
+			gap: 0 $i;
+		}
+		{sel(UnderlineItem)} {
+			background-color: transparent $i;
+			fg(2);
 
-			&::after {
-				display: none $i;
+			&:hover {
+				fg();
 			}
-		}
+			&[aria-current="page"] {
+				hl();
 
-		[data-component="icon"] {
-			color: inherit $i;
+				&::after {
+					display: none $i;
+				}
+			}
+
+			[data-component="icon"] {
+				color: inherit $i;
+			}
 		}
 	}
 
@@ -2093,32 +2099,33 @@ normal-colors() {
 	}
 
 	// Sidebar
-	[class*="prc-PageLayout-Pane-"] {
-		--pane-width: var(--sidebar-width) $i;
-		pad(0);
+	[class*="prc-PageLayout-"] {
+		{sel(Pane)} {
+			--pane-width: var(--sidebar-width) $i;
+			pad(0);
 
-		h2,
-		h3 {
-			normalise-header(false);
-			mar();
+			h2,
+			h3 {
+				normalise-header(false);
+				mar();
+			}
 		}
-	}
-	[class*="prc-PageLayout-PaneWrapper-"] {
-		bg(2);
-		brd(right);
-		top: var(--header-h) $i;
+		{sel(PaneWrapper)} {
+			bg(2);
+			brd(right);
+			top: var(--header-h) $i;
 
-		.TextInput-wrapper,
-		button {
-			--bg2: var(--bg);
+			.TextInput-wrapper,
+			button {
+				--bg2: var(--bg);
+			}
 		}
-	}
-	[class*="prc-PageLayout-PaneVerticalDivider-"] {
-		display: none $i;
-	}
-	
-	[class*="prc-PageLayout-ContentWrapper-"] {
-		padding: var(--body-pad) $i;
+		{sel(PaneVerticalDivider)} {
+			display: none $i;
+		}
+		{sel(ContentWrapper)} {
+			padding: var(--body-pad) $i;
+		}
 	}
 
 	.react {
@@ -2706,28 +2713,30 @@ normal-colors() {
 		--header-height: var(--header-h) $i;
 	}
 
-	[class*="prc-PageLayout-HeaderContent-"] {
-		bg(2);
-		brd(bottom);
-
-		[class*="prc-Button-ButtonBase-"] {
-			--bg2: var(--bg);
-			--pad: calc(var(--reserve-pad) / 2);
-		}
-		.color-bg-default {
-			brd();
-		}
-	}
 	[class*="prc-PageHeader-Title-"] {
 		normalise-header();
 	}
-	[class*="prc-PageLayout-ContentWrapper-"] {
-		.position-sticky {
-			pad(top, 0);
-			position: unset $i;
+	[class*="prc-PageLayout-"] {
+		{sel(HeaderContent)} {
+			bg(2);
+			brd(bottom);
+
+			[class*="prc-Button-ButtonBase-"] {
+				--bg2: var(--bg);
+				--pad: calc(var(--reserve-pad) / 2);
+			}
+			.color-bg-default {
+				brd();
+			}
 		}
-		.diff-text-cell {
-			brd(left);
+		{sel(ContentWrapper)} {
+			.position-sticky {
+				pad(top, 0);
+				position: unset $i;
+			}
+			.diff-text-cell {
+				brd(left);
+			}
 		}
 	}
 
