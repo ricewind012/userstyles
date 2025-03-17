@@ -1989,14 +1989,54 @@ normal-colors() {
 			box(unset);
 		}
 	}
-	[data-component="ActionList.Divider"] {
-		background-color: var(--border) $i;
-		mar(0);
-		height: var(--border-width) $i;
+
+	// Context menu
+	[class*="prc-Overlay-Overlay-"] {
+		@extend .Overlay;
 	}
-	[data-component="ActionList.Item--DividerContainer"] {
-		& > span {
+	[class*="prc-ActionList-"] {
+		{sel(ActionList)} {
+			pad(0);
+		}
+		{sel(ActionListContent)} {
+			color: inherit $i;
+		}
+		{sel(ActionListItem)} {
+			mar(0);
+
+			&:hover {
+				--fgColor-muted: var(--hl-fg);
+				hl();
+			}
+		}
+		{sel(Divider)} {
+			mar(0);
+		}
+		{sel(Group)} {
+			mar(0);
+		}
+		// Headers in context menus... lmao
+		{sel(GroupHeadingWrap)} {
+			display: none $i;
+		}
+		{sel(ItemLabel)} {
+			color: inherit $i;
 			lnh();
+		}
+		// Left side icon
+		{sel(LeadingVisual)} {
+			min-width: 16px $i;
+		}
+		{sel(VisualWrap)} {
+			lnh();
+
+			kbd {
+				all: unset $i;
+
+				&:not(:last-child)::after {
+					content: '+';
+				}
+			}
 		}
 	}
 
