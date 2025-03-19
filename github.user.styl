@@ -2700,7 +2700,7 @@ normal-colors() {
 				brd(bottom);
 
 				& > :first-child {
-					mar(bottom);
+					display: none $i;
 				}
 				& > :nth-child(2) > :nth-child(2) {
 					gap: var(--pad) $i;
@@ -2751,6 +2751,14 @@ normal-colors() {
 	**/
 	:root {
 		--header-height: var(--header-h) $i;
+	}
+	#diff_file_tree > .gap-2 {
+		bg(2);
+		pad();
+		brd(bottom);
+		position: sticky $i;
+		top: 0 $i;
+		z-index: 1 $i;
 	}
 
 	[class*="prc-PageHeader-Title-"] {
