@@ -1060,14 +1060,6 @@ normal-colors() {
 				brd(0);
 			}
 		}
-
-		// Make mobile overlays look like normal popouts
-		.Overlay {
-			normal-colors();
-			mar(0);
-			box(var(--overlay-width), var(--overlay-height));
-			top: var(--header-h) $i;
-		}
 	}
 	.search-input {
 		width: unset;
@@ -2122,11 +2114,34 @@ normal-colors() {
 	}
 
 	// Overlay
-	[data-testid="backdrop-anchor"] > div,
-	[class^="Overlay__StyledOverlay-"] {
+	[class*="prc-Dialog-Dialog-"] {
 		brd();
 		shd(big);
 		dropfade();
+
+		// Site header user nav
+		[role="heading"] {
+			bg(2);
+			gap: var(--pad) $i;
+			pad();
+			brd(bottom);
+
+			button {
+				--bg2: var(--bg);
+				--pad: calc(var(--reserve-pad) / 2);
+			}
+
+			& + div > div {
+				pad(0);
+			}
+		}
+
+		// Make mobile overlays look like normal popouts
+		normal-colors();
+		mar(0);
+		box(unset);
+		position: fixed $i;
+		top: calc(var(--header-h) + var(--pad)) $i;
 
 		[class^="Item__LiBox-"] {
 			transition: none $i;
