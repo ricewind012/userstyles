@@ -425,6 +425,8 @@ normal-colors() {
 			--fgColor-{k}-emphasis: clr $i;
 			--fgColor-{k}-muted: s('var(--color%s)', v - 8) $i;
 			--fgColor-{k}: clr $i;
+
+			--borderColor-{k}-emphasis: clr $i;
 		}
 
 		// Syntax highlighting
@@ -1426,6 +1428,33 @@ normal-colors() {
 	#sidebar-events-header,
 	#repo-content-pjax-container > div > .Subhead {
 		mar(top, 0);
+	}
+	.markdown-alert {
+		background-color: @css {
+			color-mix(
+				in srgb,
+				var(--color) calc(100% * var(--bg-opacity) / 2),
+				transparent
+			);
+		}
+		border-left-color: var(--color) $i;
+
+		colors = {
+			caution:   1,
+			important: 2
+			warning:   3,
+			note:      4,
+			tip:       5,
+		};
+		for k, v in colors {
+			&-{k} {
+				--color: s('var(--color%s)', v) $i;
+			}
+		}
+
+		&-title {
+			color: var(--color) $i;
+		}
 	}
 	.markdown-body {
 		h1,
