@@ -405,8 +405,6 @@ normal-colors() {
 		--fgColor-link: var(--fg-link) $i;
 		--fgColor-onEmphasis: var(--hl-fg) $i;
 
-		--treeViewItem-leadingVisual-iconColor-rest: var(--fg2) $i;
-
 		// State
 		colors = {
 			danger:    9,
@@ -565,6 +563,10 @@ normal-colors() {
 	}
 	mark {
 		hl();
+
+		* {
+			color: inherit $i;
+		}
 	}
 
 	// Primer
@@ -2064,9 +2066,10 @@ normal-colors() {
 	// Tree
 	.PRIVATE_TreeView {
 		&-item {
-			&[aria-current] &-container {
+			&[aria-current] > &-container {
 				hl();
-				--fg: var(--hl-fg);
+				--fgColor-muted: var(--hl-fg);
+				--treeViewItem-leadingVisual-iconColor-rest: var(--hl-fg);
 			}
 			&-container {
 				brd(0);
@@ -2076,15 +2079,14 @@ normal-colors() {
 				}
 			}
 			&-toggle {
+				padding-top: calc(var(--pad) / 2) $i;
+
 				&:hover {
 					fg();
 				}
 			}
 			&-content {
 				padding: 0 var(--pad) $i;
-			}
-			&-visual {
-				fg();
 			}
 		}
 	}
