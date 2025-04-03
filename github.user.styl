@@ -334,7 +334,7 @@ normalise-radio() {
 	&::before {
 		content: '';
 		position: absolute $i;
-		inset: $select-size / 5;
+		inset: 3px;
 		background-color: var(--hl) $i;
 		border-radius: 50% $i;
 		transition: transform var(--trans-dur) linear $i;
@@ -1498,8 +1498,8 @@ normal-colors() {
 		&-left-sidebar {
 			width: var(--sidebar-width) $i;
 
-			.loading-context {
-				margin-top: calc(var(--pad) * -2) $i;
+			[role="search"] {
+				margin-top: calc(var(--pad) * -1) $i;
 			}
 		}
 		&-right-sidebar {
@@ -1554,21 +1554,18 @@ normal-colors() {
 			}
 		}
 
-		.py-3:first-child {
-			pad(top, 0);
+		.py-3.mb-2 {
+			pad(0);
+			mar(0);
 
-			.Button {
+			#switch_dashboard_context_left_column-button {
 				--bg2: var(--bg);
 				normalise-select();
 
-				&-visual {
+				.Button-visual {
 					display: none;
 				}
 			}
-		}
-
-		.btn {
-			--bg2: var(--bg);
 		}
 	}
 	feed-container > :first-child {
@@ -1578,6 +1575,17 @@ normal-colors() {
 		& > div {
 			letter-spacing: initial $i;
 			text-transform: initial $i;
+		}
+	}
+	.js-feed-item-component {
+		pad(top, 0);
+
+		header {
+			mar(top, 0);
+		}
+		.mt-1.mb-1 {
+			brd(top);
+			margin: calc(var(--pad) * -1) $i;
 		}
 	}
 
@@ -2130,7 +2138,7 @@ normal-colors() {
 			&:hover {
 				fg();
 			}
-			&[aria-current="page"] {
+			&[aria-current] {
 				hl();
 
 				&::after {
