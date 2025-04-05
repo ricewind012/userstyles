@@ -7,7 +7,7 @@
 
 @preprocessor stylus
 
-@var checkbox sidebar-overlay "Sidebar overlay" 1
+@var checkbox sidebar-overlay "Sidebar overlay" 0
 @var checkbox show-styles "Show style count" 1
 @var checkbox show-whitespace "Show tabs" 1
 ==/UserStyle== */
@@ -373,33 +373,18 @@ normalise-header(first = true) {
 	**/
 	body {
 		bgc();
-		--onoffswitch-width: 89px;
 	}
-	a {
-		&,
-		&:hover {
-			color: var(--fg-link);
-		}
-		&:not(:hover) {
-			text-decoration: none;
-		}
+	a,
+	a:hover {
+		color: var(--fg-link) $i;
 	}
-	.svg-icon {
-		fill: var(--fg2);
+ 	i {
+		color: var(--fg2) $i;
+		transition: none $i;
 
 		#stylus a:hover &,
 		#stylus &:hover {
-			fill: var(--fg);
-			anim();
-		}
-		a:focus &,
-		&:focus {
-			transform: scale(.9);
-			anim();
-		}
-
-		&.info {
-			mar(left, 0);
+			color: var(--fg) $i;
 		}
 
 		&.checked,
@@ -410,12 +395,14 @@ normalise-header(first = true) {
 		}
 	}
 	input {
+		/textarea,
 		&:not([type]),
 		&[type="text"],
 		&[type="number"],
-		&[type="search"] {
+		&[type="search"],
+		&[type="url"] {
 			normalise-input();
-			height: unset;
+			height: unset $i;
 		}
 		&[type="date"],
 		/select {
@@ -423,6 +410,11 @@ normalise-header(first = true) {
 		}
 		&[type="checkbox"] {
 			normalise-checkbox();
+
+			&::after {
+				content: '' $i;
+				height: unset $i;
+			}
 		}
 		&[type="radio"] {
 			normalise-radio();
@@ -442,34 +434,17 @@ normalise-header(first = true) {
 	select {
 		height: unset $i;
 	}
-	.onoffswitch {
-		flex(,right);
-		mar(0);
-
-		input[type="checkbox"] {
-			top: 0 $i;
-			left: 0 $i;
-		}
-		span {
-			display: none;
-		}
+	.select-wrapper::after {
+		display: none $i;
 	}
-	.checkmate {
-		box($select-size);
+	.slider {
+		--width: $select-size $i;
 
-		#stylus-popup & {
-			width: s('calc(%s + var(--pad))', $select-size) $i;
+		&::after {
+			brd(0);
+			shd(0);
+			width: unset $i;
 		}
-		#stylus-manage #installed & {
-			mar(0);
-			margin-right: 1ch $i;
-			position: initial;
-		}
-	}
-	label:not(.radio-wrapper) {
-		pad(0);
-		flex-direction: row-reverse;
-		justify-content: flex-end;
 	}
 	.radio-wrapper {
 		lnh();
@@ -482,9 +457,6 @@ normalise-header(first = true) {
 	}
 	button {
 		normalise-button();
-		background-image: none $i;
-		lnh();
-		mar(right);
 
 		.split-btn > &:first-of-type {
 			border-radius: var(--border-radius) 0 0 var(--border-radius) $i;
@@ -495,6 +467,8 @@ normalise-header(first = true) {
 		}
 	}
 	#cancel-button {
+		--bg2: var(--bg);
+		normalise-button();
 		replace-text('Back');
 	}
 	.CodeMirror {
@@ -599,60 +573,58 @@ normalise-header(first = true) {
 				border-bottom: 1px solid var(--fg3);
 			}
 		}
+	}
+	.CodeMirror .applies {
+		&-to {
+			bg(3);
+			pad();
+			brd(top);
+			brd(bottom);
+			margin: var(--body-pad) 0 $i;
 
-		.applies {
-			&-to {
-				bg(3);
-				pad();
-				brd(top);
-				brd(bottom);
-				margin: var(--body-pad) 0 $i;
+			&::before {
+				display: none;
+			}
+
+			label {
+				fg();
+				mar(right);
+				align-self: center $i;
 
 				&::before {
-					display: none;
-				}
-
-				label {
-					fg();
-					height: calc(
-						var(--font-size) * var(--line-height) + var(--pad) * 2
-					);
-
-					&::before {
-						font-size: inherit;
-						margin-right: 1ch;
-					}
-				}
-				li {
-					&:not(.applies-to-everything) {
-						& > * {
-							mar(0);
-						}
-						& > :last-child {
-							margin-right: calc(var(--pad) + 1ch) $i;
-						}
-					}
-					&:not(:only-child):not(:last-child) {
-						mar(bottom);
-					}
-				}
-				a {
-					margin-left: 1ch;
-					height: unset;
-				}
-				select,
-				input {
-					--bg2: var(--bg);
+					font-size: inherit;
+					margin-right: 1ch;
 				}
 			}
-			&-to-item,
-			&-value-wrapper {
-				gap: var(--pad);
-				mar(bottom, 0);
+			li {
+				&:not(.applies-to-everything) {
+					& > * {
+						mar(0);
+					}
+					& > :last-child {
+						margin-right: calc(var(--pad) + 1ch) $i;
+					}
+				}
+				&:not(:only-child):not(:last-child) {
+					mar(bottom);
+				}
 			}
-			&-value-wrapper button {
-				mar(right, 0);
+			a {
+				mar(0);
+				align-self: center $i;
 			}
+			select,
+			input {
+				--bg2: var(--bg);
+			}
+		}
+		&-to-item,
+		&-value-wrapper {
+			gap: var(--pad);
+			mar(bottom, 0);
+		}
+		&-value-wrapper button {
+			mar(right, 0);
 		}
 	}
 	.colorpicker {
@@ -726,15 +698,11 @@ normalise-header(first = true) {
 	/**
 	 * Hide elements
 	**/
-	#theme-label, #theme-label + div,
+	[href="https://github.com/openstyles/stylus/wiki/Writing-UserCSS"],
+	#header .aligned > :nth-child(3), // Editor theme
 	#header.sticky #details-wrapper,
 	#header.sticky #actions,
-	#newStyleAsUsercss ~ div,
 	#write-for-frames, // Plus sign for "write for"
-	#heading .info,
-	.sync-options, // ..section
-	#popup-button,
-	#manage-text,
 	#beautify,
 	#publish,
 	#lint {
@@ -767,6 +735,10 @@ normalise-header(first = true) {
 				pad();
 			}
 		}
+		.style-info[data-type="version"] {
+			fg(2);
+			padding-left: 1ch $i;
+		}
 		.style-name {
 			flex();
 
@@ -776,6 +748,7 @@ normalise-header(first = true) {
 
 			&-link {
 				fg();
+				padding-left: 1ch $i;
 
 				&::after {
 					display: none;
@@ -789,7 +762,7 @@ normalise-header(first = true) {
 	**/
 	#header {
 		bg(2);
-		pad(right);
+		pad();
 		shd(0);
 
 		@media (max-width: 850px) {
@@ -799,27 +772,22 @@ normalise-header(first = true) {
 		}
 
 		&-resizer {
-			color: var(--border);
-			border-width: 0 var(--border-width);
+			brd(0);
+			brd(right);
 			width: calc(var(--header-resizer-width) + var(--border-width) * 2);
 
 			&::after {
-				left: calc(50% - var(--border-width));
+				display: none $i;
 			}
 		}
 
 		h1 {
-			normalise-header(true);
-			mar(left);
-			mar(right);
+			normalise-header();
 		}
-		h2 {
-			brd(bottom, 0);
+		label:not(.radio-wrapper) {
+			display: inline-flex $i;
 		}
-		summary {
-			position: unset $i;
-			mar(0);
-		}
+		textarea,
 		input,
 		select,
 		button {
@@ -847,10 +815,6 @@ normalise-header(first = true) {
 			#heading,
 			h2 {
 				display: block;
-			}
-			#details-wrapper {
-				display: flex;
-				flex-direction: column;
 			}
 		}
 		#header {
@@ -900,7 +864,7 @@ normalise-header(first = true) {
 
 	// ..in editor
 	#basic-info {
-		mar(bottom, 0);
+		mar(0);
 
 		@media (max-width: 850px) {
 			mar(right, 0);
@@ -909,27 +873,28 @@ normalise-header(first = true) {
 		&-enabled {
 			mar(top);
 			mar(bottom);
-			lnh();
 
 			#header.sticky & {
 				mar(top, 0);
 			}
-
-			& > * {
-				mar(right);
-			}
 		}
 	}
-	#actions .buttons > * {
-		margin-right: 1ch;
+	#actions {
+		mar(0);
+
+		.buttons > * {
+			mar(right);
+		}
 	}
 	#preview-errors {
 		hl();
-		mar(left, 0);
+		mar(0);
+		mar(top);
 	}
 	#details-wrapper {
+		mar(0);
+
 		@media (max-width: 850px) {
-			mar(0);
 			vertical-align: unset;
 
 			details[open] > summary + * {
@@ -937,19 +902,41 @@ normalise-header(first = true) {
 				shd(big);
 			}
 		}
-	}
-	.option.aligned > label {
-		padding-right: 1ch $i;
-		vertical-align: unset $i;
-		display: table-cell $i;
+
+		details {
+			mar(0);
+
+			& > * {
+				pad(0);
+				mar(0);
+			}
+		}
+		summary {
+			normalise-header(false);
+			position: unset $i;
+			cursor: pointer $i;
+		}
+		label {
+			pad(0);
+			padding-bottom: calc(var(--pad) / 2) $i;
+		}
+		.aligned > div {
+			display: flex $i;
+			align-items: center $i;
+
+			& > * {
+				mar(top);
+			}
+			& > label {
+				pad(0);
+				width: 30%;
+			}
+		}
 	}
 
 	// ..in manage
 	#manage-settings {
-		pad(0);
-
 		.settings-column {
-			pad(0);
 			mar(0);
 		}
 	}
@@ -965,6 +952,13 @@ normalise-header(first = true) {
 		left: 0;
 		flex();
 		gap: 1ch;
+
+		label {
+			pad(0);
+		}
+		.select-wrapper {
+			mar(0);
+		}
 	}
 	.select-resizer {
 		position: relative;
@@ -972,16 +966,16 @@ normalise-header(first = true) {
 	}
 	#search-wrapper,
 	#sort-wrapper {
+		gap: var(--pad) $i;
 		mar(bottom);
 
 		.info {
 			margin-left: 1ch;
 		}
 	}
-	a[href="edit.html"] {
-		mar(0);
-	}
 	#add-style {
+		mar(0);
+
 		&-wrapper {
 			flex-wrap: unset;
 		}
@@ -992,10 +986,6 @@ normalise-header(first = true) {
 	}
 	#manage-text {
 		pad(top, 0);
-
-		.svg-icon.info {
-			margin-left: 1ch;
-		}
 	}
 
 	/**
@@ -1007,15 +997,6 @@ normalise-header(first = true) {
 			pad(0);
 			brd();
 			shd(big);
-		}
-		/#popup-options .split-btn {
-			&-pedal {
-				display: none;
-			}
-
-			& > :first-child {
-				width: 100%;
-			}
 		}
 		&-popup {
 			--inner-padding: s('calc(%s + var(--pad))', $select-size);
@@ -1029,14 +1010,6 @@ normalise-header(first = true) {
 
 			#installed {
 				brd(bottom);
-			}
-			.main-controls {
-				display: block;
-
-				.actions > ^[2..-1] {
-					pad(left, 0);
-					mar(bottom);
-				}
 			}
 			.entry {
 				&::before {
@@ -1069,7 +1042,6 @@ normalise-header(first = true) {
 					}
 
 					input[type="checkbox"] {
-						mar(left);
 						position: relative;
 						top: 0;
 						left: 0;
@@ -1079,20 +1051,53 @@ normalise-header(first = true) {
 					fg();
 				}
 			}
-			#main-actions > * {
-				mar(top);
+			#main-actions {
+				bg();
+				brd(bottom);
+				flex-direction: column $i;
 			}
-			.match[data-frame-id="0"] {
-				min-width: unset;
-			}
-		}
-		/.unreachable .blocked-info {
-			lnh();
-			pad(top);
-			brd(bottom);
+			#write-wrapper {
+				pad(bottom, 0);
+				flex-direction: column-reverse $i;
 
-			& > label {
-				normalise-header();
+				.match {
+					opacity: 1 $i;
+				}
+			}
+			#write-style {
+				margin-left: s('calc(%s + 1ch)', $select-size) $i;
+				mar(bottom);
+				width: auto;
+			}
+			#write-as {
+				&::after {
+					content: attr(title);
+				}
+
+				i {
+					display: none $i;
+				}
+			}
+			#disableAll-label {
+				bg();
+
+				&::after {
+					content: 'Disable all';
+				}
+
+				img {
+					display: none;
+				}
+			}
+			#popup-options {
+				bg(2);
+
+				& > * {
+					max-width: unset $i;
+				}
+				button {
+					--bg2: var(--bg);
+				}
 			}
 		}
 
@@ -1227,15 +1232,18 @@ normalise-header(first = true) {
 		&-buttons {
 			bg(2);
 			text-align: center;
+			gap: var(--pad) $i;
 			pad();
 			brd(top);
 			border-radius: 0 0 var(--border-radius) var(--border-radius);
-			display: flex;
 			justify-content: space-between;
 
+			& > * {
+				mar(0);
+			}
+			input,
 			button {
 				--bg2: var(--bg);
-				mar(0);
 			}
 			[data-cmd="close"] {
 				display: none;
@@ -1251,34 +1259,30 @@ normalise-header(first = true) {
 	.config {
 		&-dialog {
 			--pad: inherit;
+			--value-cell-w: 90px;
 		}
 		&-body {
-			input[type="text"],
-			.select-resizer,
-			select {
-				width: 90px;
-			}
 			label {
-				mar(right, 0);
-				brd(top, 0);
+				pad(0);
+				brd(0);
+				mar(0);
+				flex-direction: row-reverse $i;
 
 				&:not(:last-child) {
 					mar(bottom);
 				}
 			}
-		}
-		&-name {
-			mar(right, 0);
+			input:not([type="checkbox"]),
+			select {
+				width: var(--value-cell-w);
+			}
+			input[type="checkbox"] {
+				margin-left: s('calc(var(--value-cell-w) - %s)', $select-size) $i;
+			}
 		}
 		&-reset-icon {
-			height: $select-size;
-			cursor: pointer;
-			order: -1;
-
-			.svg-icon {
-				pad(0);
-				box(16px);
-			}
+			margin-top: -8px $i;
+			right: var(--pad) $i;
 		}
 	}
 	#message-box > div,
@@ -1302,7 +1306,7 @@ normalise-header(first = true) {
 
 			&::before {
 				left: var(--pad);
-				background-image: url('./images/icon/16.png');
+				background-image: url('./icon/16.png');
 				padding: 0 16px 16px 0;
 			}
 		}
@@ -1327,7 +1331,8 @@ normalise-header(first = true) {
 
 		.title {
 			bg(2);
-			padding: var(--pad) 24px var(--pad) var(--pad);
+			pad();
+			padding-right: 24px $i;
 			brd(bottom);
 			border-radius: var(--border-radius) var(--border-radius) 0 0;
 			mar(0);
