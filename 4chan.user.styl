@@ -441,7 +441,7 @@ normal-colors() {
 	--border: var(--reserve-border) $i;
 }
 
-@-moz-document domain("4chan.org"), domain("4channel.org") {
+@-moz-document domain("boards.4chan.org") {
 	/**
 	 * Variables
 	**/
@@ -598,6 +598,7 @@ normal-colors() {
 	.menu-button {
 		fa('\f078');
 		pad(0);
+		vertical-align: 1px $i;
 
 		&.active {
 			color: var(--hl) $i;
@@ -642,6 +643,7 @@ normal-colors() {
 	// VI. Unsorted
 	#js-snowfield,
 	#tooltip,
+	.adl,
 	hr,
 
 	// VII. 4chan X
@@ -665,7 +667,7 @@ normal-colors() {
 	#header-bar {
 		bgc(2);
 		header-focus();
-		pad();
+		pad(0);
 		brd(0);
 		brd(bottom);
 		shd(0);
@@ -676,11 +678,11 @@ normal-colors() {
 		vertical-align: unset;
 		display: flex;
 
-		if (!sidebar) {
-			margin: calc(var(--pad) * -1);
-
+		if (boards-hover || !sidebar) {
 			& > a {
+				text-align: center;
 				pad();
+				width: 100%;
 			}
 		}
 
@@ -697,7 +699,6 @@ normal-colors() {
 	}
 	if (boards-hover) {
 		#custom-board-list {
-			--hover-pos: var(--pad);
 			position: absolute;
 			left: -100%;
 			top: 0;
@@ -707,18 +708,26 @@ normal-colors() {
 			flex();
 			anim();
 
+			#header-bar:hover & {
+				left: 0;
+
+				&::before {
+					content: '';
+					position: fixed;
+					top: 0;
+					box(100%, var(--header-h));
+					bg(2);
+					anim();
+				}
+			}
+
 			@media (max-width: $small-screen) {
-				--hover-pos: 0;
 				top: var(--header-h);
 				flex-direction: column;
 				height: min-content;
-				pad();
 				brd(bottom);
 				brd(right);
 				shd(big);
-			}
-			#header-bar:hover & {
-				left: var(--hover-pos);
 			}
 
 			@media (min-width: $small-screen) {
@@ -753,8 +762,10 @@ normal-colors() {
 			}
 		}
 		&s {
-			flex(,,right);
 			gap: 1ch;
+			mar();
+			display: flex $i;
+			justify-content: end $i;
 
 			:root.shortcut-icons & .fa {
 				font-size: 0 $i;
@@ -1204,7 +1215,7 @@ normal-colors() {
 		&Info {
 			bg(2);
 			pad();
-			padding-right: calc(5ch + var(--pad) * 2) $i;
+			padding-right: calc(4ch + var(--pad) * 2) $i;
 			brd(bottom);
 			position: relative;
 		}
@@ -1585,9 +1596,12 @@ normal-colors() {
 	}
 	#t {
 		&-load {
-			replace-text('Get');
 			mar(right);
 			width: unset $i;
+
+			&:not([disabled]) {
+				replace-text('Get');
+			}
 		}
 		&-resp {
 			font-family: var(--font-code) $i;
@@ -1836,9 +1850,11 @@ normal-colors() {
 		}
 	}
 	.entry {
+		--icon-spacing: s('calc(var(--pad) + %s)', $select-size);
+
 		fg();
 		text-decoration: none $i;
-		padding: var(--pad) s('calc(var(--pad) + 1ch + %s)', $select-size) $i;
+		padding: var(--pad) calc(var(--icon-spacing) + 1ch) $i;
 
 		&::before {
 			font: var(--font-size) FontAwesome $i;
@@ -1852,6 +1868,7 @@ normal-colors() {
 		}
 
 		&:not(.disabled).focused {
+			--fg2: var(--hl-fg);
 			hl();
 		}
 		&.disabled {
@@ -1862,6 +1879,11 @@ normal-colors() {
 		input[type="checkbox"] {
 			margin-left: s('calc(%s - 1ch)', $select-size * -1) $i;
 			top: 0;
+		}
+		.shortcut-text {
+			opacity: 1 $i;
+			fg(2);
+			margin-right: calc(var(--icon-spacing) * -1) $i;
 		}
 	}
 	.submenu {
@@ -2286,6 +2308,7 @@ normal-colors() {
 		}
 		.show-board-list-button,
 		.hide-board-list-button {
+			pad(0);
 			position: absolute;
 			top: var(--pad);
 			right: var(--pad);
