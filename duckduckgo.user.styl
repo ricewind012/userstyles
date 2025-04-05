@@ -442,13 +442,10 @@ normalise-header(first = true) {
 		gap: var(--pad);
 	}
 	.search {
+		background-color: transparent $i;
 		pad(0);
 		brd(0);
 		shd(0);
-
-		&-wrap--home & {
-			bg(2);
-		}
 
 		&--header {
 			mar(bottom);
@@ -457,12 +454,15 @@ normalise-header(first = true) {
 		}
 		&__input {
 			normalise-input();
-			--bg2: var(--bg);
 			top: 0;
 			box(
 				calc(100% - var(--pad) * 2 - var(--border-width) * 2),
 				calc(var(--font-size) * var(--line-height) - var(--border-width) * 2)
 			);
+
+			.header & {
+				--bg2: var(--bg);
+			}
 		}
 	}
 	.frm__select {
@@ -571,14 +571,11 @@ normalise-header(first = true) {
 				z-index: 1;
 			}
 		}
-		&__icon {
+		&__icon,
+		&__icon__img {
 			vertical-align: unset;
-
-			&,
-			&__img {
-				box(var(--font-size));
-				max-width: unset $i;
-			}
+			box(var(--font-size));
+			max-width: unset $i;
 		}
 		&__type {
 			bgc(2, 2);
