@@ -678,16 +678,9 @@ normal-colors() {
 		vertical-align: unset;
 		display: flex;
 
-		if (boards-hover || !sidebar) {
-			& > a {
-				text-align: center;
-				pad();
-				width: 100%;
-			}
-		}
-
 		& > a {
 			text-decoration: none $i;
+			pad();
 
 			&:not(.current) {
 				fg(2);
@@ -742,6 +735,11 @@ normal-colors() {
 					);
 				}
 			}
+		}
+
+		& > a {
+			text-align: center;
+			width: 100%;
 		}
 	}
 	.shortcut {
@@ -1513,6 +1511,15 @@ normal-colors() {
 			pad(0);
 			position: unset $i;
 		}
+		.move {
+			.fa,
+			.menu-button,
+			.close {
+				&:hover::before {
+					color: var(--accent-fg) $i;
+				}
+			}
+		}
 	}
 	#qr,
 	#thread-watcher {
@@ -1977,6 +1984,7 @@ normal-colors() {
 			pad(0);
 		}
 		.close {
+			--fg: var(--accent-fg);
 			position: absolute $i;
 			top: 0;
 			right: 0;
@@ -2049,7 +2057,7 @@ normal-colors() {
 		.description {
 			fg(2);
 			hide-chars(1, left);
-			margin-left: s('calc(%s - 1ch)', $select-size) $i;
+			margin-left: $select-size $i;
 		}
 		.suboption-list {
 			&::before {
