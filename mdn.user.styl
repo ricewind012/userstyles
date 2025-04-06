@@ -150,6 +150,14 @@ header-focus(class = page-focus) {
 	}
 }
 
+normal-colors() {
+	// Don't get me affected by header-focus()
+	--bg2: var(--reserve-bg2) $i;
+	--fg: var(--reserve-fg) $i;
+	--fg2: var(--reserve-fg2) $i;
+	--border: var(--reserve-border) $i;
+}
+
 // Text
 replace-text(content =, text-color = fg, pos = after) {
 	color: transparent $i;
@@ -407,7 +415,7 @@ normalise-header(first = true) {
 
 		// etc.
 		--max-width: 1280px $i;
-		--top-nav-height: var(--header-h) $i;
+		--top-nav-height: unset $i;
 		--base-line-height: var(--line-height) $i;
 		--intermediate-line-height: var(--line-height) $i;
 		--font-content-line-height: var(--line-height) $i;
@@ -418,6 +426,13 @@ normalise-header(first = true) {
 		--shadow-02: var(--shadow-big) $i;
 
 		overflow-x: hidden;
+	}
+
+	body {
+		--reserve-bg2: var(--bg2);
+		--reserve-fg: var(--fg);
+		--reserve-border: var(--border);
+		--reserve-pad: var(--pad);
 	}
 
 	a {
@@ -433,39 +448,70 @@ normalise-header(first = true) {
 	 * Hide elements
 	**/
 	// I. Homepage
-	.featured-articles,
+	.latest-news,
 	.recent-contributions,
 	.contributor-spotlight,
-	.homepage section > h1,
-	.homepage section > p,
+	.homepage-hero section > :is(h1, p),
 
 	// II. etc.
-	//.mandala-rotate, // rotating cpu eating bullshit
 	.theme-switcher-menu,
+	.main-nav,
+	.article-footer, // "Help improve MDN"
 	.auth-container,
-	[href$="/plus"],
 	#nav-footer
 	{
 		display: none $i;
-	}
-	.homepage {
-		margin-top: var(--body-pad);
 	}
 
 	/**
 	 * Header
 	**/
 	.top-navigation {
+		--pad: calc(var(--reserve-pad) / 2);
 		bg(2);
 		header-focus();
 		brd(bottom);
 
-		[style="fill: var(--text-primary);"] {
-			fill: var(--accent-fg) $i;
+		.logo-text {
+			fill: var(--fg) $i;
+		}
+		.container {
+			pad();
+			justify-content: space-between $i;
+		}
+	}
+	.top-navigation-main {
+		flex-grow: 0 $i;
+
+		.search-input-field {
+			normal-colors();
+			--bg2: var(--bg) $i;
+			width: unset $i;
+		}
+		.search-widget {
+			gap: 0 $i;
 		}
 	}
 	.article-actions-container {
-		margin-left: var(--sidebar-width);
+		header-focus();
+		background-color: transparent $i;
+		brd(0);
+		margin-left: calc(var(--sidebar-width) + var(--body-pad)) $i;
+		min-height: var(--header-h) $i;
+		position: fixed;
+		top: 0;
+
+		a:hover {
+			fg();
+			text-decoration: none $i;
+		}
+		.container {
+			pad(0);
+		}
+	}
+	// Language
+	.article-actions {
+		display: none $i;
 	}
 
 	/**
@@ -475,45 +521,83 @@ normalise-header(first = true) {
 	.mandala-container {
 		bg();
 	}
+	.featured-articles {
+		gap: 0 $i;
+		mar(0);
+
+		h2 {
+			width: 100% $i;
+		}
+	}
+	.tile-container {
+		gap: var(--pad) $i;
+	}
+	.article-tile {
+		// gradient
+		--background-primary: var(--bg2);
+		bg(2);
+		pad();
+		brd();
+		shd(0);
+
+		.tile-tag {
+			display: none $i;
+		}
+		h3 {
+			mar(top, 0);
+		}
+	}
+
+	.clear-search-button,
+	.search-button {
+		display: none $i;
+	}
 	.search {
 		&-input-field {
 			normalise-input();
-			bg();
 			caret-color: var(--fg) $i;
-			width: unset $i;
+			height: unset $i;
 
-			&,
+			// The placeholder is "   ", but it's used for
+			// the "___" look. Honestly, pretty clever.
 			&::placeholder {
 				text-decoration: none $i;
 			}
 		}
-		&-button {
-			right: var(--pad) $i;
-		}
 		&-results {
+			normal-colors();
 			brd();
-			mar(0);
-			width: 100% $i;
+			shd(big);
 			top: calc(var(--header-h) + var(--pad)) $i;
 
 			.result-item {
-				bg(-tr);
-				pad();
-				brd(bottom);
+				bg();
+				brd(0);
 
 				&.highlight {
+					--fg: var(--hl-fg);
 					hl();
-
-					* {
-						color: var(--hl-fg) $i;
-					}
+				}
+				&.nothing-found:not(:only-child) {
+					display: none $i;
 				}
 
+				& > a {
+					text-decoration: none $i;
+					pad();
+				}
 				mark {
 					hl();
 				}
-				b > span {
-					fg();
+				b {
+					letter-spacing: 0 $i;
+
+					& > span {
+						fg();
+					}
+				}
+				small {
+					display: none $i;
 				}
 			}
 		}
@@ -576,14 +660,9 @@ normalise-header(first = true) {
 			overflow: scroll;
 		}
 
-		.icon {
-			background-size: var(--font-size);
-			mar(0);
-			mask-size: var(--font-size);
-			box(var(--font-size));
-		}
 		li,
 		summary {
+			letter-spacing: 0 $i;
 			mar(bottom);
 		}
 		li:first-of-type strong {
@@ -634,6 +713,7 @@ normalise-header(first = true) {
 		&-link {
 			pad();
 			brd(0);
+			width: 100% $i;
 
 			&[aria-current="true"] {
 				hl();
@@ -673,16 +753,15 @@ normalise-header(first = true) {
 	h2,
 	h3 {
 		normalise-header(false);
-
-		.metadata & {
-			mar(top, 0);
-		}
 	}
-	.metadata,
 	pre {
 		brd();
 		pad();
 		margin: var(--pad) 0 $i;
+	}
+	.table-container {
+		mar(0);
+		width: 100% $i;
 	}
 	.notecard {
 		brd(,note-theme);
