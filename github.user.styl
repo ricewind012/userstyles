@@ -1005,11 +1005,15 @@ normal-colors() {
 	.search-input {
 		width: unset;
 	}
+	#repo-title-component {
+		display: none $i;
+	}
 	#repository-container-header {
 		bg(2);
 
-		.flex-auto.width-fit {
-			display: none;
+		& > .d-flex > div {
+			mar(left);
+			align-self: center $i;
 		}
 		.border-bottom {
 			pad(top);
