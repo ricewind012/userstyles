@@ -475,6 +475,13 @@ normal-colors() {
 		// Borders
 		--borderColor-default: var(--border) $i;
 		--borderColor-muted: var(--border) $i;
+		--borderColor-translucent: @css {
+			color-mix(
+				in srgb,
+				var(--border) 25%,
+				transparent
+			)
+		} $i;
 
 		// Shadows
 		--shadow-inset: none $i;
@@ -898,13 +905,8 @@ normal-colors() {
 			&-start,
 			&-end {
 				flex();
-
-				&,
-				~/-actions {
-					gap: 1ch $i;
-				}
 			}
-			&-start deferred-side-panel {
+			&-start > div[class=""] {
 				display: none;
 			}
 			&-end {
@@ -961,12 +963,6 @@ normal-colors() {
 				display: none $i;
 			}
 
-			// God knows why this makes it centered.
-			action-menu,
-			focus-group {
-				display: contents;
-			}
-
 			.Button {
 				&-visual {
 					mar(0);
@@ -977,14 +973,8 @@ normal-colors() {
 			}
 		}
 		&-user {
-			// God knows why this makes it centered.
-			&,
-			.Button-label,
-			include-fragment,
-			deferred-side-panel,
-			user-drawer-side-panel {
-				display: contents;
-			}
+			// TODO: God knows why this makes it centered.
+			margin-top: -4px $i;
 
 			.avatar {
 				border-radius: 50% $i;
