@@ -1769,7 +1769,6 @@ normal-colors() {
 		primary: 10,
 	}
 	[class*="prc-Button-ButtonBase-"] {
-		normalise-button();
 		gap: 0 $i;
 		shd(0);
 		box(unset);
@@ -1779,6 +1778,9 @@ normal-colors() {
 			--bg2: var(--bg);
 		}
 
+		&:not([data-variant="link"]) {
+			normalise-button();
+		}
 		&[aria-disabled="true"] {
 			@extend .Button:disabled;
 		}
@@ -1792,6 +1794,9 @@ normal-colors() {
 			[data-component="trailingVisual"] {
 				display: none $i;
 			}
+		}
+		&[data-variant="link"]:hover {
+			text-decoration: underline $i;
 		}
 		for k, v in colors {
 			/{s('%s[data-variant="%s"]', unquote(selector()), unquote(k))} {
@@ -2083,6 +2088,13 @@ normal-colors() {
 		{sel(ContentWrapper)} {
 			padding: var(--body-pad) $i;
 		}
+	}
+
+	// Other components
+	[class*="prc-Label-Label-"] {
+		--pad: calc(var(--reserve-pad) / 2);
+		pad();
+		height: unset $i;
 	}
 
 	.react {
@@ -2678,8 +2690,19 @@ normal-colors() {
 		z-index: 1 $i;
 	}
 
-	[class*="prc-PageHeader-Title-"] {
-		normalise-header();
+	[class*="prc-PageHeader-"] {
+		{sel(Actions)} {
+			&[data-component="PH_Actions"] {
+				--pad: calc(var(--reserve-pad) / 2);
+				height: unset $i;
+			}
+		}
+		{sel(Title)} {
+			normalise-header();
+		}
+		{sel(TitleArea)} {
+			align-self: end $i;
+		}
 	}
 	[class*="prc-PageLayout-"] {
 		{sel(HeaderContent)} {
@@ -2752,7 +2775,7 @@ normal-colors() {
 	}
 
 	/**
-	 * Issues
+	 * Issues list
 	**/
 	react-app[app-name="issues-react"] {
 		[class*="prc-PageLayout-Content-"] > div {
@@ -2861,6 +2884,248 @@ normal-colors() {
 		a {
 			fg();
 		}
+	}
+
+	/**
+	 * Issue
+	**/
+	// TODO: for now
+	[data-testid="issue-metadata-sticky"] {
+		display: none $i;
+	}
+	[data-testid="issue-viewer-container"] {
+		position: relative $i;
+	}
+	[class*="IssueViewer-module__"] {
+		{sel(issueViewerContainer)} {
+			padding: var(--body-pad) $i;
+			margin-left: var(--sidebar-width) $i;
+			position: unset $i;
+
+			& > div {
+				pad(0);
+				max-width: 100% $i;
+			}
+			& > :last-child > div {
+				gap: 0 $i;
+				flex-direction: row-reverse $i;
+
+				& > [data-testid="issue-viewer-metadata-container"] {
+					bg(2);
+					pad();
+					brd(right);
+					overflow: auto $i;
+					position: fixed $i;
+					top: calc(var(--header-h) * 2) $i;
+					bottom: 0 $i;
+					left: 0 $i;
+					width: var(--sidebar-width) $i;
+				}
+			}
+
+			[class*="Avatar-module__avatarWithDivider-"] {
+				margin-top: 16px $i;
+			}
+			// Reaction icon
+			[data-component="leadingVisual"] {
+				display: initial $i;
+			}
+		}
+		{sel(issueViewerMetadataPane)} {
+			margin-top: calc(var(--pad) * -2) $i;
+		}
+	}
+
+	[class*="HeaderViewer-module__headerContainer-"] {
+		pad(bottom);
+		brd(bottom);
+		mar(bottom);
+
+		h1 {
+			pad(0);
+			brd(0);
+			mar(0);
+		}
+	}
+
+	[class*="ActivityHeader-module__"] {
+		{sel(activityHeader)} {
+			min-height: unset $i;
+		}
+		{sel(narrowViewportWrapper)} {
+			pad(0);
+		}
+	}
+	[data-testid="comment-header"] {
+		pad();
+		// TODO: ?
+		border-radius: 0 $i;
+		brd(bottom);
+	}
+	[data-testid="issue-viewer-issue-container"] > div {
+		gap: var(--pad) $i;
+	}
+	[data-testid^="timeline-divider-"] {
+		padding-left: 16px $i;
+	}
+	[data-testid^="timeline-row-border-"]:not(:has(> .Timeline-Item)) {
+		brd();
+	}
+
+	// First comment overrides
+	[data-testid="issue-body"] > div > div {
+		// [data-testid^="timeline-row-border-"]
+		brd();
+
+		& > :first-child {
+			@extend [data-testid="comment-header"];
+		}
+	}
+
+	// The rest of the comments overrides
+	[class*="LayoutHelpers-module__"] {
+		{sel(nonLeadingElement)} {
+			margin-left: calc(40px + var(--pad)) $i;
+		}
+		{sel(timelineElement)} {
+			@extend [data-testid="issue-viewer-issue-container"] > div;
+		}
+	}
+	[data-testid^="comment-viewer-outer-box-"] > :last-child {
+		gap: var(--pad) $i;
+		mar();
+	}
+
+	[data-testid="sidebar-projects-section"],
+	[data-testid="sidebar-section"] {
+		pad(0);
+		mar(0);
+
+		&::after {
+			display: none $i;
+		}
+
+		a:hover {
+			text-decoration: underline $i;
+		}
+		button {
+			--bg2: var(--bg);
+
+			&[data-size="small"][data-variant="invisible"] {
+				background-color: transparent $i;
+				pad(0);
+				brd(0);
+				position: absolute $i;
+				top: 0 $i;
+				right: 0 $i;
+
+				&:hover span {
+					fg();
+				}
+			}
+		}
+		h3 {
+			normalise-header(false);
+			position: unset $i;
+			width: 100% $i;
+		}
+		div,
+		[class*="prc-Text-Text-"] {
+			pad(0);
+			mar(0);
+		}
+	}
+	#issue-viewer-subscription-description {
+		mar(top);
+	}
+	// Apparently it's immune to my disabled copilot setting...
+	// fuck off, github
+	[class*="CopilotWorkspaceButton-module__buttonGroup-"] {
+		display: none $i;
+	}
+	[class*="OptionsSection-module__ActionListOverrides-"] {
+		margin: calc(var(--pad) * -1) $i;
+		mar(top);
+	}
+	[class*="SubscriptionSection-module__"] {
+		{sel(button)} {
+			background-color: transparent $i;
+			fg();
+			mar(0);
+			position: absolute $i;
+			top: calc(var(--pad) * 2) $i;
+
+			&:not(:hover) {
+				fg(2);
+			}
+		}
+		{sel(header)} {
+			position: unset $i;
+		}
+	}
+
+	[class*="IssueCommentComposer-module__"] {
+		{sel(commentBoxWrapper)} {
+			pad(0);
+			margin-top: calc(var(--pad) * -1) $i;
+		}
+		{sel(commentComposerWrapper)} {
+			brd(top);
+			mar(top);
+			mar(bottom, 0);
+		}
+		{sel(heading)} {
+			display: none $i;
+		}
+
+		[class*="Footer-module__"] {
+			{sel(footer)} {
+				--pad: calc(var(--reserve-pad) / 2);
+			}
+			// !important
+			@layer recipes {
+				{sel(footerButton)} {
+					fg();
+				}
+			}
+		}
+		[class*="Toolbar-module__"] {
+			{sel(toolbar)} button {
+				--pad: calc(var(--reserve-pad) / 2);
+
+				// Saved replies
+				&:not([aria-haspopup]) {
+					background-color: transparent $i;
+					brd(0);
+
+					&:not(:hover) {
+						fg(2);
+					}
+				}
+			}
+		}
+	}
+	[class*="MarkdownEditor-module__viewSwitchWrapper-"] {
+		mar(0);
+	}
+	[class*="TabNav__TabNavLink"] {
+		lnh();
+		pad();
+		brd(0);
+
+		&:not(.selected):hover {
+			fg();
+		}
+		&.selected {
+			hl();
+		}
+	}
+	// "Follow guidelines, CoC, etc." nobody cares
+	[data-testid="contributor-footer"] {
+		display: none $i;
+	}
+	.react-comments-container > div {
+		mar(0);
 	}
 
 	/**
