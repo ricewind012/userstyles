@@ -1832,60 +1832,6 @@ normal-colors() {
 		}
 	}
 
-	// Lists
-	[class^="List__ListBox-"] {
-		pad(0);
-
-		[data-component="ActionList.Divider"] {
-			display: none $i;
-		}
-		li[role="none"] {
-			mar(0);
-
-			& > [aria-hidden="true"] {
-				normalise-header();
-				mar();
-			}
-		}
-	}
-	$li-item-icon {
-		mar(left, 0);
-		height: unset;
-
-		// Language circle
-		&:has(> div:empty) {
-			mar(right);
-		}
-	}
-	[class^="Item__LiBox-"] {
-		lnh();
-		brd(0);
-		mar(0);
-		width: 100% $i;
-
-		&::after {
-			display: none $i;
-		}
-
-		& > * {
-			pad(0);
-			height: unset $i;
-
-			& > span {
-				@extend $li-item-icon;
-			}
-		}
-		& > a {
-			pad();
-		}
-		& > span {
-			@extend $li-item-icon;
-		}
-		.negate-button {
-			box(unset);
-		}
-	}
-
 	// Context menu
 	[class*="prc-Overlay-Overlay-"] {
 		@extend .Overlay;
@@ -1893,15 +1839,17 @@ normal-colors() {
 	[class*="prc-ActionList-"] {
 		{sel(ActionList)} {
 			pad(0);
-		}Button
+		}
 		{sel(ActionListContent)} {
 			color: inherit $i;
 		}
 		{sel(ActionListItem)} {
 			mar(0);
 
+			&[data-active],
 			&:hover {
 				--fgColor-muted: var(--hl-fg);
+				--fg2: var(--hl-fg);
 				hl();
 			}
 		}
@@ -2690,11 +2638,30 @@ normal-colors() {
 		z-index: 1 $i;
 	}
 
+	react-app[app-name="commits"] {
+		[class*="prc-PageHeader-"] {
+			{sel(Actions)},
+			{sel(TitleArea)} {
+				display: none $i;
+			}
+			{sel(Description)} {
+				pad(0);
+			}
+		}
+	}
+
 	[class*="prc-PageHeader-"] {
 		{sel(Actions)} {
 			&[data-component="PH_Actions"] {
 				--pad: calc(var(--reserve-pad) / 2);
 				height: unset $i;
+			}
+		}
+		{sel(Description)} {
+			pad(0);
+
+			& > .flex-column {
+				flex-direction: column-reverse $i;
 			}
 		}
 		{sel(Title)} {
@@ -2714,7 +2681,9 @@ normal-colors() {
 				--pad: calc(var(--reserve-pad) / 2);
 			}
 			.color-bg-default {
-				brd();
+				background-color: transparent $i;
+				brd(0);
+				mar(0);
 			}
 		}
 		{sel(ContentWrapper)} {
@@ -2725,6 +2694,14 @@ normal-colors() {
 			.diff-text-cell {
 				brd(left);
 			}
+		}
+	}
+	[class*="CommitHeader-module__commit-message-container-"] {
+		normalise-header();
+		min-height: unset $i;
+
+		& + div {
+			pad(0);
 		}
 	}
 
@@ -2753,6 +2730,7 @@ normal-colors() {
 			& > div {
 				background-color: transparent $i;
 				pad(0);
+				brd(0);
 
 				& > button {
 					normalise-input();
@@ -2762,6 +2740,7 @@ normal-colors() {
 		}
 		& > .p-2 {
 			pad(0);
+			brd(0);
 			mar(top);
 		}
 	}
@@ -3070,14 +3049,14 @@ normal-colors() {
 			margin-top: calc(var(--pad) * -1) $i;
 		}
 		{sel(commentComposerWrapper)} {
-			brd(top);
-			mar(top);
+			pad(top, 0);
 			mar(bottom, 0);
 		}
 		{sel(heading)} {
 			display: none $i;
 		}
-
+	}
+	#react-issue-comment-composer {
 		[class*="Footer-module__"] {
 			{sel(footer)} {
 				--pad: calc(var(--reserve-pad) / 2);
@@ -3086,21 +3065,6 @@ normal-colors() {
 			@layer recipes {
 				{sel(footerButton)} {
 					fg();
-				}
-			}
-		}
-		[class*="Toolbar-module__"] {
-			{sel(toolbar)} button {
-				--pad: calc(var(--reserve-pad) / 2);
-
-				// Saved replies
-				&:not([aria-haspopup]) {
-					background-color: transparent $i;
-					brd(0);
-
-					&:not(:hover) {
-						fg(2);
-					}
 				}
 			}
 		}
@@ -3118,6 +3082,21 @@ normal-colors() {
 		}
 		&.selected {
 			hl();
+		}
+	}
+	[class*="Toolbar-module__"] {
+		{sel(toolbar)} button {
+			--pad: calc(var(--reserve-pad) / 2);
+
+			// Saved replies
+			&:not([aria-haspopup]) {
+				background-color: transparent $i;
+				brd(0);
+
+				&:not(:hover) {
+					fg(2);
+				}
+			}
 		}
 	}
 	// "Follow guidelines, CoC, etc." nobody cares
