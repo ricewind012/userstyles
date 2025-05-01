@@ -2697,9 +2697,17 @@ normal-colors() {
 		}
 	}
 	[class*="CommitHeader-module__commit-message-container-"] {
-		normalise-header();
+		pad(0);
+		pad(bottom);
+		mar(bottom);
 		min-height: unset $i;
 
+		.f5 {
+			normalise-header();
+		}
+		.extended-commit-description-container {
+			mar(0);
+		}
 		& + div {
 			pad(0);
 		}
