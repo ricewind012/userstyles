@@ -1967,6 +1967,37 @@ normal-colors() {
 			}
 		}
 	}
+	[class*="prc-SegmentedControl-"] {
+		{sel(Button)} {
+			bg(2);
+			pad(0);
+			height: unset $i;
+
+			&[aria-current="true"] {
+				hl();
+			}
+
+			&::after {
+				display: none $i;
+			}
+		}
+		{sel(Content)} {
+			background-color: transparent $i;
+			pad();
+			brd(0);
+			height: unset $i;
+		}
+		{sel(Item)} {
+			mar(0);
+		}
+		{sel(SegmentedControl)} {
+			--pad: calc(var(--reserve-pad) / 2);
+			background-color: var(--border) $i;
+			gap: var(--border-width) $i;
+			brd();
+			height: unset $i;
+		}
+	}
 
 	// Overlay
 	[class*="prc-Dialog-Dialog-"] {
