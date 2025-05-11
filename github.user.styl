@@ -2041,6 +2041,10 @@ normal-colors() {
 
 	// Sidebar
 	[class*="prc-PageLayout-"] {
+		// Seen in commits page
+		{sel(PageLayoutRoot)} {
+			pad(0);
+		}
 		{sel(Pane)} {
 			--pane-width: var(--sidebar-width) $i;
 			pad(0);
@@ -2076,6 +2080,16 @@ normal-colors() {
 		height: unset $i;
 	}
 
+	/**
+	 * Old React pages
+	**/
+	// Code view
+	[class*="BlobViewHeader-module__"] {
+		{sel(Box_1)} {
+			brd();
+		}
+	}
+
 	.react {
 		// Repository overview
 		&-directory {
@@ -2095,21 +2109,6 @@ normal-colors() {
 		}
 
 		// Code view
-		&-blob {
-			// Header
-			&-sticky-header {
-				& + div {
-					bg(2);
-					pad();
-					brd();
-
-					& > div {
-						gap: var(--pad);
-						mar(0);
-					}
-				}
-			}
-		}
 		&-code {
 			&-view-bottom-padding {
 				& + div {
@@ -2249,14 +2248,6 @@ normal-colors() {
 		}
 	}
 
-	// Code view sidebar
-	[style^="--sticky-pane-height"] > div > div  {
-		[app-name="react-code-view"] & > :first-child > div {
-			top: var(--header-h) $i;
-			height: calc(100vh - var(--header-h)) $i;
-		}
-	}
-	
 	react-app[app-name="react-code-view"],
 	react-partial[partial-name="repos-overview"] {
 		// Files
@@ -2295,15 +2286,13 @@ normal-colors() {
 			// *Actual* body
 			[style^="--sticky-pane-height"] > div > div {
 				// Sidebar
-				& > :first-child {
-					[data-testid="facets-pane"] {
-						pad(0);
-					}
+				[data-testid="facets-pane"] {
+					pad(0);
 				}
 
 				// Content
 				& > :last-child > div > div {
-					padding: var(--body-pad) $i;
+					pad(0);
 
 					[data-testid="search-sub-header"] {
 						& > div {
@@ -2372,136 +2361,8 @@ normal-colors() {
 
 					// Pagination
 					& > div > :last-child {
-						pad(top);
-						pad(bottom, 0);
-
-						& > div {
-							pad(0);
-						}
+						pad(0);
 					}
-				}
-			}
-		}
-		&[app-name="commits"] {
-			& > div > div {
-				pad(0);
-
-				& > div > header {
-					mar(0);
-
-					& > div {
-						// Text
-						& > div > h1 {
-							normalise-header();
-							width: 100%;
-						}
-
-						// Border
-						&:last-child {
-							display: none;
-						}
-					}
-				}
-			}
-
-			// Content
-			main {
-				// Buttons
-				& > [class*=" "] > div > :first-child {
-					gap: var(--pad) $i;
-					mar(bottom);
-
-					& > div {
-						gap: var(--pad) $i;
-					}
-				}
-			}
-
-			// Commits
-			[class*="CommitGroup-module__panel-"] {
-				brd(0);
-			}
-
-			[data-testid="commit-row-item"] {
-				bg(2);
-				pad();
-				gap: 0 $i;
-				brd();
-				mar(bottom);
-
-				& > .px-2 {
-					display: none $i;
-				}
-				button,
-				.Button {
-					--bg2: var(--bg);
-				}
-
-				.text-mono {
-					margin-right: calc(var(--pad) * 2) $i;
-
-					// Commit hash
-					.Button-label {
-						fg();
-						font-family: var(--font-code) $i;
-					}
-				}
-			}
-			[data-testid="listview-item-title-container"] {
-				pad(0);
-				flex();
-			}
-			[data-testid="listview-item-main-content"] {
-				pad(0);
-				pad(top);
-
-				& > div {
-					pad(0);
-				}
-			}
-
-			// Author
-			[data-testid="listview-item-description"] {
-				gap: var(--pad) $i;
-
-				// Commit description
-				&:first-child:not(:only-child) {
-					pad(top);
-					brd(top);
-					brd(bottom);
-					mar(bottom);
-				}
-			}
-
-			// Author name
-			[data-testid="avatar-icon-link"] + a {
-				fg();
-			}
-
-			// Right side
-			[data-testid="listview-item-metadata"] {
-				gap: var(--pad) $i;
-				pad(0);
-			}
-			[data-testid="listview-item-metadata-item"] {
-				gap: var(--pad) $i;
-			}
-
-			// Date
-			.Timeline-Item {
-				padding: var(--pad) 0 $i;
-				margin-top: calc(var(--pad) * -1) $i;
-			}
-			.TimelineItem-Badge {
-				brd(0);
-
-				& > svg {
-					color: var(--border) $i;
-				}
-			}
-			[class^="Timeline__TimelineBody-"] {
-				& > h3 {
-					padding: calc(var(--pad) / 2) var(--pad) $i;
 				}
 			}
 		}
@@ -2581,11 +2442,6 @@ normal-colors() {
 				position: unset;
 			}
 
-			// Latest commit sticky header
-			& > :first-child > :first-child {
-				display: none;
-			}
-
 			// Code
 			& + div {
 				brd();
@@ -2631,13 +2487,6 @@ normal-colors() {
 	}
 	#StickyHeader {
 		pad(0);
-
-		& > div {
-			&,
-			& > div {
-				gap: var(--pad);
-			}
-		}
 	}
 	[aria-labelledby^="file-name-id"] {
 		mar(0);
@@ -2650,12 +2499,54 @@ normal-colors() {
 		left: calc((16px + var(--pad) / 2) * -1);
 	}
 
+	/**
+	 * Commits
+	**/
+	react-app[app-name="commits"] {
+		[class*="prc-PageLayout-Header-"] {
+			display: none $i;
+		}
+
+		// Author name
+		a[data-muted="true"] {
+			fg();
+		}
+	}
+
+	[class*="CommitGroup-module__panel-"] {
+		brd(0);
+		mar(0);
+	}
+	[class*="CommitRow-module__"] {
+		{sel(ListItem_0)} {
+			bg(2);
+			pad();
+			gap: 0 $i;
+			brd();
+			mar(bottom);
+
+			& > :empty {
+				display: none $i;
+			}
+			button,
+			.Button {
+				--bg2: var(--bg);
+			}
+			[class*="MainContent-module__inner-"] {
+				pad(0);
+			}
+		}
+		{sel(ListItemTitle_0)} {
+			pad(0);
+		}
+	}
+
 	////
 	// NEW React pages
 	////
 
 	/**
-	 * Commit
+	 * Single commit
 	**/
 	:root {
 		--header-height: var(--header-h) $i;
