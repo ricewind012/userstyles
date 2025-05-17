@@ -2502,7 +2502,7 @@ normal-colors() {
 	/**
 	 * Commits
 	**/
-	react-app[app-name="commits"] {
+	react-app[app-name="commits"]:not([initial-path*="/commit/"]) {
 		[class*="prc-PageLayout-Header-"] {
 			display: none $i;
 		}
@@ -2596,7 +2596,6 @@ normal-colors() {
 	[class*="prc-PageLayout-"] {
 		{sel(HeaderContent)} {
 			bg(2);
-			brd(bottom);
 
 			[class*="prc-Button-ButtonBase-"] {
 				--bg2: var(--bg);
@@ -2607,6 +2606,9 @@ normal-colors() {
 				brd(0);
 				mar(0);
 			}
+		}
+		{sel(HeaderHorizontalDivider)} {
+			height: var(--border-width) $i;
 		}
 		{sel(ContentWrapper)} {
 			.position-sticky {
@@ -2620,8 +2622,7 @@ normal-colors() {
 	}
 	[class*="CommitHeader-module__commit-message-container-"] {
 		pad(0);
-		pad(bottom);
-		mar(bottom);
+		brd(0);
 		min-height: unset $i;
 
 		.f5 {
@@ -2632,6 +2633,7 @@ normal-colors() {
 		}
 		& + div {
 			pad(0);
+			mar(top);
 		}
 	}
 
