@@ -2283,85 +2283,86 @@ normal-colors() {
 
 	react-app {
 		&[app-name="blackbird-search"] {
-			// *Actual* body
-			[style^="--sticky-pane-height"] > div > div {
-				// Sidebar
-				[data-testid="facets-pane"] {
-					pad(0);
-				}
-
-				// Content
-				& > :last-child > div > div {
-					pad(0);
-
-					[data-testid="search-sub-header"] {
-						& > div {
-							gap: var(--pad) $i;
-
-							// Right side buttons
-							& > div {
-								mar(right);
-							}
-						}
+			[class*="prc-PageLayout-"] {
+				{sel(Content)} {
+					& > div {
+						pad(0);
 					}
 
 					// Results list
 					& > div > :nth-last-child(2) {
 						pad(top);
 					}
-					[data-testid="results-list"] {
-						gap: var(--pad) $i;
-
-						& > div {
-							// Header
-							& > :first-child,
-							// "Show X more matches"
-							& > a {
-								bg(3);
-								pad();
-								brd();
-								height: unset $i;
-
-								button {
-									--bg2: var(--bg);
-									--pad: calc(var(--reserve-pad) / 2);
-									normalise-button();
-									box(unset);
-								}
-							}
-
-							// Code
-							& > :nth-child(2) {
-								bg(2);
-								brd(left);
-								brd(right);
-
-								&:last-child {
-									brd(0);
-									brd(left);
-									brd(right);
-									brd(bottom);
-								}
-
-								& > div {
-									pad(0);
-								}
-								.blob-num {
-									brd(right);
-								}
-
-								// Separator
-								[style^="margin-top"] {
-									brd(bottom);
-									mar(0);
-								}
-							}
-						}
-					}
 
 					// Pagination
 					& > div > :last-child {
 						pad(0);
+					}
+				}
+			}
+
+			// Sidebar
+			[data-testid="facets-pane"] {
+				pad(0);
+			}
+
+			[data-testid="search-sub-header"] {
+				& > div {
+					gap: var(--pad) $i;
+
+					// Right side buttons
+					& > div {
+						mar(right);
+					}
+				}
+			}
+
+			[data-testid="results-list"] {
+				gap: var(--pad) $i;
+
+				& > div {
+					// Header
+					& > :first-child,
+					// "Show X more matches"
+					& > a {
+						bg(3);
+						pad();
+						brd();
+						height: unset $i;
+
+						button {
+							--bg2: var(--bg);
+							--pad: calc(var(--reserve-pad) / 2);
+							normalise-button();
+							box(unset);
+						}
+					}
+
+					// Code
+					& > :nth-child(2) {
+						bg(2);
+						brd(left);
+						brd(right);
+
+						&:last-child {
+							brd(0);
+							brd(left);
+							brd(right);
+							brd(bottom);
+						}
+
+						& > div {
+							pad(0);
+						}
+						.blob-num {
+							brd(right);
+						}
+
+						// Separator
+						[style^="margin-top"] {
+							brd(bottom);
+							mar(0);
+						}
 					}
 				}
 			}
