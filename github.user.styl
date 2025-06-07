@@ -1885,30 +1885,16 @@ normal-colors() {
 	}
 
 	// Tree
-	.PRIVATE_TreeView {
-		&-item {
-			&[aria-current] > &-container {
+	[class*="prc-TreeView-"] {
+		{sel(TreeViewItem)} {
+			&[aria-current] > div {
 				hl();
+				--fgColor-default: var(--hl-fg);
 				--fgColor-muted: var(--hl-fg);
-				--treeViewItem-leadingVisual-iconColor-rest: var(--hl-fg);
 			}
-			&-container {
-				brd(0);
-
-				&::after {
-					display: none $i;
-				}
-			}
-			&-toggle {
-				padding-top: calc(var(--pad) / 2) $i;
-
-				&:hover {
-					fg();
-				}
-			}
-			&-content {
-				padding: 0 var(--pad) $i;
-			}
+		}
+		{sel(TreeViewItemToggle)} {
+			padding-top: 10px $i;
 		}
 	}
 
@@ -2552,13 +2538,17 @@ normal-colors() {
 	:root {
 		--header-height: var(--header-h) $i;
 	}
-	#diff_file_tree > .gap-2 {
-		bg(2);
-		pad();
-		brd(bottom);
-		position: sticky $i;
-		top: 0 $i;
-		z-index: 1 $i;
+	#diff_file_tree {
+		gap: 0 $i;
+
+		& > .gap-2 {
+			bg(2);
+			pad();
+			brd(bottom);
+			position: sticky $i;
+			top: 0 $i;
+			z-index: 1 $i;
+		}
 	}
 
 	react-app[app-name="commits"] {
