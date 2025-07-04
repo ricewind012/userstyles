@@ -6,13 +6,12 @@
 @author         Me
 @preprocessor stylus
 
-@var checkbox font-awesome         "Font Awesome as icons"   1
-@var checkbox role-background      "Colorful roles"          1
 
 @var checkbox guilds-horizontal    "Guilds horizontal"       1
 @var text     guilds-size          "Guilds size"             24px
 @var checkbox sidebar-overlay      "Sidebar overlay"         1
 
+@var checkbox role-background      "Colorful roles"          1
 @var checkbox messages-alt         "Cozy chat alt. look"     1
 @var text     avatar-size          "Avatar size"             var(--font-size)
 @var text     avatar-spacing       "Avatar spacing"          1ch
@@ -20,6 +19,9 @@
 
 @var text     search-results-width "Search results width"    345px
 ==/UserStyle== */
+
+@import url("https://croissantdunord.github.io/discord-adblock/adblock.css");
+@import url("https://croissantdunord.github.io/discord-adblock/adblock-extras.css");
 
 // Variables
 vendors = official;
@@ -193,16 +195,6 @@ hide-chars(amount, pos, bg =) {
 		inset: 0;
 		box(s('%sch', amount), calc(1em * var(--line-height)));
 		bg(bg);
-	}
-}
-
-fa(char) {
-	font-size: 0 $i;
-
-	&::before {
-		content: s('"\%s"', char) $i;
-		font: var(--font-size) 'Font Awesome 6 Free' $i;
-		font-weight: 600 $i;
 	}
 }
 
@@ -566,73 +558,11 @@ normalise-header(first = true) {
 	}
 
 	// Icons
-	icons = {
-		'.toolbar': {
-			'Clear search':                  f002,
-			'Pinned Messages':               f08d,
-			'Add Friends to DM':             f234,
-			'Start Voice Call':              f095,
-			'Start Video Call':              f03d,
-			'Show Member List':              f007,
-			'Hide Member List':              e073,
-			'Inbox':                         f01c,
-			'More':                          f078
-		},
-
-		'.panels > .container > .flex': {
-			'Mute':                          f131,
-			'Deafen':                        f130,
-			'User Settings':                 f0ad
-		},
-
-		'[aria-label="Message Actions"] > .wrapper': {
-			'Add Reaction':  f118,
-			'Edit':          f305,
-			'Reply':         f3e5,
-			'Create Thread': 23,
-			'More':          f104
-		}
-
-		'.form .buttons': {
-			'Open sticker picker':           f249,
-			'Select emoji':                  f118,
-			'Send Message':                  f061
-		}
-	}
-	for i in icons {
-		{i} {
-			gap: 1ch;
-
-			if (font-awesome) {
-				svg {
-					display: none;
-				}
-			}
-
-			for k, v in icons[i] {
-				{s('[aria-label=%s]', k)} {
-					if (font-awesome) {
-						fa(v);
-					}
-					fg(2);
-
-					&:hover {
-						fg();
-					}
-				}
-			}
-		}
-	}
 	.panels > .container > .flex > .button {
 		box(var(--font-size));
 
 		&:hover {
 			background-color: transparent;
-		}
-	}
-	if (font-awesome) {
-		.attachButton {
-			fa(f055);
 		}
 	}
 	.toolbar {
@@ -825,7 +755,6 @@ normalise-header(first = true) {
 	#channels .children > :not(.mentionsBadge),
 	#messagesNavigationDescription + [id^="chat-messages"] + .containerExpanded,
 	#search-results .buttonsContainer,
-	.channelAppLauncher,
 	.sidebar .positionedContainer, // Unread bar
 	.privateChannels > .searchBar,
 	.peopleColumn > .searchBar,
@@ -833,43 +762,6 @@ normalise-header(first = true) {
 	.sidebar .actionButtons,
 	.guildIconV2Container, // Sidebar boost status
 	.welcomeCTA,
-
-	// II. Nitro
-	.shinyButton,
-	.bannerNitroUpsell,
-	.avatarDecoration,
-	.subscribeTooltipWrapper,
-	.shopForAllBackgroundImage,
-	.upsell,
-	.upsellContainer,
-	.upsellTooltipWrapper,
-	.upsellOverlayContainer,
-	.premiumPromo,
-	.premiumUpsell,
-	.premiumIconWrapper,
-	.premiumInlineNotice,
-	.premiumFeatureBorder,
-	#profile-customization-tab > .container, // Profiles
-	.customizationSection:has(> .birthdayFeatureBorder), // ^
-	.selectionGroup:has(.appIconSelectionContainer), // Appearance
-	[href="/store"], // Private channels "Nitro" tab
-	[href="/shop"], // ^ "Shop"
-	#user-settings-cog-Billing,
-	#user-settings-cog-Discord_Nitro,
-	#user-settings-cog-Subscriptions,
-	#user-settings-cog-Nitro_Server_Boost,
-	#user-settings-cog-Library_Inventory,
-	#guild-header-popout [role="group"]:first-child, // Server Boost
-	#guild-header-popout [role="group"]:first-child + div, // ^ separator
-	.premiumSectionDivider, // Autocomplete
-	.premiumHeader, // ^
-	.premiumEmoji, // ^
-	[aria-label="Clips"] + div + div + div,
-	[aria-label="Nitro"],
-	[aria-label="Nitro"] + div,
-	[aria-label="Subscriptions"],
-	[aria-label="Gift Inventory"],
-	[aria-label="Gift Inventory"] + div,
 
 	// III. Made-obsolete gradients/shadows
 	.children::after,
@@ -885,7 +777,6 @@ normalise-header(first = true) {
 	.guilds > .tree > .footer,
 	.guilds > .tree > div > .listItem:nth-last-child(2),
 	.guilds > .tree > div > .listItem:nth-last-child(3),
-	.roleIcon,
 	.protip,
 	.socialLinks,
 	.typingDots .dots,
@@ -893,18 +784,14 @@ normalise-header(first = true) {
 	.threadSuggestionBar,
 	[data-list-id="chat-messages"] > [class^="groupStart"], // blocked
 	.userPopoutInner .lastSection,
-	[class*="cozy_"] .repliedMessage > .username,
+	[class*="cozy_"] .repliedMessage > .username,	.roleIcon,
+
 	.communityInfoContainer,
 	.guildIconContainer,
 	.nowPlayingColumn,
 	.channelNotice
 	{
 			display: none $i;
-	}
-
-	// Nitro pt. II
-	#profile-customization-tab .headingLgSemibold {
-		margin-bottom: 20px;
 	}
 
 	// GIFs / emoji tabs
@@ -1060,14 +947,6 @@ normalise-header(first = true) {
 					& > div {
 						pad(0);
 						mar(0);
-					}
-					.name {
-						fa(f095);
-						font-size: var(--font-size) $i;
-
-						&::before {
-							margin-right: 1ch;
-						}
 					}
 				}
 
@@ -1669,24 +1548,6 @@ normalise-header(first = true) {
 			mar(0);
 		}
 	}
-	// Remove nitro themes
-	$user-nitro-themes {
-		--profile-gradient-primary-color: var(--background-secondary-alt) $i;
-		--profile-gradient-secondary-color: var(--background-secondary-alt) $i;
-		--profile-gradient-overlay-color: transparent $i;
-		--profile-gradient-button-color: var(--button-secondary-background) $i;
-		--profile-avatar-border-color: var(--background-secondary-alt) $i;
-		--profile-message-input-border-color: var(--background-modifier-accent) $i;
-		--profile-body-background-color: var(--background-floating) $i;
-		--profile-body-background-hover: var(--background-modifier-hover) $i;
-		--profile-body-divider-color: var(--background-modifier-accent) $i;
-		--profile-role-pill-background-color: var(--background-secondary-alt) $i;
-		--profile-role-pill-border-color: var(--interactive-normal) $i;
-		pad(0);
-	}
-	.profileEffects {
-		display: none $i;
-	}
 
 	.roundedBanner,
 	.overlayBackground {
@@ -1694,7 +1555,6 @@ normalise-header(first = true) {
 	}
 	.userPopout {
 		&Outer {
-			@extend $user-nitro-themes;
 			brd();
 		}
 		&OverlayBackground {
@@ -1711,7 +1571,6 @@ normalise-header(first = true) {
 	}
 	.userProfile {
 		/[class*="userProfileOuter_"] {
-			@extend $user-nitro-themes;
 			border-radius: var(--border-radius);
 
 			.tabBarContainer {
@@ -1872,7 +1731,7 @@ normalise-header(first = true) {
 
 	// Message search
 	[role="listbox"][style="width: 320px;"] {
-		margin-top: calc(-1px + var(--pad));
+		margin-top: calc(var(--pad) * -1);
 		height: min-content;
 		max-height: 75vh;
 		overflow-y: scroll;
@@ -2875,10 +2734,6 @@ normalise-header(first = true) {
 			& > .contents {
 				pad(0);
 				mar(0);
-
-				if (font-awesome) {
-					display: none;
-				}
 			}
 		}
 		.buttons {
