@@ -400,48 +400,67 @@ normalise-header(first = true) {
 		}
 
 		// Background
-		--background-primary: var(--bg);
-		--background-secondary: var(--bg2);
-		--background-secondary-alt: var(--bg3);
-		--background-tertiary: var(--bg4);
-		--background-accent: var(--fg);
-		--background-floating: var(--bg);
-		--background-nested-floating: var(--bg);
+		--background-primary: var(--bg) $i;
+		--background-secondary: var(--bg2) $i;
+		--background-secondary-alt: var(--bg3) $i;
+		--background-tertiary: var(--bg4) $i;
+		--background-accent: var(--fg) $i;
+		--background-floating: var(--bg) $i;
+		--background-nested-floating: var(--bg) $i;
+		--background-code: var(--bg2) $i;
 
-		--background-mobile-primary: var(--bg);
-		--background-mobile-secondary: var(--bg2);
+		--background-base-low: var(--bg3) $i;
+		--background-base-lower: var(--bg) $i;
+		--background-base-lowest: var(--bg2) $i;
 
-		--background-modifier-hover: var(--bg3);
-		--background-modifier-active: var(--bg4);
-		--background-modifier-selected: var(--hl);
-		--background-modifier-accent: var(--border);
+		--background-surface-high: var(--bg2) $i;
+		--background-surface-higher: var(--bg2) $i;
+		--background-surface-highest: var(--bg2) $i;
 
-		--modal-background: var(--bg);
-		--modal-footer-background: var(--bg2);
+		--background-modifier-hover: var(--bg3) $i;
+		--background-modifier-active: var(--bg4) $i;
+		--background-modifier-selected: var(--hl) $i;
+		--background-modifier-accent: var(--border) $i;
 
-		--input-background: var(--bg2);
-		--channeltextarea-background: var(--input-background);
+		--modal-background: var(--bg) $i;
+		--modal-footer-background: var(--bg2) $i;
+
+		--input-background: var(--bg2) $i;
+		--channeltextarea-background: var(--input-background) $i;
+		--chat-background-default: var(--bg2) $i;
 
 		// Text
-		--text-normal: var(--fg);
-		--text-muted: var(--fg2);
-		--text-link: var(--fg-link);
-		--text-brand: var(--color4);
+		--text-normal: var(--fg) $i;
+		--text-link: var(--fg-link) $i;
+		--text-brand: var(--color4) $i;
 
-		--interactive-normal: var(--fg2);
-		--interactive-muted: var(--fg2);
-		--interactive-active: var(--hl-fg);
-		--interactive-hover: var(--fg);
+		colors = {
+			muted: fg2,
+			primary: fg,
+			secondary: fg2,
+			tertiary: fg2,
+		}
+		for k, v in colors {
+			clr = s('var(--%s)', v);
 
-		--header-primary: var(--fg);
-		--header-secondary: var(--fg2);
-		--channels-default: var(--fg2);
+			--icon-{i}: clr $i;
+			--text-{i}: clr $i;
+		}
 
-		--channel-text-area-placeholder: var(--fg2);
-		--input-placeholder-text: var(--fg2);
-		--textbox-markdown-syntax: var(--fg2);
+		--interactive-normal: var(--fg2) $i;
+		--interactive-muted: var(--fg2) $i;
+		--interactive-active: var(--hl-fg) $i;
+		--interactive-hover: var(--fg) $i;
 
-		// Info
+		--header-primary: var(--fg) $i;
+		--header-secondary: var(--fg2) $i;
+		--channels-default: var(--fg2) $i;
+
+		--channel-text-area-placeholder: var(--fg2) $i;
+		--input-placeholder-text: var(--fg2) $i;
+		--textbox-markdown-syntax: var(--fg2) $i;
+
+		// Info/status
 		colors = {
 			danger:   9,
 			positive: 10,
@@ -449,57 +468,86 @@ normalise-header(first = true) {
 			help:     12
 		}
 		for k, v in colors {
-			clr = s('var(--color%s)', v - 8);
+			clr = s('var(--color%s)', v - 8) $i;
 
-			--text-{k}: clr;
+			--text-{k}: clr $i;
 
-			--info-{k}-background: color-a(v);
-			--info-{k}-foreground: var(--fg);
-			--info-{k}-text: var(--fg);
+			--info-{k}-background: color-a(v) $i;
+			--info-{k}-foreground: var(--fg) $i;
+			--info-{k}-text: var(--fg) $i;
 
-			--status-{k}-background: color-a(v);
-			--status-{k}-text: var(--fg);
-			--status-{k}: clr;
+			--status-{k}-background: color-a(v) $i;
+			--status-{k}-text: var(--fg) $i;
+			--status-{k}: clr $i;
 		}
 
-		// Status
 		colors = {
 			dnd:    1,
 			online: 2,
 			idle:   3,
 		}
 		for k, v in colors {
-			--status-{k}: s('var(--color%s)', v);
+			--status-{k}: s('var(--color%s)', v) $i;
 		}
 
 		// Shadows
-		--elevation-stroke: var(--shadow-ins) var(--border);
-		--elevation-low: var(--shadow-low);
-		--elevation-medium: var(--shadow-mid);
-		--elevation-high: var(--shadow-big);
-		--guild-header-text-shadow: none;
+		--elevation-stroke: var(--shadow-ins) var(--border) $i;
+		--elevation-low: var(--shadow-low) $i;
+		--elevation-medium: var(--shadow-mid) $i;
+		--elevation-high: var(--shadow-big) $i;
+		--guild-header-text-shadow: none $i;
+
+		--legacy-elevation-low: var(--elevation-low) $i;
+		--legacy-elevation-high: var(--elevation-high) $i;
+		--legacy-elevation-border: var(--elevation-stroke) $i;
+
+		$shadows = {
+			border: stroke,
+			ledge: low,
+			low: low,
+			low-active: low,
+			low-hover: low,
+			medium: medium,
+			high: high,
+			top-low: low,
+			top-high: high,
+			top-ledge: stroke,
+		}
+		for name, type in shadows {
+			--shadow-{name}: s('var(--elevation-%s)', type) $i;
+			--shadow-{name}-filter: s('drop-shadow(var(--elevation-%s))', type) $i;
+		}
 
 		// Scrollbar
 		for i in auto thin {
-			--scrollbar-{i}-thumb: var(--fg2);
-			--scrollbar-{i}-track: var(--bg2);
+			--scrollbar-{i}-thumb: var(--fg2) $i;
+			--scrollbar-{i}-track: var(--bg2) $i;
 		}
 
 		// Other
-		--focus-primary: var(--hl);
-		--brand-experiment: var(--color4);
-		--brand-experiment-400: var(--color12);
-		--brand-experiment-560: var(--color12);
-		--brand-experiment-600: var(--color12);
+		--focus-primary: var(--hl) $i;
+
+		--chat-avatar-size: var(--avatar-size) $i;
+
+		--custom-app-top-bar-height: 0px $i;
+		--custom-channel-header-height: var(--header-h) $i;
+		--custom-channel-textarea-text-area-height: unset $i;
+
+		--border-faint: var(--border) $i;
+		--border-strong: var(--border) $i;
+		--border-subtle: var(--border) $i;
 
 		--reserve-fg: var(--fg);
 		--reserve-pad: var(--pad);
 
-		for i in range(4, 16, 4) range(24, 80, 8) 96 {
-			--spacing-{i}: var(--pad);
+		for vec in range(4, 16, 2) range(16, 32, 4) range(32, 48, 8) range(96, 192, 32) {
+			for i in vec {
+				--space-{i}: var(--pad) $i;
+			}
 		}
-		for i in xs sm md lg xl xxl {
-			--radius-{i}: var(--border-radius);
+		for i in xxs xs sm md lg xl xxl {
+			--radius-{i}: var(--border-radius) $i;
+			--space-{i}: var(--pad) $i;
 		}
 	}
 
@@ -588,6 +636,8 @@ normalise-header(first = true) {
 		}
 	}
 	.toolbar {
+		margin-right: calc(var(--font-size) + var(--pad)) $i;
+
 		[role="button"] {
 			mar(0);
 			box(unset);
@@ -609,36 +659,9 @@ normalise-header(first = true) {
 	}
 
 	// Headings
-	.heading {
-		&Sm,
-		&Md,
-		&Lg,
-		&Xl,
-		&Xxl,
-		&Deprecated12 {
-			&Normal,
-			&Medium,
-			&Semibold,
-			&Bold,
-			&Extrabold {
-				lnh();
-				flex-grow: 1;
-			}
-		}
-	}
-	.text {
-		&Xxs,
-		&Xs,
-		&Sm,
-		&Md,
-		&Lg {
-			&Normal,
-			&Medium,
-			&Semibold,
-			&Bold {
-				lnh();
-			}
-		}
+	[data-text-variant] {
+		lnh();
+		flex-grow: 1 $i;
 	}
 	.eyebrow {
 		normalise-header();
@@ -697,9 +720,6 @@ normalise-header(first = true) {
 	}
 
 	// Tabs
-	nav {
-		pad(0);
-	}
 	[role="tablist"] {
 		pad(0);
 		height: unset;
@@ -711,10 +731,6 @@ normalise-header(first = true) {
 		.eyebrow {
 			margin-top: calc(var(--pad) * 2) $i;
 		}
-	}
-	.tabBarContainer {
-		brd(0);
-		mar(0);
 	}
 	[role="tab"] {
 		background-color: transparent $i;
@@ -731,6 +747,10 @@ normalise-header(first = true) {
 		}
 		&[aria-selected="true"] {
 			hl();
+		}
+
+		&::after {
+			display: none $i;
 		}
 	}
 	[role="tabpanel"] {
@@ -913,7 +933,8 @@ normalise-header(first = true) {
 
 	// Banner
 	.sidebar {
-		.animatedContainer {
+		.animatedContainer,
+		.headerEllipseForeground_f37cb1 {
 			display: none;
 		}
 		.headerContent {
@@ -960,6 +981,7 @@ normalise-header(first = true) {
 	.sidebar {
 		// Almost no animation below that - lags too much
 		--trans-dur: 300ms;
+		brd(right);
 		width: var(--sidebar-width);
 
 		@media (max-width: $small-screen) {
@@ -967,8 +989,7 @@ normalise-header(first = true) {
 			min-width: 0;
 			anim();
 
-			.guilds:hover + .base &,
-			.guilds + .base &:hover {
+			&:hover {
 				width: var(--sidebar-width) $i;
 			}
 
@@ -987,13 +1008,10 @@ normalise-header(first = true) {
 
 		.header {
 			background-color: transparent $i;
+			brd(0);
 			pad(0);
-			shd(0);
 			height: unset $i;
 
-			&Content {
-				height: unset;
-			}
 			&Children {
 				display: none;
 			}
@@ -1008,14 +1026,16 @@ normalise-header(first = true) {
 			}
 		}
 	}
-	.sidebarRegionScroller,
-	.content > .sidebar > * {
-		brd(right);
+	.sidebarList {
+		brd(0);
+		width: var(--sidebar-width) $i;
 	}
 
 	// Channels
 	#channels {
-		pad(0);
+		mar(right, 0);
+		// 4px = original var(--space-4)
+		margin-bottom: calc(var(--custom-app-panels-height) / 2 + 4px + var(--border-width)) $i;
 
 		&::-webkit-scrollbar,
 		.iconContainer,
@@ -1064,6 +1084,9 @@ normalise-header(first = true) {
 			.link {
 				cursor: default;
 			}
+			.name {
+				color: inherit $i;
+			}
 		}
 		{$sidebar[channel-unread]} {
 			.name {
@@ -1071,6 +1094,7 @@ normalise-header(first = true) {
 			}
 		}
 		.link {
+			color: inherit $i;
 			pad();
 			brd(0);
 		}
@@ -1098,8 +1122,8 @@ normalise-header(first = true) {
 			normalise-header(false);
 			mar(left);
 			mar(right);
-			flex();
 			flex-direction: row-reverse;
+			justify-content: start $i;
 
 			.icon {
 				position: unset;
@@ -1133,13 +1157,15 @@ normalise-header(first = true) {
 				}
 			}
 		}
+		.scroller__99e7c {
+			margin-bottom: var(--custom-app-panels-height) $i;
+		}
 		.link[aria-label^="unread"] {
 			color: var(--hl) $i;
 		}
 		[class^="layout_"] {
-			color: inherit;
-			pad();
-			height: unset;
+			padding-block: var(--pad) $i;
+			height: unset $i;
 		}
 		.avatar {
 			mar(right);
@@ -1147,7 +1173,11 @@ normalise-header(first = true) {
 	}
 
 	.panels {
+		--custom-panels-spacing: 0px $i;
+		brd(0);
 		brd(top);
+		position: fixed $i;
+		width: var(--sidebar-width) $i;
 
 		& > .container {
 			pad();
@@ -1158,19 +1188,20 @@ normalise-header(first = true) {
 
 	// Servers sidebar
 	$guilds = {
-		container:      '.tree > div'
+		container:      '.scroller_ef3116'
 		guild:          '.pill:not(:empty) + div > [data-dnd-name]'
 		guild-selected: '[class*="selected_"]'
 	}
 
 	.guilds {
+		bg(2);
+		header-focus(app-focused);
+		mar(0);
 		width: calc(var(--guilds-size) + var(--pad) * 2) $i;
+		brd(right);
 
 		{$guilds[container]} {
-			bg(2);
-			header-focus();
 			padding-top: calc(var(--pad) / 2) $i;
-			brd(right);
 
 			// Scrollbar on hover
 			@supports not (-moz-appearance: none) {
@@ -1196,7 +1227,6 @@ normalise-header(first = true) {
 
 		.listItem {
 			width: 100% $i;
-			mar(bottom);
 
 			[class^="wrapper"]:not([role]) {
 				&,
@@ -1204,6 +1234,7 @@ normalise-header(first = true) {
 					box(var(--guilds-size));
 				}
 				& > svg {
+					inset: 0 $i;
 					z-index: 3;
 				}
 			}
@@ -1277,25 +1308,23 @@ normalise-header(first = true) {
 		}
 	}
 	.guildSeparator {
-		background-color: var(--border);
+		background-color: var(--border) $i;
 		box(100%, var(--border-width));
-	}
-	.tutorialContainer {
-		& > .listItem,
-		& + .listItem,
-		& + [style] + .listItem {
-			margin-bottom: calc(var(--pad) * 0.5) $i;
+
+		.listItem:has(> &) {
+			margin-block: calc(var(--pad) * -0.5) $i;
 		}
 	}
 	if (guilds-horizontal) {
 		@media (min-width: $small-screen) {
 			.guilds {
 				--guilds-size: var(--font-size);
-				position: absolute;
+				position: fixed;
 				top: var(--header-h);
 				bottom: unset;
 				z-index: 1;
-				box(var(--header-h), var(--sidebar-width));
+				width: var(--header-h) $i;
+				height: calc(var(--sidebar-width) + var(--border-width)) $i;
 				transform-origin: top left;
 				transform: rotate(-90deg);
 
@@ -1331,9 +1360,6 @@ normalise-header(first = true) {
 		lnh();
 		pad();
 		brd(bottom);
-		height: var(--header-h);
-		min-height: unset;
-		gap: var(--pad);
 
 		.title:not(.cursorPointer),
 		.children .iconWrapper,
@@ -1342,11 +1368,9 @@ normalise-header(first = true) {
 		.akaBadge,
 		.avatar,
 		.divider,
+		.dot,
 		.caret {
 			display: none;
-		}
-		main > & > .children { // tabs
-			margin-left: calc(var(--pad) * -1);
 		}
 		.title {
 			lnh();
@@ -1374,7 +1398,25 @@ normalise-header(first = true) {
 			}
 		}
 		.icon {
-			--interactive-hover: var(--fg);
+			box(var(--font-size));
+
+			&:hover {
+				fg();
+			}
+		}
+	}
+	// Move inbox out of the shitty titlebar
+	.bar_c38106 {
+		z-index: 101 $i;
+
+		.title_c38106 {
+			display: none $i;
+		}
+		// TODO: unify with toolbar impl
+		.recentsIcon_c99c29 > div {
+			position: fixed $i;
+			top: calc(var(--pad) * var(--line-height)) $i;
+			right: var(--pad) $i;
 			box(var(--font-size));
 		}
 	}
@@ -1385,6 +1427,7 @@ normalise-header(first = true) {
 			background-color: color-a(4);
 			backdrop-filter: var(--popup-filter);
 			opacity: 1;
+			fg();
 			padding: var(--pad) 0 $i;
 			brd(,color4);
 			height: unset;
@@ -1403,9 +1446,9 @@ normalise-header(first = true) {
 		}
 		&Button {
 			&Base {
-				fg();
+				background-color: transparent $i;
 				line-height: unset;
-				padding: 0 var(--pad);
+				padding: 0 var(--pad) $i;
 				height: unset;
 			}
 			&Icon {
@@ -1474,6 +1517,7 @@ normalise-header(first = true) {
 		pad(0);
 	}
 	.menu {
+		bg();
 		brd();
 
 		.userPopoutOverlayBackground > & {
@@ -1487,6 +1531,7 @@ normalise-header(first = true) {
 			pad(0);
 
 			& > .wrapper { // reactions
+				gap: 0 $i;
 				pad(0);
 				brd(bottom);
 
@@ -1562,7 +1607,6 @@ normalise-header(first = true) {
 		}
 	}
 	[role^="menuitem"] {
-		fg();
 		lnh();
 		pad();
 		brd(0);
@@ -1572,6 +1616,7 @@ normalise-header(first = true) {
 
 		&[aria-expanded="true"],
 		&:hover {
+			--header-primary: var(--hl-fg) $i;
 			hl();
 		}
 		&[aria-haspopup] {
@@ -2058,10 +2103,6 @@ normalise-header(first = true) {
 				min-height: unset;
 				display: flex;
 
-				&.expanded {
-					pad(0);
-				}
-
 				.button {
 					--bg2: var(--bg);
 					--pad: calc(var(--reserve-pad) / 2);
@@ -2069,22 +2110,6 @@ normalise-header(first = true) {
 					box(unset);
 					min-width: unset;
 					min-height: unset;
-				}
-			}
-			// D*scord doesn't have an icon anywhere else.
-			.inboxIcon {
-				display: none;
-			}
-			.expanded {
-				&InboxHeader {
-					pad(0);
-
-					& > :last-child {
-						display: none;
-					}
-				}
-				&TabSection {
-					height: unset;
 				}
 			}
 			.channelHeader {
@@ -2096,18 +2121,18 @@ normalise-header(first = true) {
 			}
 		}
 	}
+	.headerTabs_ab6641 {
+		margin: calc(var(--pad) * -1) $i;
+	}
+	.headerTitle_ab6641 {
+		display: none;
+	}
+	.tabBar_ab6641 {
+		brd(0);
+		mar(0);
+	}
 	[data-list-id="recents"] > .container {
 		mar(bottom);
-	}
-
-	// Images
-	.downloadLink { // fix for "open original"
-		color: var(--text-link) $i;
-		opacity: 1;
-
-		&:not(:hover) {
-			text-decoration: none;
-		}
 	}
 
 	/**
@@ -2116,10 +2141,16 @@ normalise-header(first = true) {
 	.contentColumn {
 		width: 0;
 	}
+	.contentRegionScroller__23e6b {
+		bg();
+	}
 
 	/**
 	 * Chat
 	**/
+	.chat_f75fb0 {
+		brd(0);
+	}
 	.scroller {
 		&Inner {
 			--alt-bg: messages-alt ? var(--bg2) : var(--bg);
@@ -2279,7 +2310,15 @@ normalise-header(first = true) {
 					top: calc(var(--pad) / var(--line-height));
 				}
 				.repliedMessage {
-					margin-left: calc(var(--avatar-spacing) - var(--border-width));
+					--reply-spacing: calc(var(--pad) / 2) $i;
+					margin-left: calc(
+						var(--avatar-size) + var(--avatar-spacing) + var(--reply-spacing)
+					) $i;
+				}
+				.repliedMessageClickableSpine {
+					left: calc(
+						var(--avatar-size) / -2 - var(--gutter) - var(--reply-spacing)
+					) $i;
 				}
 			} else {
 				--cozy-top-border-width: calc(var(--border-width) * -1);
@@ -2543,7 +2582,6 @@ normalise-header(first = true) {
 			}
 		}
 		.footer {
-			lnh();
 			brd(0);
 			pad();
 			height: unset;
@@ -2821,10 +2859,10 @@ normalise-header(first = true) {
 
 	// Message textbox
 	.channelTextArea {
+		focus(focus-within);
+
 		& > :first-child {
 			pad(right);
-			brd();
-			focus(focus-within);
 
 			&::-webkit-scrollbar {
 				display: none;
@@ -2856,12 +2894,13 @@ normalise-header(first = true) {
 		padding-right: var(--body-pad) $i;
 		mar(top, 0);
 
-		& > :first-child > :first-child {
+		.channelTextArea__74017 {
 			/*
 			 * The userscript doesn't work on
 			 * elements that change their attributes
 			 */
 			@extend .channelTextArea;
+			brd();
 			margin-bottom: calc(
 				var(--font-size) * var(--line-height) + var(--pad) * 2
 			);
@@ -2882,6 +2921,7 @@ normalise-header(first = true) {
 				pad();
 				brd(right);
 				border-radius: 0;
+				height: 100% $i;
 
 				&:hover {
 					fg();
@@ -2917,26 +2957,18 @@ normalise-header(first = true) {
 			lnh();
 			pad(bottom);
 			height: unset;
+
+			strong {
+				fg();
+			}
 		}
 	}
 	.textArea {
 		lnh();
-
-		&[style^="height"]:not(textarea) {
-			height: unset $i;
-		}
-
-		&,
-		/.attachButton {
-			height: 100%;
-			min-height: unset;
-		}
 	}
-	// <textarea>
-	.fontSize16Padding {
-		pad();
-		max-height: 200px;
-		right: 0;
+	.slateTextArea_ec4baf {
+		inset: var(--pad) $i;
+		min-height: 1lh $i;
 	}
 
 	/**
@@ -2956,19 +2988,26 @@ normalise-header(first = true) {
 				pad(0);
 				box(240px, unset);
 				focus(focus-within);
+				align-items: center $i;
 			}
 
-			& > :not([class*="open_"]) {
+			& > :not(:focus-within) {
 				& > div {
 					background-color: transparent $i;
 					brd(0);
-					width: 20px $i;
+					width: var(--font-size) $i;
 				}
 				.DraftEditor-root {
-					--pad: 0;
+					pad(0);
+					box(0);
 				}
 				.iconLayout {
 					cursor: pointer $i;
+				}
+			}
+			&:focus-within {
+				[role="button"] {
+					mar();
 				}
 			}
 		}
@@ -3062,12 +3101,11 @@ normalise-header(first = true) {
 				overflow-x: visible;
 			}
 			&-root {
-				pad(left);
-				margin-top: -2px;
+				pad();
 			}
 			&-editorContainer {
 				brd(0);
-				height: unset;
+				height: unset $i;
 			}
 		}
 
