@@ -1768,7 +1768,7 @@ normal-colors() {
 		danger:  9,
 		primary: 10,
 	}
-	[class*="prc-Button-ButtonBase-"] {
+	:where([class*="prc-Button-ButtonBase-"]) {
 		gap: 0 $i;
 		shd(0);
 		box(unset);
@@ -1781,8 +1781,12 @@ normal-colors() {
 		&:not([data-variant="link"]) {
 			normalise-button();
 		}
+		&[data-inactive],
 		&[aria-disabled="true"] {
 			@extend .Button:disabled;
+		}
+		&[aria-checked="true"] {
+			hl();
 		}
 		&[data-size="small"] {
 			--pad: calc(var(--reserve-pad) / 2);
@@ -2728,6 +2732,8 @@ normal-colors() {
 	}
 	[class*="ClearButton-module__clearButton-"] {
 		all: unset $i;
+		display: flex $i;
+		cursor: pointer $i;
 
 		&:not(:hover) {
 			fg(2);
@@ -2768,7 +2774,7 @@ normal-colors() {
 			--bg2: var(--bg);
 			--pad: calc(var(--reserve-pad) / 2);
 
-			@extend [class*="prc-Button-ButtonBase-"][aria-haspopup];
+			@extend :where([class*="prc-Button-ButtonBase-"])[aria-haspopup];
 		}
 	}
 
