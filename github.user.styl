@@ -1988,6 +1988,18 @@ normal-colors() {
 			height: unset $i;
 		}
 	}
+	[class*="prc-TabNav-TabNavLink-"] {
+		lnh();
+		pad();
+		brd(0);
+
+		&:not([aria-selected="true"]):hover {
+			fg();
+		}
+		&[aria-selected="true"] {
+			hl();
+		}
+	}
 
 	// Overlay
 	[class*="prc-Dialog-Dialog-"] {
@@ -2071,186 +2083,190 @@ normal-colors() {
 	}
 
 	/**
-	 * Old React pages
+	 * Code view (and directory view in one app for whatever reason)
 	**/
-	// Code view
+	.react-code-text {
+		span {
+			font-family: var(--font-code) $i;
+		}
+	}
+	.react-code-view-bottom-padding + div {
+		mar(0);
+
+		& > div {
+			// Symbols panel
+			&:last-of-type {
+				& > :first-child:not(:only-child) {
+					mar(right);
+				}
+
+				// Symbols
+				.panel-content-narrow-styles {
+					brd(0);
+					top: var(--header-h) $i;
+				}
+
+				// what the hell ?
+				#symbols-pane > div {
+					& > :not([class*=" "]) > div {
+						& > :first-child,
+						& > div > :first-child {
+							brd(0);
+						}
+					}
+				}
+				#symbols-pane-header {
+					normalise-header();
+					justify-content: left;
+					width: 100% $i;
+				}
+				[aria-roledescription="Symbol Navigation Details"] {
+					pad(0);
+					pad(bottom);
+					brd(bottom);
+					mar(bottom);
+				}
+				[aria-labelledby="symbols-pane-header"] {
+					pad(0);
+
+					& > :nth-child(2) {
+						fg();
+						pad(0);
+					}
+				}
+
+				// Header/section, I don't know
+				.bVrwaI,
+				.coSTPM {
+					normalise-header(false);
+					background-color: transparent $i;
+					brd(top, 0);
+					height: unset $i;
+				}
+
+				// Bottom
+				.iEQKDS {
+					brd(top);
+					padding: var(--pad) 0 $i;
+				}
+			}
+		}
+	}
+	.react-line-number {
+		font-family: var(--font-code) $i;
+
+		& > span { // arrow
+			mar(0);
+			top: -2px;
+		}
+	}
+	.react-line-numbers {
+		bg(2);
+		brd(right);
+	}
+	[aria-labelledby^="file-name-id"] {
+		mar(0);
+
+		& > div {
+			pad(0);
+		}
+	}
+	[data-selector="repos-split-pane-content"] > :last-child {
+		mar(0);
+	}
+	#highlighted-line-menu-container > button {
+		left: calc((16px + var(--pad) / 2) * -1);
+	}
+	#repos-sticky-header {
+		top: calc(var(--header-h) - var(--border-width));
+
+		// Code
+		& + div {
+			brd();
+			brd(top, 0);
+		}
+	}
+	#StickyHeader {
+		pad(0);
+	}
+
 	[class*="BlobViewHeader-module__"] {
+		{sel(Box)} {
+			position: unset $i;
+		}
 		{sel(Box_1)} {
 			brd();
 		}
 	}
+	// Navigation
+	[class*="CodeViewHeader-module__FileResultsList-"] {
+		mar(0);
+	}
+	[class*="LatestCommit-module__Box-"] {
+		bg(2);
+		brd();
+		mar(bottom);
 
-	.react {
-		// Repository overview
-		&-directory {
-			&-row {
-				&& td {
-					bg();
-				}
-			}
-			&-filename-column,
-			&-commit-age {
-				pad(0);
-			}
-			&-filename-column {
-				gap: var(--pad) $i;
-				height: unset $i;
-			}
+		react-app[app-name="react-code-view"] .border:has(&) {
+			all: unset $i;
 		}
 
-		// Code view
-		&-code {
-			&-view-bottom-padding {
-				& + div {
-					mar(0);
-
-					& > div {
-						// Latest commit
-						&:first-of-type {
-							bg(2);
-							brd();
-							mar(bottom);
-
-							& > div {
-								gap: var(--pad);
-								pad();
-
-								& > div {
-									gap: var(--pad);
-								}
-							}
-							a:not(.issue-link) {
-								fg();
-							}
-							a,
-							button {
-								--bg2: var(--bg);
-							}
-							[data-testid="avatar-icon-link"] + span > a {
-								fg(-link);
-							}
-							img {
-								mar(right);
-								box(var(--font-size));
-							}
-						}
-
-						// Code view/symbols
-						&:last-of-type {
-							& > :first-child:not(:only-child) {
-								mar(right);
-							}
-
-							// Symbols
-							.panel-content-narrow-styles {
-								brd(0);
-								top: var(--header-h) $i;
-							}
-
-							// what the hell ?
-							#symbols-pane > div {
-								& > :not([class*=" "]) > div {
-									& > :first-child,
-									& > div > :first-child {
-										brd(0);
-									}
-								}
-							}
-							#symbols-pane-header {
-								normalise-header();
-								justify-content: left;
-								width: 100% $i;
-							}
-							[aria-roledescription="Symbol Navigation Details"] {
-								pad(0);
-								pad(bottom);
-								brd(bottom);
-								mar(bottom);
-							}
-							[aria-labelledby="symbols-pane-header"] {
-								pad(0);
-
-								& > :nth-child(2) {
-									fg();
-									pad(0);
-								}
-							}
-
-							// Header/section, I don't know
-							.bVrwaI,
-							.coSTPM {
-								normalise-header(false);
-								background-color: transparent $i;
-								brd(top, 0);
-								height: unset $i;
-							}
-
-							// Bottom
-							.iEQKDS {
-								brd(top);
-								padding: var(--pad) 0 $i;
-							}
-						}
-					}
-				}
-			}
-
-			// File contents
-			&-text {
-				span {
-					font-family: var(--font-code) $i;
-				}
-			}
+		.Link--secondary {
+			fg();
 		}
-		&-last-commit {
-			&-message {
-				gap: var(--pad) $i;
-			}
-			&-history-group {
-				background-color: transparent $i;
-				pad(0);
-				brd(0);
-
-				&:hover {
-					span {
-						fg(-link);
-					}
-				}
-			}
+		[class*="prc-Button-ButtonBase-"] {
+			--bg2: var(--bg);
 		}
-		&-line-number {
-			font-family: var(--font-code) $i;
-
-			&s {
-				bg(2);
-				brd(right);
+		[class*="AuthorAvatar-module__"] {
+			{sel(authorHoverableLink)} {
+				fg(-link);
 			}
-
-			& > span { // arrow
-				mar(0);
-				top: -2px;
-			}
-		}
-		&-tree-show-tree-items {
-			& > div {
-				pad(0);
+			{sel(GitHubAvatar)} {
+				mar(right);
+				box(var(--font-size));
 			}
 		}
 	}
+	// File tree
+	[class*="ReposFileTreePane-module__"] {
+		{sel(Box_1)} {
+			brd(bottom);
 
-	react-app[app-name="react-code-view"],
-	react-partial[partial-name="repos-overview"] {
-		// Files
-		table[class] {
-			brd();
+			& > :first-child {
+				display: none $i;
+			}
 
+			button,
+			[type="button"],
+			.TextInput-wrapper {
+				--bg2: var(--bg);
+			}
+		}
+		{sel(Box_4)} {
+			gap: var(--pad) $i;
+			display: flex $i;
+		}
+		// Shadow
+		{sel(Box_8)} {
+			display: none $i;
+		}
+		{sel(FileResultsList)} {
+			pad();
+			brd(bottom);
+			mar(0);
+		}
+	}
+	[class*="ReposFileTreeView-module__Box-"] {
+		pad(0);
+	}
+	[class*="Table-module__"] {
+		{sel(Box)} {
 			& > :first-child > :first-child {
 				position: sticky $i;
 				top: var(--header-h) $i;
 			}
 			td,
 			th {
-				bg(2);
 				pad(0);
 				brd(0);
 				brd(bottom);
@@ -2258,126 +2274,121 @@ normal-colors() {
 				[class*="prc-Button-ButtonBase-"] {
 					--bg2: var(--bg);
 				}
-				/[data-testid="up-tree"] > div,
+				[data-testid="up-tree"] > div,
 				& > span, // "Name" label
 				& > div {
 					padding: calc(var(--pad) / 2) var(--pad) $i;
 				}
 			}
+			thead,
+			tr,
+			.react-directory-filename-column {
+				height: unset $i;
+			}
+			.react-directory-row td {
+				bg();
+			}
 		}
-		thead,
-		tr {
-			height: unset $i;
+		{sel(Box_2)} {
+			th {
+				bg();
+			}
 		}
 	}
 
-	react-app {
-		&[app-name="blackbird-search"] {
-			[class*="prc-PageLayout-"] {
-				{sel(Content)} {
-					& > div {
-						pad(0);
-					}
-
-					// Results list
-					& > div > :nth-last-child(2) {
-						pad(top);
-					}
-
-					// Pagination
-					& > div > :last-child {
-						pad(0);
-					}
-				}
-			}
-
-			// Sidebar
-			[data-testid="facets-pane"] {
-				pad(0);
-			}
-
-			[data-testid="search-sub-header"] {
+	/**
+	 * Search
+	**/
+	react-app[app-name="blackbird-search"] {
+		[class*="prc-PageLayout-"] {
+			{sel(Content)} {
 				& > div {
-					gap: var(--pad) $i;
+					pad(0);
+				}
 
-					// Right side buttons
-					& > div {
-						mar(right);
-					}
+				// Results list
+				& > div > :nth-last-child(2) {
+					pad(top);
+				}
+
+				// Pagination
+				& > div > :last-child {
+					pad(0);
 				}
 			}
+		}
 
-			[data-testid="results-list"] {
+		// Sidebar
+		[data-testid="facets-pane"] {
+			pad(0);
+		}
+
+		[data-testid="search-sub-header"] {
+			& > div {
 				gap: var(--pad) $i;
 
+				// Right side buttons
 				& > div {
-					// Header
-					& > :first-child,
-					// "Show X more matches"
-					& > a {
-						bg(3);
-						pad();
-						brd();
-						height: unset $i;
+					mar(right);
+				}
+			}
+		}
 
-						button {
-							--bg2: var(--bg);
-							--pad: calc(var(--reserve-pad) / 2);
-							normalise-button();
-							box(unset);
-						}
+		[data-testid="results-list"] {
+			gap: var(--pad) $i;
+
+			& > div {
+				// Header
+				& > :first-child,
+				// "Show X more matches"
+				& > a {
+					bg(3);
+					pad();
+					brd();
+					height: unset $i;
+
+					button {
+						--bg2: var(--bg);
+						--pad: calc(var(--reserve-pad) / 2);
+						normalise-button();
+						box(unset);
 					}
+				}
 
-					// Code
-					& > :nth-child(2) {
-						bg(2);
+				// Code
+				& > :nth-child(2) {
+					bg(2);
+					brd(left);
+					brd(right);
+
+					&:last-child {
+						brd(0);
 						brd(left);
 						brd(right);
+						brd(bottom);
+					}
 
-						&:last-child {
-							brd(0);
-							brd(left);
-							brd(right);
-							brd(bottom);
-						}
+					& > div {
+						pad(0);
+					}
+					.blob-num {
+						brd(right);
+					}
 
-						& > div {
-							pad(0);
-						}
-						.blob-num {
-							brd(right);
-						}
-
-						// Separator
-						[style^="margin-top"] {
-							brd(bottom);
-							mar(0);
-						}
+					// Separator
+					[style^="margin-top"] {
+						brd(bottom);
+						mar(0);
 					}
 				}
 			}
 		}
 	}
-	// Repository overview
-	react-partial[partial-name="repos-overview"] > div > div {
-		mar(0);
 
-		// Top buttons
-		& > :nth-child(2) {
-			pad(0);
-			pad(bottom);
-
-			& > div,
-			& > div > :nth-child(2) {
-				gap: var(--pad) $i;
-			}
-
-			// Icon buttons
-			a[data-no-visuals] {
-				mar(right);
-			}
-		}
-
+	/**
+	 * Repository overview
+	**/
+	react-partial[partial-name="repos-overview"] {
 		// Branch
 		[data-testid="branch-info-bar"] {
 			bg(2);
@@ -2389,105 +2400,42 @@ normal-colors() {
 				--bg2: var(--bg);
 			}
 		}
-
-		// Content
-		& > :last-child {
-			gap: var(--pad) $i;
-			
-			// Files
-			thead {
-				display: none $i;
-			}
-
-			// README
-			& > :last-child > :last-child:not([data-hpc]) {
-				brd();
-
-				// Tabs container
-				& > :first-child {
-					bg(2);
-					padding-right: calc(var(--pad) / 2) $i;
-					brd(0);
-					brd(bottom);
-					top: var(--header-h) $i;
-
-					// Buttons
-					button {
-						--bg2: var(--bg);
-						--pad: calc(var(--reserve-pad) / 2);
-					}
-				}
-
-				// Content
-				& > div:last-of-type {
-					pad();
-				}
-			}
-		}
 	}
-	#repos {
-		&-sticky-header {
-			top: calc(var(--header-h) - var(--border-width));
 
-			& > div {
-				position: unset;
-			}
-
-			// Code
-			& + div {
-				brd();
-				border-top: none $i;
-			}
-		}
-
-		// Code view sidebar
-		&-file-tree {
-			bg(2);
-
-			button,
-			[type="button"],
-			.TextInput-wrapper {
-				--bg2: var(--bg);
-			}
-
-			& > :first-child {
-				pad();
-				brd(bottom);
-
-				& > :first-child {
-					display: none $i;
-				}
-				& > :nth-child(2) > :nth-child(2) {
-					gap: var(--pad) $i;
-					display: flex $i;
-				}
-				[role="tooltip"] {
-					mar(right);
-				}
-			}
-			& > :nth-child(2) {
-				pad();
-				brd(bottom);
+	[class*="DirectoryContent-module__"] {
+		{sel(Box_3)} {
+			// LatestCommit.Box
+			& > td > div {
+				brd(0);
 				mar(0);
 			}
-			// Shadow
-			& > :empty {
-				display: none $i;
-			}
+		}
+		{sel(OverviewHeaderRow)} {
+			display: none $i;
 		}
 	}
-	#StickyHeader {
-		pad(0);
+	[class*="OverviewContent-module__"] {
+		{sel(Box)} {
+			mar(0);
+		}
+		{sel(Box_1)} {
+			pad(top, 0);
+		}
+		// Icon buttons container
+		{sel(Box_5)} {
+			gap: var(--pad) $i;
+		}
 	}
-	[aria-labelledby^="file-name-id"] {
-		mar(0);
+	[class*="OverviewRepoFiles-module__Box_3-"] {
+		bg(2);
+		padding-right: calc(var(--pad) / 2) $i;
+		top: var(--header-h) $i;
 
-		& > div {
-			pad(0);
+		// Buttons
+		button {
+			--bg2: var(--bg);
+			--pad: calc(var(--reserve-pad) / 2);
 		}
-	}
-	#highlighted-line-menu-container > button {
-		left: calc((16px + var(--pad) / 2) * -1);
 	}
 
 	/**
@@ -2801,10 +2749,17 @@ normal-colors() {
 	[data-testid="issue-metadata-sticky"] {
 		display: none $i;
 	}
-	[data-testid="issue-viewer-container"] {
+	[class*="IssueDetail-module__IssueDetailContainer-"] {
 		position: relative $i;
 	}
 	[class*="IssueViewer-module__"] {
+		{sel(commentsContainer)} {
+			mar(0);
+		}
+		{sel(contentAndSidebarWrapper)} {
+			gap: 0 $i;
+			flex-direction: row-reverse $i;
+		}
 		{sel(issueViewerContainer)} {
 			padding: var(--body-pad) $i;
 			margin-left: var(--sidebar-width) $i;
@@ -2813,22 +2768,6 @@ normal-colors() {
 			& > div {
 				pad(0);
 				max-width: 100% $i;
-			}
-			& > :last-child > div {
-				gap: 0 $i;
-				flex-direction: row-reverse $i;
-
-				& > [data-testid="issue-viewer-metadata-container"] {
-					bg(2);
-					pad();
-					brd(right);
-					overflow: auto $i;
-					position: fixed $i;
-					top: calc(var(--header-h) * 2) $i;
-					bottom: 0 $i;
-					left: 0 $i;
-					width: var(--sidebar-width) $i;
-				}
 			}
 
 			[class*="Avatar-module__avatarWithDivider-"] {
@@ -2841,6 +2780,17 @@ normal-colors() {
 		}
 		{sel(issueViewerMetadataPane)} {
 			margin-top: calc(var(--pad) * -2) $i;
+		}
+		{sel(metadataSidebar)} {
+			bg(2);
+			pad();
+			brd(right);
+			overflow: auto $i;
+			position: fixed $i;
+			top: calc(var(--header-h) * 2) $i;
+			bottom: 0 $i;
+			left: 0 $i;
+			width: var(--sidebar-width) $i;
 		}
 	}
 
@@ -2860,15 +2810,15 @@ normal-colors() {
 		{sel(activityHeader)} {
 			min-height: unset $i;
 		}
+		{sel(ActivityHeaderContainer)} {
+			pad();
+			// TODO: ?
+			border-radius: 0 $i;
+			brd(bottom);
+		}
 		{sel(narrowViewportWrapper)} {
 			pad(0);
 		}
-	}
-	[data-testid="comment-header"] {
-		pad();
-		// TODO: ?
-		border-radius: 0 $i;
-		brd(bottom);
 	}
 	[data-testid="issue-viewer-issue-container"] > div {
 		gap: var(--pad) $i;
@@ -2885,8 +2835,8 @@ normal-colors() {
 		// [data-testid^="timeline-row-border-"]
 		brd();
 
-		& > :first-child {
-			@extend [data-testid="comment-header"];
+		[class*="IssueBodyHeader-module__viewerDidNotAuthor-"] {
+			@extend [class*="ActivityHeader-module__ActivityHeaderContainer-"];
 		}
 	}
 
@@ -2899,15 +2849,20 @@ normal-colors() {
 			@extend [data-testid="issue-viewer-issue-container"] > div;
 		}
 	}
-	[data-testid^="comment-viewer-outer-box-"] > :last-child {
+	[class*="IssueCommentViewer-module__IssueCommentBody-"] {
 		gap: var(--pad) $i;
 		mar();
 	}
 
-	[data-testid="sidebar-projects-section"],
-	[data-testid="sidebar-section"] {
+	[class*="Section-module__SectionContainer-"] {
 		pad(0);
 		mar(0);
+
+		// Apparently it's immune to my disabled copilot setting...
+		// fuck off, github
+		&:has([data-testid="open-in-copilot-agent-button"]) {
+			display: none $i;
+		}
 
 		&::after {
 			display: none $i;
@@ -2942,14 +2897,6 @@ normal-colors() {
 			pad(0);
 			mar(0);
 		}
-	}
-	#issue-viewer-subscription-description {
-		mar(top);
-	}
-	// Apparently it's immune to my disabled copilot setting...
-	// fuck off, github
-	[class*="CopilotWorkspaceButton-module__buttonGroup-"] {
-		display: none $i;
 	}
 	[class*="OptionsSection-module__ActionListOverrides-"] {
 		margin: calc(var(--pad) * -1) $i;
@@ -3001,18 +2948,6 @@ normal-colors() {
 	[class*="MarkdownEditor-module__viewSwitchWrapper-"] {
 		mar(0);
 	}
-	[class*="TabNav__TabNavLink"] {
-		lnh();
-		pad();
-		brd(0);
-
-		&:not(.selected):hover {
-			fg();
-		}
-		&.selected {
-			hl();
-		}
-	}
 	[class*="Toolbar-module__"] {
 		{sel(toolbar)} button {
 			--pad: calc(var(--reserve-pad) / 2);
@@ -3029,11 +2964,8 @@ normal-colors() {
 		}
 	}
 	// "Follow guidelines, CoC, etc." nobody cares
-	[data-testid="contributor-footer"] {
+	[class*="ContributorFooter-module__ContributorFooterContainer-"] {
 		display: none $i;
-	}
-	.react-comments-container > div {
-		mar(0);
 	}
 
 	/**
