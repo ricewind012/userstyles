@@ -2464,6 +2464,12 @@ normal-colors() {
 			brd();
 			mar(bottom);
 
+			&[data-commit-link^="/mozilla-firefox/firefox/"] {
+				&[aria-label*="android-reviewers"] {
+					opacity: 0.5 $i;
+				}
+			}
+
 			& > :empty {
 				display: none $i;
 			}
@@ -2854,49 +2860,60 @@ normal-colors() {
 		mar();
 	}
 
-	[class*="Section-module__SectionContainer-"] {
-		pad(0);
-		mar(0);
-
-		// Apparently it's immune to my disabled copilot setting...
-		// fuck off, github
-		&:has([data-testid="open-in-copilot-agent-button"]) {
-			display: none $i;
-		}
-
-		&::after {
-			display: none $i;
-		}
-
-		a:hover {
-			text-decoration: underline $i;
-		}
-		button {
-			--bg2: var(--bg);
-
-			&[data-size="small"][data-variant="invisible"] {
-				background-color: transparent $i;
-				pad(0);
-				brd(0);
-				position: absolute $i;
-				top: 0 $i;
-				right: 0 $i;
-
-				&:hover span {
-					fg();
-				}
-			}
-		}
-		h3 {
-			normalise-header(false);
-			position: unset $i;
-			width: 100% $i;
-		}
-		div,
-		[class*="prc-Text-Text-"] {
+	[class*="Section-module__"] {
+		{sel(emptyText)} {
 			pad(0);
 			mar(0);
 		}
+		{sel(SectionContainer)} {
+			pad(0);
+			mar(0);
+
+			// Apparently it's immune to my disabled copilot setting...
+			// fuck off, github
+			&:has([data-testid="open-in-copilot-agent-button"]) {
+				display: none $i;
+			}
+
+			// separator
+			&::after {
+				display: none $i;
+			}
+
+			a:hover {
+				text-decoration: underline $i;
+			}
+			button {
+				--bg2: var(--bg);
+
+				&[data-size="small"][data-variant="invisible"] {
+					background-color: transparent $i;
+					pad(0);
+					brd(0);
+					position: absolute $i;
+					top: 0 $i;
+					right: 0 $i;
+
+					&:hover span {
+						fg();
+					}
+				}
+			}
+			h3 {
+				normalise-header(false);
+				position: unset $i;
+				width: 100% $i;
+			}
+			div,
+			[class*="prc-Text-Text-"] {
+				pad(0);
+				mar(0);
+			}
+		}
+	}
+	// TODO(sidebar): create issue page has another class, but it's the same
+	[class*="IssueSidebar-module__sidebarContent-"] {
+		gap: 0 $i;
 	}
 	[class*="OptionsSection-module__ActionListOverrides-"] {
 		margin: calc(var(--pad) * -1) $i;
