@@ -1,11 +1,12 @@
 # userstyles
-None of them work as is, as they are intended to be used all at once.
+Personal userstyles with a specific customizable design that is made specifically with the goal of being simple and maintainable.
 
-You'll have to declare the variables **in an another userstyle** for the same domain as the userstyle(s) you are installing, so you don't lose them if the styles ever update. Example [here](../../raw/master/_global.user.css).
+## Installation
+None of them will work out of the box, as they all share variables from a single userstyle. You must first install (and then edit if you wish) [this userstyle](../../raw/master/_global.user.css).
 
 If you wish to resize the sidebar(s) with a mouse, install [this userscript](../../raw/master/_global-resize-sidebar.user.js).
 
-## Requirements
+### Requirements
 [4chan](../../raw/master/4chan.user.styl): [4chan X](https://www.4chan-x.net)
 
 [Discord](../../raw/master/discord.user.styl): [class normalisation userscript](../../raw/master/discord-normalise-classes.user.js)
@@ -21,6 +22,16 @@ If you wish to resize the sidebar(s) with a mouse, install [this userscript](../
 old.reddit.com##+js(set-constant.js, isPinned, true)
 ```
 
+## Currently broken
+- MDN
+
+  Extensive use of shadow DOM after the (as of 2025-08-20) rewrite. May write a userscript, but will be dropped if it doesn't work.
+
+- Unsplash
+
+  They're starting to use CSS variables for colors, waiting until they finalize them & the new dark theme.
+
 ## Preview
-They all share the same style, and it depends on how you edited the variables above.
-![GitHub preview](https://user-images.githubusercontent.com/58827198/211355929-94b5113f-bc8e-47b1-a1da-64dcd034c9ea.png)
+They all share the same style, and it depends on how you edited the variables from the aforementioned userstyle.
+![4chan (old) preview](./assets/preview/4chan-old.png)
+![GitHub (old) preview](./assets/preview/github-old.png)
