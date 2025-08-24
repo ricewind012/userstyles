@@ -1110,6 +1110,9 @@ normal-colors() {
 			.Counter {
 				color: unset $i;
 			}
+			[data-content]::before {
+				width: 0 $i;
+			}
 		}
 	}
 	.tabnav-tab {
@@ -2329,7 +2332,7 @@ normal-colors() {
 
 				// Right side buttons
 				& > div {
-					mar(right);
+					mar(0);
 				}
 			}
 		}
@@ -2400,6 +2403,10 @@ normal-colors() {
 				--bg2: var(--bg);
 			}
 		}
+		.react-directory-add-file-icon,
+		.react-directory-add-file-button svg {
+			display: none $i;
+		}
 	}
 
 	[class*="DirectoryContent-module__"] {
@@ -2444,11 +2451,6 @@ normal-colors() {
 	react-app[app-name="commits"]:not([initial-path*="/commit/"]) {
 		[class*="prc-PageLayout-Header-"] {
 			display: none $i;
-		}
-
-		// Author name
-		a[data-muted="true"] {
-			fg();
 		}
 	}
 
