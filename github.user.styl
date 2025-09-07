@@ -387,7 +387,7 @@ normal-colors() {
 		// Background
 		--bgColor-default: var(--bg) $i;
 		--bgColor-inset: var(--bg) $i;
-		--bgColor-muted: var(--bg3) $i;
+		--bgColor-muted: var(--bg2) $i;
 		--bgColor-tertiary: var(--bg3) $i;
 		--bgColor-accent-emphasis: var(--hl) $i;
 
@@ -2031,15 +2031,6 @@ normal-colors() {
 		brd();
 		shd(big);
 		dropfade();
-
-		[class^="Item__LiBox-"] {
-			transition: none $i;
-
-			&:hover {
-				hl();
-				--fg: var(--hl-fg);
-			}
-		}
 	}
 
 	// Sidebar
@@ -2390,17 +2381,6 @@ normal-colors() {
 	 * Repository overview
 	**/
 	react-partial[partial-name="repos-overview"] {
-		// Branch
-		[data-testid="branch-info-bar"] {
-			bg(2);
-			pad();
-			brd();
-			mar(bottom);
-
-			button {
-				--bg2: var(--bg);
-			}
-		}
 		.react-directory-add-file-icon,
 		.react-directory-add-file-button svg {
 			display: none $i;
