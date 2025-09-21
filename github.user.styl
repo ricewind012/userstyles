@@ -1858,12 +1858,15 @@ normal-colors() {
 	[class*="prc-Overlay-Overlay-"] {
 		@extend .Overlay;
 
-		// Make mobile overlays look like normal popouts
-		normal-colors();
-		mar(0);
-		box(unset);
-		position: fixed $i;
-		top: calc(var(--header-h) + var(--pad)) $i;
+		&:has(> #global-user-nav-drawer-header) {
+			normal-colors();
+			mar(0);
+			box(unset);
+			position: fixed $i;
+			top: calc(var(--header-h) + var(--pad)) $i;
+			right: var(--pad) $i;
+			left: unset $i;
+		}
 	}
 	[class*="prc-ActionList-"] {
 		{sel(ActionList)} {
