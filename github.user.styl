@@ -1736,6 +1736,16 @@ normal-colors() {
 		{s('/%s%s-"]', unquote(slice(selector(), 0, -2)), name)};
 	}
 
+	$invisible-button {
+		background-color: transparent $i;
+		pad(0);
+		brd(0);
+
+		&:not(:hover) {
+			fg(2);
+		}
+	}
+
 	// Global
 	[data-component="text"] {
 		lnh();
@@ -1852,6 +1862,26 @@ normal-colors() {
 			mar(0);
 			height: unset $i;
 		}
+	}
+
+	// Dialogs
+	[class*="prc-Dialog-Footer-"] {
+		bg(2);
+		brd(top);
+
+		button {
+			--bg2: var(--bg);
+		}
+	}
+	[class*="prc-Dialog-Header-"] {
+		bg(2);
+
+		button {
+			@extend $invisible-button;
+		}
+	}
+	[class*="prc-Dialog-HeaderContent-"] {
+		pad(0);
 	}
 
 	// Context menu
@@ -2387,6 +2417,9 @@ normal-colors() {
 		.react-directory-add-file-icon,
 		.react-directory-add-file-button svg {
 			display: none $i;
+		}
+		.react-directory-add-file-button {
+			display: flex;
 		}
 	}
 
