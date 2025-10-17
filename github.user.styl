@@ -2028,6 +2028,10 @@ normal-colors() {
 			&::after {
 				display: none $i;
 			}
+
+			svg {
+				color: inherit $i;
+			}
 		}
 		{sel(Content)} {
 			background-color: transparent $i;
@@ -2215,6 +2219,9 @@ normal-colors() {
 		pad(0);
 	}
 
+	[class*="BlobTabButtons-module__SegmentedControl-"] {
+		--bg2: var(--bg);
+	}
 	[class*="BlobViewHeader-module__"] {
 		{sel(Box)} {
 			position: unset $i;
