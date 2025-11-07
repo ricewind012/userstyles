@@ -2471,7 +2471,9 @@ normal-colors() {
 	**/
 	react-app[app-name="commits"]:not([initial-path*="/commit/"]) {
 		[class*="prc-PageLayout-Header-"] {
-			display: none $i;
+			// Pagination needs this element to be visible to jump to top
+			height: 0 $i;
+			visibility: hidden $i;
 		}
 	}
 
