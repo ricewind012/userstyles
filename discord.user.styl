@@ -20,8 +20,7 @@
 @var text     search-results-width "Search results width"    345px
 ==/UserStyle== */
 
-@import url("https://croissantdunord.github.io/discord-adblock/adblock.css");
-@import url("https://croissantdunord.github.io/discord-adblock/adblock-extras.css");
+@import url("https://codeberg.org/ridge/Discord-Adblock/raw/branch/main/discord-adblock.css");
 
 // Variables
 vendors = official;
@@ -418,15 +417,13 @@ normalise-header(first = true) {
 		--modal-footer-background: var(--bg2) $i;
 
 		--input-background: var(--bg2) $i;
-		--channeltextarea-background: var(--input-background) $i;
-		--chat-background-default: var(--bg2) $i;
 
 		// Text
-		--text-normal: var(--fg) $i;
-		--text-link: var(--fg-link) $i;
 		--text-brand: var(--color4) $i;
 
 		colors = {
+			default: fg,
+			link: fg-link,
 			muted: fg2,
 			primary: fg,
 			secondary: fg2,
@@ -435,8 +432,8 @@ normalise-header(first = true) {
 		for k, v in colors {
 			clr = s('var(--%s)', v);
 
-			--icon-{i}: clr $i;
-			--text-{i}: clr $i;
+			--icon-{k}: clr $i;
+			--text-{k}: clr $i;
 		}
 
 		--interactive-normal: var(--fg2) $i;
@@ -449,6 +446,7 @@ normalise-header(first = true) {
 		--channels-default: var(--fg2) $i;
 
 		--channel-text-area-placeholder: var(--fg2) $i;
+		--chat-text-muted: var(--fg2) $i;
 		--input-placeholder-text: var(--fg2) $i;
 		--textbox-markdown-syntax: var(--fg2) $i;
 
@@ -598,25 +596,22 @@ normalise-header(first = true) {
 		flex-grow: 1;
 	}
 
-	// Input
-	.textarea,
-	.inputDefault {
-		normalise-input();
-		box(unset);
+	// Inputs
+	.container__0f084 {
+		outline: none $i;
+		pad(0);
+		brd(0);
 	}
-	.searchBar {
+	.icon__0f084 {
+		display: none $i;
+	}
+	.input__0f084 {
 		normalise-input();
-		focus(focus-within);
 
-		.inner {
-			pad(0);
-			gap: 1ch;
-		}
-		.input {
-			lnh();
-			pad(0);
-			mar(0);
-			height: unset $i;
+		.container__0f084[data-disabled="true"] &,
+		.container__0f084[data-read-only="true"] & {
+			opacity: 0.5 $i;
+			cursor: not-allowed $i;
 		}
 	}
 
@@ -641,10 +636,52 @@ normalise-header(first = true) {
 			}
 		}
 	}
+	.button_a22cb0 {
+		normalise-button();
+
+		colors = {
+			critical-primary:   9,
+			critical-secondary: 9,
+			primary:            12,
+		};
+		for k, v in colors {
+			&{s('.%s_a22cb0', unquote(k))} {
+				background-color: color-a(v) $i;
+				border-color: s('var(--color%s)', v) $i;
+			}
+		}
+
+		&.fullWidth_a22cb0 {
+			flex-grow: unset $i;
+			width: unset $i;
+		}
+		&.icon-only_a22cb0 {
+			background-color: transparent $i;
+			pad(0);
+			brd(0);
+		}
+
+		.buttonChildrenWrapper_a22cb0 {
+			pad(0);
+			min-width: unset $i;
+			min-height: unset $i;
+		}
+		.icon_a22cb0 {
+			box(1lh);
+
+			&:not(:hover) {
+				fg(2);
+			}
+		}
+	}
 	[role="button"][aria-haspopup] {
 		normalise-select();
+	}
+	.select__3f413 {
+		pad(0);
+		min-height: unset $i;
 
-		.icons {
+		.icons__3f413 {
 			display: none $i;
 		}
 	}
@@ -834,9 +871,6 @@ normalise-header(first = true) {
 	}
 
 	// V. Fixes
-	.typingDots .text {
-		mar(left, 0);
-	}
 	.role {
 		fg();
 	}
@@ -919,10 +953,14 @@ normalise-header(first = true) {
 	}
 
 	// Channels
+	.container__2637a {
+		padding-bottom: calc(
+			var(--header-h) + var(--custom-app-panels-height)
+		);
+		mar(0);
+	}
 	#channels {
-		mar(right, 0);
-		// 4px = original var(--space-4)
-		margin-bottom: calc(var(--custom-app-panels-height) / 2 + 4px + var(--border-width)) $i;
+		mar(0);
 
 		&::-webkit-scrollbar,
 		.iconContainer,
@@ -964,7 +1002,7 @@ normalise-header(first = true) {
 				cursor: default;
 			}
 			.name {
-				color: inherit $i;
+				color: var(--hl-fg) $i;
 			}
 		}
 		{$sidebar[channel-unread]} {
@@ -1042,8 +1080,8 @@ normalise-header(first = true) {
 		.link[aria-label^="unread"] {
 			color: var(--hl) $i;
 		}
-		[class^="layout_"] {
-			padding-block: var(--pad) $i;
+		.layout__20a53:not(.avatarWithText__972a0) {
+			pad(block);
 			height: unset $i;
 		}
 		.avatar {
@@ -1058,6 +1096,10 @@ normalise-header(first = true) {
 		position: fixed $i;
 		width: var(--sidebar-width) $i;
 
+		.avatarWrapper__37e49 {
+			pad(0);
+			mar(0);
+		}
 		& > .container {
 			pad();
 			mar(0);
@@ -1074,6 +1116,7 @@ normalise-header(first = true) {
 
 	.guilds {
 		bg(2);
+		mask: none $i;
 		header-focus(app-focused);
 		mar(0);
 		width: calc(var(--guilds-size) + var(--pad) * 2) $i;
@@ -1118,9 +1161,13 @@ normalise-header(first = true) {
 				}
 			}
 		}
-		[style*="height: 56px"] { // DMs
-			mar(top);
-			height: unset $i;
+		// DMs
+		.stack_dbd263:nth-child(2) {
+			pad(0);
+
+			& > div {
+				height: unset $i;
+			}
 		}
 		.pill {
 			display: none;
@@ -1292,7 +1339,9 @@ normalise-header(first = true) {
 			display: none $i;
 		}
 		// TODO: unify with toolbar impl
-		.recentsIcon_c99c29 > div {
+		.clickable_c99c29 {
+			pad(0);
+			mar(0);
 			position: fixed $i;
 			top: calc(var(--pad) * var(--line-height)) $i;
 			right: var(--pad) $i;
@@ -1347,14 +1396,14 @@ normalise-header(first = true) {
 	.layerContainer > div {
 		dropfade();
 	}
-	.backdrop {
+	.scrim__40128 {
 		opacity: 0 $i;
 	}
 	.contentWrapper, // emojis/gifs
 	.messagesPopoutWrap // pinned/mentions
 	{
-		brd();
-		shd(big);
+		brd(0);
+		shd(0);
 	}
 	[role="listbox"] {
 		bg();
@@ -1388,6 +1437,52 @@ normalise-header(first = true) {
 			pad();
 			brd(top);
 			shd(0);
+		}
+	}
+
+	// Generic (mana)
+	.container__8a031 {
+		bg();
+		pad(0);
+		brd();
+
+		.actionBar__8a031 {
+			bg(2);
+			brd(top);
+
+			button {
+				--bg2: var(--bg);
+			}
+		}
+		.actionBarTrailing__8a031 {
+			& > div {
+				justify-content: end $i;
+			}
+		}
+		.body__8a031 {
+			overflow: auto $i;
+		}
+		.bodyInner__8a031 {
+			pad();
+		}
+		.header__8a031 {
+			pad(0);
+		}
+		.headerLayout__8a031 {
+			bg(2);
+			pad();
+			brd(bottom);
+		}
+		.headerSubtitle__8a031 {
+			mar(inline);
+		}
+		.headerTrailing__8a031 {
+			mar(0);
+		}
+		// ? lol
+		.bodySpacerBottom__8a031,
+		.bodySpacerTop__8a031 {
+			display: none $i;
 		}
 	}
 
@@ -1549,6 +1644,11 @@ normalise-header(first = true) {
 		}
 	}
 
+	:where(.outer_c0bea0).user-profile-popout {
+		bg();
+		brd();
+		shd(big);
+	}
 	.roundedBanner,
 	.overlayBackground {
 		brd(0);
@@ -1809,6 +1909,8 @@ normalise-header(first = true) {
 		bg();
 		brd(0);
 		shd(big);
+		inset-inline: 0 $i;
+		bottom: calc(100% + var(--pad)) $i;
 		dropfade();
 
 		&Row {
@@ -1865,6 +1967,9 @@ normalise-header(first = true) {
 				height: var(--border-width);
 			}
 		}
+	}
+	.autocompleteRowHeading__13533 {
+		fg();
 	}
 	[data-list-id="channel-autocomplete"] > .base {
 		display: none;
@@ -1947,6 +2052,10 @@ normalise-header(first = true) {
 	}
 
 	// Pinned messages & recent mentions
+	.container_fc561d {
+		brd();
+		shd(big);
+	}
 	.messagesPopout {
 		pad();
 
@@ -1980,8 +2089,12 @@ normalise-header(first = true) {
 			}
 		}
 	}
+	.header_ab6641 {
+		pad(0);
+		brd(bottom);
+	}
 	.headerTabs_ab6641 {
-		margin: calc(var(--pad) * -1) $i;
+		mar(0);
 	}
 	.headerTitle_ab6641 {
 		display: none;
@@ -1989,9 +2102,6 @@ normalise-header(first = true) {
 	.tabBar_ab6641 {
 		brd(0);
 		mar(0);
-	}
-	[data-list-id="recents"] > .container {
-		mar(bottom);
 	}
 
 	/**
@@ -2003,12 +2113,23 @@ normalise-header(first = true) {
 	.contentRegionScroller__23e6b {
 		bg();
 	}
+	.labelContainer__5a838 {
+		.description__5a838 {
+			fg(2);
+		}
+		.label__5a838 {
+			normalise-header(false);
+		}
+	}
 
 	/**
 	 * Chat
 	**/
 	.chat_f75fb0 {
 		brd(0);
+	}
+	.chatGradientBase__36d07 {
+		display: none $i;
 	}
 	.scroller {
 		&Inner {
@@ -2391,10 +2512,10 @@ normalise-header(first = true) {
 
 		& > .wrapper {
 			bg();
+			pad(0);
 			brd(0);
 			shd(0);
 			height: unset;
-			gap: 1ch;
 			overflow: unset;
 
 			&::before {
@@ -2411,6 +2532,13 @@ normalise-header(first = true) {
 				min-width: unset;
 				height: unset;
 			}
+		}
+	}
+	.hoverBarButton_f84418 {
+		background-color: transparent $i;
+
+		.icon_f84418 {
+			transform: none $i;
 		}
 	}
 
@@ -2717,113 +2845,59 @@ normalise-header(first = true) {
 	}
 
 	// Message textbox
-	.channelTextArea {
-		focus(focus-within);
+	.form_f75fb0 {
+		padding: var(--body-pad) $i;
+		pad(top, 0);
+		mar(0);
 
-		& > :first-child {
-			pad(right);
-
-			&::-webkit-scrollbar {
-				display: none;
-			}
+		.typing_b88801 {
+			padding-inline: var(--body-pad) $i;
+			top: unset $i;
+			bottom: 0 $i;
 		}
-		button {
+		.text_b88801,
+		.typingDots_b88801 {
+			mar(0);
+		}
+	}
+	.channelTextArea__74017 {
+		background: transparent $i;
+		brd(0);
+		mar(0);
+
+		.inner__74017 {
 			pad(0);
-			mar(0);
-
-			& > .contents {
-				pad(0);
-				mar(0);
-			}
 		}
-		.buttons {
-			pad(left);
-			brd(left);
-			mar(0);
-			height: unset;
-			align-items: center;
+		.textArea__74017 {
+			mar(right);
 		}
-	}
-	.chatContent > .form {
-		padding-left: var(--body-pad) $i;
-		padding-right: var(--body-pad) $i;
-		mar(top, 0);
-
-		.channelTextArea__74017 {
-			/*
-			 * The userscript doesn't work on
-			 * elements that change their attributes
-			 */
-			@extend .channelTextArea;
-			brd();
-			margin-bottom: calc(
-				var(--font-size) * var(--line-height) + var(--pad) * 2
-			);
-
-			& > div > div {
-				pad(0);
-			}
-			& > .attachedBars {
-				border-radius: var(--border-radius) var(--border-radius) 0 0 $i;
-				brd(bottom, 0);
-
-				& + div {
-					border-radius: 0 0 var(--border-radius) var(--border-radius) $i;
-				}
-			}
-			.attachWrapper > button {
-				fg(2);
-				pad();
-				brd(right);
-				border-radius: 0;
-				height: 100% $i;
-
-				&:hover {
-					fg();
-				}
-			}
+		.themedBackground__74017 {
+			background: transparent $i;
+			brd(0);
+			overflow: auto $i;
+			overflow: visible $i;
 		}
-		textarea,
-		.button {
-			--bg2: var(--bg);
-			lnh();
+		.editor__1b31f {
+			normalise-input();
 		}
-		.buttons [aria-label="Open GIF picker"] {
-			--bg2: var(--bg);
-			--pad: calc(var(--reserve-pad) / 2);
-			normalise-button();
-
-			&::before {
-				content: 'GIF';
-			}
+		.placeholder__1b31f {
+			inset: var(--pad) $i;
+			z-index: 1 $i;
 		}
-		.separator {
-			mar(0);
-
-			&::before {
-				display: none;
-			}
-		}
-
-		// Typing
-		& > :last-child:not(:only-child) {
-			inset: 0 var(--body-pad);
-			top: unset;
-			lnh();
-			pad(bottom);
-			height: unset;
-
-			strong {
-				fg();
-			}
+		.slateTextArea_ec4baf:not(.editor__1b31f) {
+			pad(0);
 		}
 	}
-	.textArea {
-		lnh();
-	}
-	.slateTextArea_ec4baf {
-		inset: var(--pad) $i;
-		min-height: 1lh $i;
+	.attachWrapper__0923f {
+		pad(0);
+		mar(right);
+
+		.attachButton__0923f {
+			mar(0);
+		}
+		.attachButtonInner__0923f {
+			pad(0);
+		}
 	}
 
 	/**
@@ -2983,6 +3057,9 @@ normalise-header(first = true) {
 				--bg2: var(--bg);
 				--pad: calc(var(--reserve-pad) / 2);
 				normalise-button();
+			}
+			.endButton_c15210 {
+				mar(inline);
 			}
 			.roundButton {
 				background-color: transparent;
