@@ -2812,6 +2812,9 @@ normal-colors() {
 		{sel(issueViewerMetadataPane)} {
 			margin-top: calc(var(--pad) * -2) $i;
 		}
+		{sel(metadataHeader)} {
+			display: none $i;
+		}
 		{sel(metadataSidebar)} {
 			bg(2);
 			pad();
@@ -2838,6 +2841,10 @@ normal-colors() {
 	}
 
 	[class*="ActivityHeader-module__"] {
+		// TODO: same as IssueBodyHeader-module__actionsWrapper
+		{sel(ActionsContainer)} {
+			--bg2: var(--bg);
+		}
 		{sel(activityHeader)} {
 			min-height: unset $i;
 		}
@@ -2854,6 +2861,7 @@ normal-colors() {
 	[data-testid="issue-viewer-issue-container"] > div {
 		gap: var(--pad) $i;
 	}
+	[class*="LayoutHelpers-module__nonLeadingElement-"] [data-testid^="timeline-row-border-"],
 	[data-testid^="timeline-divider-"] {
 		padding-left: 16px $i;
 	}
@@ -2873,11 +2881,14 @@ normal-colors() {
 
 	// The rest of the comments overrides
 	[class*="LayoutHelpers-module__"] {
-		{sel(nonLeadingElement)} {
-			margin-left: calc(40px + var(--pad)) $i;
-		}
 		{sel(timelineElement)} {
 			@extend [data-testid="issue-viewer-issue-container"] > div;
+		}
+	}
+	[class*="IssueBodyHeader-module__"] {
+		// TODO: same as ActivityHeader-module__ActionsContainer
+		{sel(actionsSection)} {
+			--bg2: var(--bg);
 		}
 	}
 	[class*="IssueCommentViewer-module__IssueCommentBody-"] {
@@ -2910,24 +2921,6 @@ normal-colors() {
 			}
 			button {
 				--bg2: var(--bg);
-
-				&[data-size="small"][data-variant="invisible"] {
-					background-color: transparent $i;
-					pad(0);
-					brd(0);
-					position: absolute $i;
-					top: 0 $i;
-					right: 0 $i;
-
-					&:hover span {
-						fg();
-					}
-				}
-			}
-			h3 {
-				normalise-header(false);
-				position: unset $i;
-				width: 100% $i;
 			}
 			div,
 			[class*="prc-Text-Text-"] {
@@ -2936,11 +2929,33 @@ normal-colors() {
 			}
 		}
 	}
+	[class*="SectionHeader-module__"] {
+		{sel(editButton)} {
+			// [data-size="small"] fix
+			--pad: var(--reserve-pad);
+			background-color: transparent $i;
+			pad(0);
+			brd(0);
+			position: absolute $i;
+			top: calc(var(--pad) * 2) $i;
+			right: var(--pad) $i;
+
+			&:hover span {
+				fg();
+			}
+		}
+		{sel(SectionHeaderTitle)} {
+			normalise-header(false);
+			position: unset $i;
+			width: 100% $i;
+		}
+	}
 	// TODO(sidebar): create issue page has another class, but it's the same
 	[class*="IssueSidebar-module__sidebarContent-"] {
 		gap: 0 $i;
 	}
 	[class*="OptionsSection-module__ActionListOverrides-"] {
+		brd(top);
 		margin: calc(var(--pad) * -1) $i;
 		mar(top);
 	}
@@ -2957,7 +2972,9 @@ normal-colors() {
 			}
 		}
 		{sel(header)} {
+			normalise-header(false);
 			position: unset $i;
+			width: 100% $i;
 		}
 	}
 
@@ -2967,7 +2984,8 @@ normal-colors() {
 			margin-top: calc(var(--pad) * -1) $i;
 		}
 		{sel(commentComposerWrapper)} {
-			pad(top, 0);
+			brd(top);
+			mar(top);
 			mar(bottom, 0);
 		}
 		{sel(heading)} {
