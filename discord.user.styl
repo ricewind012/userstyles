@@ -597,19 +597,19 @@ normalise-header(first = true) {
 	}
 
 	// Inputs
-	.container__0f084 {
+	._0f0849b61557225e-container {
 		outline: none $i;
 		pad(0);
 		brd(0);
 	}
-	.icon__0f084 {
+	._0f0849b61557225e-icon {
 		display: none $i;
 	}
-	.input__0f084 {
+	._0ed4fc708cdbac0d-input {
 		normalise-input();
 
-		.container__0f084[data-disabled="true"] &,
-		.container__0f084[data-read-only="true"] & {
+		._0f0849b61557225e-container[data-disabled="true"] &,
+		._0f0849b61557225e-container[data-read-only="true"] & {
 			opacity: 0.5 $i;
 			cursor: not-allowed $i;
 		}
@@ -636,7 +636,7 @@ normalise-header(first = true) {
 			}
 		}
 	}
-	.button_a22cb0 {
+	.a22cb0c66246f5d3-button {
 		normalise-button();
 
 		colors = {
@@ -651,22 +651,22 @@ normalise-header(first = true) {
 			}
 		}
 
-		&.fullWidth_a22cb0 {
+		&.a22cb0c66246f5d3-fullWidth {
 			flex-grow: unset $i;
 			width: unset $i;
 		}
-		&.icon-only_a22cb0 {
+		&.a22cb0c66246f5d3-icon-only {
 			background-color: transparent $i;
 			pad(0);
 			brd(0);
 		}
 
-		.buttonChildrenWrapper_a22cb0 {
+		.a22cb0c66246f5d3-buttonChildrenWrapper {
 			pad(0);
 			min-width: unset $i;
 			min-height: unset $i;
 		}
-		.icon_a22cb0 {
+		.a22cb0c66246f5d3-icon {
 			box(1lh);
 
 			&:not(:hover) {
@@ -677,11 +677,11 @@ normalise-header(first = true) {
 	[role="button"][aria-haspopup] {
 		normalise-select();
 	}
-	.select__3f413 {
+	.a16aea1526925c2c-select {
 		pad(0);
 		min-height: unset $i;
 
-		.icons__3f413 {
+		.a16aea1526925c2c-icons {
 			display: none $i;
 		}
 	}
@@ -858,7 +858,7 @@ normalise-header(first = true) {
 	// Banner
 	.sidebar {
 		.animatedContainer,
-		.headerEllipseForeground_f37cb1 {
+		.f37cb1984c371ee5-headerEllipseForeground {
 			display: none;
 		}
 		.headerContent {
@@ -882,7 +882,7 @@ normalise-header(first = true) {
 		channel:          'li'
 		channel-selected: '[class*="modeSelected_"]'
 		channel-unread:   '[class*="modeUnreadImportant_"]'
-		channel-category: '.wrapperCommon-I1TMDb'
+		channel-category: '._29444ba32c7fbeab-wrapperCommon'
 		channel-private-selected: '[class*="selected_"]'
 	}
 
@@ -899,7 +899,7 @@ normalise-header(first = true) {
 			}
 		}
 	}
-	.sidebar__5e434 {
+	._5e434347c823b592-sidebar {
 		// Almost no animation below that - lags too much
 		--trans-dur: 300ms;
 		brd(right);
@@ -927,25 +927,25 @@ normalise-header(first = true) {
 			}
 		}
 
-		.container_f37cb1 {
-			.guildDropdown_f37cb1 {
+		.f37cb1984c371ee5-container {
+			.f37cb1984c371ee5-guildDropdown {
 				normalise-header(false);
 				background-color: transparent $i;
 				border-radius: 0 $i;
 				height: unset $i;
 				flex-grow: 1 $i;
 			}
-			.header_f37cb1 {
+			.f37cb1984c371ee5-header {
 				pad(0);
 				brd(0);
 				mar(inline);
 			}
-			.headerContent_f37cb1 {
+			.f37cb1984c371ee5-headerContent {
 				gap: 0 $i;
 			}
-			.headerChildren_f37cb1,
-			.headerGlass_f37cb1,
-			.inviteButton_f37cb1 {
+			.f37cb1984c371ee5-headerChildren,
+			.f37cb1984c371ee5-headerGlass,
+			.f37cb1984c371ee5-inviteButton {
 				display: none $i;
 			}
 		}
@@ -956,7 +956,7 @@ normalise-header(first = true) {
 	}
 
 	// Channels
-	.container__2637a {
+	._2637a2609f343032-container {
 		padding-bottom: calc(
 			var(--header-h) + var(--custom-app-panels-height)
 		);
@@ -1077,13 +1077,13 @@ normalise-header(first = true) {
 				}
 			}
 		}
-		.scroller__99e7c {
+		._99e7cad8d4c55236-scroller {
 			margin-bottom: var(--custom-app-panels-height) $i;
 		}
 		.link[aria-label^="unread"] {
 			color: var(--hl) $i;
 		}
-		.layout__20a53:not(.avatarWithText__972a0) {
+		._20a53846fe2e8513-layout:not(._972a0d22c8afa7f0-avatarWithText) {
 			pad(block);
 			height: unset $i;
 		}
@@ -1099,7 +1099,7 @@ normalise-header(first = true) {
 		position: fixed $i;
 		width: var(--sidebar-width) $i;
 
-		.avatarWrapper__37e49 {
+		._37e49614b9f110a9-avatarWrapper {
 			pad(0);
 			mar(0);
 		}
@@ -1112,7 +1112,7 @@ normalise-header(first = true) {
 
 	// Servers sidebar
 	$guilds = {
-		container:      '.scroller_ef3116'
+		container:      '.ef3116c2da186559-scroller'
 		guild:          '.pill:not(:empty) + div > [data-dnd-name]'
 		guild-selected: '[class*="selected_"]'
 	}
@@ -1156,7 +1156,7 @@ normalise-header(first = true) {
 			width: 100% $i;
 		}
 		// DMs
-		.stack_dbd263:nth-child(2) {
+		.dbd2630aec71879b-stack:nth-child(2) {
 			pad(0);
 
 			& > div {
@@ -1166,8 +1166,8 @@ normalise-header(first = true) {
 		.pill {
 			display: none;
 		}
-		.lowerBadge_cc5dd2,
-		.blobContainer_e5445c {
+		.cc5dd25190031396-lowerBadge,
+		.e5445cbd3ad226f2-blobContainer {
 			&::before {
 				$w = calc(var(--guilds-size) + var(--pad));
 				$h = calc(100% + var(--pad) * 2 + 4px);
@@ -1187,28 +1187,28 @@ normalise-header(first = true) {
 				background-color: var(--guild-bg);
 			}
 		}
-		.lowerBadge_cc5dd2 {
+		.cc5dd25190031396-lowerBadge {
 			--guild-bg: var(--color1);
 			position: unset $i;
 
-			.numberBadge__2b1f5 {
+			._2b1f52e43a8f1c02-numberBadge {
 				display: none $i;
 			}
 		}
-		.blobContainer_e5445c {
+		.e5445cbd3ad226f2-blobContainer {
 			position: relative $i;
 
 			&:hover {
 				--guild-bg: var(--fg);
 			}
-			&.selected_e5445c {
+			&.e5445cbd3ad226f2-selected {
 				--guild-bg: var(--hl);
 			}
 		}
-		.wrapper_cc5dd2 {
+		.cc5dd25190031396-wrapper {
 			box(var(--guilds-size));
 
-			.svg_cc5dd2 {
+			.cc5dd25190031396-svg {
 				z-index: 3;
 
 				& > mask {
@@ -1330,14 +1330,14 @@ normalise-header(first = true) {
 		}
 	}
 	// Move inbox out of the shitty titlebar
-	.bar_c38106 {
+	.c38106a3f0c3ca76-bar {
 		z-index: 101 $i;
 
-		.title_c38106 {
+		.c38106a3f0c3ca76-title {
 			display: none $i;
 		}
 		// TODO: unify with toolbar impl
-		.clickable_c99c29 {
+		.c99c29809d200a61-clickable {
 			pad(0);
 			mar(0);
 			position: fixed $i;
@@ -1394,7 +1394,7 @@ normalise-header(first = true) {
 	.layerContainer > div {
 		dropfade();
 	}
-	.scrim__40128 {
+	._40128e129e4f87de-scrim {
 		opacity: 0 $i;
 	}
 	.contentWrapper, // emojis/gifs
@@ -1439,12 +1439,12 @@ normalise-header(first = true) {
 	}
 
 	// Generic (mana)
-	.container__8a031 {
+	._8a031a135bfcb9ba-container {
 		bg();
 		pad(0);
 		brd();
 
-		.actionBar__8a031 {
+		._8a031a135bfcb9ba-actionBar {
 			bg(2);
 			brd(top);
 
@@ -1452,34 +1452,34 @@ normalise-header(first = true) {
 				--bg2: var(--bg);
 			}
 		}
-		.actionBarTrailing__8a031 {
+		._8a031a135bfcb9ba-actionBarTrailing {
 			& > div {
 				justify-content: end $i;
 			}
 		}
-		.body__8a031 {
+		._8a031a135bfcb9ba-body {
 			overflow: auto $i;
 		}
-		.bodyInner__8a031 {
+		._8a031a135bfcb9ba-bodyInner {
 			pad();
 		}
-		.header__8a031 {
+		._8a031a135bfcb9ba-header {
 			pad(0);
 		}
-		.headerLayout__8a031 {
+		._8a031a135bfcb9ba-headerLayout {
 			bg(2);
 			pad();
 			brd(bottom);
 		}
-		.headerSubtitle__8a031 {
+		._8a031a135bfcb9ba-headerSubtitle {
 			mar(inline);
 		}
-		.headerTrailing__8a031 {
+		._8a031a135bfcb9ba-headerTrailing {
 			mar(0);
 		}
 		// ? lol
-		.bodySpacerBottom__8a031,
-		.bodySpacerTop__8a031 {
+		._8a031a135bfcb9ba-bodySpacerBottom,
+		._8a031a135bfcb9ba-bodySpacerTop {
 			display: none $i;
 		}
 	}
@@ -1642,7 +1642,7 @@ normalise-header(first = true) {
 		}
 	}
 
-	:where(.outer_c0bea0).user-profile-popout {
+	:where(.c0bea05627c5dc35-outer).user-profile-popout {
 		bg();
 		brd();
 		shd(big);
@@ -1966,7 +1966,7 @@ normalise-header(first = true) {
 			}
 		}
 	}
-	.autocompleteRowHeading__13533 {
+	._13533e3c5791980f-autocompleteRowHeading {
 		fg();
 	}
 	[data-list-id="channel-autocomplete"] > .base {
@@ -2050,7 +2050,7 @@ normalise-header(first = true) {
 	}
 
 	// Pinned messages & recent mentions
-	.container_fc561d {
+	.fc561d3c125f6a2f-container {
 		brd();
 		shd(big);
 	}
@@ -2087,17 +2087,17 @@ normalise-header(first = true) {
 			}
 		}
 	}
-	.header_ab6641 {
+	.ab66419eae73260f-header {
 		pad(0);
 		brd(bottom);
 	}
-	.headerTabs_ab6641 {
+	.ab66419eae73260f-headerTabs {
 		mar(0);
 	}
-	.headerTitle_ab6641 {
+	.ab66419eae73260f-headerTitle {
 		display: none;
 	}
-	.tabBar_ab6641 {
+	.ab66419eae73260f-tabBar {
 		brd(0);
 		mar(0);
 	}
@@ -2105,11 +2105,11 @@ normalise-header(first = true) {
 	/**
 	 * Settings
 	**/
-	.labelContainer__5a838 {
-		.description__5a838 {
+	._5a8382cf5c9d77df-labelContainer {
+		._5a8382cf5c9d77df-description {
 			fg(2);
 		}
-		.label__5a838 {
+		._5a8382cf5c9d77df-label {
 			normalise-header(false);
 		}
 	}
@@ -2117,10 +2117,10 @@ normalise-header(first = true) {
 	/**
 	 * Chat
 	**/
-	.chat_f75fb0 {
+	.f75fb00fb7356cbe-chat {
 		brd(0);
 	}
-	.chatGradientBase__36d07 {
+	._36d072eab2b2e737-chatGradientBase {
 		display: none $i;
 	}
 	.scroller {
@@ -2526,10 +2526,10 @@ normalise-header(first = true) {
 			}
 		}
 	}
-	.hoverBarButton_f84418 {
+	.f84418acfdbdfe54-hoverBarButton {
 		background-color: transparent $i;
 
-		.icon_f84418 {
+		.f84418acfdbdfe54-icon {
 			transform: none $i;
 		}
 	}
@@ -2837,57 +2837,57 @@ normalise-header(first = true) {
 	}
 
 	// Message textbox
-	.form_f75fb0 {
+	.f75fb00fb7356cbe-form {
 		padding: var(--body-pad) $i;
 		pad(top, 0);
 		mar(0);
 
-		.typing_b88801 {
+		.b8880176888cc928-typing {
 			padding-inline: var(--body-pad) $i;
 			top: unset $i;
 			bottom: 0 $i;
 		}
-		.text_b88801,
-		.typingDots_b88801 {
+		.b8880176888cc928-text,
+		.b8880176888cc928-typingDots {
 			mar(0);
 		}
 	}
-	.channelTextArea__74017 {
+	._740174f3d6a2c8fe-channelTextArea {
 		background: transparent $i;
 		brd(0);
 		mar(0);
 
-		.inner__74017 {
+		._740174f3d6a2c8fe-inner {
 			pad(0);
 		}
-		.textArea__74017 {
+		._740174f3d6a2c8fe-textArea {
 			mar(right);
 		}
-		.themedBackground__74017 {
+		._740174f3d6a2c8fe-themedBackground {
 			background: transparent $i;
 			brd(0);
 			overflow: auto $i;
 			overflow: visible $i;
 		}
-		.editor__1b31f {
+		._1b31f471f0bb10ab-editor {
 			normalise-input();
 		}
-		.placeholder__1b31f {
+		._1b31f471f0bb10ab-placeholder {
 			inset: var(--pad) $i;
 			z-index: 1 $i;
 		}
-		.slateTextArea_ec4baf:not(.editor__1b31f) {
+		.ec4baf0360ff3578-slateTextArea:not(._1b31f471f0bb10ab-editor) {
 			pad(0);
 		}
 	}
-	.attachWrapper__0923f {
+	._0923f156a0410684-attachWrapper {
 		pad(0);
 		mar(right);
 
-		.attachButton__0923f {
+		._0923f156a0410684-attachButton {
 			mar(0);
 		}
-		.attachButtonInner__0923f {
+		._0923f156a0410684-attachButtonInner {
 			pad(0);
 		}
 	}
@@ -3050,7 +3050,7 @@ normalise-header(first = true) {
 				--pad: calc(var(--reserve-pad) / 2);
 				normalise-button();
 			}
-			.endButton_c15210 {
+			.c1521037ef09de7e-endButton {
 				mar(inline);
 			}
 			.roundButton {
