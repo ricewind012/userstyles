@@ -605,7 +605,7 @@ normalise-header(first = true) {
 			brd(right);
 			width: var(--sidebar-width);
 			max-width: unset;
-			overflow: scroll;
+			overflow: auto;
 			position: fixed $i;
 			top: var(--header-h);
 			bottom: 0;
@@ -619,7 +619,6 @@ normalise-header(first = true) {
 			white-space: nowrap $i;
 			pad();
 			display: block $i;
-			height: 100%;
 
 			&-avatar {
 				mar(0);
@@ -646,6 +645,10 @@ normalise-header(first = true) {
 		}
 		&-header {
 			normalise-header();
+
+			&-mobile {
+				display: none $i;
+			}
 
 			& > a {
 				fg();
