@@ -14,10 +14,30 @@
  * IV.  Scrollbar
  *
 **/
+@-moz-document
+	domain("boards.4chan.org"),
+	domain("discord.com"),
+	domain("html.duckduckgo.com"),
+	domain("github.com"),
+	domain("developer.mozilla.org"),
+	domain("nitter.poast.org"),
+	domain("nitter.privacydev.net"),
+	domain("xcancel.com"),
+	domain("searchfox.org"),
+	domain("soundcloud.com"),
+	domain("stackexchange.c"),
+	domain("stackoverflow.com"),
+	domain("superuser.com"),
+	domain("unsplash.com"),
+	domain("wiki.archlinux.org"),
+	regexp("^https?://wiki\..*"),
+	regexp("^https?://\w+\.wikipedia.org/wiki/.*\?useskin=vector$"),
+	url-prefix("moz-extension://")
+{
 
 :root {
 	/* Text and icons */
-	--font-normal: system-ui;
+	--font-normal: system-ui, sans-serif;
 	--font-code: monospace;
 	--font-size: 12pt;
 	--delim: ' • ';
@@ -33,7 +53,7 @@
 	--hl-fg: #fff;
 
 	/* Sidebar */
-	--sidebar-width: 228px;
+	--sidebar-width: 275px;
 	--sidebar-separator-width: 8px;
 
 	/* etc. */
@@ -182,6 +202,8 @@ code, pre, code *, pre * {
 		opacity: 1;
 		transform: translateY(0);
 	}
+}
+
 }
 
 /* Scrollbar */
