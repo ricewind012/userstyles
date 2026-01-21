@@ -875,123 +875,6 @@ normal-colors() {
 	/**
 	 * Header
 	**/
-	.AppHeader {
-		shd(0);
-
-		.Button,
-		&-button {
-			fg(2);
-			pad(0);
-			brd(0);
-			shd(0);
-			box(unset);
-			transition: none $i;
-
-			&:hover {
-				background-color: transparent $i;
-				fg();
-			}
-		}
-
-		&-globalBar {
-			bgc(2);
-			brd(bottom);
-			header-focus();
-			pad();
-			position: fixed;
-			top: 0;
-			width: 100%;
-
-			&-start,
-			&-end {
-				flex();
-			}
-			&-start > div[class=""] {
-				display: none;
-			}
-			&-end {
-				max-height: unset $i;
-			}
-		}
-		&-logo {
-			background-color: transparent $i;
-			fg(2);
-			mar(0);
-			box(var(--font-size));
-
-			& > .octicon {
-				fg();
-				box(var(--font-size));
-				vertical-align: unset $i;
-			}
-			&:not(:hover) > .octicon {
-				normal-colors();
-				fg(2);
-			}
-		}
-		&-context {
-			height: unset $i;
-
-			&-item {
-				normal-colors();
-				background-color: transparent $i;
-				color: inherit $i;
-				pad(0);
-				min-width: unset $i;
-
-				&:hover &-label {
-					text-decoration: underline $i;
-				}
-			}
-			&-compact-trigger {
-				@extend .AppHeader-context-item;
-				mar(0);
-				height: unset $i;
-			}
-		}
-		// Make the search icon-only, it pops out anyway.
-		&-search {
-			&-whenRegular {
-				display: none $i;
-			}
-			&-whenNarrow {
-				display: grid $i;
-			}
-		}
-		&-actions {
-			&::before {
-				display: none $i;
-			}
-
-			.Button {
-				&-visual {
-					mar(0);
-				}
-				&-label {
-					display: none;
-				}
-			}
-		}
-		&-user {
-			// TODO: God knows why this makes it centered.
-			margin-top: -4px $i;
-
-			.avatar {
-				border-radius: 50% $i;
-				box(var(--font-size));
-			}
-		}
-		&-localBar {
-			bg(2);
-			pad(0);
-			brd(bottom);
-			margin-top: var(--header-h);
-
-			& > .UnderlineNav {
-				brd(0);
-			}
-		}
-	}
 	#global-user-nav-drawer-header {
 		bg(2);
 		gap: var(--pad) $i;
@@ -1006,6 +889,9 @@ normal-colors() {
 		& + div {
 			pad(0);
 		}
+	}
+	.header-wrapper {
+		z-index: 999 $i;
 	}
 	.search-input {
 		width: unset;
@@ -1645,7 +1531,7 @@ normal-colors() {
 				display: none;
 			}
 		}
-		:is([data-component="icon"], [data-component="leadingVisual"]):not(:only-child),
+		:where([data-component="icon"], [data-component="leadingVisual"]):not(:only-child),
 		.UnderlineNav-octicon, .tabnav-tab > .octicon, // tabs
 		:is(.btn, .btn-link):not(.btn-octicon, [aria-haspopup], [role]) > \
 			.octicon:not(:only-child),
@@ -1737,7 +1623,7 @@ normal-colors() {
 	}
 
 	$invisible-button {
-		background-color: transparent $i;
+		background: none $i;
 		pad(0);
 		brd(0);
 
@@ -2000,9 +1886,11 @@ normal-colors() {
 			fg(2);
 
 			&:hover {
+				--fg2: currentColor;
 				fg();
 			}
 			&[aria-current] {
+				--fg2: currentColor;
 				hl();
 
 				&::after {
@@ -2109,6 +1997,105 @@ normal-colors() {
 		--pad: calc(var(--reserve-pad) / 2);
 		pad();
 		height: unset $i;
+	}
+
+	/**
+	 * Global header
+	**/
+	[class*="prc-Breadcrumbs-"] {
+		{sel(ItemWrapper)} {
+			&::after {
+				font-size: var(--font-size) $i;
+				mar(inline);
+			}
+		}
+	}
+	[class*="styles-module__"] {
+		{sel(appHeader)} {
+			bg(2);
+			shd(0);
+
+			& > [class*="prc-Stack-Stack-"] {
+				bgc(2);
+				header-focus();
+				gap: var(--pad) $i;
+				pad();
+				brd(bottom);
+				position: fixed;
+				top: 0;
+				width: 100%;
+			}
+			& > nav {
+				brd(bottom);
+			}
+
+			[class*="prc-Avatar-Avatar-"] {
+				box(var(--font-size));
+			}
+			[class*="prc-Button-ButtonBase-"] {
+				@extend $invisible-button;
+
+				[data-component="leadingVisual"] {
+					color: inherit $i;
+					mar(0);
+				}
+			}
+			[class*="Search-module__"] {
+				{sel(searchButton)} {
+					[data-component="leadingVisual"] {
+						display: flex $i;
+					}
+					[data-component="text"] {
+						display: none $i;
+					}
+				}
+				{sel(searchButtonGroup)} {
+					// empty div
+					gap: 0 $i;
+
+					& > div {
+						display: flex;
+					}
+				}
+			}
+		}
+		{sel(left)} {
+			& > [data-loading-wrapper] {
+				display: none $i;
+			}
+		}
+		{sel(appHeaderHome)} {
+			mar(0);
+
+			svg {
+				box(var(--font-size));
+			}
+		}
+		{sel(center)},
+		{sel(left)},
+		{sel(right)} {
+			pad(0);
+
+			& > div {
+				display: flex;
+			}
+		}
+		{sel(contextCrumb)} {
+			color: inherit $i;
+			lnh();
+			pad(0);
+
+			&:hover {
+				background-color: transparent $i;
+				text-decoration: underline $i;
+			}
+		}
+		{sel(contextRegion)} {
+			height: unset $i;
+		}
+		{sel(itemDivider)} {
+			display: none $i;
+		}
 	}
 
 	/**
