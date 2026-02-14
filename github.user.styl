@@ -562,8 +562,10 @@ normal-colors() {
 	/**
 	 * Global
 	**/
-	a {
-		color: var(--fg-link);
+	@layer primer-css-base {
+		a {
+			color: var(--fg-link);
+		}
 	}
 	p {
 		mar(bottom);
@@ -1619,6 +1621,11 @@ normal-colors() {
 	 * React garbage
 	**/
 	sel(name) {
+		{s('/%s%s__"]', unquote(slice(selector(), 0, -2)), name)};
+	}
+
+	// Dedicated function for Primer component selectors
+	prc-sel(name) {
 		{s('/%s%s-"]', unquote(slice(selector(), 0, -2)), name)};
 	}
 
@@ -1735,7 +1742,7 @@ normal-colors() {
 	}
 
 	// Counter
-	[class*="prc-CounterLabel-CounterLabel-"] {
+	:where([class*="prc-CounterLabel-CounterLabel-"]) {
 		@extend .Counter;
 	}
 
@@ -1785,13 +1792,13 @@ normal-colors() {
 		}
 	}
 	[class*="prc-ActionList-"] {
-		{sel(ActionList)} {
+		{prc-sel(ActionList)} {
 			pad(0);
 		}
-		{sel(ActionListContent)} {
+		{prc-sel(ActionListContent)} {
 			color: inherit $i;
 		}
-		{sel(ActionListItem)} {
+		{prc-sel(ActionListItem)} {
 			mar(0);
 
 			&[data-active],
@@ -1801,25 +1808,25 @@ normal-colors() {
 				hl();
 			}
 		}
-		{sel(Divider)} {
+		{prc-sel(Divider)} {
 			mar(0);
 		}
-		{sel(Group)} {
+		{prc-sel(Group)} {
 			mar(0);
 		}
 		// Headers in context menus... lmao
-		{sel(GroupHeadingWrap)} {
+		{prc-sel(GroupHeadingWrap)} {
 			display: none $i;
 		}
-		{sel(ItemLabel)} {
+		{prc-sel(ItemLabel)} {
 			color: inherit $i;
 			lnh();
 		}
 		// Left side icon
-		{sel(LeadingVisual)} {
+		{prc-sel(LeadingVisual)} {
 			min-width: 16px $i;
 		}
-		{sel(VisualWrap)} {
+		{prc-sel(VisualWrap)} {
 			lnh();
 
 			kbd {
@@ -1834,25 +1841,25 @@ normal-colors() {
 
 	// Tree
 	[class*="prc-TreeView-"] {
-		{sel(TreeViewItem)} {
+		{prc-sel(TreeViewItem)} {
 			&[aria-current] > div {
 				hl();
 				--fgColor-default: var(--hl-fg);
 				--fgColor-muted: var(--hl-fg);
 			}
 		}
-		{sel(TreeViewItemToggle)} {
+		{prc-sel(TreeViewItemToggle)} {
 			padding-top: 10px $i;
 		}
 	}
 
 	// Pagination
 	[class*="prc-Pagination-"] {
-		{sel(PaginationContainer)} {
+		{prc-sel(PaginationContainer)} {
 			mar(top);
 			mar(bottom, 0);
 		}
-		{sel(Page)} {
+		{prc-sel(Page)} {
 			normalise-button();
 			mar(right);
 			min-width: unset $i;
@@ -1873,15 +1880,15 @@ normal-colors() {
 
 	// Tabs
 	[class*="prc-components-"] {
-		{sel(UnderlineWrapper)} {
+		{prc-sel(UnderlineWrapper)} {
 			pad(0);
 			shd(0);
 			min-height: unset $i;
 		}
-		{sel(UnderlineItemList)} {
+		{prc-sel(UnderlineItemList)} {
 			gap: 0 $i;
 		}
-		{sel(UnderlineItem)} {
+		{prc-sel(UnderlineItem)} {
 			background-color: transparent $i;
 			fg(2);
 
@@ -1904,7 +1911,7 @@ normal-colors() {
 		}
 	}
 	[class*="prc-SegmentedControl-"] {
-		{sel(Button)} {
+		{prc-sel(Button)} {
 			bg(2);
 			pad(0);
 			height: unset $i;
@@ -1921,16 +1928,16 @@ normal-colors() {
 				color: inherit $i;
 			}
 		}
-		{sel(Content)} {
+		{prc-sel(Content)} {
 			background-color: transparent $i;
 			pad();
 			brd(0);
 			height: unset $i;
 		}
-		{sel(Item)} {
+		{prc-sel(Item)} {
 			mar(0);
 		}
-		{sel(SegmentedControl)} {
+		{prc-sel(SegmentedControl)} {
 			--pad: calc(var(--reserve-pad) / 2);
 			background-color: var(--border) $i;
 			gap: var(--border-width) $i;
@@ -1939,14 +1946,17 @@ normal-colors() {
 		}
 	}
 	[class*="prc-TabNav-TabNavLink-"] {
+		fg(2);
 		lnh();
 		pad();
 		brd(0);
 
 		&:not([aria-selected="true"]):hover {
+			--fg2: var(--fg);
 			fg();
 		}
 		&[aria-selected="true"] {
+			--fg2: var(--hl-fg);
 			hl();
 		}
 	}
@@ -1961,10 +1971,10 @@ normal-colors() {
 	// Sidebar
 	[class*="prc-PageLayout-"] {
 		// Seen in commits page
-		{sel(PageLayoutRoot)} {
+		{prc-sel(PageLayoutRoot)} {
 			pad(0);
 		}
-		{sel(Pane)} {
+		{prc-sel(Pane)} {
 			--pane-width: var(--sidebar-width) $i;
 			pad(0);
 
@@ -1974,7 +1984,7 @@ normal-colors() {
 				mar();
 			}
 		}
-		{sel(PaneWrapper)} {
+		{prc-sel(PaneWrapper)} {
 			bg(2);
 			brd(right);
 			top: var(--header-h) $i;
@@ -1984,10 +1994,10 @@ normal-colors() {
 				--bg2: var(--bg);
 			}
 		}
-		{sel(PaneVerticalDivider)} {
+		{prc-sel(PaneVerticalDivider)} {
 			display: none $i;
 		}
-		{sel(ContentWrapper)} {
+		{prc-sel(ContentWrapper)} {
 			padding: var(--body-pad) $i;
 		}
 	}
@@ -2003,7 +2013,7 @@ normal-colors() {
 	 * Global header
 	**/
 	[class*="prc-Breadcrumbs-"] {
-		{sel(ItemWrapper)} {
+		{prc-sel(ItemWrapper)} {
 			&::after {
 				font-size: var(--font-size) $i;
 				mar(inline);
@@ -2313,6 +2323,14 @@ normal-colors() {
 				bg();
 			}
 		}
+	}
+
+	/**
+	 * PR files
+	**/
+	[class*="DiffComparisonViewer-module__Container-"] {
+		pad(0);
+		mar(0);
 	}
 
 	/**
@@ -2862,7 +2880,7 @@ normal-colors() {
 		brd();
 
 		[class*="IssueBodyHeader-module__viewerDidNotAuthor-"] {
-			@extend [class*="ActivityHeader-module__ActivityHeaderContainer-"];
+			@extend [class*="ActivityHeader-module__ActivityHeaderContainer__"];
 		}
 	}
 
