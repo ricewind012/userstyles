@@ -2216,8 +2216,10 @@ normal-colors() {
 		pad(0);
 	}
 
-	[class*="BlobTabButtons-module__SegmentedControl-"] {
-		--bg2: var(--bg);
+	[class*="BlobTabButtons-module__"] {
+		{sel(SegmentedControl)} {
+			--bg2: var(--bg);
+		}
 	}
 	[class*="BlobViewHeader-module__"] {
 		{sel(Box)} {
@@ -2228,31 +2230,35 @@ normal-colors() {
 		}
 	}
 	// Navigation
-	[class*="CodeViewHeader-module__FileResultsList-"] {
-		mar(0);
+	[class*="CodeViewHeader-module__"] {
+		{sel(FileResultsList)} {
+			mar(0);
+		}
 	}
-	[class*="LatestCommit-module__Box-"] {
-		bg(2);
-		brd();
-		mar(bottom);
+	[class*="LatestCommit-module__"] {
+		{sel(Box)} {
+			bg(2);
+			brd();
+			mar(bottom);
 
-		react-app[app-name="react-code-view"] .border:has(&) {
-			all: unset $i;
-		}
-
-		.Link--secondary {
-			fg();
-		}
-		[class*="prc-Button-ButtonBase-"] {
-			--bg2: var(--bg);
-		}
-		[class*="AuthorAvatar-module__"] {
-			{sel(authorHoverableLink)} {
-				fg(-link);
+			react-app[app-name="react-code-view"] .border:has(&) {
+				all: unset $i;
 			}
-			{sel(GitHubAvatar)} {
-				mar(right);
-				box(var(--font-size));
+
+			.Link--secondary {
+				fg();
+			}
+			[class*="prc-Button-ButtonBase-"] {
+				--bg2: var(--bg);
+			}
+			[class*="AuthorAvatar-module__"] {
+				{sel(authorHoverableLink)} {
+					fg(-link);
+				}
+				{sel(GitHubAvatar)} {
+					mar(right);
+					box(var(--font-size));
+				}
 			}
 		}
 	}
@@ -2285,8 +2291,10 @@ normal-colors() {
 			mar(0);
 		}
 	}
-	[class*="ReposFileTreeView-module__Box-"] {
-		pad(0);
+	[class*="ReposFileTreeView-module__"] {
+		{sel(Box)} {
+			pad(0);
+		}
 	}
 	[class*="Table-module__"] {
 		{sel(Box)} {
@@ -2328,9 +2336,11 @@ normal-colors() {
 	/**
 	 * PR files
 	**/
-	[class*="DiffComparisonViewer-module__Container-"] {
-		pad(0);
-		mar(0);
+	[class*="DiffComparisonViewer-module__"] {
+		{sel(Container)} {
+			pad(0);
+			mar(0);
+		}
 	}
 
 	/**
@@ -2338,7 +2348,7 @@ normal-colors() {
 	**/
 	react-app[app-name="blackbird-search"] {
 		[class*="prc-PageLayout-"] {
-			{sel(Content)} {
+			{prc-sel(Content)} {
 				& > div {
 					pad(0);
 				}
@@ -2459,15 +2469,17 @@ normal-colors() {
 			gap: var(--pad) $i;
 		}
 	}
-	[class*="OverviewRepoFiles-module__Box_3-"] {
-		bg(2);
-		padding-right: calc(var(--pad) / 2) $i;
-		top: var(--header-h) $i;
+	[class*="OverviewRepoFiles-module__"] {
+		{sel(Box_3)} {
+			bg(2);
+			padding-right: calc(var(--pad) / 2) $i;
+			top: var(--header-h) $i;
 
-		// Buttons
-		button {
-			--bg2: var(--bg);
-			--pad: calc(var(--reserve-pad) / 2);
+			// Buttons
+			button {
+				--bg2: var(--bg);
+				--pad: calc(var(--reserve-pad) / 2);
+			}
 		}
 	}
 
@@ -2482,9 +2494,11 @@ normal-colors() {
 		}
 	}
 
-	[class*="CommitGroup-module__panel-"] {
-		brd(0);
-		mar(0);
+	[class*="CommitGroup-module__"] {
+		{sel(panel)} {
+			brd(0);
+			mar(0);
+		}
 	}
 	[class*="CommitRow-module__"] {
 		{sel(ListItem_0)} {
@@ -2507,7 +2521,7 @@ normal-colors() {
 			.Button {
 				--bg2: var(--bg);
 			}
-			[class*="MainContent-module__inner-"] {
+			[class*="MainContent-module__inner__"] {
 				pad(0);
 			}
 		}
@@ -2541,39 +2555,39 @@ normal-colors() {
 
 	react-app[app-name="commits"] {
 		[class*="prc-PageHeader-"] {
-			{sel(Actions)},
-			{sel(TitleArea)} {
+			{prc-sel(Actions)},
+			{prc-sel(TitleArea)} {
 				display: none $i;
 			}
-			{sel(Description)} {
+			{prc-sel(Description)} {
 				pad(0);
 			}
 		}
 	}
 
 	[class*="prc-PageHeader-"] {
-		{sel(Actions)} {
+		{prc-sel(Actions)} {
 			&[data-component="PH_Actions"] {
 				--pad: calc(var(--reserve-pad) / 2);
 				height: unset $i;
 			}
 		}
-		{sel(Description)} {
+		{prc-sel(Description)} {
 			pad(0);
 
 			& > .flex-column {
 				flex-direction: column-reverse $i;
 			}
 		}
-		{sel(Title)} {
+		{prc-sel(Title)} {
 			normalise-header();
 		}
-		{sel(TitleArea)} {
+		{prc-sel(TitleArea)} {
 			align-self: end $i;
 		}
 	}
 	[class*="prc-PageLayout-"] {
-		{sel(HeaderContent)} {
+		{prc-sel(HeaderContent)} {
 			bg(2);
 
 			[class*="prc-Button-ButtonBase-"] {
@@ -2586,10 +2600,10 @@ normal-colors() {
 				mar(0);
 			}
 		}
-		{sel(HeaderHorizontalDivider)} {
+		{prc-sel(HeaderHorizontalDivider)} {
 			height: var(--border-width) $i;
 		}
-		{sel(ContentWrapper)} {
+		{prc-sel(ContentWrapper)} {
 			.position-sticky {
 				pad(top, 0);
 				position: unset $i;
@@ -2599,69 +2613,79 @@ normal-colors() {
 			}
 		}
 	}
-	[class*="CommitHeader-module__commit-message-container-"] {
-		pad(0);
-		brd(0);
-		min-height: unset $i;
-
-		.f5 {
-			normalise-header();
-		}
-		.extended-commit-description-container {
-			mar(0);
-		}
-		& + div {
+	[class*="CommitHeader-module__"] {
+		{sel(commit-message-container)} {
 			pad(0);
-			mar(top);
+			brd(0);
+			min-height: unset $i;
+
+			.f5 {
+				normalise-header();
+			}
+			.extended-commit-description-container {
+				mar(0);
+			}
+			& + div {
+				pad(0);
+				mar(top);
+			}
 		}
 	}
 
-	[class*="ExpandableHunkHeaderDiffLine-module__expand-button-line-"] {
-		background-color: color-a(4) $i;
-		brd(0);
-		width: var(--line-number-cell-width-unified) $i;
+	[class*="ExpandableHunkHeaderDiffLine-module__"] {
+		{sel(expand-button-line)} {
+			background-color: color-a(4) $i;
+			brd(0);
+			width: var(--line-number-cell-width-unified) $i;
 
-		&:hover {
-			background-color: color-a(12) $i;
+			&:hover {
+				background-color: color-a(12) $i;
+			}
 		}
 	}
-	[class*="Comment-module__commit-discussion-comments-"] {
-		gap: 0 $i;
+	[class*="Comment-module__"] {
+		{sel(commit-discussion-comments)} {
+			gap: 0 $i;
 
-		& > :first-child {
-			normalise-header(false);
+			& > :first-child {
+				normalise-header(false);
 
+				button {
+					--pad: calc(var(--reserve-pad) / 2);
+				}
+			}
+			& > .pt-3 {
+				pad(0);
+
+				& > div {
+					background-color: transparent $i;
+					pad(0);
+					brd(0);
+
+					& > button {
+						normalise-input();
+						fg(2);
+					}
+				}
+			}
+			& > .p-2 {
+				pad(0);
+				brd(0);
+				mar(top);
+			}
+		}
+	}
+	[class*="Diff-module__"] {
+		{sel(diffHeaderWrapper)} {
 			button {
 				--pad: calc(var(--reserve-pad) / 2);
 			}
 		}
-		& > .pt-3 {
-			pad(0);
-
-			& > div {
-				background-color: transparent $i;
-				pad(0);
-				brd(0);
-
-				& > button {
-					normalise-input();
-					fg(2);
-				}
-			}
-		}
-		& > .p-2 {
-			pad(0);
-			brd(0);
-			mar(top);
-		}
 	}
-	[class*="Diff-module__diffHeaderWrapper-"] {
-		button {
-			--pad: calc(var(--reserve-pad) / 2);
+	[class*="DiffFind-module__"] {
+		{sel(defaultStyles)} {
+			all: unset;
 		}
-	}
-	[class*="DiffFind-module__defaultStyles-"] {
-		all: unset;
 	}
 
 	/**
@@ -2705,35 +2729,47 @@ normal-colors() {
 		}
 	}
 
-	[class*="FilterInputWrapper-module__Box_1-"] {
-		gap: var(--pad) $i;
+	[class*="FilterInputWrapper-module__"] {
+		{sel(Box_1)} {
+			gap: var(--pad) $i;
+		}
 	}
-	[class*="Filter-module__Box_2-"] {
-		normalise-input();
+	[class*="Filter-module__"] {
+		{sel(Box_2)} {
+			normalise-input();
+		}
 	}
-	[class*="Input-module__Box_"] {
-		height: unset $i;
+	[class*="Input-module__"] {
+		{sel(Box)} {
+			height: unset $i;
+		}
 	}
-	[class*="ClearButton-module__clearButton-"] {
-		all: unset $i;
-		display: flex $i;
-		cursor: pointer $i;
+	[class*="ClearButton-module__"] {
+		{sel(clearButton)} {
+			all: unset $i;
+			display: flex $i;
+			cursor: pointer $i;
 
-		&:not(:hover) {
-			fg(2);
+			&:not(:hover) {
+				fg(2);
+			}
 		}
 	}
 
-	[class*="SearchBar-module__gap8-"] + div > div {
-		brd();
+	[class*="SearchBar-module__"] {
+		{sel(gap8)} + div > div {
+			brd();
+		}
 	}
-	[class*="Metadata-module__container-"] {
-		pad(0);
-		padding-right: calc(var(--pad) / 2) $i;
-		position: sticky $i;
-		top: var(--header-h) $i;
-		height: unset $i;
-		z-index: 1 $i;
+	[class*="Metadata-module__"] {
+		{sel(container)} {
+			pad(0);
+			padding-right: calc(var(--pad) / 2) $i;
+			position: sticky $i;
+			top: var(--header-h) $i;
+			height: unset $i;
+			z-index: 1 $i;
+		}
 	}
 	[class*="SectionFilterLink-module__container"] {
 		lnh();
@@ -2753,28 +2789,32 @@ normal-colors() {
 			hl();
 		}
 	}
-	[class*="VisibleAndOverflowContainer-module__Box_0-"] {
-		button {
-			--bg2: var(--bg);
-			--pad: calc(var(--reserve-pad) / 2);
+	[class*="VisibleAndOverflowContainer-module__"] {
+		{sel(Box_0)} {
+			button {
+				--bg2: var(--bg);
+				--pad: calc(var(--reserve-pad) / 2);
 
-			@extend :where([class*="prc-Button-ButtonBase-"])[aria-haspopup];
+				@extend :where([class*="prc-Button-ButtonBase-"])[aria-haspopup];
+			}
 		}
 	}
 
-	[class*="IssueRow-module__row-"] {
-		& > li {
-			background-color: transparent $i;
-			gap: 0 $i;
-		}
-		[class*="LeadingVisual-module__outer-"] {
-			margin-top: calc(var(--pad) * var(--line-height)) $i;
-		}
-		[class*="MainContent-module__inner-"] {
-			pad(bottom);
-		}
-		a {
-			fg();
+	[class*="IssueRow-module__"] {
+		{sel(row)} {
+			& > li {
+				background-color: transparent $i;
+				gap: 0 $i;
+			}
+			[class*="LeadingVisual-module__outer__"] {
+				margin-top: calc(var(--pad) * var(--line-height)) $i;
+			}
+			[class*="MainContent-module__inner__"] {
+				pad(bottom);
+			}
+			a {
+				fg();
+			}
 		}
 	}
 
@@ -2785,8 +2825,10 @@ normal-colors() {
 	[data-testid="issue-metadata-sticky"] {
 		display: none $i;
 	}
-	[class*="IssueDetail-module__IssueDetailContainer-"] {
-		position: relative $i;
+	[class*="IssueDetail-module__"] {
+		{sel(IssueDetailContainer)} {
+			position: relative $i;
+		}
 	}
 	[class*="IssueViewer-module__"] {
 		{sel(commentsContainer)} {
@@ -2806,7 +2848,7 @@ normal-colors() {
 				max-width: 100% $i;
 			}
 
-			[class*="Avatar-module__avatarWithDivider-"] {
+			[class*="Avatar-module__avatarWithDivider__"] {
 				margin-top: 16px $i;
 			}
 			// Reaction icon
@@ -2833,15 +2875,17 @@ normal-colors() {
 		}
 	}
 
-	[class*="HeaderViewer-module__headerContainer-"] {
-		pad(bottom);
-		brd(bottom);
-		mar(bottom);
+	[class*="HeaderViewer-module__"] {
+		{sel(headerContainer)} {
+			pad(bottom);
+			brd(bottom);
+			mar(bottom);
 
-		h1 {
-			pad(0);
-			brd(0);
-			mar(0);
+			h1 {
+				pad(0);
+				brd(0);
+				mar(0);
+			}
 		}
 	}
 
@@ -2866,7 +2910,7 @@ normal-colors() {
 	[data-testid="issue-viewer-issue-container"] > div {
 		gap: var(--pad) $i;
 	}
-	[class*="LayoutHelpers-module__nonLeadingElement-"] [data-testid^="timeline-row-border-"],
+	[class*="LayoutHelpers-module__nonLeadingElement__"] [data-testid^="timeline-row-border-"],
 	[data-testid^="timeline-divider-"] {
 		padding-left: 16px $i;
 	}
@@ -2879,7 +2923,7 @@ normal-colors() {
 		// [data-testid^="timeline-row-border-"]
 		brd();
 
-		[class*="IssueBodyHeader-module__viewerDidNotAuthor-"] {
+		[class*="IssueBodyHeader-module__viewerDidNotAuthor__"] {
 			@extend [class*="ActivityHeader-module__ActivityHeaderContainer__"];
 		}
 	}
@@ -2896,9 +2940,10 @@ normal-colors() {
 			--bg2: var(--bg);
 		}
 	}
-	[class*="IssueCommentViewer-module__IssueCommentBody-"] {
-		gap: var(--pad) $i;
-		mar();
+	[class*="IssueCommentViewer-module__"] {
+		{sel(IssueCommentBody)} {
+			gap: var(--pad) $i;
+		}
 	}
 
 	[class*="Section-module__"] {
@@ -2956,13 +3001,17 @@ normal-colors() {
 		}
 	}
 	// TODO(sidebar): create issue page has another class, but it's the same
-	[class*="IssueSidebar-module__sidebarContent-"] {
-		gap: 0 $i;
+	[class*="IssueSidebar-module__"] {
+		{sel(sidebarContent)} {
+			gap: 0 $i;
+		}
 	}
-	[class*="OptionsSection-module__ActionListOverrides-"] {
-		brd(top);
-		margin: calc(var(--pad) * -1) $i;
-		mar(top);
+	[class*="OptionsSection-module__"] {
+		{sel(ActionListOverrides)} {
+			brd(top);
+			margin: calc(var(--pad) * -1) $i;
+			mar(top);
+		}
 	}
 	[class*="SubscriptionSection-module__"] {
 		{sel(button)} {
@@ -3010,8 +3059,10 @@ normal-colors() {
 			}
 		}
 	}
-	[class*="MarkdownEditor-module__viewSwitchWrapper-"] {
-		mar(0);
+	[class*="MarkdownEditor-module__"] {
+		{sel(viewSwitchWrapper)} {
+			mar(0);
+		}
 	}
 	[class*="Toolbar-module__"] {
 		{sel(toolbar)} button {
@@ -3029,8 +3080,10 @@ normal-colors() {
 		}
 	}
 	// "Follow guidelines, CoC, etc." nobody cares
-	[class*="ContributorFooter-module__ContributorFooterContainer-"] {
-		display: none $i;
+	[class*="ContributorFooter-module__"] {
+		{sel(ContributorFooterContainer)} {
+			display: none $i;
+		}
 	}
 
 	/**
