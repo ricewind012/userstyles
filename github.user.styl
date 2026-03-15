@@ -2135,16 +2135,6 @@ normal-colors() {
 		}
 	}
 
-	[class*="SharedPageLayout-module__"] {
-		{sel(content)} {
-			pad(0);
-
-			& > .tmp-mx-3 {
-				mar(0);
-			}
-		}
-	}
-
 	.react-code-text {
 		span {
 			font-family: var(--font-code) $i;
@@ -2152,65 +2142,6 @@ normal-colors() {
 	}
 	.react-code-view-bottom-padding + div {
 		mar(0);
-
-		& > div {
-			// Symbols panel
-			&:last-of-type {
-				& > :first-child:not(:only-child) {
-					mar(right);
-				}
-
-				// Symbols
-				.panel-content-narrow-styles {
-					brd(0);
-					top: var(--header-h) $i;
-				}
-
-				// what the hell ?
-				#symbols-pane > div {
-					& > :not([class*=" "]) > div {
-						& > :first-child,
-						& > div > :first-child {
-							brd(0);
-						}
-					}
-				}
-				#symbols-pane-header {
-					normalise-header();
-					justify-content: left;
-					width: 100% $i;
-				}
-				[aria-roledescription="Symbol Navigation Details"] {
-					pad(0);
-					pad(bottom);
-					brd(bottom);
-					mar(bottom);
-				}
-				[aria-labelledby="symbols-pane-header"] {
-					pad(0);
-
-					& > :nth-child(2) {
-						fg();
-						pad(0);
-					}
-				}
-
-				// Header/section, I don't know
-				.bVrwaI,
-				.coSTPM {
-					normalise-header(false);
-					background-color: transparent $i;
-					brd(top, 0);
-					height: unset $i;
-				}
-
-				// Bottom
-				.iEQKDS {
-					brd(top);
-					padding: var(--pad) 0 $i;
-				}
-			}
-		}
 	}
 	.react-directory-add-file-icon,
 	.react-directory-add-file-button svg {
@@ -2231,32 +2162,20 @@ normal-colors() {
 		bg(2);
 		brd(right);
 	}
-	[aria-labelledby^="file-name-id"] {
-		mar(0);
 
-		& > div {
-			pad(0);
+	[class*="BlobContent-module__"] {
+		{sel(blobContentSection)} {
+			mar(0);
 		}
 	}
-	#highlighted-line-menu-container > button {
-		left: calc((16px + var(--pad) / 2) * -1);
-	}
-	#repos-sticky-header {
-		top: calc(var(--header-h) - var(--border-width));
-
-		// Code
-		& + div {
-			brd();
-			brd(top, 0);
-		}
-	}
-	#StickyHeader {
-		pad(0);
-	}
-
 	[class*="BlobTabButtons-module__"] {
 		{sel(SegmentedControl)} {
 			--bg2: var(--bg);
+		}
+	}
+	[class*="BlobViewContent-module__"] {
+		{sel(stickyHeader)} {
+			top: calc(var(--header-h) - var(--border-width));
 		}
 	}
 	[class*="BlobViewHeader-module__"] {
@@ -2267,10 +2186,53 @@ normal-colors() {
 			brd();
 		}
 	}
+	[class*="CodeBlob-module__"] {
+		{sel(codeBlobWrapper)} {
+			pad(0);
+		}
+	}
+	[class*="CodeNavSymbolDetails-module__"] {
+		{sel(detailsHeading)} {
+			bg(2);
+			pad();
+			brd();
+			margin-inline: calc(var(--pad) * -1 - var(--border-width)) $i;
+			margin-top:calc(var(--pad) * -1 + var(--border-width)) $i;
+			margin(bottom);
+		}
+	}
+	[class*="CodeNavSymbolNavigation-module__"] {
+		{sel(closeButton)} {
+			--bg2: var(--bg);
+			--pad: calc(var(--reserve-pad) / 2);
+			mar(0);
+		}
+		{sel(container)} {
+			pad();
+		}
+		{sel(headerRow)} {
+			bg(2);
+			pad();
+			brd();
+			margin-inline: calc(var(--pad) * -1 - var(--border-width)) $i;
+			margin-top:calc(var(--pad) * -1 + var(--border-width)) $i;
+			margin(bottom);
+		}
+	}
 	// Navigation
 	[class*="CodeViewHeader-module__"] {
+		{sel(Box)} {
+			& > #StickyHeader {
+				pad(0);
+			}
+		}
 		{sel(FileResultsList)} {
 			mar(0);
+		}
+	}
+	[class*="HighlightedLineMenu-module__"] {
+		{sel(highlightedLineMenuButton)} {
+			left: calc((16px + var(--pad) / 2) * -1);
 		}
 	}
 	[class*="LatestCommit-module__"] {
@@ -2332,6 +2294,20 @@ normal-colors() {
 	[class*="ReposFileTreeView-module__"] {
 		{sel(Box)} {
 			pad(0);
+		}
+	}
+	[class*="SharedPageLayout-module__"] {
+		{sel(content)} {
+			pad(0);
+
+			& > .tmp-mx-3 {
+				mar(0);
+			}
+		}
+	}
+	[class*="StickyLinesHeader-module__"] {
+		{sel(Box_1)} {
+			mar(0);
 		}
 	}
 	[class*="Table-module__"] {
