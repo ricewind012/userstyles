@@ -877,7 +877,7 @@ normal-colors() {
 	/**
 	 * Header
 	**/
-	#global-user-nav-drawer-header {
+	#global-nav-user-menu-header {
 		bg(2);
 		gap: var(--pad) $i;
 		pad();
@@ -1787,7 +1787,7 @@ normal-colors() {
 	[class*="prc-Overlay-Overlay-"] {
 		@extend .Overlay;
 
-		&:has(> #global-user-nav-drawer-header) {
+		&:has(> #global-nav-user-menu-header) {
 			normal-colors();
 			mar(0);
 			box(unset);
@@ -2045,6 +2045,10 @@ normal-colors() {
 			}
 			& > nav {
 				brd(bottom);
+			}
+			// wtf lol
+			path {
+				fill: currentColor $i;
 			}
 
 			[class*="prc-Avatar-Avatar-"] {
