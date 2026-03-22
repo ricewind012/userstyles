@@ -2501,6 +2501,20 @@ normal-colors() {
 			height: 0 $i;
 			visibility: hidden $i;
 		}
+		[class*="prc-Timeline-TimelineItem-"] {
+			pad(0);
+			mar(0);
+
+			&::before {
+				display: none;
+			}
+		}
+		[class*="prc-Timeline-TimelineBadgeWrapper-"] {
+			display: none;
+		}
+		[data-testid="commit-group-title"] {
+			normalise-header(false);
+		}
 	}
 
 	[class*="CommitGroup-module__"] {
@@ -2516,6 +2530,10 @@ normal-colors() {
 			gap: 0 $i;
 			brd();
 			mar(bottom);
+			grid-template-columns: 200px 1fr min-content $i;
+			grid-template-areas: unset $i;
+			grid-template-rows: unset $i;
+			align-items: center $i;
 
 			&[data-commit-link^="/mozilla-firefox/firefox/"] {
 				&[aria-label*="android-reviewers"] {
@@ -2523,19 +2541,49 @@ normal-colors() {
 				}
 			}
 
+			& > * {
+				grid-area: unset $i;
+			}
 			& > :empty {
 				display: none $i;
 			}
-			button,
-			.Button {
+			button {
 				--bg2: var(--bg);
 			}
-			[class*="MainContent-module__inner__"] {
-				pad(0);
+			[class*="CommitAttribution-module__"] {
+				{sel(CommitAttributionContainer)} {
+					& > :not([data-avatar-count="3"]) ~ *,
+					& > [data-avatar-count="3"] + :nth-child(2) ~ * {
+						display: none $i;
+					}
+				}
+			}
+			[class*="MainContent-module__"] {
+				{sel(container)} {
+					order: -1 $i;
+				}
+				{sel(inner)} {
+					pad(0);
+				}
+			}
+			// Move everything into the menu
+			[class*="MetadataContainer-module__"] {
+				{sel(container)} {
+					display: none $i;
+				}
+			}
+			[class*="ActionBar-module__"] {
+				{sel(container)} {
+					pad(0);
+					display: flex $i;
+				}
 			}
 		}
 		{sel(ListItemTitle_0)} {
 			pad(0);
+			display: flex $i;
+			align-items: center $i;
+			width: 100% $i;
 		}
 	}
 
