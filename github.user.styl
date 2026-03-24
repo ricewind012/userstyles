@@ -2239,6 +2239,19 @@ normal-colors() {
 			left: calc((16px + var(--pad) / 2) * -1);
 		}
 	}
+	[class*="HighlightedOverlay-module__"] {
+		{sel(highlightBackground)} {
+			hl();
+
+			& > span {
+				visibility: visible $i;
+			}
+		}
+		{sel(overlayWrapperWrap)} {
+			z-index: 1 $i;
+			pointer-events: none $i;
+		}
+	}
 	[class*="LatestCommit-module__"] {
 		{sel(Box)} {
 			bg(2);
