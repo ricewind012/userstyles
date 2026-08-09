@@ -1804,18 +1804,23 @@ normal-colors() {
 	}
 
 	// Tabs
-	[class*="prc-components-"] {
-		{prc-sel(UnderlineWrapper)} {
-			pad(0);
-			shd(0);
-			min-height: unset $i;
+	[class*="prc-UnderlineNav-"] {
+		// !important
+		@layer primer-react {
+			{prc-sel(UnderlineWrapper)}:is([class*="prc-components-UnderlineWrapper-"]) {
+				pad(0);
+				shd(0);
+				min-height: unset $i;
+			}
 		}
-		{prc-sel(UnderlineItemList)} {
+		{prc-sel(ItemsList)} {
 			gap: 0 $i;
 		}
-		{prc-sel(UnderlineItem)} {
+		{prc-sel(UnderlineNavItem)} > a {
 			background-color: transparent $i;
 			fg(2);
+			mar(0);
+			height: unset $i;
 
 			&:hover {
 				--fg2: currentColor;
@@ -1833,6 +1838,9 @@ normal-colors() {
 			[data-component="icon"] {
 				color: inherit $i;
 			}
+		}
+		{prc-sel(WrapSpacer)} {
+			display: none $i;
 		}
 	}
 	[class*="prc-SegmentedControl-"] {
