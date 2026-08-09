@@ -1031,19 +1031,15 @@ normal-colors() {
 	 * if stuck (.is-stuck)
 	 */
 	main .Box-header,
-	.file-header,
-	#repo-content-turbo-frame[src$="/releases"] .col-md-2,
 	.js-position-sticky,
 	.Layout-sidebar > * {
 		position: sticky $i;
 	}
-	#repo-content-turbo-frame[src$="/releases"] .col-md-2,
 	.Layout-sidebar > * {
 		top: calc(var(--header-h) + var(--pad));
 		z-index: 999 $i;
 	}
 	main .Box-header,
-	.file-header,
 	.js-position-sticky {
 		top: var(--header-h);
 		z-index: 998 $i;
@@ -1069,9 +1065,6 @@ normal-colors() {
 		& > * {
 			z-index: 998 $i;
 		}
-	}
-	#repo-content-turbo-frame[src$="/releases"] .col-md-2 {
-		height: fit-content;
 	}
 	.AppHeader-globalBar,
 	.Overlay,
@@ -2383,82 +2376,34 @@ normal-colors() {
 				& > div {
 					pad(0);
 				}
-
-				// Results list
-				& > div > :nth-last-child(2) {
-					pad(top);
-				}
-
-				// Pagination
-				& > div > :last-child {
-					pad(0);
-				}
 			}
 		}
+		[class*="Code-module__"] {
+			{sel(codeList)} {
+				pad(0);
+			}
+			{sel(headerBar)} {
+				bg(2);
+				pad();
+				height: unset $i;
+			}
+			{sel(openCloseButton)} {
+				--bg2: var(--bg);
+				--pad: calc(var(--reserve-pad) / 2);
+				normalise-button();
+				box(unset);
+			}
+			{sel(snippetBorderContainer)} {
+				bg(2);
+			}
 
-		// Sidebar
-		[data-testid="facets-pane"] {
-			pad(0);
-		}
-
-		[data-testid="search-sub-header"] {
-			& > div {
-				gap: var(--pad) $i;
-
-				// Right side buttons
-				& > div {
-					mar(0);
-				}
+			.blob-num {
+				brd(right);
 			}
 		}
-
-		[data-testid="results-list"] {
-			gap: var(--pad) $i;
-
-			& > div {
-				// Header
-				& > :first-child,
-				// "Show X more matches"
-				& > a {
-					bg(3);
-					pad();
-					brd();
-					height: unset $i;
-
-					button {
-						--bg2: var(--bg);
-						--pad: calc(var(--reserve-pad) / 2);
-						normalise-button();
-						box(unset);
-					}
-				}
-
-				// Code
-				& > :nth-child(2) {
-					bg(2);
-					brd(left);
-					brd(right);
-
-					&:last-child {
-						brd(0);
-						brd(left);
-						brd(right);
-						brd(bottom);
-					}
-
-					& > div {
-						pad(0);
-					}
-					.blob-num {
-						brd(right);
-					}
-
-					// Separator
-					[style^="margin-top"] {
-						brd(bottom);
-						mar(0);
-					}
-				}
+		[class*="FacetsPane-module__"] {
+			{sel(facetsContainer)} {
+				pad(0);
 			}
 		}
 	}
