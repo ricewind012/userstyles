@@ -1816,7 +1816,7 @@ normal-colors() {
 		{prc-sel(ItemsList)} {
 			gap: 0 $i;
 		}
-		{prc-sel(UnderlineNavItem)} > a {
+		{prc-sel(UnderlineNavItem)} > * {
 			background-color: transparent $i;
 			fg(2);
 			mar(0);
@@ -1951,6 +1951,7 @@ normal-colors() {
 			&::after {
 				font-size: var(--font-size) $i;
 				mar(inline);
+				height: 1em $i;
 			}
 		}
 	}
@@ -1969,12 +1970,11 @@ normal-colors() {
 				top: 0;
 				width: 100%;
 			}
-			& > nav {
-				brd(bottom);
-			}
-			// wtf lol
-			path {
-				fill: currentColor $i;
+			// !important
+			@layer primer-react {
+				& > [class*="prc-UnderlineNav-UnderlineWrapper-"] {
+					brd(bottom);
+				}
 			}
 
 			[class*="prc-Avatar-Avatar-"] {
@@ -2023,10 +2023,6 @@ normal-colors() {
 		{sel(left)},
 		{sel(right)} {
 			pad(0);
-
-			& > div {
-				display: flex;
-			}
 		}
 		{sel(contextCrumb)} {
 			color: inherit $i;
@@ -2043,6 +2039,10 @@ normal-colors() {
 		}
 		{sel(itemDivider)} {
 			display: none $i;
+		}
+
+		[class*="prc-Breadcrumbs-ItemWrapper-"] {
+			display: flex $i;
 		}
 	}
 
